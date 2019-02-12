@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.core.data">
+    <resultMap id="EntityObject" type="com.zhxh.core.data.EntityObject">
+        <id property="recordId" column="record_id"/>
+    </resultMap>
+
+    <resultMap id="TraceableEntity" type="com.zhxh.core.data.TraceableEntity" extends="com.zhxh.core.data.EntityObject">
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="optLock" column="opt_lock"/>
+    </resultMap>
+</mapper>

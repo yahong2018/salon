@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta charset="utf-8"/>
+    <title th:text="${T(com.zhxh.core.env.SysEnv).systemTitle}">智汇星红智能制造平台</title>
+
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <script type="text/javascript">
+        function onLogin() {
+            var txtUserName = document.getElementById('txtUserName');
+            var txtPassword = document.getElementById('txtPassword');
+            var txtErrorMessage = document.getElementById('txtErrorMessage');
+            if (txtUserName.value == "" || txtPassword.value == "") {
+                txtErrorMessage.innerText = "用户名和密码都必须输入！";
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+<div id="container">
+    <div class="row">
+        <h2 class="title" th:text="${T(com.zhxh.core.env.SysEnv).systemTitle+'——系统登录'}">智汇星红智能制造平台——系统登录</h2>
+    </div>
+    <form id="loginForm" th:action="@{/login/doLogin}" method="post" onsubmit="return onLogin();">
+        <div style="font-size:16px;">
+            <div class="row">
+                <div class="label">用户名：</div>
+                <input type="text" style="width:200px;" id="txtUserName" name="userCode" maxlength="6"/>
+            </div>
+            <div class="row">
+                <div class="label">密码：</div>
+                <input type="password" style="width:200px;" id="txtPassword" name="password"/>
+            </div>
+            <div style="height: 10px;"></div>
+            <div class="row">
+                <div class="label">&nbsp;</div>
+                <input type="submit" value="登录" style="width:60px;"/>
+            </div>
+            <div class="row">
+                <div class="label" style="height: 10px;">&nbsp;</div>
+                <!--/*@thymesVar id="errorMessage" type="com.zhxh.admin.controller.LoginController"*/-->
+                <div id="txtErrorMessage" style="color:white;font-size: smaller; padding-right: 55px;"
+                     th:text="${errorMessage}">
+                    系统错误
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.admin.entity">
+    <resultMap id="SystemUser"  type="com.zhxh.admin.entity.SystemUser" extends="com.zhxh.core.data.EntityObject" >
+        <result property="userCode" column="user_code"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="pwd"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="email" column="email"/>
+        <result property="online" column="online"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+    </resultMap>
+
+    <resultMap id="SystemRole" type="com.zhxh.admin.entity.SystemRole"  extends="com.zhxh.core.data.EntityObject">
+        <result property="roleCode" column="role_code"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <resultMap id="RoleUser" type="com.zhxh.admin.entity.RoleUser"  extends="com.zhxh.core.data.EntityObject">
+        <result property="roleId" column="role_id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <resultMap id="RolePrivilege" type="com.zhxh.admin.entity.RolePrivilege"  extends="com.zhxh.core.data.EntityObject">
+        <result property="programPrivilegeId" column="program_privilege_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="programId" column="program_id"/>
+        <result property="privilegeCode" column="privilege_code"/>
+    </resultMap>
+
+    <resultMap id="SystemProgram" type="com.zhxh.admin.entity.SystemProgram"  extends="com.zhxh.core.data.EntityObject">
+        <result property="programCode" column="program_code"/>
+        <result property="programName" column="program_name"/>
+        <result property="url" column="url"/>
+        <result property="glyph" column="glyph"/>
+        <result property="showOrder" column="show_order"/>
+        <result property="parameters" column="parameters"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+
+    <resultMap id="ProgramPrivilege" type="com.zhxh.admin.entity.ProgramPrivilege"  extends="com.zhxh.core.data.EntityObject">
+        <result property="programId" column="program_id"/>
+        <result property="privilegeCode" column="privilege_Code"/>
+        <result property="privilegeName" column="privilege_name"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buiness Error 错误处理</title>
+</head>
+<body>
+<!--/*@thymesVar id="errorMessage" type="com.zhxh.core.exception.BusinessErrorHandler"*/-->
+<div th:text="${errorMessage}"></div>
+<div name="label_error_stacktrace" style="display: none;" th:text="${stackTrace}"></div>
+</body>
+</html>
