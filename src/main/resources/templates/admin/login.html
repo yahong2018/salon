@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <meta charset="utf-8"/>
-    <title th:text="${T(com.zhxh.core.env.SysEnv).systemTitle}">智汇星红智能制造平台</title>
+    <title th:text="${T(com.zhxh.core.env.SysEnv).systemTitle}">合一美容院信息管理平台</title>
 
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
     <script type="text/javascript">
@@ -25,7 +25,7 @@
 <body>
 <div id="container">
     <div class="row">
-        <h2 class="title" th:text="${T(com.zhxh.core.env.SysEnv).systemTitle+'——系统登录'}">智汇星红智能制造平台——系统登录</h2>
+        <h2 class="title" th:text="${T(com.zhxh.core.env.SysEnv).systemTitle+'——系统登录'}">合一美容院信息管理平台——系统登录</h2>
     </div>
     <form id="loginForm" th:action="@{/login/doLogin}" method="post" onsubmit="return onLogin();">
         <div style="font-size:16px;">
