@@ -86,12 +86,12 @@ create table store_room
   record_id        bigint        auto_increment    not null,
   store_id         bigint                          not null,    -- 所属门店
   room_name        varchar(50)                     not null,    -- 房间名门
-  room_status      tinyint                         not null,    -- 房间状态：0. 启用    1.停用
+  record_status    tinyint                         not null,    -- 房间状态：0. 启用    1.停用
 
   primary key (record_id),
   index idx_store_room_01(store_id),
   index idx_store_room_02(room_name),
-  index idx_store_room_03(room_status)
+  index idx_store_room_03(record_status)
 )comment '门店房间';
 
 
@@ -100,12 +100,14 @@ create table service_series
   record_id              bigint          auto_increment    not null,
   series_name            varchar(50)                       not null,   -- 系列/类别名称
   parent_id              bigint                            not null,   -- 项目类别：如果本身是一级类别，则parent_id=0
-  service_type_status    tinyint                           not null,   -- 状态： 0. 启用   1. 停用
+  record_status          tinyint                           not null,   -- 状态： 0. 启用   1. 停用
 
   primary key (record_id),
-  index idx_service_class_01(series_name),
-  index idx_service_class_02(parent_id)
+  index idx_service_series_01(series_name),
+  index idx_service_series_02(parent_id),
+  index idx_service_series_03(record_status)
 )comment '项目类别/系列';
+
 
 create table service
 (
@@ -113,7 +115,7 @@ create table service
   service_name          varchar(50)                     not null,    -- 项目名称
   service_series_id     bigint                          not null,    -- 项目类别/系列
   card_type             tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡
-  service_status        tinyint                         not null,    -- 项目状态：0 启用   1 停用
+  record_status        tinyint                         not null,    -- 项目状态：0 启用   1 停用
   expired_time          double(3,1)                     null,        -- 有效期：时效卡专用。自购买之日起，N时间内有效。
 
   price_market          double(8,2)                     not null,    -- 市场价格：时效卡专用
@@ -134,8 +136,9 @@ create table service
   index idx_service_card_01(service_series_id),
   index idx_service_card_02(card_type),
   index idx_service_card_03(service_name),
-  index idx_service_card_04(service_status)
+  index idx_service_card_04(record_status)
 )comment '次卡/服务项目';
+
 
 create table service_suite
 (
@@ -146,13 +149,13 @@ create table service_suite
 
   time_create      datetime                          not null,     -- 建档时间
   time_expired     datetime                          null,         -- 失效日期：如果为null，则表示无期限
-  suite_status     tinyint                           not null,     -- 套卡状态：0 正常   1.停用     2.失效（即已过了有效期）
+  record_status    tinyint                           not null,     -- 套卡状态：0 正常   1.停用     2.失效（即已过了有效期）
 
   description      varchar(500)                      null,
 
   primary key (record_id),
   index idx_service_suite_01(suite_name),
-  index idx_service_suite_02(suite_status)
+  index idx_service_suite_02(record_status)
 )comment '套卡/服务套餐';
 
 
@@ -223,7 +226,7 @@ create table product
   part_of_applicable_id   bigint                                not null,   -- 适用部位
   efficiency_tag_id       bigint                                not null,   -- 功效
 
-  bar_code                varchar(2048)                         null,       -- 二维码/条形码
+  bar_code                varchar(100)                          null,       -- 二维码/条形码
   shelf_life              tinyint                               not null,   -- 保质期(月)
   day_of_pre_warning      int                                   not null,   -- 产品有效期预警（天）
   stock_of_pre_warning    int                                   not null,   -- 库存预警数量
@@ -284,7 +287,7 @@ create table pictures
   primary key (record_id),
   index idx_pictures_01(master_data_id),
   index idx_pictures_02(record_type),
-  index idx_pictures_02(pic_type)
+  index idx_pictures_03(pic_type)
 ) comment '系统照片';
 
 
