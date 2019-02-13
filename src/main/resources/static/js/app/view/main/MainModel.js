@@ -12,7 +12,7 @@ Ext.define('app.view.main.MainModel', {
 
 		// 系统信息
 		system: {
-			name: '智汇星红管理信息开发平台',
+			name: '合一美容院信息管理平台',
 			version: '01.2015.01.06',
 			iconUrl: '',
 			warnMessage:'暂无警告消息',
@@ -24,19 +24,19 @@ Ext.define('app.view.main.MainModel', {
 
 		// 用户单位信息和用户信息
 		user: {			
-			company: '合一网络科技有限公司',
+			company: '合一网络信息科技有限公司',
 			department: '研发部',
 			name: '朱穗波'
 		},
 
 		// 服务单位和服务人员信息
 		service: {
-			company: '深圳市智汇星红科技信息有限公司',
+			company: '合一网络信息科技有限公司',
 			name: '刘永红',
 			phonenumber: '180-2620-8100',
 			qq: '491337961',
 			email: 'SoftwareChina@qq.com',
-			copyright: '智汇星红'
+			copyright: '合一科技'
 		},
 
 		menuType: {
