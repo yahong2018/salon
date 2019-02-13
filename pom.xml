@@ -11,6 +11,7 @@
     <name>salon</name>
     <description>合一美容院管理信息平台</description>
 
+    <!-- 继承父包 -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -42,11 +43,13 @@
             <version>1.2.49</version>
         </dependency>
 
+        <!-- spring-boot的web启动的jar包 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--thymeleaf模板jar，是很不错的html数据传递取值，类似jsp的jstl-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
