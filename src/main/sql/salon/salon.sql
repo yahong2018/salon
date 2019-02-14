@@ -1,8 +1,8 @@
 create table job
 (
   record_id         bigint      auto_increment      not null,
-  job_name         varchar(50)                     not null,    --  职务名称
-  job_level        tinyint                         not null,    --  职位等级
+  job_name         varchar(50)                      not null,    --  职务名称
+  job_level        tinyint                          not null,    --  职位等级
 
   primary key (record_id),
   index idx_job_01(job_name)
@@ -31,7 +31,7 @@ create table salon(
   address            varchar(255)                  not null,               -- 地址
   door_2_door        bit                           not null default 0,     -- 是否上门服务:美容院专用
   bed_num            int                           not null default 0,     -- 床位数：门店专用
-  area               double(8,2)                    not null default 0.00,  -- 面积：门店专用
+  area               double(8,2)                   not null default 0.00,  -- 面积：门店专用
   time_open          time                          null,                   -- 营业开始时间：门店专用
   time_close         time                          null,                   -- 营业结束时间：门店专用
   description        varchar(500)                  null,                   -- 简介
@@ -73,7 +73,7 @@ create table stuff_job
 (
   record_id         bigint      auto_increment      not null,
   stuff_id          bigint                          not null,   -- 员工编号
-  job_id           bigint                          not null,    -- 职位编号
+  job_id           bigint                           not null,    -- 职位编号
 
   primary key (record_id),
   index idx_stuff_job_01(stuff_id),
@@ -115,7 +115,7 @@ create table service
   service_name          varchar(50)                     not null,    -- 项目名称
   service_series_id     bigint                          not null,    -- 项目类别/系列
   card_type             tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡
-  record_status        tinyint                         not null,    -- 项目状态：0 启用   1 停用
+  record_status         tinyint                         not null,    -- 项目状态：0 启用   1 停用
   expired_time          double(3,1)                     null,        -- 有效期：时效卡专用。自购买之日起，N时间内有效。
 
   price_market          double(8,2)                     not null,    -- 市场价格：时效卡专用
@@ -326,6 +326,7 @@ create table member
 
   balance                double(10,2)               not null,   -- 账户总余额
   integral               double(10,2)               not null,   -- 账户积分
+  debt                   double(10,2)               not null,   -- 账户欠款
   amount_consumer        double(10,2)               not null,   -- 总消费
   amount_charge          double(10,2)               not null,   -- 总充值
   count_discount_ticket  tinyint                    not null,   -- 优惠券张数
@@ -360,6 +361,58 @@ create table member_tag
   index idx_member_tag_02(tag_id)
 )comment '会员标签';
 
+create table clockingin
+(
+  record_id           bigint     auto_increment   not null,
+  stuff_id            bigint                      not null,  -- 员工信息
+  onduty              tinyint                     not null,  -- 是否上午上班
+  offduty             tinyint                     not null,  -- 是否下午上班
+  iscan               tinyint                     not null,  -- 是否可以预约
+  createtime          datetime                    not null,  -- 记录创建日期
+  reamrk              varchar(50)                 null,      -- 备注
+  attendance          tinyint                     not null,  -- 出勤天数
 
+  primary key (record_id),
+  index idx_clockingin_01(stuff_id)
+)comment '考勤表'
 
+create table schedule
+(
+  record_id         bigint      auto_incremenet   not null,
+  stuff_id          bigint                        not null,  -- 员工信息
+  scheduletimes_id  bigint                        not null,  -- 时间段，多个时间段之间用逗号隔开
 
+  primary key (record_id),
+  index idx_schedule_01(stuff_id),
+  index idx_schedule_02(scheduletimes_id)
+)comment '排班信息表'
+
+create table scheduletimes
+(
+  record_id         bigint      auto_increment    not null,
+  starttime         datetime                      not null,
+  endtime           datetime                      not null,
+
+  primary key (record_id),
+  index idx_scheduletimes_01(starttime),
+  index idx_scheduletimes_02(endtime)
+)comment '排班时间段'
+
+create table appointment
+(
+  record_id               bigint      auto_increment    not null,
+  member_id               bigint                        not null,   -- 预约会员信息
+  service_series_id       bigint                        not null,   -- 预约的服务项目
+  stuff_id                bigint                        not null,   -- 预约的时间开始预约的美容师
+  datestart               datetime                      not null,   -- 预约的时间开始
+  dateend                 datetime                      not null,   -- 预约的时间结束
+  store_room_id           bigint                        not null,   -- 预约的房间
+  duration                double(10,2)                  not null,   -- 预约项目的时长，根据预约的项目来自动算
+  createtime              datetime                      not null,   -- 记录的创建时间
+  reamrk                  varchar(1000)                 null,       -- 预约的留言/备注
+
+  primary key (record_id),
+  index idx_appointment_01(member_id),
+  index idx_datestart_02(datestart),
+  index idx_dateend_03(dateend)
+)comment '预约信息表'
