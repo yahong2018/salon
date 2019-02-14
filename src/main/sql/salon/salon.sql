@@ -94,7 +94,6 @@ create table store_room
   index idx_store_room_03(record_status)
 )comment '门店房间';
 
-
 create table service_series
 (
   record_id              bigint          auto_increment    not null,
@@ -107,7 +106,6 @@ create table service_series
   index idx_service_series_02(parent_id),
   index idx_service_series_03(record_status)
 )comment '项目类别/系列';
-
 
 create table service
 (
@@ -244,7 +242,6 @@ create table product
   index idx_product_07(stock_of_pre_warning)
 ) comment '产品';
 
-
 create table product_unit
 (
   record_id              bigint        auto_increment          not null,
@@ -374,7 +371,7 @@ create table clockingin
 
   primary key (record_id),
   index idx_clockingin_01(stuff_id)
-)comment '考勤表'
+)comment '考勤表';
 
 create table schedule
 (
@@ -385,7 +382,7 @@ create table schedule
   primary key (record_id),
   index idx_schedule_01(stuff_id),
   index idx_schedule_02(scheduletimes_id)
-)comment '排班信息表'
+)comment '排班信息表';
 
 create table scheduletimes
 (
@@ -396,7 +393,7 @@ create table scheduletimes
   primary key (record_id),
   index idx_scheduletimes_01(starttime),
   index idx_scheduletimes_02(endtime)
-)comment '排班时间段'
+)comment '排班时间段';
 
 create table appointment
 (
@@ -413,6 +410,65 @@ create table appointment
 
   primary key (record_id),
   index idx_appointment_01(member_id),
-  index idx_datestart_02(datestart),
-  index idx_dateend_03(dateend)
-)comment '预约信息表'
+  index idx_appointment_02(datestart),
+  index idx_appointment_03(dateend)
+)comment '预约信息表';
+
+create table store_warehouse
+(
+  record_id        bigint        auto_increment    not null,
+  store_id         bigint                          not null,    -- 所属门店
+  warehouse_name   varchar(50)                     not null,    -- 门店仓库的名称
+  record_status    tinyint                         not null,    -- 房间状态：0. 启用    1.停用
+
+  primary key (record_id),
+  index idx_store_warehouse_01(store_id),
+  index idx_store_warehouse_02(warehouse_name),
+  index idx_store_warehouse_03(record_status)
+)comment '门店仓库';
+
+create table outbound_type
+(
+  record_id           bigint      auto_increment     not null,
+  type_name           varchar(50)                    not null,  -- 类型名称
+
+  primary key (record_id),
+  index idx_outbound_type_01(type_name)
+)comment '出库类型表';
+
+create table product_stock
+(
+  record_id             bigint        auto_increment     not null,
+  product_id            bigint                           not null,  -- 产品信息
+  stocknum              int                              not null,  -- 在库总数
+  conversion_cost       double(10,2)                     not null,  -- 占用成本
+  store_warehouse_id    bigint                           not null,  -- 所在仓库
+
+  primary key (record_id),
+  index idx_product_stock_01(product_id),
+  index idx_product_stock_02(stocknum),
+  index idx_product_stock_03(conversion_cost),
+  index idx_product_stock_04(store_warehouse_id)
+)comment '产品库存表';
+
+create table product_stock_movement
+(
+  record_id                 bigint         auto_increment   not null,
+  movement_type             tinyint                         not null,  -- 动作类型 0 入库 1 出库 2 调拨 3 退货入库
+  serial_number             bigint                          not null,  -- 流水号
+  product_id                bigint                          not null,  -- 产品信息
+  opt_num                   int                             not null,  -- 操作数量：入库数量/出库数量/调拨数量
+  date_of_manufacture       varchar(50)                     not null,  -- 生产日期
+  purchase_cost             double(10,2)                    not null,  -- 进货单价：入库的时候需要填
+  outbound_type_id          bigint                          not null,  -- 出库类型：出库的时候需要填
+  receive_person_id         bigint                          not null,  -- 出库领取人：出库的时候需要填
+  store_warehouse_id        bigint                          not null,  -- 出货仓：调拨的时候需要选
+  createtime                datetime                        not null,  -- 记录创建时间
+  remark                    varchar(1000)                   null,
+
+  primary key (record_id),
+  index idx_product_stock_movement_01(movement_type),
+  index idx_product_stock_movement_02(serial_number),
+  index idx_product_stock_movement_03(date_of_manufacture),
+  index idx_product_stock_movement_04(createtime)
+)comment '产品库存异动表';
