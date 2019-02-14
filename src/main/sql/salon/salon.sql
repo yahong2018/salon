@@ -325,6 +325,7 @@ create table member
   customer_pipe_id    bigint                       null,       -- 来源渠道
 
   balance                double(10,2)               not null,   -- 账户总余额
+  integral               double(10,2)               not null,   -- 账户积分
   amount_consumer        double(10,2)               not null,   -- 总消费
   amount_charge          double(10,2)               not null,   -- 总充值
   count_discount_ticket  tinyint                    not null,   -- 优惠券张数
