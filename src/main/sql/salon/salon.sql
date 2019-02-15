@@ -358,7 +358,7 @@ create table member_tag
   index idx_member_tag_02(tag_id)
 )comment '会员标签';
 
-create table clockingin
+create table clocking_in
 (
   record_id           bigint     auto_increment   not null,
   stuff_id            bigint                      not null,  -- 员工信息
@@ -370,7 +370,7 @@ create table clockingin
   attendance          tinyint                     not null,  -- 出勤天数
 
   primary key (record_id),
-  index idx_clockingin_01(stuff_id)
+  index idx_clocking_in_01(stuff_id)
 )comment '考勤表';
 
 create table schedule
@@ -384,29 +384,31 @@ create table schedule
   index idx_schedule_02(scheduletimes_id)
 )comment '排班信息表';
 
-create table scheduletimes
+create table schedule_times
 (
   record_id         bigint      auto_increment    not null,
   starttime         datetime                      not null,
   endtime           datetime                      not null,
 
   primary key (record_id),
-  index idx_scheduletimes_01(starttime),
-  index idx_scheduletimes_02(endtime)
+  index idx_schedule_times_01(starttime),
+  index idx_schedule_times_02(endtime)
 )comment '排班时间段';
 
 create table appointment
 (
-  record_id               bigint      auto_increment    not null,
-  member_id               bigint                        not null,   -- 预约会员信息
-  service_series_id       bigint                        not null,   -- 预约的服务项目
-  stuff_id                bigint                        not null,   -- 预约的时间开始预约的美容师
-  datestart               datetime                      not null,   -- 预约的时间开始
-  dateend                 datetime                      not null,   -- 预约的时间结束
-  store_room_id           bigint                        not null,   -- 预约的房间
-  duration                double(10,2)                  not null,   -- 预约项目的时长，根据预约的项目来自动算
-  createtime              datetime                      not null,   -- 记录的创建时间
-  reamrk                  varchar(1000)                 null,       -- 预约的留言/备注
+  record_id                     bigint      auto_increment    not null,
+  member_id                     bigint                        not null,   -- 预约会员信息
+  service_series_id             bigint                        not null,   -- 预约的服务项目
+  stuff_id                      bigint                        not null,   -- 预约的时间开始预约的美容师
+  datestart                     datetime                      not null,   -- 预约的时间开始
+  dateend                       datetime                      not null,   -- 预约的时间结束
+  store_room_id                 bigint                        not null,   -- 预约的房间
+  duration                      double(10,2)                  not null,   -- 预约项目的时长，根据预约的项目来自动算
+  is_finish                     tinyint                       not null,   -- 预约的服务是否已经完成 0 否 1 是
+  records_of_consumption_id     bigint                        not null,   -- 预约的服务已经做完，产生明细信息
+  createtime                    datetime                      not null,   -- 记录的创建时间
+  reamrk                        varchar(1000)                 null,       -- 预约的留言/备注
 
   primary key (record_id),
   index idx_appointment_01(member_id),
@@ -453,18 +455,19 @@ create table product_stock
 
 create table product_stock_movement
 (
-  record_id                 bigint         auto_increment   not null,
-  movement_type             tinyint                         not null,  -- 动作类型 0 入库 1 出库 2 调拨 3 退货入库
-  serial_number             bigint                          not null,  -- 流水号
-  product_id                bigint                          not null,  -- 产品信息
-  opt_num                   int                             not null,  -- 操作数量：入库数量/出库数量/调拨数量
-  date_of_manufacture       varchar(50)                     not null,  -- 生产日期
-  purchase_cost             double(10,2)                    not null,  -- 进货单价：入库的时候需要填
-  outbound_type_id          bigint                          not null,  -- 出库类型：出库的时候需要填
-  receive_person_id         bigint                          not null,  -- 出库领取人：出库的时候需要填
-  store_warehouse_id        bigint                          not null,  -- 出货仓：调拨的时候需要选
-  createtime                datetime                        not null,  -- 记录创建时间
-  remark                    varchar(1000)                   null,
+  record_id                        bigint         auto_increment   not null,
+  movement_type                    tinyint                         not null,  -- 动作类型 0 入库 1 出库 2 调拨 3 退货入库 4 销售出库
+  serial_number                    bigint                          not null,  -- 流水号
+  product_id                       bigint                          not null,  -- 产品信息
+  opt_num                          int                             not null,  -- 操作数量：入库数量/出库数量/调拨数量
+  date_of_manufacture              varchar(50)                     not null,  -- 生产日期
+  purchase_cost                    double(10,2)                    not null,  -- 进货单价：入库的时候需要填
+  outbound_type_id                 bigint                          not null,  -- 出库类型：出库的时候需要填
+  receive_person_id                bigint                          not null,  -- 出库领取人：出库的时候需要填
+  store_warehouse_id               bigint                          not null,  -- 出货仓：调拨的时候需要选
+  records_of_consumption_id        bigint                          not null,  -- 动作类型4：产生销售出库记录
+  createtime                       datetime                        not null,  -- 记录创建时间
+  remark                           varchar(1000)                   null,
 
   primary key (record_id),
   index idx_product_stock_movement_01(movement_type),
@@ -472,3 +475,53 @@ create table product_stock_movement
   index idx_product_stock_movement_03(date_of_manufacture),
   index idx_product_stock_movement_04(createtime)
 )comment '产品库存异动表';
+
+create table purchase_card_info
+(
+  record_id                         bigint        auto_increment      not null,
+  member_id                         bigint                            not null,  -- 开卡的会员
+  vip_suite_id                      bigint                            not null,  -- 充值卡的种类
+  purchase_card_info_detail_id      bigint                            not null,  -- 明细表的id
+  records_of_consumption_id         bigint                            not null,  -- 消费记录明细
+
+  primary key (record_id),
+  index idx_purchase_card_info_01(member_id)
+)comment '会员开卡记录';
+
+create table purchase_card_info_detail
+(
+  record_id                bigint        auto_increment       not null,
+  service_id               bigint                             not null,  -- 次卡/服务项目
+
+  primary key(record_id),
+  index idx_purchase_card_info_detail_01(service_id)
+)comment '会员卡开卡记录明细表';
+
+create table records_of_consumption
+(
+  record_id                   bigint           auto_increment          not null,
+  consumption_type            bigint                                   not null,  -- 消费类型 0 开卡 1 充值 2 做服务 3 购买本店商品
+  purchase_card_info_id       bigint                                   not null,  -- 消费类型0： 绑定开卡记录
+  vip_suite_id                bigint                                   not null,  -- 消费类型1： 充值的时候，绑定充值卡
+  vip_suite_num               int                                      not null,  -- 消费类型1： 购买充值卡的数量
+  payment_amount              double(10,2)                             not null,  -- 消费类型0/1/2/3: 应付款金额
+  terms_of_payment            tinyint                                  not null,  -- 消费类型0/1/2/3: 付款方式 0 现金 1 支付宝 2 微信 3 信用卡 4 划卡
+  service_id                  bigint                                   not null,  -- 消费类型2：使用的次卡
+  service_num                 tinyint                                  not null,  -- 消费类型2：使用次卡服务的次数，默认1
+  is_vip_suite                tinyint                                  not null,  -- 消费类型2/3：是否使用会员卡 0 否 1 是
+  discount_price_before       double(10,2)                             not null,  -- 消费类型2/3：折前价
+  present_cash_coupon         double(10,2)                             not null,  -- 消费类型2/3：赠送的现金券
+  present_integral            double(10,2)                             not null,  -- 消费类型2/3：赠送的积分
+  signature                   blob                                     not null,  -- 消费类型2/3：顾客签字
+  opt_time                    bigint                                   not null,  -- 操作时间
+  salon_id                    bigint                                   not null,  -- 操作的门店
+  stuff_id                    bigint                                   not null,  -- 操作的员工
+  opt_type                    tinyint                                  not null,  -- 操作类型 0 店内消费
+
+  primary key(record_id),
+  index idx_records_of_consumption_01(consumption_type),
+  index idx_records_of_consumption_02(opt_time),
+  index idx_records_of_consumption_03(salon_id),
+  index idx_records_of_consumption_04(stuff_id),
+  index idx_records_of_consumption_05(opt_type)
+)comment '消费记录表';
