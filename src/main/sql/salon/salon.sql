@@ -362,11 +362,15 @@ create table clocking_in
 (
   record_id           bigint     auto_increment   not null,
   stuff_id            bigint                      not null,  -- 员工信息
-  onduty              tinyint                     not null,  -- 是否上午上班
-  offduty             tinyint                     not null,  -- 是否下午上班
-  iscan               tinyint                     not null,  -- 是否可以预约
-  createtime          datetime                    not null,  -- 记录创建日期
-  reamrk              varchar(50)                 null,      -- 备注
+  on_duty              tinyint                     not null,  -- 是否上午上班
+  off_duty             tinyint                     not null,  -- 是否下午上班
+  is_can               tinyint                     not null,  -- 是否可以预约
+  create_date         datetime                    not null,  -- 记录创建日期
+  create_by           datetime                    not null,
+  update_date         datetime                    not null,
+  update_by           datetime                    not null,
+  opt_lock            datetime                    not null,
+  remark              varchar(50)                 null,      -- 备注
   attendance          tinyint                     not null,  -- 出勤天数
 
   primary key (record_id),
@@ -375,7 +379,7 @@ create table clocking_in
 
 create table schedule
 (
-  record_id         bigint      auto_incremenet   not null,
+  record_id         bigint      auto_increment    not null,
   stuff_id          bigint                        not null,  -- 员工信息
   scheduletimes_id  bigint                        not null,  -- 时间段，多个时间段之间用逗号隔开
 
@@ -407,8 +411,12 @@ create table appointment
   duration                      double(10,2)                  not null,   -- 预约项目的时长，根据预约的项目来自动算
   is_finish                     tinyint                       not null,   -- 预约的服务是否已经完成 0 否 1 是
   records_of_consumption_id     bigint                        not null,   -- 预约的服务已经做完，产生明细信息
-  createtime                    datetime                      not null,   -- 记录的创建时间
-  reamrk                        varchar(1000)                 null,       -- 预约的留言/备注
+  create_date         datetime                    not null,  -- 记录创建日期
+  create_by           datetime                    not null,
+  update_date         datetime                    not null,
+  update_by           datetime                    not null,
+  opt_lock            datetime                    not null,
+  remark                        varchar(1000)                 null,       -- 预约的留言/备注
 
   primary key (record_id),
   index idx_appointment_01(member_id),
@@ -466,14 +474,18 @@ create table product_stock_movement
   receive_person_id                bigint                          not null,  -- 出库领取人：出库的时候需要填
   store_warehouse_id               bigint                          not null,  -- 出货仓：调拨的时候需要选
   records_of_consumption_id        bigint                          not null,  -- 动作类型4：产生销售出库记录
-  createtime                       datetime                        not null,  -- 记录创建时间
+  create_date         datetime                    not null,  -- 记录创建日期
+  create_by           datetime                    not null,
+  update_date         datetime                    not null,
+  update_by           datetime                    not null,
+  opt_lock            datetime                    not null,
   remark                           varchar(1000)                   null,
 
   primary key (record_id),
   index idx_product_stock_movement_01(movement_type),
   index idx_product_stock_movement_02(serial_number),
   index idx_product_stock_movement_03(date_of_manufacture),
-  index idx_product_stock_movement_04(createtime)
+  index idx_product_stock_movement_04(create_date)
 )comment '产品库存异动表';
 
 create table purchase_card_info
