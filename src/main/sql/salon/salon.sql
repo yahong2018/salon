@@ -24,7 +24,7 @@ create  table city
 
 create table salon(
   record_id          bigint     auto_increment     not null,
-  salon_name         varchar(120)                  not null,               -- 美容院/门店名称
+  salon_name         varchar(120)                  not null,               -- 美容院/门店名称、
   parent_id          bigint                        not null,               -- 所属美容院:如果是美容院，则 parent_id = 0
   tel                varchar(50)                   not null,               -- 联系电话
   city_id            bigint                        not null,               -- 所属城市（省市区）
@@ -450,13 +450,13 @@ create table product_stock
 (
   record_id             bigint        auto_increment     not null,
   product_id            bigint                           not null,  -- 产品信息
-  stocknum              int                              not null,  -- 在库总数
+  stock_num              int                              not null,  -- 在库总数
   conversion_cost       double(10,2)                     not null,  -- 占用成本
   store_warehouse_id    bigint                           not null,  -- 所在仓库
 
   primary key (record_id),
   index idx_product_stock_01(product_id),
-  index idx_product_stock_02(stocknum),
+  index idx_product_stock_02(stock_num),
   index idx_product_stock_03(conversion_cost),
   index idx_product_stock_04(store_warehouse_id)
 )comment '产品库存表';
@@ -464,7 +464,7 @@ create table product_stock
 create table product_stock_movement
 (
   record_id                        bigint         auto_increment   not null,
-  movement_type                    tinyint                         not null,  -- 动作类型 0 入库 1 出库 2 调拨 3 退货入库 4 销售出库
+  movement_type                    tinyint                         not null,  -- 异动类型 0 入库 1 出库 2 调拨 3 退货入库 4 销售出库
   serial_number                    bigint                          not null,  -- 流水号
   product_id                       bigint                          not null,  -- 产品信息
   opt_num                          int                             not null,  -- 操作数量：入库数量/出库数量/调拨数量
