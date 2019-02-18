@@ -458,13 +458,13 @@ create table product_stock
 (
   record_id             bigint        auto_increment     not null,
   product_id            bigint                           not null,  -- 产品信息
-  stocknum              int                              not null,  -- 在库总数
+  stock_qty             int                              not null,  -- 在库总数
   conversion_cost       double(10,2)                     not null,  -- 占用成本
   store_warehouse_id    bigint                           not null,  -- 所在仓库
 
   primary key (record_id),
   index idx_product_stock_01(product_id),
-  index idx_product_stock_02(stocknum),
+  index idx_product_stock_02(stock_qty),
   index idx_product_stock_03(conversion_cost),
   index idx_product_stock_04(store_warehouse_id)
 )comment '产品库存表';
@@ -472,21 +472,21 @@ create table product_stock
 create table product_stock_movement
 (
   record_id                        bigint         auto_increment   not null,
-  movement_type                    tinyint                         not null,  -- 动作类型 0 入库 1 出库 2 调拨 3 退货入库 4 销售出库
+  movement_type                    tinyint                         not null,  -- 动作类型 2 调拨入库  3.调拨出库 4 退货入库 5 销售出库
   serial_number                    bigint                          not null,  -- 流水号
   product_id                       bigint                          not null,  -- 产品信息
-  opt_num                          int                             not null,  -- 操作数量：入库数量/出库数量/调拨数量
-  date_of_manufacture              varchar(50)                     not null,  -- 生产日期
-  purchase_cost                    double(10,2)                    not null,  -- 进货单价：入库的时候需要填
-  outbound_type_id                 bigint                          not null,  -- 出库类型：出库的时候需要填
-  receive_person_id                bigint                          not null,  -- 出库领取人：出库的时候需要填
-  store_warehouse_id               bigint                          not null,  -- 出货仓：调拨的时候需要选
-  records_of_consumption_id        bigint                          not null,  -- 动作类型4：产生销售出库记录
-  create_date         datetime                    not null,  -- 记录创建日期
-  create_by           datetime                    not null,
-  update_date         datetime                    not null,
-  update_by           datetime                    not null,
-  opt_lock            datetime                    not null,
+  movement_qty                     int                             not null,  -- 异动数量
+  date_of_manufacture              datetime                        not null,  -- 生产日期
+  purchase_cost                    double(10,2)                    null,      -- 进货单价：入库的时候需要填
+  operator_id                      bigint                          not null,  -- 经办人
+  store_warehouse_id               bigint                          not null,  -- 发生仓库
+  reference_record_no              varchar(50)                     null,      -- 引用单号:采购单/送货单/销售单
+
+  create_date                      datetime                    not null,  -- 记录创建日期
+  create_by                        datetime                    not null,
+  update_date                      datetime                    not null,
+  update_by                        datetime                    not null,
+  opt_lock                         datetime                    not null,
   remark                           varchar(1000)                   null,
 
   primary key (record_id),
