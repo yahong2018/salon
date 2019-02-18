@@ -362,9 +362,9 @@ create table clocking_in
 (
   record_id           bigint     auto_increment   not null,
   stuff_id            bigint                      not null,  -- 员工信息
-  on_duty              tinyint                     not null,  -- 是否上午上班
-  off_duty             tinyint                     not null,  -- 是否下午上班
-  is_can               tinyint                     not null,  -- 是否可以预约
+  on_duty             tinyint                     not null,  -- 是否上午上班
+  off_duty            tinyint                     not null,  -- 是否下午上班
+  is_can              tinyint                     not null,  -- 是否可以预约
   create_date         datetime                    not null,  -- 记录创建日期
   create_by           datetime                    not null,
   update_date         datetime                    not null,
