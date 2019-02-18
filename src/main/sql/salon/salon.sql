@@ -10,10 +10,11 @@ create table job
 
 create  table city
 (
-  record_id         bigint    auto_increment     not null,
-  city_code         varchar(12)                  not null,     -- 编码 (省/市)
-  city_name         varchar(50)                  not null,     -- 名称
-  parent_id         bigint                       not null,     -- 所属上级(上级省份或者上级城市)
+  record_id         bigint    auto_increment     not null,     --  9
+  city_code         varchar(12)                  not null,     -- 编码 (省/市)  500235
+  city_name         varchar(50)                  not null,     -- 名称    东城区
+  parent_id         bigint                       not null,     -- 所属上级(上级省份或者上级城市)  9
+  name_path         varchar(500)                 not null,     -- 路径:广东省东莞市东城区
 
   primary key (record_id),
   index idx_city_01(city_code),
@@ -25,7 +26,7 @@ create  table city
 create table salon(
   record_id          bigint     auto_increment     not null,
   salon_name         varchar(120)                  not null,               -- 美容院/门店名称
-  parent_id          bigint                        not null,               -- 所属美容院:如果是美容院，则 parent_id = 0
+  parent_id          bigint                        not null,               -- 所属美容院:如果是美容院，则 parent_id = -1
   tel                varchar(50)                   not null,               -- 联系电话
   city_id            bigint                        not null,               -- 所属城市（省市区）
   address            varchar(255)                  not null,               -- 地址
@@ -72,8 +73,8 @@ create table stuff
 create table stuff_job
 (
   record_id         bigint      auto_increment      not null,
-  stuff_id          bigint                          not null,   -- 员工编号
-  job_id           bigint                           not null,    -- 职位编号
+  stuff_id          bigint                          not null,    -- 员工编号
+  job_id            bigint                          not null,    -- 职位编号
 
   primary key (record_id),
   index idx_stuff_job_01(stuff_id),
@@ -166,7 +167,7 @@ create table service_suite_item
   -- price_single  double(8,2)                    not null,   -- 单次价格：直接引用service里面的价格
 
   primary key (record_id),
-  index idx_service_card_suite_item_01(service_id)
+  index idx_service_suite_item_01(service_id)
 ) comment '套卡明细';
 
 
@@ -221,8 +222,8 @@ create table product
   specification           int                                   null,       -- 规格:就是数量，比如3kg/瓶
   specification_unit      tinyint                               null,       -- 规格单位：0. g(克)   1.Kg(千克)  2.ml(毫升)  3.L(升)
   product_unit_id         bigint                                not null,   -- 单位：瓶/袋/包等
-  part_of_applicable_id   bigint                                not null,   -- 适用部位
-  efficiency_tag_id       bigint                                not null,   -- 功效
+--  part_of_applicable_id   bigint                                not null,   -- 适用部位
+--  efficiency_tag_id       bigint                                not null,   -- 功效
 
   bar_code                varchar(100)                          null,       -- 二维码/条形码
   shelf_life              tinyint                               not null,   -- 保质期(月)
@@ -291,7 +292,7 @@ create table pictures
 create table member
 (
   record_id           bigint      auto_increment   not null ,
-  store_id            bigint                       not null,   -- 所属美容院/门店(档案来源)
+  initial_store_id    bigint                       not null,   -- 开卡美容院/门店(档案来源)
   member_name         varchar(50)                  not null,   -- 姓名
   tel                 varchar(50)                  not null,   -- 电话
   gender              tinyint                      not null,   -- 性别
@@ -329,7 +330,7 @@ create table member
   count_discount_ticket  tinyint                    not null,   -- 优惠券张数
 
   primary key (record_id),
-  index idx_member_01(store_id),
+  index idx_member_01(initial_store_id),
   index idx_member_02(member_name),
   index idx_member_03(birthday),
   index idx_member_04(tel),
@@ -337,11 +338,18 @@ create table member
   index idx_member_06(introducer)
 ) comment '会员';
 
+
 create  table member_grade
 (
   record_id           bigint      auto_increment   not null,
   grade_name          varchar(10)                  not null,
   grade_level         tinyint                      not null,
+  salon_id            bigint                       not null,  --  所属美容院
+
+  create_time         datetime                     not null,
+  --
+  --
+  --
 
   primary key (record_id),
   index idx_member_grade_01(grade_name)
@@ -381,7 +389,7 @@ create table schedule
 (
   record_id         bigint      auto_increment    not null,
   stuff_id          bigint                        not null,  -- 员工信息
-  scheduletimes_id  bigint                        not null,  -- 时间段，多个时间段之间用逗号隔开
+  schedule_times_id  bigint                        not null,  -- 时间段，多个时间段之间用逗号隔开
 
   primary key (record_id),
   index idx_schedule_01(stuff_id),
@@ -391,8 +399,8 @@ create table schedule
 create table schedule_times
 (
   record_id         bigint      auto_increment    not null,
-  starttime         datetime                      not null,
-  endtime           datetime                      not null,
+  start_time         datetime                      not null,
+  end_time           datetime                      not null,
 
   primary key (record_id),
   index idx_schedule_times_01(starttime),
@@ -405,8 +413,8 @@ create table appointment
   member_id                     bigint                        not null,   -- 预约会员信息
   service_series_id             bigint                        not null,   -- 预约的服务项目
   stuff_id                      bigint                        not null,   -- 预约的时间开始预约的美容师
-  datestart                     datetime                      not null,   -- 预约的时间开始
-  dateend                       datetime                      not null,   -- 预约的时间结束
+  date_start                     datetime                      not null,   -- 预约的时间开始
+  date_end                       datetime                      not null,   -- 预约的时间结束
   store_room_id                 bigint                        not null,   -- 预约的房间
   duration                      double(10,2)                  not null,   -- 预约项目的时长，根据预约的项目来自动算
   is_finish                     tinyint                       not null,   -- 预约的服务是否已经完成 0 否 1 是
@@ -537,3 +545,15 @@ create table records_of_consumption
   index idx_records_of_consumption_04(stuff_id),
   index idx_records_of_consumption_05(opt_type)
 )comment '消费记录表';
+
+
+/*
+   五类结算：
+       1.会员与店员(门店/美容院)结算
+       2.店员与门店结算
+       3.门店与美容院(商户)结算
+       4.美容院(商户)与美容院(商户)结算
+       5.美容院(商户)与HY结算
+
+    会员与HY不直接结算.
+ */
