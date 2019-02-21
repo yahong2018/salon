@@ -16,11 +16,11 @@ create table job
 
 create  table city
 (
-  record_id                        bigint    auto_increment     not null,     --  9
-  city_code                        varchar(12)                  not null,     -- 编码 (省/市)  500235
-  city_name                        varchar(50)                  not null,     -- 名称    东城区
-  parent_id                        bigint                       not null,     -- 所属上级(上级省份或者上级城市)  9
-  name_path                        varchar(500)                 not null,     -- 路径:广东省东莞市东城区
+  record_id                        bigint    auto_increment        not null,     --  9
+  city_code                        varchar(12)                     not null,     -- 编码 (省/市)  500235
+  city_name                        varchar(50)                     not null,     -- 名称    东城区
+  parent_id                        bigint                          not null,     -- 所属上级(上级省份或者上级城市)  9
+  name_path                        varchar(500)                    not null,     -- 路径:广东省东莞市东城区
 
   create_date                      datetime                        not null,
   create_by                        datetime                        not null,
