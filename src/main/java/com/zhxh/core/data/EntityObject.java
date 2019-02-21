@@ -35,7 +35,7 @@ public abstract class EntityObject<K> implements Serializable {
         return getKeyParameterizedType(clazz.getSuperclass());
     }
 
-    public synchronized Class getKeyClass() {
+    synchronized Class getKeyClass() {
         int classHasCode = this.getClass().hashCode();
         if (!keyMap.containsKey(classHasCode)) {
             ParameterizedType t = this.getKeyParameterizedType(this.getClass());

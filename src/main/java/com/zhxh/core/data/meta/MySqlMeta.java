@@ -27,7 +27,9 @@ public class MySqlMeta extends EntitySqlMeta {
 
         StringBuffer buffer = new StringBuffer(this.getSqlSelect());
         map2StringBuffer(listMap, buffer);
-        buffer.append("\n limit #{start},#{limit} \n");
+        if(listMap.containsKey("start")) {
+            buffer.append("\n limit #{start},#{limit} \n");
+        }
 
         if (isCount) {
             buffer.insert(0, "select count(*) from (");

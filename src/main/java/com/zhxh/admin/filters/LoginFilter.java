@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
 			
 				String redirectUrl = "";
 				String url = httpServletRequest.getRequestURI();
-				if(!"/".equalsIgnoreCase(url)){
+				if(!"/".equalsIgnoreCase(url)&& !url.endsWith(".handler")){
 					chain.doFilter(request, response);
 					return;
 				}
