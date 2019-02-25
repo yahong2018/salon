@@ -5,10 +5,10 @@ create table job
   job_level                        tinyint                         not null,    --  职位等级
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_job_01(job_name)
@@ -16,17 +16,17 @@ create table job
 
 create  table city
 (
-  record_id                        bigint    auto_increment        not null,     --  9
+  record_id                        bigint    auto_increment        not null,
   city_code                        varchar(12)                     not null,     -- 编码 (省/市)  500235
   city_name                        varchar(50)                     not null,     -- 名称    东城区
   parent_id                        bigint                          not null,     -- 所属上级(上级省份或者上级城市)  9
   name_path                        varchar(500)                    not null,     -- 路径:广东省东莞市东城区
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -51,11 +51,10 @@ create table salon(
   description                      varchar(500)                    null,                   -- 简介
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
-
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_beauty_salon_01(salon_name),
@@ -80,10 +79,10 @@ create table stuff
   address                          varchar(120)                    null,      -- 联系地址
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -101,10 +100,10 @@ create table stuff_job
   job_id                           bigint                          not null,    -- 职位编号
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -121,10 +120,10 @@ create table store_room
   record_status                    tinyint                         not null,    -- 房间状态：0. 启用    1.停用
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -141,10 +140,10 @@ create table service_series
   record_status                    tinyint                           not null,   -- 状态： 0. 启用   1. 停用
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -172,10 +171,10 @@ create table service
   description                      varchar(500)                    null,        -- 简介
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -200,10 +199,10 @@ create table service_suite
   description                      varchar(500)                      null,
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -221,10 +220,10 @@ create table service_suite_item
   -- price_single  double(8,2)                    not null,   -- 单次价格：直接引用service里面的价格
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -244,10 +243,10 @@ create table vip_suite
   description                      varchar(500)                    not null,    -- 介绍
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -261,10 +260,10 @@ create table vip_suite_item
   item_id                          bigint                            not null,  -- 折扣项目：服务/产品
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_vip_suite_item_01(record_type),
@@ -279,10 +278,10 @@ create table product_series
   record_status                    tinyint                         not null,   -- 记录状态:0.启用  1.停用
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_product_series_01(series_name),
@@ -314,11 +313,11 @@ create table product
   record_status                    tinyint                          not null,   -- 记录状态：0.启用   1. 停用
   description                      varchar(500)                     null,
 
-  create_date                      datetime                         not null,
-  create_by                        datetime                         not null,
-  update_date                      datetime                         not null,
-  update_by                        datetime                         not null,
-  opt_lock                         datetime                         not null,
+  create_date                      datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -337,10 +336,10 @@ create table product_unit
   unit_name                        varchar(50)                     not null,
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -353,10 +352,10 @@ create table body_part
   part_name                        varchar(50)                     not null,  -- 部位名称
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_body_part_01(part_name)
@@ -368,10 +367,10 @@ create table product_body_part
   product_id                       bigint                          not null,
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -386,10 +385,10 @@ create table tag
   tag_name                         varchar(50)                     not null, -- 标签
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_tag_01(record_type),
@@ -402,10 +401,10 @@ create table product_tag
   tag_id                           bigint                          not null,
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -422,10 +421,10 @@ create table pictures
   pic_url                          varchar(255)                    not null,     -- 照片: 如果以http|https开头，则是外部绝对地址，否则为内部相对地址。
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_pictures_01(master_data_id),
@@ -473,10 +472,10 @@ create table member
   amount_charge                    double(10,2)                    not null,   -- 总充值
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_member_01(initial_store_id),
@@ -496,10 +495,10 @@ create  table member_grade
   salon_id                         bigint                          not null,  --  所属美容院
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -513,10 +512,10 @@ create table member_tag
   tag_id                           bigint                          not null,
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_member_tag_01(member_id),
@@ -533,10 +532,10 @@ create table shift
   time_end                         datetime                        not null,   -- 结束时间
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_schedule_times_02(store_id)
@@ -549,10 +548,10 @@ create table holiday
   day                              date                            not null,   -- 日期
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -568,10 +567,10 @@ create table schedule
   day                              date                            not null,  -- 日期
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -591,10 +590,10 @@ create table time_sheet
   time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -611,10 +610,10 @@ create table attendance_sheet
   address                          varchar(255)                    not null,   -- 签到地点
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -635,10 +634,10 @@ create table reservation
   record_status                    tinyint                         not null,   -- 记录状态：0.未开始  1.已确认    2.服务中    3.已完成
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_appointment_01(member_id),
@@ -654,10 +653,10 @@ create table reservation_item
   service_id                       bigint                          not null,   -- 预约服务
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_reservation_item_01(reservation_id),
@@ -675,10 +674,10 @@ create table nurse
   time_end                         datetime                        null,       -- 结束时间
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_nurse_01(member_id),
@@ -695,10 +694,10 @@ create table nurse_item
   service_id                       bigint                          not null,   -- 预约服务
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_nurse_item_01(nurse_id),
@@ -716,10 +715,10 @@ create table nurse_log
 
   -- pic                      照片存储在照片表里面
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   primary key (record_id),
   index idx_nurse_log_01(stuff_id),
@@ -752,11 +751,11 @@ create table product_stock
   stock_qty                        int                              not null,  -- 在库总数
   cost                             double(10,2)                     not null,  -- 占用成本
 
-  create_date                      datetime                         not null,
-  create_by                        datetime                         not null,
-  update_date                      datetime                         not null,
-  update_by                        datetime                         not null,
-  opt_lock                         datetime                         not null,
+  create_date                      datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
 
   primary key (record_id),
@@ -788,10 +787,10 @@ create table product_stock_movement
                                                                               --  调拨：必须要填写调拨申请单，而且要检查调拨申请单是否已经被批准
 
   create_date                      datetime                        not null,
-  create_by                        datetime                        not null,
-  update_date                      datetime                        not null,
-  update_by                        datetime                        not null,
-  opt_lock                         datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
 
   remark                           varchar(1000)                   null,      -- 备注
 
@@ -816,10 +815,11 @@ create table stock_transfer_application
   remark_application               varchar(500)                          null,      -- 申请原因
   remark_audit                     varchar(500)                          null,      -- 审批原因
   record_status                    tinyint                               not null,  -- 记录状态： 4.已完成   3.已批准   2.已驳回   1.已撤销  0.已提交(注意，一旦提交，就不可以修改，只能撤销以后重新提交)
+
   create_date                      datetime                              not null,  -- 创建/申请时间
-  create_by                        datetime                              not null,  -- 创建人/申请人：调拨必须是调入门店的店长
+  create_by                        bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
   update_date                      datetime                              not null,  -- 修改/审批时间
-  update_by                        datetime                              not null,  -- 审批人/修改人：调拨必须是调出门店的店长
+  update_by                        bigint                                not null,  -- 审批人/修改人：调拨必须是调出门店的店长
   opt_lock                         datetime                              not null,
 
   primary key (record_id),
