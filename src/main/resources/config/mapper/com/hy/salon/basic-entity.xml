@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.salon.basic.entity">
+    <resultMap id="Job"  type="com.hy.salon.basic.entity.Job" extends="com.zhxh.core.data.TraceableEntity" >
+        <result property="jobName" column="job_name"/>
+        <result property="jobLevel" column="job_level"/>
+    </resultMap>
+</mapper>
