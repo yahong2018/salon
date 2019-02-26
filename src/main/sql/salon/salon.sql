@@ -587,7 +587,8 @@ create table time_sheet
   time_start                        datetime                       null,      -- 上班时间
   time_end                          datetime                       null,      -- 下班时间
 
-  time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
+  time_sheet_type_start             tinyint                        not null,  -- 上班的 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
+  time_sheet_type_end               tinyint                        not null,  -- 下班的 出勤类型
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
@@ -599,7 +600,8 @@ create table time_sheet
   primary key (record_id),
   index idx_clocking_in_01(stuff_id),
   index idx_clocking_in_02(day),
-  index idx_clocking_in_03(time_sheet_type)
+  index idx_clocking_in_03(time_sheet_type_start),
+  index idx_clocking_in_04(time_sheet_type_end)
 )comment '考勤表';
 
 create table attendance_sheet
