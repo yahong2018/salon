@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @DataTableConfiguration("job")
-@Getter@Setter
+@Getter
+@Setter
 public class Job extends TraceableEntity<Long> {
     private String jobName;
     private int jobLevel;
