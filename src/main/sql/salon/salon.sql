@@ -77,6 +77,7 @@ create table stuff
   weixin                           varchar(50)                     null,      -- 微信
   qq                               varchar(50)                     null,      -- QQ
   address                          varchar(120)                    null,      -- 联系地址
+  system_role_id                   bigint                          not null,  -- 所属系统角色
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
