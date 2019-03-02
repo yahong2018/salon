@@ -30,7 +30,6 @@
 
 
     <resultMap id="Salon" type="com.hy.salon.basic.entity.Salon" extends="com.zhxh.core.data.TraceableEntity">
-        <id column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="salon_name" property="salonName" jdbcType="VARCHAR" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="tel" property="tel" jdbcType="VARCHAR" />
@@ -51,19 +50,13 @@
 
 
     <resultMap id="StoreRoom" type="com.hy.salon.basic.entity.StoreRoom" extends="com.zhxh.core.data.TraceableEntity">
-        <id column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="room_name" property="roomName" jdbcType="VARCHAR" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="create_by" property="createBy" jdbcType="BIGINT" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
-        <result column="opt_lock" property="optLock" jdbcType="INTEGER" />
+
     </resultMap>
 
     <resultMap id="AttendanceSheet" type="com.hy.salon.basic.entity.AttendanceSheet" extends="com.zhxh.core.data.TraceableEntity">
-        <id column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="attendance_time" property="attendanceTime" jdbcType="TIMESTAMP" />
         <result column="address" property="address" jdbcType="VARCHAR" />
@@ -73,6 +66,8 @@
         <result column="update_by" property="updateBy" jdbcType="BIGINT" />
         <result column="opt_lock" property="optLock" jdbcType="INTEGER" />
     </resultMap>
+
+
 
 
 </mapper>

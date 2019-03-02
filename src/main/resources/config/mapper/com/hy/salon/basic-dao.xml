@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.salon.basic.dao" >
+
+
+  <select id="GET_STUFF_FOR_STOREId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Stuff">
+
+
+   SELECT * FROM salon.stuff where store_id=#{storeId};
+
+
+  </select>
+
+
+    <select id="GET_SALON_FOR_PARENTId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Salon">
+
+
+     SELECT * FROM salon.salon where parent_id=#{parentId};
+
+
+    </select>
+
+    <select id="GET_ROOM_FOR_STOREId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.StoreRoom">
+
+
+     SELECT * FROM salon.store_room where store_id=#{storeId};
+
+
+    </select>
+
+
+    <!--<insert id="INSERT_STOREROOM" parameterType="com.hy.salon.basic.entity.StoreRoom" useGeneratedKeys="true"-->
+            <!--keyProperty="recordId" keyColumn="record_id">-->
+         <!--INSERT INTO salon.store_room (store_id, room_name, record_status, create_date, create_by) VALUES (#{storeId}, #{roomName}, #{recordStatus}, #{createDate},#{createBy});-->
+
+    <!--</insert>-->
+
+
+
+
+
+
+
+</mapper>
