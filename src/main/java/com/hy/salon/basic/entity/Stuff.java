@@ -1,5 +1,6 @@
 package com.hy.salon.basic.entity;
 
+import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
 @DataTableConfiguration("stuff")
     @Getter
     @Setter
-    public class Stuff {
+    public class Stuff extends TraceableEntity<Long> {
 
     private Long recordId;
     private String stuffName;
