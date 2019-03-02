@@ -206,9 +206,9 @@ public class BaseDAO {
 
                 throwException(ERROR_DATA_NOT_EXISTS, idLabel, keyValue);
             }
-            if(item instanceof TraceableEntity){
-                TraceableEntity traceItem = (TraceableEntity)item;
-                TraceableEntity dbTraceItem=(TraceableEntity)dbItem;
+            if (item instanceof TraceableEntity) {
+                TraceableEntity traceItem = (TraceableEntity) item;
+                TraceableEntity dbTraceItem = (TraceableEntity) dbItem;
 
                 traceItem.setCreateBy(dbTraceItem.getCreateBy());
                 traceItem.setCreateDate(dbTraceItem.getCreateDate());
