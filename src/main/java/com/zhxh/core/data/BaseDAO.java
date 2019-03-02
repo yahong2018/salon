@@ -105,15 +105,22 @@ public class BaseDAO {
     }
 
     public boolean exists(Object item) {
-        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
-        Object id = BeanUtils.getValue(item, meta.getKeyProperty());
-        Object dbItem = this.getById(item.getClass(), id);
-        return dbItem != null;
+        return this.getDbItem(item) != null;
     }
 
     protected String getKeyProperty(Class clazz) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         return meta.getKeyProperty();
+    }
+
+    public final Object getDbItem(Object item) {
+        if (item == null) {
+            return null;
+        }
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        Object id = BeanUtils.getValue(item, meta.getKeyProperty());
+        Object dbItem = this.getById(item.getClass(), id);
+        return dbItem;
     }
 
     public final Object getById(Class clazz, Object id) {
@@ -191,12 +198,20 @@ public class BaseDAO {
                 throwException(ERROR_DATA_ALREADY_EXISTS, idLabel, keyValue);
             }
         } else if (operationCode == DATA_OPERATION_UPDATE) {
-            if (!this.exists(item)) {
+            Object dbItem = this.getDbItem(item);
+            if (dbItem == null) {
                 String keyProperty = getKeyProperty(item.getClass());
                 Object keyValue = BeanUtils.getValue(item, keyProperty);
                 String idLabel = this.getIdLabel(item.getClass());
 
                 throwException(ERROR_DATA_NOT_EXISTS, idLabel, keyValue);
+            }
+            if(item instanceof TraceableEntity){
+                TraceableEntity traceItem = (TraceableEntity)item;
+                TraceableEntity dbTraceItem=(TraceableEntity)dbItem;
+
+                traceItem.setCreateBy(dbTraceItem.getCreateBy());
+                traceItem.setCreateDate(dbTraceItem.getCreateDate());
             }
         }
 
