@@ -12,4 +12,12 @@ import java.util.Map;
 @Component("productSockDAO")
 public class ProductSockDAO extends BaseDAOWithEntity<ProductStock> {
 
+    public List<ProductStock> findProductStockByWarehouseId(Long warehouseId) {
+        Map parameters = new HashMap();
+        parameters.put("warehouseId", warehouseId);
+        String where = "warehouse_id=#{warehouseId}";
+        Map listMap = new HashMap();
+        listMap.put("where", where);
+        return this.getList(listMap, parameters);
+    }
 }
