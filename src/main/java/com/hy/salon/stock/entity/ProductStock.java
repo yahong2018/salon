@@ -9,14 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductStock extends TraceableEntity<Long> {
-    private int movementType;
-    private int serialNumber;
-    private int productId;
-    private int movementQty;
-    private int dateOfManufacture;
-    private int purchaseCost;
-    private int operatorId;
-    private int storeWarehouseId;
-    private int referenceRecordNo;
-    private int remark;
+    private Long recordId;
+    private Long productId;//产品
+    private Long warehouseId;//所在仓库/门店
+    private Integer stockQty;//在库总数
+    private Double cost;//占用成本
 }
