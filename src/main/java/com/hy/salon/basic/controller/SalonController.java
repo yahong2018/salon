@@ -7,16 +7,15 @@ import com.hy.salon.basic.vo.Result;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @Api(value = "SalonController|美容院控制器")
@@ -36,12 +35,14 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
 
 
-    /**
-     * 获取美容院信息
-     */
+
     @RequestMapping("/getSalonData")
     @ResponseBody
-    public Result getSalonData(HttpServletResponse resp, String recordId)  {
+    @ApiOperation(value="获取美容院信息", notes="获取美容院信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
+    })
+    public Result getSalonData( String recordId)  {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
             r.setMsg("美容院号不能为空");
@@ -64,12 +65,14 @@ public class SalonController extends SimpleCRUDController<Salon> {
         return r;
 
     }
-    /**
-     * 获取门店列表
-     */
+
     @ResponseBody
     @RequestMapping("getStoreData")
-    public Result getStireData(HttpServletResponse resp,String recordId) {
+    @ApiOperation(value="获取门店列表", notes="获取门店列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
+    })
+    public Result getStireData(String recordId) {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
             r.setMsg("美容院号不能为空");
@@ -91,10 +94,14 @@ public class SalonController extends SimpleCRUDController<Salon> {
      */
     @ResponseBody
     @RequestMapping("getStoreDetails")
-    public Result getStoreDetails(HttpServletResponse resp,String recordId) {
+    @ApiOperation(value="获取门店信息", notes="获取门店信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "门店Id", required = true, dataType = "Long"),
+    })
+    public Result getStoreDetails(String recordId) {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
-            r.setMsg("美容院号不能为空");
+            r.setMsg("门店号不能为空");
             r.setMsgcode("1");
             r.setSuccess(false);
             return r;
@@ -117,7 +124,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
      */
     @ResponseBody
     @RequestMapping("updateSalon")
-    @ApiOperation(value="修改美容院/门店信息", notes="a")
+    @ApiOperation(value="修改美容院/门店信息", notes="修改美容院/门店信息")
     public Result updateSalon(Salon condition){
 
         salonService.insert(condition);
