@@ -98,18 +98,4 @@
         <result column="remark_audit" property="remarkAudit" jdbcType="VARCHAR" />
         <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
     </resultMap>
-
-    <!--产品库存-->
-    <!--<resultMap id="ProductStock" type="com.hy.salon.basic.entity.ProductStock" extends="com.zhxh.core.data.TraceableEntity">
-        <result column="record_id" property="recordId" jdbcType="BIGINT" />
-        <result column="product_id" property="productId" jdbcType="BIGINT" />
-        <result column="warehouse_id" property="warehouseId" jdbcType="BIGINT" />
-        <result column="stock_qty" property="stockQty" jdbcType="BIGINT" />
-        <result column="cost" property="cost" jdbcType="DOUBLE" />
-    </resultMap>-->
-
-
-
-
-
 </mapper>
