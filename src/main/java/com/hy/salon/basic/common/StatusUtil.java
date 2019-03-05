@@ -10,4 +10,12 @@ public class StatusUtil {
     public static final Integer BOH=2;
     public static final Integer PIZ=3;
     public static final Integer WANC=4;
+    /**
+     * 同意返回数据类型
+     * 200失败
+     * 0成功
+     */
+    public static final String ERROR="200";
+    public static final String OK="0";
+
 }

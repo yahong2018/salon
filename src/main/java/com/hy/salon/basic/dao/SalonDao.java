@@ -29,9 +29,16 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SALON_FOR_PARENTId, parameters);
     }
 
+    public List<Salon> getSalonForCreateId(Long createId){
+        Map parameters = new HashMap();
+        parameters.put("createId", createId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SALON_FOR_CREATEId, parameters);
+
+    }
 
 
 
+    protected final static String SQL_GET_SALON_FOR_CREATEId = "com.hy.salon.basic.dao.GET_SALON_FOR_CREATEId";
 
     protected final static String SQL_GET_SALON_FOR_PARENTId = "com.hy.salon.basic.dao.GET_SALON_FOR_PARENTId";
 
