@@ -61,6 +61,53 @@
         <result column="update_by" property="updateBy" jdbcType="BIGINT" />
         <result column="opt_lock" property="optLock" jdbcType="INTEGER" />
     </resultMap>
+    <!--预约-->
+    <resultMap id="Reservation" type="com.hy.salon.basic.entity.Reservation" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="room_id" property="roomId" jdbcType="BIGINT" />
+        <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
+        <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+    </resultMap>
+    <!--产品-->
+    <resultMap id="Product" type="com.hy.salon.basic.entity.Product" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="product_class" property="productClass" jdbcType="TIMESTAMP" />
+        <result column="product_series_id" property="productSeries_id" jdbcType="BIGINT" />
+        <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+        <result column="specification" property="specification" jdbcType="BIGINT" />
+        <result column="specification_unit" property="specificationUnit" jdbcType="BIGINT" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="shelf_life" property="shelfLife" jdbcType="BIGINT" />
+        <result column="day_of_pre_warning" property="dayOfPreWarning" jdbcType="BIGINT" />
+        <result column="stock_of_pre_warning" property="stockOfPreWarning" jdbcType="BIGINT" />
+        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--调拨申请单-->
+    <resultMap id="StockTransferApplication" type="com.hy.salon.basic.entity.StockTransferApplication" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="application_no" property="applicationNo" jdbcType="VARCHAR" />
+        <result column="out_warehouse_id" property="outWarehouseId" jdbcType="BIGINT" />
+        <result column="remark_application" property="remarkApplication" jdbcType="VARCHAR" />
+        <result column="remark_audit" property="remarkAudit" jdbcType="VARCHAR" />
+        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+    </resultMap>
+
+    <!--产品库存-->
+    <!--<resultMap id="ProductStock" type="com.hy.salon.basic.entity.ProductStock" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="warehouse_id" property="warehouseId" jdbcType="BIGINT" />
+        <result column="stock_qty" property="stockQty" jdbcType="BIGINT" />
+        <result column="cost" property="cost" jdbcType="DOUBLE" />
+    </resultMap>-->
+
 
 
 

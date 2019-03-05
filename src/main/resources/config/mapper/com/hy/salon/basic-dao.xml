@@ -42,11 +42,17 @@
          <!--INSERT INTO salon.store_room (store_id, room_name, record_status, create_date, create_by) VALUES (#{storeId}, #{roomName}, #{recordStatus}, #{createDate},#{createBy});-->
 
     <!--</insert>-->
+    <select id="GET_RESERVATION_BYID"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
 
+     SELECT * FROM salon.reservation
 
+    </select>
 
+    <select id="GET_PRODUCT_LIST"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Product">
 
+     SELECT * FROM salon.product WHERE salon_id=#{sa lonId};
 
+    </select>
 
 
 </mapper>
