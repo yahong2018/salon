@@ -41,11 +41,6 @@
         <result column="time_open" property="timeOpen" jdbcType="TIME" />
         <result column="time_close" property="timeClose" jdbcType="TIME" />
         <result column="description" property="description" jdbcType="VARCHAR" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="create_by" property="createBy" jdbcType="BIGINT" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
-        <result column="opt_lock" property="optLock" jdbcType="INTEGER" />
     </resultMap>
 
 

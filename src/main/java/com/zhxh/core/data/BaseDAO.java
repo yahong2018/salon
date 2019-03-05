@@ -151,11 +151,11 @@ public class BaseDAO {
 
     protected String getPropertyFullName(Class clazz, String shortPropertyName) {
         if (TraceableEntity.class.isAssignableFrom(clazz)) {
-            StringBuffer traceablePropertyShortName = new StringBuffer(shortPropertyName.substring(clazz.getName().length()));
-            traceablePropertyShortName.replace(0, 1, traceablePropertyShortName.substring(0, 1).toUpperCase());
-            String theShortPropertyName = traceablePropertyShortName.toString();
-            if (TraceableEntity.internal_fields.contains(theShortPropertyName)) {
-                return TraceableEntity.class.getCanonicalName() + "." + theShortPropertyName;
+          //  StringBuffer traceablePropertyShortName = new StringBuffer(shortPropertyName.substring(clazz.getName().length()));
+          //  traceablePropertyShortName.replace(0, 1, traceablePropertyShortName.substring(0, 1).toUpperCase());
+          //  String theShortPropertyName = traceablePropertyShortName.toString();
+            if (TraceableEntity.internal_fields.contains(shortPropertyName)) {
+                return TraceableEntity.class.getCanonicalName() + "." + shortPropertyName;
             }
         }
         return clazz.getCanonicalName() + "." + shortPropertyName;
