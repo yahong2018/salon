@@ -22,12 +22,22 @@ public class SalonService {
 
     public Salon getSalonForId(String id){
 
-        return salonDao.getSalonForId(id);
-    }
 
+ return salonDao.getSalonForId(id);
+}
 
     public List<Salon> getSalonForStoreId(String parentId){
         return salonDao.getSalonForStoreId(parentId);
+    }
+
+
+    public List<Salon> getSalonForCreateId(Long createId){
+
+        return salonDao.getSalonForCreateId(createId);
+    }
+
+    public int insert(Salon salon){
+        return salonDao.insert(salon);
     }
 
 
