@@ -42,7 +42,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
     })
-    public Result getSalonData( String recordId)  {
+    public Result getSalonData(String recordId)  {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
             r.setMsg("美容院号不能为空");
@@ -126,10 +126,17 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @RequestMapping("updateSalon")
     @ApiOperation(value="修改美容院/门店信息", notes="修改美容院/门店信息")
     public Result updateSalon(Salon condition){
-
-        salonService.insert(condition);
         Result r= new Result();
-        r.setMsg("请求成功");
+        int i= salonDao.update(condition);
+        if(i != 1){
+            r.setMsg("修改失败");
+            r.setMsgcode("200");
+            r.setSuccess(false);
+
+            return r;
+        }
+
+        r.setMsg("修改成功");
         r.setMsgcode("0");
         r.setSuccess(true);
 

@@ -42,7 +42,7 @@
          <!--INSERT INTO salon.store_room (store_id, room_name, record_status, create_date, create_by) VALUES (#{storeId}, #{roomName}, #{recordStatus}, #{createDate},#{createBy});-->
 
     <!--</insert>-->
-    <select id="GET_RESERVATION_BYID"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
+    <select id="GET_RESERVATION_BYId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
 
      SELECT * FROM salon.reservation
 
@@ -50,9 +50,25 @@
 
     <select id="GET_PRODUCT_LIST"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Product">
 
-     SELECT * FROM salon.product WHERE salon_id=#{sa lonId};
+     SELECT * FROM salon.product WHERE salon_id=#{salonId};
 
     </select>
+
+    <select id="GET_SERVICE_SERIES_FOR_CREATEId"  parameterType="java.util.Map"
+            resultMap="com.hy.salon.basic.entity.ServiceSeries">
+
+    SELECT * FROM salon.service_series where create_by = #{createId} and parent_id = 0;
+
+
+  </select>
+
+    <select id="GET_SERVICE_SERIES_FOR_Id"  parameterType="java.util.Map"
+            resultMap="com.hy.salon.basic.entity.ServiceSeries">
+
+    SELECT * FROM salon.service_series where parent_id = #{recordId};
+
+
+  </select>
 
 
 </mapper>
