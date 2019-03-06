@@ -50,7 +50,7 @@ public class StockTransferApplicationController {
     public Result getStockTransferApplication(Integer recordStatus){
         Result result=new Result();
         try {
-            List<StockTransferApplication>list=stockTransferApplicationService.getStockTransferApplication(recordStatus);
+            List<StockTransferApplicationVo>list=stockTransferApplicationService.getStockTransferApplication(recordStatus);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setData(list);
