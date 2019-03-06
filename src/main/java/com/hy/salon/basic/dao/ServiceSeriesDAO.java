@@ -12,26 +12,21 @@ import java.util.Map;
 public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
 
 
+
+
     public List<ServiceSeries> getServiceSeriesForCreateId(Long createId){
+        String where="create_by = #{createId} and parent_id = 0";
         Map parameters = new HashMap();
         parameters.put("createId", createId);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SERVICE_SERIES_FOR_CREATEId, parameters);
-
+        return this.getByWhere(where,parameters);
     }
+
     public List<ServiceSeries> getServiceSeriesForId(Long Id){
+        String where="parent_id = #{recordId}";
         Map parameters = new HashMap();
         parameters.put("recordId", Id);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SERVICE_SERIES_FOR_Id, parameters);
+        return this.getByWhere(where,parameters);
 
     }
 
-
-
-
-
-
-
-    protected final static String SQL_GET_SERVICE_SERIES_FOR_Id = "com.hy.salon.basic.dao.GET_SERVICE_SERIES_FOR_Id";
-
-    protected final static String SQL_GET_SERVICE_SERIES_FOR_CREATEId = "com.hy.salon.basic.dao.GET_SERVICE_SERIES_FOR_CREATEId";
 }

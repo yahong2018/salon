@@ -11,15 +11,22 @@ import java.util.Map;
 @Component("stuffDao")
 public class StuffDao extends BaseDAOWithEntity<Stuff>{
 
+//    public List<Stuff> getStuffForStoreId(Long storeId){
+//        Map parameters = new HashMap();
+//        parameters.put("storeId", storeId);
+//
+//        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_STUFF_FOR_STOREID, parameters);
+//    }
+
     public List<Stuff> getStuffForStoreId(Long storeId){
+        String where="store_id=#{storeId}";
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_STUFF_FOR_STOREID, parameters);
+
+        return this.getByWhere(where,parameters);
     }
 
 
 
-
-    protected final static String SQL_GET_STUFF_FOR_STOREID = "com.hy.salon.basic.dao.GET_STUFF_FOR_STOREId";
 
 }

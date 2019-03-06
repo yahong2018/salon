@@ -99,4 +99,37 @@
         <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
     </resultMap>
 
+    <resultMap id="ServiceSeries" type="com.hy.salon.basic.entity.ServiceSeries"
+               extends="com.zhxh.core.data.TraceableEntity" >
+        <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
+    </resultMap>
+
+    <resultMap id="ServiceSuite" type="com.hy.salon.basic.entity.ServiceSuite"
+               extends="com.zhxh.core.data.TraceableEntity" >
+        <result column="suite_name" property="suiteName" jdbcType="VARCHAR" />
+        <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="time_create" property="timeCreate" jdbcType="TIMESTAMP" />
+        <result column="time_expired" property="timeExpired" jdbcType="TIMESTAMP" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <resultMap id="Service" type="com.hy.salon.basic.entity.Service" extends="com.zhxh.core.data.TraceableEntity" >
+        <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+        <result column="service_series_id" property="serviceSeriesId" jdbcType="BIGINT" />
+        <result column="card_type" property="cardType" jdbcType="TINYINT" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
+        <result column="expired_time" property="expiredTime" jdbcType="DOUBLE" />
+        <result column="period_per_time" property="periodPerTime" jdbcType="INTEGER" />
+        <result column="price_per_time" property="pricePerTime" jdbcType="DOUBLE" />
+        <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="return_visit" property="returnVisit" jdbcType="INTEGER" />
+        <result column="time_total" property="timeTotal" jdbcType="INTEGER" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+    </resultMap>
 </mapper>
