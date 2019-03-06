@@ -15,10 +15,12 @@ public class StuffService {
 
 
 
-    public List<Stuff> getStuffForStoreId(String storeId){
+    public List<Stuff> getStuffForStoreId(Long storeId){
 
 
         return stuffDao.getStuffForStoreId(storeId);
     }
+
+
 
 }

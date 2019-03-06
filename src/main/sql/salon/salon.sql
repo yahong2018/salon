@@ -821,7 +821,7 @@ create table stock_transfer_application
   create_by                        bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
   update_date                      datetime                              not null,  -- 修改/审批时间
   update_by                        bigint                                not null,  -- 审批人/修改人：调拨必须是调出门店的店长
-  opt_lock                         datetime                              not null,
+  opt_lock                         int                              not null,
 
   primary key (record_id),
   index idx_stock_transfer_application_01(application_no),
