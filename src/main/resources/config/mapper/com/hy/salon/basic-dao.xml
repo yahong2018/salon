@@ -54,7 +54,7 @@
 
     </select>
 
-    <select id="GET_SERVICE_SERIES_FOR_CREATEId"  parameterType="java.util.Map"
+    <!--<select id="GET_SERVICE_SERIES_FOR_CREATEId"  parameterType="java.util.Map"
             resultMap="com.hy.salon.basic.entity.ServiceSeries">
 
     SELECT * FROM salon.service_series where create_by = #{createId} and parent_id = 0;
@@ -68,17 +68,20 @@
     SELECT * FROM salon.service_series where parent_id = #{recordId};
 
 
-  </select>
+  </select>-->
 
 
     <select id="GET_PRODUCT_BY_STATUS"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.StockTransferApplicationVo">
 
         SELECT
-            a.record_id,a.application_no,a.out_warehouse_id,a.remark_application,a.remark_audit,a.record_status,a.record_id,b.qty,b.stock_transfer_application_id,b.product_id,c.salon_id,c.product_name,c.product_class,c.product_series_id,c.price_market,c.price
+            a.record_id,a.application_no,a.out_warehouse_id,a.remark_application,a.remark_audit,a.record_status,a.record_id,
+            b.qty,b.stock_transfer_application_id,b.product_id,
+            c.salon_id,c.product_name,c.product_class,c.product_series_id,c.price_market,c.price
         FROM
             `stock_transfer_application` a
         LEFT JOIN stock_transfer_application_item b on a.record_id = b.stock_transfer_application_id
-        LEFT JOIN product c ON b.product_id=c.record_id where a.record_status==#{recordStatus};
+        LEFT JOIN product c ON b.product_id=c.record_id
+        where a.record_status=#{recordStatus};
 
     </select>
 
