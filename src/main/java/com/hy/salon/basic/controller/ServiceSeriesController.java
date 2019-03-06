@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hy.salon.basic.vo.Result;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/serviceSeries")
@@ -148,6 +150,30 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
 
 
     }
+
+    @ResponseBody
+    @RequestMapping("/queryAllServiceSeries")
+    @ApiOperation(value="获取类别", notes="以一级类别分组获取二级类别")
+    public Result queryAllServiceSeries(){
+        Result r= new Result();
+        SystemUser user = authenticateService.getCurrentLogin();
+        List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(user.getRecordId());
+        Map m=new HashMap<String, Object>();
+
+        for(ServiceSeries s:serList){
+            List<ServiceSeries> sonSerList=serviceSeriesDao.getServiceSeriesForId(s.getRecordId());
+            m.put(s.getSeriesName(),sonSerList);
+
+        }
+        r.setMsg("获取成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        r.setData(m);
+        return r;
+
+
+    }
+
 
 
 
