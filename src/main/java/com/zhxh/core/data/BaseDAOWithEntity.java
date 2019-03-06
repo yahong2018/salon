@@ -47,6 +47,13 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
         return this.getPageListCount(listMap,null);
     }
 
+    public List<T> getByWhere(String where){
+        return this.getByWhere(where);
+    }
+
+    public List<T> getByWhere(String where,Map parameter){
+        return this.getByWhere(this.clazz,where,parameter);
+    }
 
     public final T getById(Object id) {
         return (T) this.getById(this.clazz, id);

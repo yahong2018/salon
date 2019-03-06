@@ -55,6 +55,13 @@ public class BaseDAO {
         return this.getPropertyLabel(this.getPropertyFullName(clazz, this.entitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
 
+    public List getByWhere(Class clazz, String where,Map parameter){
+        Map listMap = new HashMap();
+        listMap.put("where",where);
+
+        return this.getList(clazz,listMap,parameter);
+    }
+
     private final static String EMPTY_UUID = new UUID(0, 0).toString();
 
     public final int insert(Object item) throws BusinessException {
