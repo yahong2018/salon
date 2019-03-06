@@ -5,6 +5,7 @@
 
 
 
+    <!--</insert>-->
     <select id="GET_RESERVATION_BYId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
 
      SELECT * FROM salon.reservation
@@ -19,13 +20,25 @@
 
 
 
-
     <select id="GET_PRODUCT_BY_STATUS"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.StockTransferApplicationVo">
 
         SELECT
-            a.record_id,a.application_no,a.out_warehouse_id,a.remark_application,a.remark_audit,a.record_status,a.record_id,
-            b.qty,b.stock_transfer_application_id,b.product_id,
-            c.salon_id,c.product_name,c.product_class,c.product_series_id,c.price_market,c.price
+            a.record_id,
+            a.application_no,
+            a.out_warehouse_id,
+            a.remark_application,
+            a.remark_audit,
+            a.record_status,
+            a.record_id,
+            b.qty,
+            b.stock_transfer_application_id,
+            b.product_id,
+            c.salon_id,
+            c.product_name,
+            c.product_class,
+            c.product_series_id,
+            c.price_market,
+            c.price
         FROM
             `stock_transfer_application` a
         LEFT JOIN stock_transfer_application_item b on a.record_id = b.stock_transfer_application_id
@@ -33,6 +46,34 @@
         where a.record_status=#{recordStatus};
 
     </select>
+    <select id="GET_PRODUCT_BY_TYPE"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.ProductStockMovementVo">
 
+        select
+              a.*,
+              b.salon_id,
+              b.product_name,
+              b.product_class,
+              b.product_series_id,
+              b.price_market,
+              b.price,
+              b.product_code,
+              b.specification,
+              b.specification_unit,
+              b.product_unit_id,
+              b.bar_code,
+              b.shelf_life,
+              b.day_of_pre_warning,
+              b.stock_of_pre_warning,
+              b.record_status,
+              b.description,
+              c.stock_qty,
+              c.cost
+        from
+              product_stock_movement a
+        LEFT JOIN product b on a.product_id=b.record_id
+        LEFT JOIN product_stock c on a.product_id=c.product_id
+        where a.movement_type=#{movementType}
+        and a.create_date between #{cTime} and #{eTime};
+    </select>
 
 </mapper>
