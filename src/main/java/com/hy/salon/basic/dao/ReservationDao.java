@@ -15,5 +15,5 @@ public class ReservationDao extends BaseDAOWithEntity<Reservation> {
     }
 
 
-    protected final static String GET_RESERVATION_BYID = "com.hy.salon.basic.dao.GET_RESERVATION_BYID";
+    protected final static String GET_RESERVATION_BYID = "com.hy.salon.basic.dao.GET_RESERVATION_BYId";
 }
