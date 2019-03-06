@@ -10,7 +10,9 @@ import com.hy.salon.basic.vo.StockTransferApplicationVo;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component("stockTransferApplicationService")
 public class StockTransferApplicationService {
@@ -36,7 +38,10 @@ public class StockTransferApplicationService {
         stockTransferApplicationItemDao.insert(stockTransferApplicationItem);
     }
 
-    public List<StockTransferApplication> getStockTransferApplication(Integer recordStatus) {
-        return stockTransferApplicationDao.getStockTransferApplication(recordStatus);
+    public List<StockTransferApplicationVo> getStockTransferApplication(Integer recordStatus) {
+        Map parameters = new HashMap();
+        parameters.put("recordStatus", recordStatus);
+        return stockTransferApplicationDao.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_BY_STATUS, parameters);
     }
+    protected final static String SQL_GET_PRODUCT_BY_STATUS = "com.hy.salon.basic.dao.GET_PRODUCT_BY_STATUS";
 }
