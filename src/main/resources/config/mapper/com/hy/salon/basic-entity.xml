@@ -98,4 +98,25 @@
         <result column="remark_audit" property="remarkAudit" jdbcType="VARCHAR" />
         <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
     </resultMap>
+
+
+    <!---->
+    <resultMap id="StockTransferApplicationVo" type="com.hy.salon.basic.vo.StockTransferApplicationVo" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="application_no" property="applicationNo" jdbcType="VARCHAR" />
+        <result column="out_warehouse_id" property="outWarehouseId" jdbcType="BIGINT" />
+        <result column="remark_application" property="remarkApplication" jdbcType="VARCHAR" />
+        <result column="remark_audit" property="remarkAudit" jdbcType="VARCHAR" />
+        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="qty" property="qty" jdbcType="DOUBLE" />
+
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="product_class" property="productClass" jdbcType="TIMESTAMP" />
+        <result column="product_series_id" property="productSeries_id" jdbcType="BIGINT" />
+        <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+    </resultMap>
 </mapper>
