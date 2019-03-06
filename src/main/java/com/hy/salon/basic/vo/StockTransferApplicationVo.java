@@ -1,11 +1,12 @@
 package com.hy.salon.basic.vo;
 
+import com.zhxh.core.data.TraceableEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class StockTransferApplicationVo {
+public class StockTransferApplicationVo extends TraceableEntity<Long> {
     private  Long recordId ;
     private String applicationNo ;
     private Long outWarehouseId ;//调出仓库/门店
