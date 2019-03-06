@@ -215,6 +215,7 @@ create table service_suite
 create table service_suite_item
 (
   record_id                        bigint    auto_increment       not null,
+  service_suite_id                 bigint                         not null, //套卡id
   service_id                       bigint                         not null,   -- 服务项目编号
   times                            int                            not null,   -- 次数
 
