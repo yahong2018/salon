@@ -4,44 +4,7 @@
 <mapper namespace="com.hy.salon.basic.dao" >
 
 
-  <select id="GET_STUFF_FOR_STOREId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Stuff">
 
-
-   SELECT * FROM salon.stuff where store_id=#{storeId};
-
-
-  </select>
-
-
-    <select id="GET_SALON_FOR_PARENTId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Salon">
-
-
-     SELECT * FROM salon.salon where parent_id=#{parentId};
-
-
-    </select>
-
-    <select id="GET_ROOM_FOR_STOREId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.StoreRoom">
-
-
-     SELECT * FROM salon.store_room where store_id=#{storeId} ;
-
-
-    </select>
-
-    <select id="GET_SALON_FOR_CREATEId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Salon">
-
-    select * from salon.salon where create_by=#{createId} and parent_id != -1
-
-
-  </select>
-
-
-    <!--<insert id="INSERT_STOREROOM" parameterType="com.hy.salon.basic.entity.StoreRoom" useGeneratedKeys="true"-->
-            <!--keyProperty="recordId" keyColumn="record_id">-->
-         <!--INSERT INTO salon.store_room (store_id, room_name, record_status, create_date, create_by) VALUES (#{storeId}, #{roomName}, #{recordStatus}, #{createDate},#{createBy});-->
-
-    <!--</insert>-->
     <select id="GET_RESERVATION_BYId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
 
      SELECT * FROM salon.reservation
@@ -54,13 +17,7 @@
 
     </select>
 
-    <select id="GET_SERVICE_SERIES_FOR_CREATEId"  parameterType="java.util.Map"
-            resultMap="com.hy.salon.basic.entity.ServiceSeries">
 
-    SELECT * FROM salon.service_series where create_by = #{createId} and parent_id = 0;
-
-
-  </select>
 
     <select id="GET_SERVICE_SERIES_FOR_Id"  parameterType="java.util.Map"
             resultMap="com.hy.salon.basic.entity.ServiceSeries">

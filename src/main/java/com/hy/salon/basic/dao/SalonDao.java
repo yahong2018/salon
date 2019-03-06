@@ -23,24 +23,28 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getOne(where, parameters);
     }
 
+
+
     public List<Salon> getSalonForStoreId(String parentId){
+        String where="parent_id=#{parentId}";
         Map parameters = new HashMap();
         parameters.put("parentId", parentId);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SALON_FOR_PARENTId, parameters);
+        return this.getByWhere(where,parameters);
     }
+
 
     public List<Salon> getSalonForCreateId(Long createId){
+        String where="create_by=#{createId} and parent_id != -1";
         Map parameters = new HashMap();
         parameters.put("createId", createId);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SALON_FOR_CREATEId, parameters);
-
+        return this.getByWhere(where,parameters);
     }
 
 
 
-    protected final static String SQL_GET_SALON_FOR_CREATEId = "com.hy.salon.basic.dao.GET_SALON_FOR_CREATEId";
 
-    protected final static String SQL_GET_SALON_FOR_PARENTId = "com.hy.salon.basic.dao.GET_SALON_FOR_PARENTId";
+
+
 
 
 }

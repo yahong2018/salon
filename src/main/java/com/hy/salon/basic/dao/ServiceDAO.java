@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component("serviceDao")
 public class ServiceDAO extends BaseDAOWithEntity<Service> {
 
-
-
-
+    public int insertService(Service condition){
+        return insert(condition);
+    }
 
 
 
