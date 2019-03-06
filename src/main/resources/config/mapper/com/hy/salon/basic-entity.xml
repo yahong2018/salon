@@ -132,4 +132,10 @@
         <result column="time_total" property="timeTotal" jdbcType="INTEGER" />
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
+
+    <resultMap id="ServiceSuiteItem" type="com.hy.salon.basic.entity.ServiceSuiteItem" >
+        <result column="service_suite_id" property="serviceSuiteId" jdbcType="BIGINT" />
+        <result column="service_id" property="serviceId" jdbcType="BIGINT" />
+        <result column="times" property="times" jdbcType="INTEGER" />
+    </resultMap>
 </mapper>
