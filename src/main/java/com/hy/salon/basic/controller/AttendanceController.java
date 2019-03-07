@@ -47,7 +47,7 @@ public class AttendanceController {
      */
     @ResponseBody
     @RequestMapping(value = "SignIn",method = RequestMethod.GET)
-    @ApiOperation(value="添加套卡", notes="添加套卡")
+    @ApiOperation(value="签到", notes="签到")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "address", value = "签到地址", required = true, dataType = "String"),
