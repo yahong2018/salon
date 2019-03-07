@@ -76,4 +76,13 @@
         and a.create_date between #{cTime} and #{eTime};
     </select>
 
+
+
+    <select id="GET_SERVICE_FOR_SUIT"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.ServiceVo">
+
+     SELECT ss.*,sss.times,sss.service_id,sss.service_suite_id FROM salon.service as ss left join salon.service_suite_item as sss on ss.record_id= sss.service_id
+      where sss.service_suite_id= #{id};
+
+    </select>
+
 </mapper>

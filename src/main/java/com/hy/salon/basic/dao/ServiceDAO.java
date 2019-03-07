@@ -1,6 +1,8 @@
 package com.hy.salon.basic.dao;
 
 import com.hy.salon.basic.entity.Service;
+import com.hy.salon.basic.vo.ServiceVo;
+import com.hy.salon.basic.vo.StockTransferApplicationVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,15 @@ public class ServiceDAO extends BaseDAOWithEntity<Service> {
         return this.getOne(where,parameters);
 
     }
+
+
+    public List<ServiceVo> getServiceForSuit(Long id) {
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SERVICE_FOR_SUIT, parameters);
+    }
+    protected final static String SQL_GET_SERVICE_FOR_SUIT = "com.hy.salon.basic.dao.GET_SERVICE_FOR_SUIT";
+
 
 
 

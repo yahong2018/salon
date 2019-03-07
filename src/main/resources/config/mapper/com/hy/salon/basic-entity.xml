@@ -146,7 +146,7 @@
         <result column="reference_record_no" property="referenceRecordNo" jdbcType="VARCHAR" />
     </resultMap>
 
-    <resultMap id="ServiceSuiteItem" type="com.hy.salon.basic.entity.ServiceSuiteItem" >
+    <resultMap id="ServiceSuiteItem" type="com.hy.salon.basic.entity.ServiceSuiteItem" extends="com.zhxh.core.data.TraceableEntity">
         <result column="service_suite_id" property="serviceSuiteId" jdbcType="BIGINT" />
         <result column="service_id" property="serviceId" jdbcType="BIGINT" />
         <result column="times" property="times" jdbcType="INTEGER" />
