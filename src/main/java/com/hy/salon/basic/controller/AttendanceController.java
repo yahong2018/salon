@@ -67,7 +67,7 @@ public class AttendanceController {
         }catch (Exception e){
             e.printStackTrace();
             result.setMsg("签到失败");
-            result.setMsgcode("1");
+            result.setMsgcode("200");
             result.setSuccess(false);
         }
         return result;
