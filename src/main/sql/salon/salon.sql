@@ -566,7 +566,7 @@ create table schedule
 (
   record_id                        bigint      auto_increment      not null,
   stuff_id                         bigint                          not null,  -- 员工
-  shift_id                         bigint                          not null,  -- 班次： -1 表示休息
+  shift_id                         bigint                          not null,  -- 班次： -1 表示休息 0.全  1.早   2. 中   3.晚
   day                              date                            not null,  -- 日期
 
   create_date                      datetime                        not null,
