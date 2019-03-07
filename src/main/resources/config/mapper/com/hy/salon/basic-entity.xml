@@ -151,4 +151,8 @@
         <result column="service_id" property="serviceId" jdbcType="BIGINT" />
         <result column="times" property="times" jdbcType="INTEGER" />
     </resultMap>
+    <resultMap id="StuffJob" type="com.hy.salon.basic.entity.StuffJob" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="job_id" property="jobId" jdbcType="BIGINT" />
+    </resultMap>
 </mapper>

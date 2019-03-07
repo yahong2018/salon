@@ -92,4 +92,8 @@ public class AuthenticateService {
     }
 
     protected static final String CURRENT_LOGIN_STORED_ID = "{9D929EBB-1006-4597-A5E0-F159BB93AA60}";
+
+    public SystemUser getUserByCode(String userCode) {
+       return systemUserDAO.getUserByCode(userCode);
+    }
 }

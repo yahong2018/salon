@@ -1,9 +1,18 @@
 package com.zhxh.admin.controller;
 
+import com.hy.salon.basic.entity.StuffJob;
+import com.hy.salon.basic.service.StuffJobService;
+import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.misc.LoginResult;
 import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.admin.service.RoleUserService;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.Logger;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +22,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(value = "LoginController|登陆")
 public class LoginController {
     private final static String LOGIN_URL="admin/login";
 
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
 
+    @Resource(name="roleUserService")
+    private RoleUserService roleUserService;
+
+    @Resource(name = "stuffJobService")
+    private StuffJobService stuffJobService;
     @RequestMapping("/login")
     public String login() {
         return LOGIN_URL;
@@ -29,12 +45,23 @@ public class LoginController {
 
     @RequestMapping(value = "/api/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public LoginResult doLoginByApi(@RequestBody Map user) {
+    @ApiOperation(value="登陆返回用户角色，职务", notes="登陆返回用户角色，职务")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "userCode", value = "用户账户", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "password", value = "密码", required = true, dataType = "String"),
+    })
+    public LoginResult doLoginByApi( SystemUser user) {
         LoginResult result = new LoginResult();
         try {
-            String userCode = user.get("userCode").toString();
-            String password = user.get("password").toString();
+            String userCode = user.getUserCode();
+            String password = user.getPassword();
             authenticateService.authenticate(userCode, password);
+            SystemUser systemUser = authenticateService.getUserByCode(userCode);
+            long id = systemUser.getRecordId();
+            List<RoleUser> list = roleUserService.getRoleUserListById(id);
+            List<StuffJob> listJob = stuffJobService.getStuffJobList(id);
+            result.setListRoleUser(list);
+            result.setListJob(listJob);
             result.setCode(LoginResult.LOGIN_CODE_OK);
             result.setMessage("登录成功！");
 

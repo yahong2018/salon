@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.zhxh.core.exception.ErrorCode.*;
@@ -35,5 +36,12 @@ public class RoleUserService {
 			}
 		}
 		return roleUserList.length;
-	}	
+	}
+
+	public List<RoleUser> getRoleUserListById(long userId) {
+		String where="user_id=#{userId}";
+		Map parameters = new HashMap();
+		parameters.put("userId", userId);
+		return roleUserDAO.getByWhere(where,parameters);
+	}
 }
