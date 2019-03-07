@@ -3,6 +3,10 @@ package com.hy.salon.basic.controller;
 import com.hy.salon.basic.entity.AttendanceSheet;
 import com.hy.salon.basic.service.AttendanceSheetService;
 import com.hy.salon.basic.vo.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/attendance")
+@Api(value = "AttendanceController| 签到控制器")
 public class AttendanceController {
 
     @Resource(name = "attendanceSheetService")
@@ -42,6 +47,12 @@ public class AttendanceController {
      */
     @ResponseBody
     @RequestMapping(value = "SignIn",method = RequestMethod.GET)
+    @ApiOperation(value="添加套卡", notes="添加套卡")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "address", value = "签到地址", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long")
+    })
     public Result SignIn(Long stuffId,String address,Long storeId){
         Result result=new Result();
         AttendanceSheet condition=new AttendanceSheet();
