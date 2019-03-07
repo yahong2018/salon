@@ -42,14 +42,14 @@ public class AttendanceController {
      */
     @ResponseBody
     @RequestMapping(value = "SignIn",method = RequestMethod.GET)
-    public Result SignIn(Long stuffId,String address){
+    public Result SignIn(Long stuffId,String address,Long storeId){
         Result result=new Result();
         AttendanceSheet condition=new AttendanceSheet();
         condition.setStuffId(stuffId);
         condition.setAttendanceTime(new Date());
         condition.setAddress(address);
         try {
-            attendanceSheetService.insert(condition);
+            attendanceSheetService.insert(condition,storeId);
             result.setMsg("签到成功");
             result.setMsgcode("0");
             result.setSuccess(true);
