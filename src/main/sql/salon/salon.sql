@@ -239,9 +239,6 @@ create table vip_suite
   suite_name                       varchar(50)                     not null,    -- 充值卡名称
   price                            double(8,2)                     not null,    -- 充值面额
   vip_suite_status                 tinyint                         not null,    -- 记录状态：0.启用   1.停用
-  discount_time                    tinyint                         not null,    -- 单次折扣
-  discount_period                  tinyint                         not null,    -- 疗程折扣
-  discount_production              tinyint                         not null,    -- 产品折扣
   description                      varchar(500)                    not null,    -- 介绍
 
   create_date                      datetime                        not null,
@@ -258,7 +255,11 @@ create table vip_suite
 create table vip_suite_item
 (
   record_id                        bigint     auto_increment         not null,
+  vip_suite_id                     bigint                            not null,  -- 充值卡id
   record_type                      tinyint                           not null,  -- 记录类型:0.单次折扣  1.疗程折扣  2.产品折扣
+  discount_time                    tinyint                           not null,    -- 单次折扣
+  discount_period                  tinyint                           not null,    -- 疗程折扣
+  discount_production              tinyint                           not null,    -- 产品折扣
   item_id                          bigint                            not null,  -- 折扣项目：服务/产品
 
   create_date                      datetime                        not null,
