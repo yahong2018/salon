@@ -23,14 +23,7 @@ public class ServiceSuiteItemDAO extends BaseDAOWithEntity<ServiceSuiteItem> {
 
     }
 
-    public List<ServiceSuiteItem> querySuitItemForCreateId(Long Id){
-        String where="create_by = #{Id}";
-        Map parameters = new HashMap();
-        parameters.put("Id", Id);
-        return this.getByWhere(where,parameters);
 
-
-    }
 
 
 

@@ -1,6 +1,8 @@
 package com.hy.salon.basic.dao;
 
 import com.hy.salon.basic.entity.ServiceSeries;
+import com.hy.salon.basic.vo.ServiceSeriesVo;
+import com.hy.salon.basic.vo.StockTransferApplicationVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
 
@@ -28,5 +30,29 @@ public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
         return this.getByWhere(where,parameters);
 
     }
+
+    public List<ServiceSeriesVo> getServiceSeriesVo(Long parentId,Long vipSuiteId,Byte recordType) {
+        Map parameters = new HashMap();
+        parameters.put("parentId", parentId);
+        parameters.put("recordType", recordType);
+        parameters.put("vipSuiteId", vipSuiteId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_BIN_SERVICE_SERIES_FOR_PARENTId, parameters);
+    }
+
+    public List<ServiceSeriesVo> getServiceSeriesVo(Long parentId) {
+        Map parameters = new HashMap();
+        parameters.put("parentId", parentId);
+
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SERVICE_SERIES_FOR_PARENTId, parameters);
+    }
+
+
+    protected final static String SQL_GET_BIN_SERVICE_SERIES_FOR_PARENTId = "com.hy.salon.basic.dao.GET_BIN_SERVICE_SERIES_FOR_PARENTId";
+
+    protected final static String SQL_GET_SERVICE_SERIES_FOR_PARENTId = "com.hy.salon.basic.dao.GET_SERVICE_SERIES_FOR_PARENTId";
+
+
+
+
 
 }
