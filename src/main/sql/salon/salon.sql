@@ -590,13 +590,13 @@ create table time_sheet
   time_start                        datetime                       null,      -- 上班时间
   time_end                          datetime                       null,      -- 下班时间
 
-  time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
+  time_sheet_type                   varchar (20)                       not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
 
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
+  create_date                       datetime                        not null,
+  create_by                         bigint                          not null,
+  update_date                       datetime                        null,
+  update_by                         bigint                          null,
+  opt_lock                          int                             null,
 
 
   primary key (record_id),
