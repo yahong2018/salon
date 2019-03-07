@@ -758,7 +758,7 @@ create table product_stock
   create_by                        bigint                          not null,
   update_date                      datetime                        null,
   update_by                        bigint                          null,
-  opt_lock                         int                             null,
+  opt_lock                         int                             not null default 0,
 
 
   primary key (record_id),
@@ -821,9 +821,9 @@ create table stock_transfer_application
 
   create_date                      datetime                              not null,  -- 创建/申请时间
   create_by                        bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
-  update_date                      datetime                              not null,  -- 修改/审批时间
-  update_by                        bigint                                not null,  -- 审批人/修改人：调拨必须是调出门店的店长
-  opt_lock                         int                              not null,
+  update_date                      datetime                              null,  -- 修改/审批时间
+  update_by                        bigint                                null,  -- 审批人/修改人：调拨必须是调出门店的店长
+  opt_lock                         int                                   null,
 
   primary key (record_id),
   index idx_stock_transfer_application_01(application_no),
@@ -871,7 +871,7 @@ create table stuff_integral_record
   create_by                     bigint                                    not null,--
   update_date                   datetime                                  null,--
   update_by                     bigint                                    null,--
-  opt_lock                      int                                       not null default 0,
+  opt_lock                      int                                       null,
 
   primary key (record_id),
   index idx_stuff_integral_record_01(stuff_id),
