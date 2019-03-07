@@ -239,9 +239,6 @@ create table vip_suite
   suite_name                       varchar(50)                     not null,    -- 充值卡名称
   price                            double(8,2)                     not null,    -- 充值面额
   vip_suite_status                 tinyint                         not null,    -- 记录状态：0.启用   1.停用
-  discount_time                    tinyint                         not null,    -- 单次折扣
-  discount_period                  tinyint                         not null,    -- 疗程折扣
-  discount_production              tinyint                         not null,    -- 产品折扣
   description                      varchar(500)                    not null,    -- 介绍
 
   create_date                      datetime                        not null,
@@ -258,7 +255,11 @@ create table vip_suite
 create table vip_suite_item
 (
   record_id                        bigint     auto_increment         not null,
+  vip_suite_id                     bigint                            not null,  -- 充值卡id
   record_type                      tinyint                           not null,  -- 记录类型:0.单次折扣  1.疗程折扣  2.产品折扣
+  discount_time                    tinyint                           not null,    -- 单次折扣
+  discount_period                  tinyint                           not null,    -- 疗程折扣
+  discount_production              tinyint                           not null,    -- 产品折扣
   item_id                          bigint                            not null,  -- 折扣项目：服务/产品
 
   create_date                      datetime                        not null,
@@ -589,13 +590,13 @@ create table time_sheet
   time_start                        datetime                       null,      -- 上班时间
   time_end                          datetime                       null,      -- 下班时间
 
-  time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
+  time_sheet_type                   varchar (20)                       not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 缺勤（旷工、休假）
 
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
+  create_date                       datetime                        not null,
+  create_by                         bigint                          not null,
+  update_date                       datetime                        null,
+  update_by                         bigint                          null,
+  opt_lock                          int                             null,
 
 
   primary key (record_id),
@@ -757,7 +758,7 @@ create table product_stock
   create_by                        bigint                          not null,
   update_date                      datetime                        null,
   update_by                        bigint                          null,
-  opt_lock                         int                             null,
+  opt_lock                         int                             not null default 0,
 
 
   primary key (record_id),
@@ -820,9 +821,9 @@ create table stock_transfer_application
 
   create_date                      datetime                              not null,  -- 创建/申请时间
   create_by                        bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
-  update_date                      datetime                              not null,  -- 修改/审批时间
-  update_by                        bigint                                not null,  -- 审批人/修改人：调拨必须是调出门店的店长
-  opt_lock                         int                              not null,
+  update_date                      datetime                              null,  -- 修改/审批时间
+  update_by                        bigint                                null,  -- 审批人/修改人：调拨必须是调出门店的店长
+  opt_lock                         int                                   null,
 
   primary key (record_id),
   index idx_stock_transfer_application_01(application_no),
@@ -846,6 +847,36 @@ create table stock_transfer_application_item
   index idx_stock_transfer_application_item_01(stock_transfer_application_id),
   index idx_stock_transfer_application_item_02(product_id)
 )comment '调拨明细';
+
+create table stuff_integral
+(
+  record_id                     bigint       auto_increment               not null,
+  stuff_id                      bigint                                    not null, -- 哪个员工
+  existing                      bigint                                    not null, -- 现有的积分
+
+  primary key (record_id),
+  index idx_stuff_integral_01(stuff_id)
+
+)comment '员工的积分表';
+
+create table stuff_integral_record
+(
+  record_id                     bigint        auto_increment              not null,
+  stuff_id                      bigint                                    not null, -- 哪个员工
+  metter                        varchar(500)                              not null, -- 在哪里，做了些什么事
+  get_point                     bigint                                    not null, -- 得到的积分总数
+  get_by_id                     bigint                                    not null, -- 谁给的 ,这个id来源于员工表， 一般是店长或者院长给的
+
+  create_date                   datetime                                  not null,--  在什么时候
+  create_by                     bigint                                    not null,--
+  update_date                   datetime                                  null,--
+  update_by                     bigint                                    null,--
+  opt_lock                      int                                       null,
+
+  primary key (record_id),
+  index idx_stuff_integral_record_01(stuff_id),
+  index idx_stuff_integral_record_02(get_by_id)
+)comment '员工的积分产生记录表';
 
 
 #
