@@ -142,9 +142,6 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
     @ResponseBody
     @RequestMapping("/queryServiceSuite")
     @ApiOperation(value="获取套卡列表", notes="获取套卡")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
-    })
     public Result queryServiceSuite(){
         Result r= new Result();
         try {
@@ -169,6 +166,9 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
     @ResponseBody
     @RequestMapping("/queryServiceSuiteData")
     @ApiOperation(value="获取套卡详情", notes="通过Id获取套卡详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+    })
     public Result queryServiceSuiteData(Long recordId){
         Result r= new Result();
         try {
@@ -182,6 +182,38 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
             r.setData(dataMap);
             r.setMsg("获取成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/deleteSuitData")
+    @ApiOperation(value="删除套卡详情", notes="通过Id删除套卡")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+    })
+    public Result deleteSuitData(Long recordId){
+        Result r= new Result();
+        try {
+            serviceSuiteDao.deleteById(recordId);
+            //删除绑定关系
+            List<ServiceSuiteItem> itemList=serviceSuiteItemDao.querySuitItemForId(recordId);
+            if(!itemList.isEmpty()){
+                for(ServiceSuiteItem s:itemList){
+                    serviceSuiteItemDao.delete(s);
+
+                }
+
+            }
+            r.setMsg("删除成功");
             r.setSuccess(true);
             r.setMsgcode(StatusUtil.OK);
         }catch (Exception e){
