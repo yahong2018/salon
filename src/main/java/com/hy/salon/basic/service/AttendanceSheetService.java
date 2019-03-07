@@ -65,16 +65,16 @@ public class AttendanceSheetService {
             }
             timeSheetDao.insert(timeSheet);
         }else{
-            if(condition.getAttendanceTime().compareTo(shift.getTimeEnd())>=0){
-                one.setTimeSheetType(0);//出勤类型正常
-            }else{
-
-                one.setTimeSheetType(2);//出勤类型早退
+            if(condition.getAttendanceTime().compareTo(shift.getTimeEnd())<0){
+                if(one.getTimeSheetType()==1){
+                    one.setTimeSheetType(4);//4 又迟到又早退
+                }else{
+                    one.setTimeSheetType(2);//早退
+                }
             }
             one.setTimeEnd(condition.getAttendanceTime());
             timeSheetDao.update(one);
         }
     }
-
 
 }
