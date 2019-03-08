@@ -4,14 +4,6 @@
 <mapper namespace="com.hy.salon.basic.dao" >
 
 
-
-    <!--</insert>-->
-    <select id="GET_RESERVATION_BYId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
-
-     SELECT * FROM salon.reservation
-
-    </select>
-
     <select id="GET_PRODUCT_LIST"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Product">
 
      SELECT * FROM salon.product WHERE salon_id=#{salonId};
@@ -108,6 +100,14 @@
 
     </select>
 
+    <select id="GET_STUFF_NAME"  parameterType="java.util.Map" resultType="java.util.Map">
+        select
+            a.job_name,
+            a.job_level
+        from job a
+        LEFT JOIN stuff_job b on a.record_id=b.job_id
+        where b.stuff_id=#{stuffId};
+    </select>
 
 
 </mapper>
