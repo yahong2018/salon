@@ -4,6 +4,7 @@ import com.hy.salon.basic.entity.Reservation;
 import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
+import com.hy.salon.basic.vo.StuffVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,10 @@ public class ReservationController {
     public Result getStuff(Long recordId,String timeStart ,String timeEnd){
         Result result=new Result();
         try {
-            reservationService.getStuff(recordId,timeStart, timeEnd);
+            List<StuffVo> list = reservationService.getStuff(recordId, timeStart, timeEnd);
             result.setMsgcode("0");
             result.setSuccess(true);
+            result.setData(list);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
