@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,7 +237,8 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     @RequestMapping("/queryVipSuite")
     @ApiOperation(value="获取充值卡绑定的项目", notes="获取充值卡绑定的项目")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "recordType", value = "折扣类型", required = true, dataType = "Byte")
     })
     public Result queryVipSuite(Long recordId,Byte recordType){
         Result r= new Result();
@@ -245,20 +247,31 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         try {
             SystemUser user = authenticateService.getCurrentLogin();
             List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(user.getRecordId());
-            Map m=new HashMap<String, Object>();
-            VipSuite vipSuit= vipSuiteDao.getVipSuiteForId(recordId);
-
+//            Map m2=new HashMap<String, Object>();
+            JSONArray jsonArr=new JSONArray();
+            List<ServiceSeriesVo> serSeries=new ArrayList<>();
+            int i =0;
             for(ServiceSeries s:serList){
-                List<ServiceSeries> serSeries=serviceSeriesDao.getServiceSeriesForId(s.getRecordId());
+               serSeries=serviceSeriesDao.getServiceSeriesVo(s.getRecordId());
                 List<ServiceSeriesVo>  bindingSer=serviceSeriesDao.getServiceSeriesVo(s.getRecordId(),recordId,recordType);
+                for(ServiceSeriesVo ss :serSeries){
+                    for(ServiceSeriesVo sss:bindingSer){
+                        if(ss.getRecordId()==sss.getRecordId()){
+                            ss.setIsChoice(1);
+                        }
+                    }
+                }
+                JSONObject jsonObj2=new JSONObject();
+                jsonObj2.put("serviceName",s.getSeriesName());
+                jsonObj2.put("serviceList",serSeries);
+
+                jsonArr.add(jsonObj2);
+
 
 
             }
 
-
-
-
-            r.setData(vipSuit);
+            r.setData(jsonArr);
             r.setMsg("获取成功");
             r.setSuccess(true);
             r.setMsgcode(StatusUtil.OK);
@@ -269,6 +282,44 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         }
         return r;
     }
+
+
+    @ResponseBody
+    @RequestMapping("/deleteVipSuite")
+    @ApiOperation(value="删除充值卡以及其绑定的项目", notes="以id删除充值卡已经其绑定的项目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "String"),
+    })
+    public Result deleteVipSuite(Long recordId){
+        Result r= new Result();
+
+
+
+        try {
+            vipSuiteDao.deleteById(recordId);
+            //删除绑定的项目
+            List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(recordId);
+            if(!suiteItemList.isEmpty()){
+                for(VipSuiteItem v:suiteItemList){
+                    vipSuiteItemDao.delete(v);
+                }
+            }
+
+
+
+            r.setMsg("删除成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+        return r;
+    }
+
+
+
 
 
 
