@@ -100,4 +100,33 @@
 
     </select>
 
+
+    <select id="GET_ROLE_BY_USERID"  parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemRole">
+
+     SELECT role.* FROM salon.system_role as role left join salon.role_user as roleuser on role.record_id= roleuser.role_id
+      where roleuser.user_id= #{userId};
+
+    </select>
+
+    <select id="GET_JOB_BY_USERID"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Job">
+
+     SELECT job.* FROM salon.job as job left join salon.stuff_job as stuffjob on job.record_id= stuffjob.job_id
+      where stuffjob.stuff_id= #{stuffId};
+
+    </select>
+
+
+    <!--    <select id="GET_JOB_BY_USERID"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Job">
+
+         SELECT job.* FROM salon.job as job left join salon.stuff_job as stuffjob on job.record_id= stuffjob.job_id
+          where stuffjob.stuff_id= #{stuffId};
+
+        </select>-->
+
+    <select id="GET_RESERVATION_BY_TIME"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.StoreReservation">
+        select Room.sName salon_name ,Room.recordId as salon_id , count(reserva.record_id ) as reservation_count from
+        (select s.record_id as recordId,s.salon_name as sName,room.room_name as rName,room.record_id as roomId
+        from salon s  join store_room room on s.record_id=room.store_id) as Room  join reservation reserva on Room.roomId = reserva.room_id
+         where DATE_FORMAT(reserva.time_start,'%Y%m%d')=#{timeStart} GROUP BY Room.sName,Room.recordId
+    </select>
 </mapper>

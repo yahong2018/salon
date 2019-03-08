@@ -2,6 +2,7 @@ package com.zhxh.admin.service;
 
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class RoleUserService {
 		Map parameters = new HashMap<>();
 		parameters.put("userId", userId);
 		roleUserDAO.deleteByWhere(where, parameters);
-		
+
 		for (RoleUser roleUser : roleUserList) {
 			if (roleUserDAO.insert(roleUser) != 1) {
 				throwException(ERROR_UNKNOWN_EXCEPTION, "数据插入失败！");
@@ -38,10 +39,5 @@ public class RoleUserService {
 		return roleUserList.length;
 	}
 
-	public List<RoleUser> getRoleUserListById(long userId) {
-		String where="user_id=#{userId}";
-		Map parameters = new HashMap();
-		parameters.put("userId", userId);
-		return roleUserDAO.getByWhere(where,parameters);
-	}
+
 }

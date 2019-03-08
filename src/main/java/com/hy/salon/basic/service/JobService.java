@@ -16,6 +16,13 @@ public class JobService {
 
     @Resource(name = "jobDAO")
     private JobDAO jobDAO;
+
+   /* public List<StuffJob> getStuffJobList(long stuffId) {
+        String where="stuff_id=#{stuffId}";
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        return stuffJobDao.getByWhere(where,parameters);
+    }*/
     public List<Job> getJobList(long stuffId) {
         String where="stuff_id=#{stuffId}";
         Map parameters = new HashMap();

@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zhxh.admin.misc.ErrorCode.*;
@@ -330,4 +327,13 @@ public class SystemRoleService {
             this.buildMenuWithPrivilege(programList, privilegeList, rolePrivilegeList, son, sonMenu);
         }
     }
+
+    public List<SystemRole> getRoleListById(long userId) {
+        String where="user_id=#{userId}";
+        Map parameters = new HashMap();
+        parameters.put("userId", userId);
+        return systemRoleDAO.getSqlHelper().getSqlSession().selectList(GET_ROLE_BY_USERID,parameters);
+        //return roleUserDAO.getByWhere(where,parameters);
+    }
+    protected final static String GET_ROLE_BY_USERID = "com.hy.salon.basic.dao.GET_ROLE_BY_USERID";
 }

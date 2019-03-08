@@ -3,6 +3,7 @@ package com.hy.salon.basic.controller;
 import com.hy.salon.basic.entity.Reservation;
 import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.vo.Result;
+import com.hy.salon.basic.vo.StoreReservation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +38,10 @@ public class ReservationController {
      */
     @ResponseBody
     @RequestMapping(value = "getReservationByTimeStart",method = RequestMethod.GET)
-    public Result getReservationByTimeStart(@RequestBody Reservation reservation){
-        Result result=new Result();
-
-        return result;
+    public List<StoreReservation> getReservationByTimeStart(String reservationDate){
+        reservationDate = "20190306";
+        List<StoreReservation> list =  reservationService.getStoreReservationByTimeStart(reservationDate);
+        return list;
     }
 
 

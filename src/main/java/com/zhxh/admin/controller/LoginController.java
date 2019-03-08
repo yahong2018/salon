@@ -1,12 +1,18 @@
 package com.zhxh.admin.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hy.salon.basic.entity.Job;
 import com.hy.salon.basic.entity.StuffJob;
+import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.StuffJobService;
 import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.misc.LoginResult;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.admin.service.RoleUserService;
+import com.zhxh.admin.service.SystemRoleService;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.Logger;
 import io.swagger.annotations.Api;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +42,12 @@ public class LoginController {
 
     @Resource(name="roleUserService")
     private RoleUserService roleUserService;
+
+    @Resource(name="systemRoleService")
+    private SystemRoleService systemRoleService;
+
+    @Resource(name="jobService")
+    private JobService jobService;
 
     @Resource(name = "stuffJobService")
     private StuffJobService stuffJobService;
@@ -50,7 +63,7 @@ public class LoginController {
             @ApiImplicitParam(paramType="query", name = "userCode", value = "用户账户", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "password", value = "密码", required = true, dataType = "String"),
     })
-    public LoginResult doLoginByApi( SystemUser user) {
+    public LoginResult doLoginByApi(@RequestBody SystemUser user) {
         LoginResult result = new LoginResult();
         try {
             String userCode = user.getUserCode();
@@ -58,9 +71,12 @@ public class LoginController {
             authenticateService.authenticate(userCode, password);
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
             long id = systemUser.getRecordId();
-            List<RoleUser> list = roleUserService.getRoleUserListById(id);
-            List<StuffJob> listJob = stuffJobService.getStuffJobList(id);
-            result.setListRoleUser(list);
+
+
+            List<SystemRole> list = systemRoleService.getRoleListById(id);
+            List<Job> listJob = jobService.getJobList(id);
+
+            result.setListRole(list);
             result.setListJob(listJob);
             result.setCode(LoginResult.LOGIN_CODE_OK);
             result.setMessage("登录成功！");
@@ -71,7 +87,6 @@ public class LoginController {
             result.setMessage(e.getMessage());
         }
         return result;
-
         /*
         客户端的调用方式
 
