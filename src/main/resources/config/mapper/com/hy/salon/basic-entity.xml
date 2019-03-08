@@ -72,22 +72,23 @@
     </resultMap>
     <!--产品-->
     <resultMap id="Product" type="com.hy.salon.basic.entity.Product" extends="com.zhxh.core.data.TraceableEntity">
-        <result column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="salon_id" property="salonId" jdbcType="BIGINT" />
         <result column="product_name" property="productName" jdbcType="VARCHAR" />
-        <result column="product_class" property="productClass" jdbcType="TIMESTAMP" />
-        <result column="product_series_id" property="productSeries_id" jdbcType="BIGINT" />
+        <result column="product_class" property="productClass" jdbcType="TINYINT" />
+        <result column="product_series_id" property="productSeriesId" jdbcType="BIGINT" />
         <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
         <result column="price" property="price" jdbcType="DOUBLE" />
         <result column="product_code" property="productCode" jdbcType="VARCHAR" />
-        <result column="specification" property="specification" jdbcType="BIGINT" />
-        <result column="specification_unit" property="specificationUnit" jdbcType="BIGINT" />
+        <result column="specification" property="specification" jdbcType="INTEGER" />
+        <result column="specification_unit" property="specificationUnit" jdbcType="TINYINT" />
+        <result column="product_unit_id" property="productUnitId" jdbcType="BIGINT" />
         <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
-        <result column="shelf_life" property="shelfLife" jdbcType="BIGINT" />
-        <result column="day_of_pre_warning" property="dayOfPreWarning" jdbcType="BIGINT" />
-        <result column="stock_of_pre_warning" property="stockOfPreWarning" jdbcType="BIGINT" />
-        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+        <result column="shelf_life" property="shelfLife" jdbcType="TINYINT" />
+        <result column="day_of_pre_warning" property="dayOfPreWarning" jdbcType="INTEGER" />
+        <result column="stock_of_pre_warning" property="stockOfPreWarning" jdbcType="INTEGER" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
         <result column="description" property="description" jdbcType="VARCHAR" />
+
     </resultMap>
     <!--调拨申请单-->
     <resultMap id="StockTransferApplication" type="com.hy.salon.basic.entity.StockTransferApplication" extends="com.zhxh.core.data.TraceableEntity">
