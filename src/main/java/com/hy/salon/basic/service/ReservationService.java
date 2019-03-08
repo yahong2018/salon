@@ -84,9 +84,12 @@ public class ReservationService {
             if(reservationlist!=null){
                 vo.setReservation(reservationlist.size());
             }
-            Map map = reservationDao.getStuffName(stuff.getRecordId());
-            String role = (String) map.get("job_name");
-            vo.setRole(role);
+            List<StuffVo> list = reservationDao.getStuffName(stuff.getRecordId());
+            if(list!=null){
+                for (StuffVo stuffVo : list) {
+                    vo.setRole(stuffVo.getRole());
+                }
+            }
             voList.add(vo);
         }
         return voList;
