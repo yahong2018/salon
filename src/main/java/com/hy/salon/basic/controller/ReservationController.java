@@ -2,6 +2,7 @@ package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.entity.Reservation;
 import com.hy.salon.basic.service.ReservationService;
+import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,25 +22,41 @@ public class ReservationController {
     @Resource(name = "reservationService")
     private ReservationService reservationService;
 
-    @ResponseBody
-    @RequestMapping(value = "getReservationById",method = RequestMethod.POST)
-    public Map getReservationById(){
-        Map map=new HashMap();
-        List<Reservation> reservation = reservationService.getReservationById();
-        map.put("msg","查询成功");
-        map.put("success",true);
-        map.put("msgcode","0");
-        map.put("data",reservation);
-        return map;
-    }
     /**
      * 按日期获取每个门店的预约汇总
      */
     @ResponseBody
-    @RequestMapping(value = "getReservationByTimeStart",method = RequestMethod.GET)
-    public Result getReservationByTimeStart(@RequestBody Reservation reservation){
+    @RequestMapping(value = "getReservationByTime",method = RequestMethod.GET)
+    public Result getReservationByTime(String timeStart ,String timeEnd){
         Result result=new Result();
-
+        try {
+            List<ReservationVo> list = reservationService.getReservationByTime(timeStart, timeEnd);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
+    }
+    /**
+     * 查询当天有预约员工列表
+     */
+    @ResponseBody
+    @RequestMapping(value = "getStuff",method = RequestMethod.GET)
+    public Result getStuff(Long recordId,String timeStart ,String timeEnd){
+        Result result=new Result();
+        try {
+            reservationService.getStuff(recordId,timeStart, timeEnd);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
         return result;
     }
 
