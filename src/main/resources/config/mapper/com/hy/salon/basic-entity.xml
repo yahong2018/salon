@@ -168,4 +168,12 @@
         <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />
         <result column="item_id" property="itemId" jdbcType="BIGINT" />
     </resultMap>
+
+
+    <resultMap id="ProductSeries" type="com.hy.salon.basic.entity.ProductSeries" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
+    </resultMap>
+
 </mapper>

@@ -100,4 +100,14 @@
 
     </select>
 
+
+    <select id="GET_PRODUCT_FOR_SERIES"  parameterType="java.util.Map" resultType="java.util.Map">
+
+   SELECT * FROM salon.product_series left join salon.product on product_series.record_id = product.product_series_id
+    where product_series.series_name = #{seriesName} and product.salon_id = #{salonId};
+
+    </select>
+
+
+
 </mapper>
