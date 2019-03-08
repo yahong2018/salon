@@ -82,5 +82,7 @@
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
     </resultMap>
 
-
+    <resultMap id="StuffVo" type="com.hy.salon.basic.vo.StuffVo">
+        <result column="job_name" property="role" jdbcType="VARCHAR" />
+    </resultMap>
 </mapper>
