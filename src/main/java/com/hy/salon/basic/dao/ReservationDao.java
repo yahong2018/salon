@@ -10,10 +10,10 @@ import java.util.Map;
 @Component("reservationDao")
 public class ReservationDao extends BaseDAOWithEntity<Reservation> {
 
-    public List<Reservation> getReservationById(){
-        return this.getSqlHelper().getSqlSession().selectList(GET_RESERVATION_BYID);
+    public Map getStuffName(Long recordId) {
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+        return (Map) this.getSqlHelper().getSqlSession().selectList(SQL_GET_STUFF_NAME, parameters);
     }
-
-
-    protected final static String GET_RESERVATION_BYID = "com.hy.salon.basic.dao.GET_RESERVATION_BYId";
+    protected final static String SQL_GET_STUFF_NAME = "com.hy.salon.basic.dao.GET_STUFF_NAME";
 }
