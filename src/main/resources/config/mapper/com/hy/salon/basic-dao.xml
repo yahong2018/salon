@@ -85,4 +85,19 @@
 
     </select>
 
+
+    <select id="GET_BIN_SERVICE_SERIES_FOR_PARENTId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.ServiceSeriesVo">
+
+    SELECT sss.*,svsi.record_id FROM salon.service_series as sss left join salon.vip_suite_item as svsi on sss.record_id = svsi.item_id
+    where sss.parent_id= #{parentId} and svsi.record_type = #{recordType} and svsi.vip_suite_id = #{vipSuiteId};
+
+    </select>
+
+
+    <select id="GET_SERVICE_SERIES_FOR_PARENTId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.ServiceSeriesVo">
+
+    SELECT * FROM salon.service_series where parent_id= #{parentId};
+
+    </select>
+
 </mapper>

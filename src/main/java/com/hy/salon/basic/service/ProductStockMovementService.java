@@ -50,4 +50,14 @@ public class ProductStockMovementService {
     public List<ProductStockMovementVo> findProductStock(Integer movementType,String createTime,String endTime) {
         return productStockMovementDao.findProductStock(movementType,createTime,endTime);
     }
+
+    public void updateProduct(ProductStockMovement productStockMovement) {
+        productStockMovementDao.insert(productStockMovement);
+        Map parameters = new HashMap();
+        parameters.put("productId", productStockMovement.getProductId());
+        String where = "product_id=#{productId}";
+        ProductStock one = ProductSockDAO.getOne(where, parameters);
+        one.setStockQty(productStockMovement.getMovementQty());
+        ProductSockDAO.update(one);
+    }
 }

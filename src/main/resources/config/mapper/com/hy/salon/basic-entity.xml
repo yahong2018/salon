@@ -151,6 +151,23 @@
         <result column="service_id" property="serviceId" jdbcType="BIGINT" />
         <result column="times" property="times" jdbcType="INTEGER" />
     </resultMap>
+
+    <resultMap id="VipSuite" type="com.hy.salon.basic.entity.VipSuite" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="suite_name" property="suiteName" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="vip_suite_status" property="vipSuiteStatus" jdbcType="TINYINT" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <resultMap id="VipSuiteItem" type="com.hy.salon.basic.entity.VipSuiteItem" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="vip_suite_id" property="vipSuiteId" jdbcType="BIGINT" />
+        <result column="record_type" property="recordType" jdbcType="TINYINT" />
+        <result column="discount_time" property="discountTime" jdbcType="TINYINT" />
+        <result column="discount_period" property="discountPeriod" jdbcType="TINYINT" />
+        <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />
+        <result column="item_id" property="itemId" jdbcType="BIGINT" />
+    </resultMap>
     <resultMap id="StuffJob" type="com.hy.salon.basic.entity.StuffJob" extends="com.zhxh.core.data.TraceableEntity">
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="job_id" property="jobId" jdbcType="BIGINT" />
