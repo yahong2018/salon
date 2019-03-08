@@ -100,10 +100,9 @@
 
     </select>
 
-    <select id="GET_STUFF_NAME"  parameterType="java.util.Map" resultType="java.util.Map">
+    <select id="GET_STUFF_NAME"  parameterType="java.util.Map" resultType="com.hy.salon.basic.vo.StuffVo">
         select
-            a.job_name,
-            a.job_level
+            a.job_name
         from job a
         LEFT JOIN stuff_job b on a.record_id=b.job_id
         where b.stuff_id=#{stuffId};
