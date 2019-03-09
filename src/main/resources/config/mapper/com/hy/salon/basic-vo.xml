@@ -73,15 +73,21 @@
         <result column="time_total" property="timeTotal" jdbcType="INTEGER" />
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
+
+
     <!--充值卡与类别-->
     <resultMap id="ServiceSeriesVo" type="com.hy.salon.basic.vo.ServiceSeriesVo" extends="com.zhxh.core.data.TraceableEntity">
         <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
     </resultMap>
+
+    <resultMap id="StuffVo" type="com.hy.salon.basic.vo.StuffVo">
+        <result column="job_name" property="role" jdbcType="VARCHAR" />
+    </resultMap>
     <resultMap id="StoreReservation" type="com.hy.salon.basic.vo.StoreReservation" >
         <result column="salon_name" property="salonName" jdbcType="VARCHAR" />
-        <result column="salon_id" property="salonId" jdbcType="VARCHAR" />
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
         <result column="reservation_count" property="reservationCount" jdbcType="VARCHAR" />
         <result column="is_holiday" property="isHoliday" jdbcType="VARCHAR" />
     </resultMap>

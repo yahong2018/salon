@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 public class StoreReservation  {
     private String salonName;
-    private String salonId;
+    private long salonId;
     private String reservationCount;
-    //private String isHoliday;
+    private String isHoliday;
 /*    private String salonName;
     private Long parentId;
     private String tel;

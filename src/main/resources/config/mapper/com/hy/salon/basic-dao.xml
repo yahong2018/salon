@@ -4,14 +4,6 @@
 <mapper namespace="com.hy.salon.basic.dao" >
 
 
-
-    <!--</insert>-->
-    <select id="GET_RESERVATION_BYId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Reservation">
-
-     SELECT * FROM salon.reservation
-
-    </select>
-
     <select id="GET_PRODUCT_LIST"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Product">
 
      SELECT * FROM salon.product WHERE salon_id=#{salonId};
@@ -99,6 +91,23 @@
     SELECT * FROM salon.service_series where parent_id= #{parentId};
 
     </select>
+
+
+    <select id="GET_PRODUCT_FOR_SERIES"  parameterType="java.util.Map" resultType="java.util.Map">
+
+   SELECT * FROM salon.product_series left join salon.product on product_series.record_id = product.product_series_id
+    where product_series.series_name = #{seriesName} and product.salon_id = #{salonId};
+
+    </select>
+
+    <select id="GET_STUFF_NAME"  parameterType="java.util.Map" resultType="com.hy.salon.basic.vo.StuffVo">
+        select
+            a.job_name
+        from job a
+        LEFT JOIN stuff_job b on a.record_id=b.job_id
+        where b.stuff_id=#{stuffId};
+    </select>
+
 
 
     <select id="GET_ROLE_BY_USERID"  parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemRole">
