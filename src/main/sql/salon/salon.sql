@@ -714,6 +714,7 @@ create table nurse_log
   stuff_id                         bigint                          not null,   -- 员工
   member_id                        bigint                          not null,   -- 会员
   log_content                      varchar(1000)                   not null,   -- 内容：里面包含有文字、表情(emoj)
+  log_type                         tinyint                         not null,   -- 日志类型 0 回访日志 1 护理日志
 
   -- parent_id                        bigint                          not null,   -- 前一主题的编号，如果是顶级主题，则parent_id = -1
   -- pic                      照片存储在照片表里面
