@@ -894,6 +894,26 @@ create table stuff_integral_record
   index idx_stuff_integral_record_02(get_by_id)
 )comment '员工的积分产生记录表';
 
+create table work_summary
+(
+  record_id                     bigint              atuto_increment          not null,
+  stuff_id                      bigint                                       not null, -- 员工 id
+  summary                       varchar(1000)                                not null, -- 本月总结
+  plan                          varchar(1000)                                not null, -- 下月计划
+  cur_month                     datetime                                     not null, -- 报告的当前年月
+  summary_type                  tinyint                                      not null, -- 总结类型 0 月总结
+
+  create_date                   datetime                                     not null,--  在什么时候
+  create_by                     bigint                                       not null,--
+  update_date                   datetime                                     null,--
+  update_by                     bigint                                       null,--
+  opt_lock                      int                                          null,
+
+  primary key (record_id),
+  index idx_work_summary_01(stuff_id),
+  index idx_work_summary_02(cur_month)
+)comment '工作总结表（月度总结）';
+
 
 #
 #
