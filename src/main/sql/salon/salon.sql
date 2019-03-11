@@ -299,7 +299,7 @@ create table product_series
 create table product
 (
   record_id                        bigint       auto_increment      not null,
-  salon_id                         bigint                           not null,   -- 门店
+  store_id                         bigint                           not null,   -- 门店
   product_name                     varchar(50)                      not null,   -- 产品名称
   product_class                    tinyint                          not null,   -- 产品类型: 0.客装   1.院装   2.易耗品
   product_series_id                bigint                           not null,   -- 产品品牌/系列
