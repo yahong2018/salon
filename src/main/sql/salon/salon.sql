@@ -2,7 +2,7 @@ create table job
 (
   record_id                        bigint      auto_increment      not null,
   job_name                         varchar(50)                     not null,    --  职务名称
-  job_level                        tinyint                         not null,    --  职位等级
+  job_level                        tinyint                         not null,    --  职位等级 0 院长 1 店长 2 前台 3 顾问 4 美容师
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
