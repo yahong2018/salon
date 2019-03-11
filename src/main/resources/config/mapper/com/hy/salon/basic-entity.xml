@@ -88,6 +88,7 @@
         <result column="stock_of_pre_warning" property="stockOfPreWarning" jdbcType="INTEGER" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
         <result column="description" property="description" jdbcType="VARCHAR" />
+
     </resultMap>
     <!--调拨申请单-->
     <resultMap id="StockTransferApplication" type="com.hy.salon.basic.entity.StockTransferApplication" extends="com.zhxh.core.data.TraceableEntity">
@@ -176,6 +177,39 @@
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
     </resultMap>
 
+    <!--会员-->
+    <resultMap id="Member" type="com.hy.salon.basic.entity.Member" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="initial_store_id" property="initialStoreId" jdbcType="BIGINT" />
+        <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="TINYINT" />
+        <result column="weixin" property="weixin" jdbcType="VARCHAR" />
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+        <result column="zodiac" property="zodiac" jdbcType="TINYINT" />
+        <result column="member_grade_id" property="memberGradeId" jdbcType="TINYINT" />
+        <result column="blood_type" property="bloodType" jdbcType="TINYINT" />
+        <result column="height" property="height" jdbcType="BIGINT" />
+        <result column="weight" property="weight" jdbcType="BIGINT" />
+        <result column="last_day_of_menses" property="lastDayOfMenses" jdbcType="TIMESTAMP" />
+        <result column="cycle_of_menses" property="cycleOfMenses" jdbcType="TINYINT" />
+        <result column="period_of_menses" property="periodOfMenses" jdbcType="TINYINT" />
+        <result column="remark_of_menses" property="remarkOfMenses" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="city_id" property="cityId" jdbcType="BIGINT" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="member_code" property="memberCode" jdbcType="VARCHAR" />
+
+        <result column="introducer" property="introducer" jdbcType="VARCHAR" />
+        <result column="primary_beautician" property="primaryBeautician" jdbcType="BIGINT" />
+        <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="integral" property="integral" jdbcType="DOUBLE" />
+        <result column="debt" property="debt" jdbcType="DOUBLE" />
+        <result column="amount_consumer" property="amountConsumer" jdbcType="DOUBLE" />
+        <result column="amount_charge" property="amountCharge" jdbcType="DOUBLE" />
+    </resultMap>
     <resultMap id="StuffJob" type="com.hy.salon.basic.entity.StuffJob" extends="com.zhxh.core.data.TraceableEntity">
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="job_id" property="jobId" jdbcType="BIGINT" />

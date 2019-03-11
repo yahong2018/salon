@@ -93,4 +93,23 @@ public class ReservationController {
         }
         return result;
     }
+    /**
+     * 查询员工下所有会员预约情况列表
+     */
+    @ResponseBody
+    @RequestMapping(value = "getReservationList",method = RequestMethod.GET)
+    public Result getReservationList(Long stuffId,String timeStart ,String timeEnd){
+        Result result=new Result();
+        try {
+            List<ReservationVo> list = reservationService.getReservationList(stuffId, timeStart, timeEnd);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
+    }
 }

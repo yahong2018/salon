@@ -713,9 +713,10 @@ create table nurse_log
   record_id                        bigint        auto_increment    not null,
   stuff_id                         bigint                          not null,   -- 员工
   member_id                        bigint                          not null,   -- 会员
-  log_content                      varchar(1000)                   not null,   -- 内容：里面包含有文字、表情(emoj)、位置等，是否需要blob?
-  parent_id                        bigint                          not null,   -- 前一主题的编号，如果是顶级主题，则parent_id = -1
+  log_content                      varchar(1000)                   not null,   -- 内容：里面包含有文字、表情(emoj)
+  log_type                         tinyint                         not null,   -- 日志类型 0 回访日志 1 护理日志
 
+  -- parent_id                        bigint                          not null,   -- 前一主题的编号，如果是顶级主题，则parent_id = -1
   -- pic                      照片存储在照片表里面
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
@@ -727,7 +728,22 @@ create table nurse_log
   index idx_nurse_log_01(stuff_id),
   index idx_nurse_log_02(member_id),
   index idx_nurse_log_03(create_date)
-)comment '护理日志';
+)comment '回访日志/护理日志';
+
+create table nurse_log_model
+(
+  record_id                       bigint              auto_increment        not null,
+  model_content                   varchar(1000)                             not null, -- 模版内容
+
+  create_date                      datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
+
+  primary key (record_id),
+  index nurse_log_model_01(model_content)
+)comment '日志模版内容';
 
 #
 #  不需要仓库，因为每个门店只有1个仓库
@@ -877,6 +893,26 @@ create table stuff_integral_record
   index idx_stuff_integral_record_01(stuff_id),
   index idx_stuff_integral_record_02(get_by_id)
 )comment '员工的积分产生记录表';
+
+create table work_summary
+(
+  record_id                     bigint              atuto_increment          not null,
+  stuff_id                      bigint                                       not null, -- 员工 id
+  summary                       varchar(1000)                                not null, -- 本月总结
+  plan                          varchar(1000)                                not null, -- 下月计划
+  cur_month                     datetime                                     not null, -- 报告的当前年月
+  summary_type                  tinyint                                      not null, -- 总结类型 0 月总结  1 日总结
+
+  create_date                   datetime                                     not null,--  在什么时候
+  create_by                     bigint                                       not null,--
+  update_date                   datetime                                     null,--
+  update_by                     bigint                                       null,--
+  opt_lock                      int                                          null,
+
+  primary key (record_id),
+  index idx_work_summary_01(stuff_id),
+  index idx_work_summary_02(cur_month)
+)comment '工作总结表';
 
 
 #

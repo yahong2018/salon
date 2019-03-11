@@ -1,9 +1,11 @@
 package com.hy.salon.basic.service;
 
+import com.hy.salon.basic.dao.MemberDao;
 import com.hy.salon.basic.dao.ReservationDao;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.Member;
 import com.hy.salon.basic.entity.Reservation;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
@@ -26,6 +28,10 @@ public class ReservationService {
     private SalonDao salonDao;
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
+
+    @Resource(name = "memberDao")
+    private MemberDao memberDao;
+
     public List<ReservationVo> getReservationByTime(String timeStart, String timeEnd) {
         List<ReservationVo> listVo=new ArrayList<>();
         List<Salon> salonList = salonDao.getSalon();
@@ -100,6 +106,36 @@ public class ReservationService {
                 }
             }
             voList.add(vo);
+        }
+        return voList;
+    }
+
+    public List<ReservationVo> getReservationList(Long stuffId, String timeStart, String timeEnd) {
+        List<ReservationVo> voList=new ArrayList<>();
+        Map parameter = new HashMap();
+        parameter.put("stuffId", stuffId);
+        parameter.put("timeStart",timeStart);
+        parameter.put("timeEnd", timeEnd);
+        Map rMap = new HashMap();
+        String rwhere="stuff_id=#{stuffId} and time_start between #{timeStart} and #{timeEnd}";
+        rMap.put("where", rwhere);
+        List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);
+        if(reservationlist!=null){
+            for (Reservation reservation : reservationlist) {
+                ReservationVo vo=new ReservationVo();
+                vo.setMemberId(reservation.getMemberId());
+                vo.setStuffId(reservation.getStuffId());
+                vo.setRoomId(reservation.getRoomId());
+                vo.setTimeStart(reservation.getTimeStart());
+                vo.setTimeEnd(reservation.getTimeEnd());
+                vo.setRecordStatus(reservation.getRecordStatus());
+                String where = "record_id=#{recordId}";
+                Map<String, Object> parameters = new HashMap<>();
+                parameters.put("recordId", reservation.getMemberId());
+                Member member = memberDao.getOne(where, parameters);
+                vo.setMemberName(member.getMemberName());
+                voList.add(vo);
+            }
         }
         return voList;
     }
