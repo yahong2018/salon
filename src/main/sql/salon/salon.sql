@@ -136,6 +136,7 @@ create table store_room
 create table service_series
 (
   record_id                        bigint          auto_increment    not null,
+  store_id                         bigint                            not null,  -- 所属门店
   series_name                      varchar(50)                       not null,   -- 系列/类别名称
   parent_id                        bigint                            not null,   -- 项目类别：如果本身是一级类别，则parent_id=0
   record_status                    tinyint                           not null,   -- 状态： 0. 启用   1. 停用
@@ -156,6 +157,7 @@ create table service_series
 create table service
 (
   record_id                        bigint      auto_increment      not null,
+  store_id                         bigint                          not null,    -- 所属门店
   service_name                     varchar(50)                     not null,    -- 项目名称
   service_series_id                bigint                          not null,    -- 项目类别/系列
   card_type                        tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡
@@ -189,6 +191,7 @@ create table service
 create table service_suite
 (
   record_id                        bigint     auto_increment         not null,
+  store_id                         bigint                            not null,     -- 所属门店
   suite_name                       varchar(50)                       not null,     -- 套卡名称
   price_market                     double(8,2)                       not null,     -- 市场价格:汇总service_suite_item里面各项的单价
   price                            double(8,2)                       not null,     -- 优惠价格/开卡价格
@@ -215,7 +218,7 @@ create table service_suite
 create table service_suite_item
 (
   record_id                        bigint    auto_increment       not null,
-  service_suite_id                 bigint                         not null, //套卡id
+  service_suite_id                 bigint                         not null,   -- 套卡id
   service_id                       bigint                         not null,   -- 服务项目编号
   times                            int                            not null,   -- 次数
 
@@ -236,6 +239,7 @@ create table service_suite_item
 create table vip_suite
 (
   record_id                        bigint     auto_increment       not null,
+  store_id                         bigint                          not null,    -- 所属门店
   suite_name                       varchar(50)                     not null,    -- 充值卡名称
   price                            double(8,2)                     not null,    -- 充值面额
   vip_suite_status                 tinyint                         not null,    -- 记录状态：0.启用   1.停用
@@ -276,6 +280,7 @@ create table vip_suite_item
 create table product_series
 (
   record_id                        bigint      auto_increment      not null,
+  store_id                         bigint                          not null,   -- 所属门店
   series_name                      varchar(50)                     not null,   -- 品牌/系列名称
   parent_id                        bigint                          not null,   -- 所属品牌:如果本身为品牌，则parent_id=0
   record_status                    tinyint                         not null,   -- 记录状态:0.启用  1.停用
@@ -294,7 +299,7 @@ create table product_series
 create table product
 (
   record_id                        bigint       auto_increment      not null,
-  salon_id                         bigint                           not null,   -- 美容院
+  salon_id                         bigint                           not null,   -- 门店
   product_name                     varchar(50)                      not null,   -- 产品名称
   product_class                    tinyint                          not null,   -- 产品类型: 0.客装   1.院装   2.易耗品
   product_series_id                bigint                           not null,   -- 产品品牌/系列
