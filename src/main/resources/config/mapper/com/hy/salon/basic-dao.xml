@@ -108,6 +108,27 @@
         where b.stuff_id=#{stuffId};
     </select>
 
+    <select id="GET_SCHEDULE_BY_TIME"  parameterType="java.util.Map" resultType="com.hy.salon.basic.vo.ShiftVo">
+        SELECT
+            a.record_id as recordId,
+            a.store_id as storeId,
+            a.shift_type as shiftType,
+            a.time_start as timeStart,
+            a.time_end as timeEnd,
+            b.stuff_id as stuffId,
+            c.stuff_name as stuffName,
+            b.shift_id as shiftId,
+            b.`day` as day
+        FROM
+            shift a
+        LEFT JOIN `schedule` b ON a.shift_type = b.shift_id
+
+        LEFT JOIN stuff c ON b.stuff_id = c.record_id
+        WHERE
+            a.store_id=#{storeId}
+        and b.`day` between #{timeStart} and #{timeEnd};
+    </select>
+
 
 
     <select id="GET_ROLE_BY_USERID"  parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemRole">

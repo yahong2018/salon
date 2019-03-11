@@ -210,6 +210,33 @@
         <result column="amount_consumer" property="amountConsumer" jdbcType="DOUBLE" />
         <result column="amount_charge" property="amountCharge" jdbcType="DOUBLE" />
     </resultMap>
+
+    <!--0 回访日志 1 护理日志-->
+    <resultMap id="NurseLog" type="com.hy.salon.basic.entity.NurseLog" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="log_content" property="logContent" jdbcType="VARCHAR" />
+        <result column="log_type" property="logType" jdbcType="TINYINT" />
+    </resultMap>
+
+    <!--日志模版内容-->
+    <resultMap id="NurseLogModel" type="com.hy.salon.basic.entity.NurseLogModel" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="model_content" property="modelContent" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <!--工作总结-->
+    <resultMap id="WorkSummary" type="com.hy.salon.basic.entity.WorkSummary" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="summary" property="summary" jdbcType="VARCHAR" />
+        <result column="plan" property="plan" jdbcType="VARCHAR" />
+        <result column="cur_month" property="curMonth" jdbcType="TIMESTAMP" />
+        <result column="summary_type" property="summaryType" jdbcType="TINYINT" />
+    </resultMap>
+
     <resultMap id="StuffJob" type="com.hy.salon.basic.entity.StuffJob" extends="com.zhxh.core.data.TraceableEntity">
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="job_id" property="jobId" jdbcType="BIGINT" />
