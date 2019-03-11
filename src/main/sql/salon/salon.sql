@@ -901,7 +901,7 @@ create table work_summary
   summary                       varchar(1000)                                not null, -- 本月总结
   plan                          varchar(1000)                                not null, -- 下月计划
   cur_month                     datetime                                     not null, -- 报告的当前年月
-  summary_type                  tinyint                                      not null, -- 总结类型 0 月总结
+  summary_type                  tinyint                                      not null, -- 总结类型 0 月总结  1 日总结
 
   create_date                   datetime                                     not null,--  在什么时候
   create_by                     bigint                                       not null,--
@@ -912,7 +912,7 @@ create table work_summary
   primary key (record_id),
   index idx_work_summary_01(stuff_id),
   index idx_work_summary_02(cur_month)
-)comment '工作总结表（月度总结）';
+)comment '工作总结表';
 
 
 #
