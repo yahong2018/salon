@@ -6,6 +6,10 @@ import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.StoreReservation;
 import com.hy.salon.basic.vo.StuffVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/reservation")
+@Api(value = "ReservationController| 預約控制器")
 public class ReservationController {
     @Resource(name = "reservationService")
     private ReservationService reservationService;
@@ -59,6 +64,11 @@ public class ReservationController {
      */
     @ResponseBody
     @RequestMapping(value = "getReservationByTime",method = RequestMethod.GET)
+    @ApiOperation(value="按日期获取每个门店的预约汇总", notes="按日期获取每个门店的预约汇总")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+    })
     public Result getReservationByTime(String timeStart ,String timeEnd){
         Result result=new Result();
         try {
@@ -79,6 +89,12 @@ public class ReservationController {
      */
     @ResponseBody
     @RequestMapping(value = "getStuff",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天有预约员工列表", notes="查询当天有预约员工列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+    })
     public Result getStuff(Long recordId,String timeStart ,String timeEnd){
         Result result=new Result();
         try {
@@ -98,6 +114,12 @@ public class ReservationController {
      */
     @ResponseBody
     @RequestMapping(value = "getReservationList",method = RequestMethod.GET)
+    @ApiOperation(value="查询员工下所有会员预约情况列表", notes="查询员工下所有会员预约情况列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+    })
     public Result getReservationList(Long stuffId,String timeStart ,String timeEnd){
         Result result=new Result();
         try {
