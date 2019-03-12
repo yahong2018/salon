@@ -9,11 +9,13 @@ import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.entity.Shift;
 import com.hy.salon.basic.entity.TimeSheet;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
-
+@Transactional(rollbackFor = Exception.class)
 @Component("attendanceSheetService")
 public class AttendanceSheetService {
 
@@ -33,16 +35,18 @@ public class AttendanceSheetService {
     public void insert(AttendanceSheet condition,Long storeId){
         //签到表插入一条数据
         attendanceSheetDao.insert(condition);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //查询出勤表是否有记录
-        String where = "stuff_id=#{stuffId} and time_start=#{timeStart}";
+        String where = "stuff_id=#{stuffId} and day=#{day}";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("stuffId", condition.getStuffId());
-        parameters.put("timeStart", condition.getAttendanceTime());
+        parameters.put("day", sdf.format(condition.getAttendanceTime()));
         TimeSheet one = timeSheetDao.getOne(where, parameters);
         //查询该员工的排班信息
-        String scheduleWhere = "stuff_id=#{stuffId}";
+        String scheduleWhere = "stuff_id=#{stuffId} and day=#{day}";
         Map<String, Object> scheduleParameter = new HashMap<>();
         scheduleParameter.put("stuffId", condition.getStuffId());
+        scheduleParameter.put("day", sdf.format(condition.getAttendanceTime()));
         Schedule schedule = scheduleDao.getOne(scheduleWhere, scheduleParameter);
         Shift shift=null;
         if(schedule.getShiftId()!=-1){
