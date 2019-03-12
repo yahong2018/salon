@@ -245,4 +245,32 @@
         <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="day" property="day" jdbcType="DATE" />
     </resultMap>
+
+
+    <!--考勤表-->
+    <resultMap id="TimeSheet" type="com.hy.salon.basic.entity.TimeSheet" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="day" property="day" jdbcType="DATE" />
+        <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
+        <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+        <result column="time_sheet_type" property="timeSheetType" jdbcType="TINYINT" />
+    </resultMap>
+
+    <!--排班信息表-->
+    <resultMap id="Schedule" type="com.hy.salon.basic.entity.Schedule" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="shift_id" property="shiftId" jdbcType="BIGINT" />
+        <result column="day" property="day" jdbcType="DATE" />
+    </resultMap>
+
+    <!--班次-->
+    <resultMap id="Shift" type="com.hy.salon.basic.entity.Shift" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
+        <result column="shift_type" property="shiftType" jdbcType="TINYINT" />
+        <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
+        <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+    </resultMap>
 </mapper>
