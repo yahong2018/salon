@@ -77,7 +77,6 @@ create table stuff
   weixin                           varchar(50)                     null,      -- 微信
   qq                               varchar(50)                     null,      -- QQ
   address                          varchar(120)                    null,      -- 联系地址
-  system_role_id                   bigint                          not null,  -- 所属系统角色
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
@@ -919,6 +918,16 @@ create table work_summary
   index idx_work_summary_02(cur_month)
 )comment '工作总结表';
 
+create table role_action
+(
+  record_id                    bigint                auto_increment           not null,
+  stuff_id                     bigint                                         not null,
+  system_user_id               bigint                                         not null,
+
+  primary key (record_id),
+  index idx_role_action_01(stuff_id),
+  index idx_role_action_02(system_user_id)
+)comment '角色权限映射表'
 
 #
 #
