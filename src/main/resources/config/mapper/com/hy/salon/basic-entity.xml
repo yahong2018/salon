@@ -10,6 +10,7 @@
 
     <resultMap id="Stuff" type="com.hy.salon.basic.entity.Stuff"  extends="com.zhxh.core.data.TraceableEntity">
         <result property="recordId" column="record_id"/>
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result property="stuffName" column="stuff_name"/>
         <result property="tel" column="tel"/>
         <result property="gender" column="gender"/>
@@ -102,6 +103,7 @@
 
     <resultMap id="ServiceSeries" type="com.hy.salon.basic.entity.ServiceSeries"
                extends="com.zhxh.core.data.TraceableEntity" >
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
@@ -154,6 +156,7 @@
     </resultMap>
 
     <resultMap id="VipSuite" type="com.hy.salon.basic.entity.VipSuite" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="suite_name" property="suiteName" jdbcType="VARCHAR" />
         <result column="price" property="price" jdbcType="DOUBLE" />
         <result column="vip_suite_status" property="vipSuiteStatus" jdbcType="TINYINT" />
@@ -172,6 +175,7 @@
 
 
     <resultMap id="ProductSeries" type="com.hy.salon.basic.entity.ProductSeries" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
@@ -272,5 +276,17 @@
         <result column="shift_type" property="shiftType" jdbcType="TINYINT" />
         <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
         <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="Pictures" type="com.hy.salon.basic.entity.Pictures" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="master_data_id" property="masterDataId" jdbcType="BIGINT" />
+        <result column="record_type" property="recordType" jdbcType="TINYINT" />
+        <result column="pic_type" property="picType" jdbcType="TINYINT" />
+        <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="RoleAction" type="com.hy.salon.basic.entity.RoleAction" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="stuff_id" jdbcType="BIGINT" property="stuffId" />
+        <result column="system_user_id" jdbcType="BIGINT" property="systemUserId" />
     </resultMap>
 </mapper>
