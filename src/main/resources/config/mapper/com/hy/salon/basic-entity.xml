@@ -233,7 +233,7 @@
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="summary" property="summary" jdbcType="VARCHAR" />
         <result column="plan" property="plan" jdbcType="VARCHAR" />
-        <result column="cur_month" property="curMonth" jdbcType="TIMESTAMP" />
+        <result column="cur_month" property="curMonth" jdbcType="DATE" />
         <result column="summary_type" property="summaryType" jdbcType="TINYINT" />
     </resultMap>
 
