@@ -51,11 +51,11 @@ public class ScheduleController {
         return result;
     }
     /**
-     * 修改员工的排班信息
+     * 修改或保存员工的排班信息
      */
     @ResponseBody
     @RequestMapping(value = "updateStuffSchedule",method = RequestMethod.POST)
-    @ApiOperation(value="修改员工的排班信息", notes="修改员工的排班信息")
+    @ApiOperation(value="修改或保存员工的排班信息", notes="修改或保存员工的排班信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据", required = true, dataType = "List<Schedule>")
     })
