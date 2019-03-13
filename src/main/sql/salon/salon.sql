@@ -72,6 +72,7 @@ create table stuff
   gender                           tinyint                         not null,  -- 性别：    0.男     1.女
   entry_time                       datetime                        not null,  -- 入职时间
   work_age                         double(3,1)                     not null,  -- 工作年限
+  birth_day                        datetime                        not null,  -- 生日
   special                          varchar(120)                    null,      -- 特长
   dream                            varchar(120)                    null,      -- 梦想
   weixin                           varchar(50)                     null,      -- 微信
