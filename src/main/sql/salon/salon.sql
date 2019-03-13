@@ -869,22 +869,22 @@ create table stock_transfer_application_item
   index idx_stock_transfer_application_item_02(product_id)
 )comment '调拨明细';
 
-create table stuff_integral
+create table stuff_score
 (
   record_id                     bigint       auto_increment               not null,
   stuff_id                      bigint                                    not null, -- 哪个员工
   existing                      bigint                                    not null, -- 现有的积分
 
   primary key (record_id),
-  index idx_stuff_integral_01(stuff_id)
+  index idx_stuff_score_01(stuff_id)
 
 )comment '员工的积分表';
 
-create table stuff_integral_record
+create table stuff_score_record
 (
   record_id                     bigint        auto_increment              not null,
   stuff_id                      bigint                                    not null, -- 哪个员工
-  metter                        varchar(500)                              not null, -- 在哪里，做了些什么事
+  matter                        varchar(500)                              not null, -- 在哪里，做了些什么事
   get_point                     bigint                                    not null, -- 得到的积分总数
   get_by_id                     bigint                                    not null, -- 谁给的 ,这个id来源于员工表， 一般是店长或者院长给的
 
@@ -895,8 +895,8 @@ create table stuff_integral_record
   opt_lock                      int                                       null,
 
   primary key (record_id),
-  index idx_stuff_integral_record_01(stuff_id),
-  index idx_stuff_integral_record_02(get_by_id)
+  index idx_stuff_score_record_01(stuff_id),
+  index idx_stuff_score_record_02(get_by_id)
 )comment '员工的积分产生记录表';
 
 create table work_summary
