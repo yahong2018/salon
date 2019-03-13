@@ -8,13 +8,13 @@ import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.TimeSheet;
 import com.hy.salon.basic.vo.TimeSheetVo;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Transactional(rollbackFor = Exception.class)
 @Component("timeSheetService")
 public class TimeSheetService {
     @Resource(name = "salonDao")
