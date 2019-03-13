@@ -159,4 +159,11 @@
         from salon s  join store_room room on s.record_id=room.store_id) as Room  join reservation reserva on Room.roomId = reserva.room_id
          where DATE_FORMAT(reserva.time_start,'%Y%m%d')=#{timeStart} GROUP BY Room.sName,Room.recordId
     </select>
+
+    <select id="GET_STUFF_BY_USER"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Stuff">
+        SELECT * FROM salon.stuff as ss where ss.record_id = (SELECT sra.stuff_id FROM salon.role_action as sra where sra.system_user_id= #{userId} );
+    </select>
+
+
+
 </mapper>
