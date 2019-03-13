@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.ServiceSeriesDAO;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.dao.VipSuiteDAO;
 import com.hy.salon.basic.dao.VipSuiteItemDAO;
 import com.hy.salon.basic.entity.ServiceSeries;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.VipSuite;
 import com.hy.salon.basic.entity.VipSuiteItem;
 import com.hy.salon.basic.vo.Result;
@@ -25,9 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/vipSuite")
@@ -46,6 +46,8 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
 
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
 
 
     @Override
@@ -71,6 +73,9 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         //先写死，后面改
         String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
         try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            condition.setStoreId(stuff.getStoreId());
             int ii =vipSuiteDao.insert(condition);
             if(ii != 0){
                 //解析绑定json，绑定关系
@@ -246,7 +251,8 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
         try {
             SystemUser user = authenticateService.getCurrentLogin();
-            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(user.getRecordId());
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
 //            Map m2=new HashMap<String, Object>();
             JSONArray jsonArr=new JSONArray();
             List<ServiceSeriesVo> serSeries=new ArrayList<>();

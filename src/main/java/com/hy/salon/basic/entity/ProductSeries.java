@@ -12,6 +12,8 @@ public class ProductSeries extends TraceableEntity<Long> {
 
     private String seriesName;
 
+    private Long storeId;
+
     private Long parentId;
 
     private Byte recordStatus;

@@ -12,10 +12,10 @@ import java.util.Map;
 public class ServiceSuiteDAO extends BaseDAOWithEntity<ServiceSuite> {
 
 
-    public List<ServiceSuite> querySuitItemForCreateId(Long Id){
-        String where="create_by = #{Id}";
+    public List<ServiceSuite> querySuitItemForCreateId(Long storeId){
+        String where="store_id = #{storeId}";
         Map parameters = new HashMap();
-        parameters.put("Id", Id);
+        parameters.put("storeId", storeId);
         return this.getByWhere(where,parameters);
 
 
@@ -26,8 +26,6 @@ public class ServiceSuiteDAO extends BaseDAOWithEntity<ServiceSuite> {
         Map parameters = new HashMap();
         parameters.put("Id", Id);
         return this.getOne(where,parameters);
-
-
     }
 
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class VipSuite extends TraceableEntity<Long> {
 
-
+    private Long storeId;
 
     private String suiteName;
 

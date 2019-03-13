@@ -1,12 +1,15 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.ServiceDAO;
-import com.hy.salon.basic.dao.ServiceSuiteDAO;
-import com.hy.salon.basic.dao.ServiceSuiteItemDAO;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.ServiceSeries;
 import com.hy.salon.basic.entity.ServiceSuite;
 import com.hy.salon.basic.entity.ServiceSuiteItem;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.vo.Result;
+import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.hy.salon.basic.vo.ServiceVo;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
@@ -18,9 +21,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +47,13 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
     @Resource(name = "serviceDao")
     private ServiceDAO serviceDao;
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
+    @Resource(name = "serviceSeriesDao")
+    private ServiceSeriesDAO serviceSeriesDao;
+
     @Override
     protected BaseDAOWithEntity<ServiceSuite> getCrudDao() {
         return serviceSuiteDao;
@@ -49,7 +61,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
 
     @ResponseBody
-    @RequestMapping("/addServiceSuite")
+    @RequestMapping(value="addServiceSuite",method = RequestMethod.POST)
     @ApiOperation(value="添加套卡", notes="添加套卡")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "suiteName", value = "套卡名称", required = true, dataType = "String"),
@@ -59,22 +71,36 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "timeExpired", value = "失效日期：如果为null，则表示无期限", required = true, dataType = "Date"),
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "套卡状态：0 正常   1.停用     2.失效（即已过了有效期）", required = true, dataType = "Byte"),
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "serviceList", value = "绑定的项目（项目号用逗号隔开）", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "times", value = "次数", required = true, dataType = "int")
+            @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
+
     })
-    public Result addServiceSuite(ServiceSuite condition,String serviceList,Integer times){
+    public Result addServiceSuite(ServiceSuite condition){
         Result r= new Result();
         try {
-        serviceSuiteDao.insert(condition);
-        //插入套卡项目关联表
-        String[] str = serviceList.split(",");
-        for(String s:str){
-            ServiceSuiteItem serviceSuiteItem=new ServiceSuiteItem();
-            serviceSuiteItem.setTimes(times);
-            serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
-            serviceSuiteItem.setServiceId(Long.parseLong(s));
-            serviceSuiteItemDao.insert(serviceSuiteItem);
-        }
+            //先写死，后面改
+            String bindingJson="[{\"serviceId\": 1,\"times\": 10},{\"serviceId\": 5,\"times\": 10},{\"serviceId\": 8,\"times\": 10}]";
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            condition.setStoreId(stuff.getStoreId());
+            int ii=serviceSuiteDao.insert(condition);
+            if(ii!=0){
+                //解析绑定json，绑定关系
+                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
+                if(jsonArr != null){
+                    for(int i=0;i<jsonArr.size();i++){
+                        JSONObject jsonObj=jsonArr.getJSONObject(i);
+                        String serviceId=jsonObj.getString("serviceId");
+                        String times=jsonObj.getString("times");
+                        ServiceSuiteItem serviceSuiteItem=new ServiceSuiteItem();
+                        serviceSuiteItem.setTimes(Integer.parseInt(times));
+                        serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
+                        serviceSuiteItem.setServiceId(Long.parseLong(serviceId));
+                        serviceSuiteItemDao.insert(serviceSuiteItem);
+
+                    }
+                }
+            }
+
             r.setMsg("插入成功");
             r.setSuccess(true);
             r.setMsgcode(StatusUtil.OK);
@@ -94,6 +120,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
     @ApiOperation(value="修改套卡", notes="修改套卡")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "所属门店", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "suiteName", value = "套卡名称", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "priceMarket", value = "市场价格", required = true, dataType = "double"),
             @ApiImplicitParam(paramType="query", name = "price", value = "优惠价格", required = true, dataType = "double"),
@@ -101,29 +128,36 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "timeExpired", value = "失效日期：如果为null，则表示无期限", required = true, dataType = "Date"),
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "套卡状态：0 正常   1.停用     2.失效（即已过了有效期）", required = true, dataType = "Byte"),
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "serviceList", value = "绑定的项目（项目号用逗号隔开）", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "times", value = "次数", required = true, dataType = "int")
+            @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
     })
-    public Result updateServiceSuite(ServiceSuite condition,String serviceList,Integer times){
+    public Result updateServiceSuite(ServiceSuite condition){
         Result r= new Result();
         try {
-            serviceSuiteDao.update(condition);
-
-            String[] str = serviceList.split(",");
-            //删除旧绑定，重新绑定
-            List<ServiceSuiteItem> suitItem=serviceSuiteItemDao.querySuitItemForId(condition.getRecordId());
-            if(!suitItem.isEmpty()){
-                for(ServiceSuiteItem s:suitItem){
-                    serviceSuiteItemDao.delete(s);
+            //先写死，后面改
+            String bindingJson="[{\"serviceId\":5,\"times\": 12},{\"serviceId\": 6,\"times\": 12},{\"serviceId\": 7,\"times\": 12}]";
+            int ii =serviceSuiteDao.update(condition);
+            if(ii!=0){
+                //删除旧绑定，重新绑定
+                List<ServiceSuiteItem> suitItem=serviceSuiteItemDao.querySuitItemForId(condition.getRecordId());
+                if(!suitItem.isEmpty()){
+                    for(ServiceSuiteItem s:suitItem){
+                        serviceSuiteItemDao.delete(s);
+                    }
                 }
-            }
-            for(String s:str){
-                ServiceSuiteItem serviceSuiteItem=new ServiceSuiteItem();
-                serviceSuiteItem.setTimes(times);
-                serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
-                serviceSuiteItem.setServiceId(Long.parseLong(s));
-                serviceSuiteItemDao.insert(serviceSuiteItem);
-
+                //解析绑定json，绑定关系
+                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
+                if(jsonArr != null){
+                    for(int i=0;i<jsonArr.size();i++){
+                        JSONObject jsonObj=jsonArr.getJSONObject(i);
+                        String serviceId=jsonObj.getString("serviceId");
+                        String times=jsonObj.getString("times");
+                        ServiceSuiteItem serviceSuiteItem=new ServiceSuiteItem();
+                        serviceSuiteItem.setTimes(Integer.parseInt(times));
+                        serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
+                        serviceSuiteItem.setServiceId(Long.parseLong(serviceId));
+                        serviceSuiteItemDao.insert(serviceSuiteItem);
+                    }
+                }
             }
 
             r.setMsg("修改成功");
@@ -146,7 +180,8 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
         Result r= new Result();
         try {
             SystemUser user = authenticateService.getCurrentLogin();
-            List<ServiceSuite> suiteList= serviceSuiteDao.querySuitItemForCreateId(user.getRecordId());
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            List<ServiceSuite> suiteList= serviceSuiteDao.querySuitItemForCreateId(stuff.getStoreId());
 
 
             r.setData(suiteList);
@@ -226,7 +261,59 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
     }
 
 
+    /**
+     * 获取已绑定该套卡的服务项目列表
+     */
+    @ResponseBody
+    @RequestMapping("/queryBinService")
+    @ApiOperation(value="获取已绑定该套卡的服务项目列表", notes="通过套卡Id获取已绑定该套卡的服务项目列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+    })
+    public Result queryBinService(Long recordId){
+        Result r= new Result();
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
 
+            JSONArray jsonArr=new JSONArray();
+            List<ServiceSeriesVo> serSeries=new ArrayList<>();
+            int i =0;
+            for(ServiceSeries s:serList){
+                serSeries=serviceSeriesDao.getServiceSeriesVo(s.getRecordId());
+                List<ServiceSeriesVo>  bindingSer=serviceSeriesDao.getServiceSeriesVoForSuite(s.getRecordId(),recordId);
+                for(ServiceSeriesVo ss :serSeries){
+                    for(ServiceSeriesVo sss:bindingSer){
+                        if(ss.getRecordId()==sss.getRecordId()){
+                            ss.setIsChoice(1);
+                        }
+                    }
+                }
+                JSONObject jsonObj2=new JSONObject();
+                jsonObj2.put("serviceName",s.getSeriesName());
+                jsonObj2.put("serviceList",serSeries);
+
+                jsonArr.add(jsonObj2);
+
+
+
+            }
+
+
+
+            r.setData(jsonArr);
+            r.setMsg("获取成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
 
 
 
