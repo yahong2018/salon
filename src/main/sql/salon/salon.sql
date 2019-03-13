@@ -69,7 +69,7 @@ create table stuff
   store_id                         bigint                          not null,  -- 所属门店
   stuff_name                       varchar(50)                     not null,  -- 姓名
   tel                              varchar(50)                     not null,  -- 电话
-  gender                           tinyint                         not null,  -- 性别
+  gender                           tinyint                         not null,  -- 性别：    0.男     1.女
   entry_time                       datetime                        not null,  -- 入职时间
   work_age                         double(3,1)                     not null,  -- 工作年限
   special                          varchar(120)                    null,      -- 特长
