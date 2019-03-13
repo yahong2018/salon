@@ -883,7 +883,7 @@ create table stuff_integral_record
 (
   record_id                     bigint        auto_increment              not null,
   stuff_id                      bigint                                    not null, -- 哪个员工
-  metter                        varchar(500)                              not null, -- 在哪里，做了些什么事
+  matter                        varchar(500)                              not null, -- 在哪里，做了些什么事
   get_point                     bigint                                    not null, -- 得到的积分总数
   get_by_id                     bigint                                    not null, -- 谁给的 ,这个id来源于员工表， 一般是店长或者院长给的
 
