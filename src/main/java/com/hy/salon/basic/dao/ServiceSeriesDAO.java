@@ -16,10 +16,10 @@ public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
 
 
 
-    public List<ServiceSeries> getServiceSeriesForCreateId(Long createId){
-        String where="create_by = #{createId} and parent_id = 0";
+    public List<ServiceSeries> getServiceSeriesForCreateId(Long storeId){
+        String where="store_id = #{storeId} and parent_id = 0";
         Map parameters = new HashMap();
-        parameters.put("createId", createId);
+        parameters.put("storeId", storeId);
         return this.getByWhere(where,parameters);
     }
 
@@ -39,6 +39,13 @@ public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_BIN_SERVICE_SERIES_FOR_PARENTId, parameters);
     }
 
+    public List<ServiceSeriesVo> getServiceSeriesVoForSuite(Long parentId,Long suiteId) {
+        Map parameters = new HashMap();
+        parameters.put("parentId", parentId);
+        parameters.put("suiteId", suiteId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_BINDING_SERVICE_SERIES_FOR_PARENTId, parameters);
+    }
+
     public List<ServiceSeriesVo> getServiceSeriesVo(Long parentId) {
         Map parameters = new HashMap();
         parameters.put("parentId", parentId);
@@ -50,6 +57,10 @@ public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
     protected final static String SQL_GET_BIN_SERVICE_SERIES_FOR_PARENTId = "com.hy.salon.basic.dao.GET_BIN_SERVICE_SERIES_FOR_PARENTId";
 
     protected final static String SQL_GET_SERVICE_SERIES_FOR_PARENTId = "com.hy.salon.basic.dao.GET_SERVICE_SERIES_FOR_PARENTId";
+
+    protected final static String SQL_GET_BINDING_SERVICE_SERIES_FOR_PARENTId = "com.hy.salon.basic.dao.GET_BINDING_SERVICE_SERIES_FOR_PARENTId";
+
+
 
 
 

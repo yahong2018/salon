@@ -1,7 +1,9 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.dao.ServiceDAO;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Service;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
@@ -30,6 +32,9 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
 
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
 
     @Override
     protected BaseDAOWithEntity<Service> getCrudDao() {
@@ -43,7 +48,8 @@ public class ServiceController extends SimpleCRUDController<Service> {
    public Result queryService(){
         Result r= new Result();
         SystemUser user = authenticateService.getCurrentLogin();
-        List<Service> serviceList= serviceDao.queryServiceForId(user.getRecordId());
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        List<Service> serviceList= serviceDao.queryServiceForId(stuff.getStoreId());
 
         r.setMsg("请求成功");
         r.setMsgcode("0");
@@ -72,6 +78,9 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @ApiOperation(value="添加次卡", notes="添加次卡")
     public Result addService(Service condition){
         Result r= new Result();
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        condition.setStoreId(stuff.getStoreId());
         int i=serviceDao.insert(condition);
         if(i!=1){
             r.setMsg("添加失败");

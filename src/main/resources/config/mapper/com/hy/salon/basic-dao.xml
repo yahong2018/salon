@@ -164,6 +164,15 @@
         SELECT * FROM salon.stuff as ss where ss.record_id = (SELECT sra.stuff_id FROM salon.role_action as sra where sra.system_user_id= #{userId} );
     </select>
 
+    <select id="GET_BINDING_SERVICE_SERIES_FOR_PARENTId"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.ServiceSeriesVo">
+
+    SELECT sss.*,sssi.record_id FROM salon.service_series as sss left join salon.service_suite_item as sssi on sss.record_id = sssi.service_id
+    where sss.parent_id= #{parentId}  and sssi.service_suite_id = #{suiteId};
+
+    </select>
+
+
+
 
 
 </mapper>

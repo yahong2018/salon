@@ -1,7 +1,9 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.dao.ServiceSeriesDAO;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.ServiceSeries;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.ServiceSeriesService;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
@@ -42,6 +44,9 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
 
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
 
     @ResponseBody
     @RequestMapping("/addServiceSeries")
@@ -54,8 +59,9 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     public Result addServiceSeries(ServiceSeries condition){
 
         Result r= new Result();
-
-
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        condition.setStoreId(stuff.getStoreId());
         int i=serviceSeriesDao.insert(condition);
         if (i == 0) {
             r.setMsg("插入失败");
@@ -124,8 +130,8 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     public Result queryServiceSeries(){
         Result r= new Result();
         SystemUser user = authenticateService.getCurrentLogin();
-
-        List<ServiceSeries> seriesList=serviceSeriesDao.getServiceSeriesForCreateId(user.getRecordId());
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        List<ServiceSeries> seriesList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
 
         r.setMsg("获取成功");
         r.setMsgcode("0");

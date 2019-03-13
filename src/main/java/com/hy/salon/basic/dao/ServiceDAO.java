@@ -18,7 +18,7 @@ public class ServiceDAO extends BaseDAOWithEntity<Service> {
     }
 
     public List<Service> queryServiceForId(Long Id){
-        String where="create_by=#{Id}";
+        String where="store_id=#{Id}";
         Map parameters = new HashMap();
         parameters.put("Id", Id);
         return this.getByWhere(where,parameters);

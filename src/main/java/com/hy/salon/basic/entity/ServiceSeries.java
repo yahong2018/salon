@@ -13,6 +13,8 @@ public class ServiceSeries extends TraceableEntity<Long> {
 
     private Long recordId;
 
+    private Long storeId;
+
     private String seriesName;
 
     private Long parentId;

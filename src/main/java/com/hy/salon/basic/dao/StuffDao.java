@@ -27,6 +27,17 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
     }
 
 
+    public Stuff getStuffForUser(Long userId) {
+        Map parameters = new HashMap();
+        parameters.put("userId", userId);
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_STUFF_BY_USER, parameters);
+    }
+
+
+
+    protected final static String SQL_GET_STUFF_BY_USER = "com.hy.salon.basic.dao.GET_STUFF_BY_USER";
+
+
 
 
 }

@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -36,20 +37,15 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
 
 
-    @RequestMapping("/getSalonData")
+    @RequestMapping(value="getSalonData",method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value="获取美容院信息", notes="获取美容院信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
     })
-    public Result getSalonData(String recordId)  {
+    public Result getSalonData(Long recordId)  {
         Result r= new Result();
-        if( null == recordId || "".equals(recordId)){
-            r.setMsg("美容院号不能为空");
-            r.setMsgcode("1");
-            r.setSuccess(false);
-            return r;
-        }
+
         Salon salon=salonService.getSalonForId(recordId);
         if(null == salon ){
             r.setMsg("没有该美容院");
@@ -98,7 +94,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店Id", required = true, dataType = "Long"),
     })
-    public Result getStoreDetails(String recordId) {
+    public Result getStoreDetails(Long recordId) {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
             r.setMsg("门店号不能为空");

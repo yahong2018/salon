@@ -20,7 +20,7 @@ public class SalonService {
     }
 
 
-    public Salon getSalonForId(String id){
+    public Salon getSalonForId(Long id){
 
 
  return salonDao.getSalonForId(id);
