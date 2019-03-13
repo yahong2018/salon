@@ -12,6 +12,7 @@ import java.sql.Timestamp;
     public class Stuff extends TraceableEntity<Long> {
 
     private Long recordId;
+    private Long storeId;
     private String stuffName;
     private String tel;
     private Timestamp entryTime;
