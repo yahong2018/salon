@@ -36,7 +36,7 @@ import java.util.Map;
 @Api(value = "LoginController|登陆")
 public class LoginController {
     private final static String LOGIN_URL="admin/login";
-    ///private final static String LOGIN_URL="admin/myLogin";
+    ///private final static String LOGIN_URL="admin/gin";
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
 
