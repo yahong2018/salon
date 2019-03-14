@@ -28,6 +28,22 @@ public class ProductSeriesDAO extends BaseDAOWithEntity<ProductSeries> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_FOR_SERIES, parameters);
     }
 
+    public List<ProductSeries> getSeriesForUser(Long id){
+        String where = "store_id=#{id} and parent_id = 0";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getByWhere(where, parameters);
+    }
+
+    public List<ProductSeries> getSonSeriesForId(Long id){
+        String where = "parent_id = #{id}";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getByWhere(where, parameters);
+    }
+
 
 
 

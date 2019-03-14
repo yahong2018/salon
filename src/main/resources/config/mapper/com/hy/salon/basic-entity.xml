@@ -111,6 +111,7 @@
 
     <resultMap id="ServiceSuite" type="com.hy.salon.basic.entity.ServiceSuite"
                extends="com.zhxh.core.data.TraceableEntity" >
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="suite_name" property="suiteName" jdbcType="VARCHAR" />
         <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
         <result column="price" property="price" jdbcType="DOUBLE" />
@@ -123,6 +124,7 @@
 
     <resultMap id="Service" type="com.hy.salon.basic.entity.Service" extends="com.zhxh.core.data.TraceableEntity" >
         <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="service_series_id" property="serviceSeriesId" jdbcType="BIGINT" />
         <result column="card_type" property="cardType" jdbcType="TINYINT" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />

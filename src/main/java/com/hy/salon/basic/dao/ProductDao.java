@@ -16,5 +16,14 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_LIST, parameters);
     }
 
+
+    public Product getOneProdectForId(Long id){
+        String where = "record_id=#{id} ";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getOne(where, parameters);
+    }
+
     protected final static String SQL_GET_PRODUCT_LIST = "com.hy.salon.basic.dao.GET_PRODUCT_LIST";
 }

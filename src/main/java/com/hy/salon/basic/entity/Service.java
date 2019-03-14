@@ -14,6 +14,8 @@ public class Service extends TraceableEntity<Long> {
 
     private Long recordId;
 
+    private Long storeId;
+
     private String serviceName;
 
     private Long serviceSeriesId;

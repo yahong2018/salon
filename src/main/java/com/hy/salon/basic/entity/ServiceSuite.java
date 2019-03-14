@@ -15,6 +15,8 @@ public class ServiceSuite extends TraceableEntity<Long> {
 
     private Long recordId;
 
+    private Long storeId;
+
     private String suiteName;
 
     private Double priceMarket;
