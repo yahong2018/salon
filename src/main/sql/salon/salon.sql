@@ -930,6 +930,31 @@ create table role_action
   index idx_role_action_02(system_user_id)
 )comment '角色权限映射表'
 
+create table notice
+(
+  record_id                   bigint                 auto_increment            not null,
+  salon_id                    bigint                                           not null, -- 美容院/门店
+  title                       varchar(50)                                      not null, -- 标题
+  content                     varchar(1000)                                    not null, -- 公告内容
+  visual_range_id             bigint                                           not null, -- 可视范围
+
+  primary key (record_id),
+  index idx_notice_01(salon_id),
+  index idx_notice_02(title),
+  index idx_notice_03(visual_range_id)
+)comment '公告表';
+
+create table visual_range
+(
+  record_id                   bigint                 auto_increment            not null,
+  stuff_id                    bigint                                           not null, -- 可视员工
+  statu                       int                                              not null, -- 可视状态 0 可见 1 不可见
+
+  primary key (record_id),
+  index idx_visual_range_01(stuff_id),
+  index idx_visual_range_02(statu)
+)comment '可视范围表';
+
 #
 #
 # create table purchase_card_info
