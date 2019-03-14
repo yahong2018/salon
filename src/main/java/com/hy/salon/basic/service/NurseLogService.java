@@ -3,10 +3,7 @@ package com.hy.salon.basic.service;
 import com.hy.salon.basic.dao.NurseLogDao;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.NurseLog;
-import com.hy.salon.basic.entity.Reservation;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.ReservationVo;
 import org.springframework.stereotype.Component;
@@ -64,5 +61,9 @@ public class NurseLogService {
             voList.add(vo);
         }
         return voList;
+    }
+
+    public List<NurseLogModel> getLogModel(Integer pageNo, Integer pageSize) {
+        return nurseLogDao.getLogModel(pageNo,pageSize);
     }
 }
