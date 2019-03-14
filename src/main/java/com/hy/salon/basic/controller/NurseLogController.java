@@ -1,6 +1,7 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.entity.NurseLogModel;
 import com.hy.salon.basic.service.NurseLogService;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.Result;
@@ -43,6 +44,34 @@ public class NurseLogController {
         Result result=new Result();
         try {
             List<NurseLogVo> list = nurseLogService.getNurseLogBySalon(logType, timeStart, timeEnd);
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 查询日志模板
+     */
+    @ResponseBody
+    @RequestMapping(value = "getLogModel",method = RequestMethod.GET)
+    @ApiOperation(value="查询日志模板", notes="查询日志模板")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "pageNo", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "pageSize", value = "页面大小", required = true, dataType = "Integer")
+
+    })
+    public Result getLogModel(Integer pageNo,Integer pageSize){
+        if(pageNo==null){
+            pageNo=1;
+        }
+        Result result=new Result();
+        try {
+            List<NurseLogModel> list = nurseLogService.getLogModel(pageNo, pageSize);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
