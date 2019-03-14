@@ -170,7 +170,13 @@
     where sss.parent_id= #{parentId}  and sssi.service_suite_id = #{suiteId};
 
     </select>
+    <!--日志模板-->
+    <select id="GET_LOG_MODEL"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.NurseLogModel">
 
+
+      select * from nurse_log_model limit #{page}, #{pageSize};
+
+    </select>
 
 
 
