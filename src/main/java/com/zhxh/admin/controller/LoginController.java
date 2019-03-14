@@ -2,10 +2,14 @@ package com.zhxh.admin.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.StuffJob;
 import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.StuffJobService;
+import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
@@ -49,6 +53,10 @@ public class LoginController {
     @Resource(name="jobService")
     private JobService jobService;
 
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
     @Resource(name = "stuffJobService")
     private StuffJobService stuffJobService;
     @RequestMapping("/login")
@@ -71,10 +79,9 @@ public class LoginController {
             authenticateService.authenticate(userCode, password);
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
             long id = systemUser.getRecordId();
-
-
+            Stuff stuff=stuffDao.getStuffForUser(id);
             List<SystemRole> list = systemRoleService.getRoleListById(id);
-            List<Job> listJob = jobService.getJobList(id);
+            List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 
             result.setListRole(list);
             result.setListJob(listJob);
@@ -142,5 +149,19 @@ public class LoginController {
         }
 
         return LOGIN_URL;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/login/logout", method = RequestMethod.GET)
+    public Result apiLogout(){
+        Result r= new Result();
+        try {
+            authenticateService.kickOffUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
     }
 }
