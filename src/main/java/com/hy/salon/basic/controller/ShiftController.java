@@ -34,7 +34,7 @@ public class ShiftController {
     @RequestMapping(value = "saveShift",method = RequestMethod.POST)
     @ApiOperation(value="保存或修改門店排班设置", notes="保存或修改門店排班设置")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据", required = true, dataType = "List<Shift>")
+            @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据  {\"list\":[{\"storeId\": \"xxx\",\"shiftType\": \"xxx\",\"timeStart\": \"xxx\",\"timeEnd\": \"xxx\"}]}", required = true, dataType = "List<Shift>")
     })
     public Result saveShift(@RequestBody List<Shift> list){
         Result result=new Result();
