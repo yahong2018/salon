@@ -936,12 +936,10 @@ create table notice
   salon_id                    bigint                                           not null, -- 美容院/门店
   title                       varchar(50)                                      not null, -- 标题
   content                     varchar(1000)                                    not null, -- 公告内容
-  visual_range_id             bigint                                           not null, -- 可视范围
 
   primary key (record_id),
   index idx_notice_01(salon_id),
-  index idx_notice_02(title),
-  index idx_notice_03(visual_range_id)
+  index idx_notice_02(title)
 )comment '公告表';
 
 create table visual_range
@@ -954,6 +952,17 @@ create table visual_range
   index idx_visual_range_01(stuff_id),
   index idx_visual_range_02(statu)
 )comment '可视范围表';
+
+create table visual_range_mapping
+(
+  record_id                   bigint                  auto_increment            not null,
+  notice_id                   bigint                                            not null, -- 公告id
+  visual_range_id             bigint                                            not null, -- 可视范围id
+
+  primary key (record_id),
+  index idx_visual_range_mapping_01(notice_id),
+  index idx_visual_range_mapping_02(visual_range_id)
+)comment '可视范围映射表';
 
 #
 #
