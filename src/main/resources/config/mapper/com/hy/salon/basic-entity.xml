@@ -16,6 +16,7 @@
         <result property="gender" column="gender"/>
         <result property="entryTime" column="entry_time"/>
         <result property="workAge" column="work_age"/>
+        <result property="birthDay" column="birth_day"/>
         <result property="special" column="special"/>
         <result property="dream" column="dream"/>
         <result property="weixin" column="weixin"/>
@@ -291,4 +292,21 @@
         <result column="stuff_id" jdbcType="BIGINT" property="stuffId" />
         <result column="system_user_id" jdbcType="BIGINT" property="systemUserId" />
     </resultMap>
+
+    <resultMap id="Notice" type="com.hy.salon.basic.entity.Notice" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="VisualRange" type="com.hy.salon.basic.entity.VisualRange" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="statu" property="statu" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="VisualRangeMapping" type="com.hy.salon.basic.entity.VisualRangeMapping" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="notice_id" property="noticeId" jdbcType="BIGINT" />
+        <result column="visual_range_id" property="visualRangeId" jdbcType="BIGINT" />
+    </resultMap>
+
 </mapper>

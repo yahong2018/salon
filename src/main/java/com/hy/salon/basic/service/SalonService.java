@@ -26,8 +26,8 @@ public class SalonService {
  return salonDao.getSalonForId(id);
 }
 
-    public List<Salon> getSalonForStoreId(String parentId){
-        return salonDao.getSalonForStoreId(parentId);
+    public List<Salon> getSalonForStoreId2(Long parentId){
+        return salonDao.getSalonForStoreId2(parentId);
     }
 
 

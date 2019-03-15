@@ -83,6 +83,8 @@ public class LoginController {
             List<SystemRole> list = systemRoleService.getRoleListById(id);
             List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 
+
+            result.setSalonId(stuff.getStoreId());
             result.setListRole(list);
             result.setListJob(listJob);
             result.setCode(LoginResult.LOGIN_CODE_OK);

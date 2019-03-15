@@ -3,12 +3,8 @@ package com.hy.salon.basic.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.PicturesDAO;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.Pictures;
-import com.hy.salon.basic.entity.Product;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
@@ -19,6 +15,7 @@ import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,8 +42,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @Resource(name = "salonService")
     private SalonService salonService;
 
+    @Resource(name = "salonDao")
+    private SalonDao salonDao;
+
     @Resource(name = "picturesDao")
     private PicturesDAO picturesDao;
+
+    @Resource(name = "stuffJobDao")
+    private StuffJobDao stuffJobDao;
+
+    @Resource(name = "jobDAO")
+    private JobDAO jobDao;
 
 
     @Override
@@ -81,7 +87,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         }
         r.setData(jsonArr);
         r.setMsg("获取成功");
-        r.setMsgcode("0");
+        r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         return r;
     }
@@ -99,8 +105,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             JSONObject jsonObj=new JSONObject();
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-        Pictures pic=picturesDao.getPicturesForCondition(stuff.getRecordId(),new Byte("1"),new Byte("0"));
+        Pictures pic=picturesDao.getOnePicturesForCondition(stuff.getRecordId(),new Byte("1"),new Byte("0"));
+        Salon salon=salonDao.getSalonForStoreId(stuff.getStoreId());
 
+        if(salon.getParentId() != -1){
+            salon=salonDao.getSalonForStoreId(salon.getParentId());
+        }
+            StuffJob stuffJob=stuffJobDao.getStuffJobForStuff(stuff.getRecordId());
+            Job job=jobDao.getJobForId(stuffJob.getJobId());
+
+            jsonObj.put("jobLevel",job.getJobLevel());
+            jsonObj.put("salon",salon.getSalonName());
             jsonObj.put("pic",pic);
             jsonObj.put("stuff",stuff);
         r.setMsg("请求成功");
@@ -119,9 +134,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
      * 修改个人资料
      */
     @ResponseBody
-    @RequestMapping(value="updateStuffData",method = RequestMethod.GET)
+    @RequestMapping(value="updateStuffData",method = RequestMethod.POST)
     @ApiOperation(value="修改个人资料", notes="修改个人资料")
-    public Result updateStuffData(Stuff condition) {
+    public Result updateStuffData(@RequestBody Stuff condition) {
         Result r= new Result();
         try {
 
