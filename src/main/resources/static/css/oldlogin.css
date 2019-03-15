@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #10194b url('login.PNG') no-repeat;
+    background-size: cover;
+}
+
+#container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 600px;
+    height: 250px;
+    border: solid 2px white;
+    border-radius: 10px;
+    margin-left: -280px;
+    margin-top: -150px;
+}
+
+#loginForm {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 550px;
+    height: 200px;
+    /*  border: solid 1px white;*/
+    margin-left: -230px;
+    margin-top: -105px;
+}
+
+.row {
+    width: 100%;
+    padding-top: 5px;
+    color: white;
+}
+
+.title {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.label {
+    text-align: right;
+    width: 120px;
+    float: left;
+}

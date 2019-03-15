@@ -1,6 +1,8 @@
 package com.hy.salon.sys.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInterceptor;
 import com.zhxh.core.data.*;
 import com.zhxh.core.data.meta.MySqlMetaCreator;
 import com.zhxh.core.utils.Logger;
@@ -19,6 +21,8 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import java.util.Properties;
+
 @Configuration
 public class DataConfig {
     @Autowired
@@ -31,6 +35,9 @@ public class DataConfig {
     private UpdateInterceptor updateInterceptor;
 
     @Autowired
+    private PageHelper  pageHelper;
+
+    @Autowired
     private CallableConvertInterceptor callableConvertInterceptor;
 
     @Bean
@@ -41,6 +48,18 @@ public class DataConfig {
     @Bean
     public ResultTypeInterceptor createResultTypeInterceptor(){
         return new ResultTypeInterceptor();
+    }
+
+    @Bean
+    public PageHelper getPageHelper(){
+        PageHelper pageHelper = new PageHelper();
+        Properties props = new Properties();
+        props.setProperty("reasonable", "true");
+        props.setProperty("supportMethodsArguments", "true");
+        props.setProperty("returnPageInfo", "check");
+        props.setProperty("params", "count=countSql");
+        pageHelper.setProperties(props);
+        return pageHelper;
     }
 
     @Bean
@@ -70,9 +89,15 @@ public class DataConfig {
         } catch (Exception e) {
             Logger.info("配置 DataSource的 mapperLocation/configLocation出现问题:" + e.getMessage());
         }
-
+        PageInterceptor  pageHelper = new PageInterceptor();
+        Properties props = new Properties();
+        props.setProperty("reasonable", "true");
+        props.setProperty("supportMethodsArguments", "true");
+        props.setProperty("returnPageInfo", "check");
+        props.setProperty("params", "count=countSql");
+        pageHelper.setProperties(props);
         sqlSessionFactoryBean.setDataSource(dataSource);
-        Interceptor[] interceptors = new Interceptor[]{this.resultTypeInterceptor, this.callableConvertInterceptor,this.updateInterceptor};
+        Interceptor[] interceptors = new Interceptor[]{pageHelper,this.resultTypeInterceptor, this.callableConvertInterceptor,this.updateInterceptor};
         sqlSessionFactoryBean.setPlugins(interceptors);
         sqlSessionFactoryBean.setTypeAliasesPackage(dataSource.getMyBatisTypeAliasesPackage());
 
