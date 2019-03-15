@@ -42,16 +42,17 @@ public class ListRequest implements Serializable {
         try {
             if (request.getParameter("filterExpr") != null) {
                 String rawSearch = request.getParameter("filterExpr")
-                        .replaceAll("\r|\n", "")
-                        .replaceAll(" ","+")
+                       // .replaceAll("\r|\n", "")
+                      //  .replaceAll(" ","+")
                         ;
-                byte[] buffer = Base64.getDecoder().decode(rawSearch);
-                String strUtf8 = new String(buffer, "UTF-8");
+//                String s = new String(Base64.getMimeDecoder().decode(rawSearch.toString().replace("\r\n", "")),"utf-8");
+//                byte[] buffer = Base64.getDecoder().decode(rawSearch);
+//                String strUtf8 = new String(buffer, "UTF-8");
 
                 //   String strIso = new String(buffer, "ISO-8859-1");
                 // String strUtf8 = java.net.URLDecoder.decode(strIso, "UTF-8");
 
-                this.setWhere(strUtf8);
+                this.setWhere(rawSearch);
             }
         } catch (Exception e) {
             Logger.error(e);

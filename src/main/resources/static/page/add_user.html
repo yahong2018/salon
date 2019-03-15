@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>用户</title>
+  <link rel="stylesheet" href="../layui/css/layui.css">
+  <script src="../layui/layui.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-input-inline{width: 214px !important}
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+ <div class="x-body layui-anim layui-anim-up">
+  <div class="layui-fluid">
+  
+    <form class="layui-form layui-form-pane1" lay-filter="first">
+        <div class="layui-form-item">
+        </div>
+      <div class="layui-form-item">
+         <label class="layui-form-label"><span class="text-error">*</span>账户编号：</label>
+         <div class="layui-input-inline">
+          <input name="userCode" id="userCode" placeholder="请输入" value="" class="layui-input">
+          </div>
+      </div>
+       <div class="layui-form-item">
+         <label class="layui-form-label"><span class="text-error">*</span>账户名称：</label>
+         <div class="layui-input-inline">
+          <input name="userName" id="userName" placeholder="请输入"  value="" class="layui-input">
+          </div>
+      </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否停用：</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="userStatus"  id="userStatus" lay-skin="switch">
+            </div>
+        </div>
+      <div class="layui-form-item">
+         <label class="layui-form-label">Email：</label>
+         <div class="layui-input-inline">
+          <input name="email" id="email" placeholder="请输入"  value="" class="layui-input">
+          </div>
+      </div>
+        <div class="layui-form-item" style="margin-left: 140px;">
+            <!--<p id="btnGroup" class="pull-right">-->
+                <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
+                <button class="layui-btn" onclick="quxiao()">取消</button>
+            <!--</p>-->
+        </div>
+        <input name="recordId" id="recordId"  type="hidden" value="" class="layui-input">
+    </form>
+  </div>
+  </div>
+  </body>
+  </html>
+<script type="text/javascript">
+    function child(data){
+        var $ = layui.jquery;
+        var userCode = data.userCode;
+        $('#userCode').val(userCode);
+        var userName = data.userName;
+        $('#userName').val(userName);
+
+        var recordId = data.recordId;
+        $('#recordId').val(recordId);
+
+        var userStatus = data.userStatus;
+        if(userStatus==1){
+            $("#userStatus").attr("checked",'checked');
+        }
+        var email = data.email;
+        $('#email').val(email);
+
+        console.log(data);
+    }
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+	  var form = layui.form;
+	  var $ = layui.jquery;
+	  var laydate=layui.laydate;
+	  /* function quxiao(){
+	  	alert(111);
+	  } */
+	   var $ = layui.jquery,
+	   upload = layui.upload;
+
+	  form.on('submit(*)', function(data){
+	  	console.log(data.field);
+	  	if(data.field.userStatus=='on'){
+            data.field.userStatus = 1
+        }else{
+            data.field.userStatus = 0;
+        }
+	    var url ='';
+	    if($('#recordId').val()!==""){
+            url = '/admin/systemUsers/update.handler';
+	    }else{
+            url = '/admin/systemUsers/openLoginAccount.handler';
+	    }
+	    $.ajax({
+	    	type:'POST',
+            url:url,
+	    	data: data.field,
+	    	success: function(data){
+                alert("操作成功！");
+    			window.parent.location.reload(); //刷新父页面
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);  // 关闭layer
+	    		/* alert("操作成功");
+	    		if(type=="update"){
+		    		window.parent.location.reload(); //刷新父页面
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					parent.layer.close(index);  // 关闭layer
+	    		}else{
+	    			window.location.reload();
+	    			//window.location.href="${basePath}ryOrderConfig/queryList";
+	    		} */
+		    	
+	    	//window.location.href="${basePath}ryOrderConfig/queryList";
+	    	},
+	    	error:function(data){
+	    		alert("操作失败");
+	    		console.log(data);
+	    	}
+	    })
+	    return false;
+	  });
+
+})
+
+
+</script>  

@@ -72,6 +72,7 @@ public class SystemUserService {
     public int update(SystemUser item) {
         SystemUser dbItem = systemUserDAO.getById(item.getRecordId());
         item.setPassword(dbItem.getPassword());
+        item.setLastLoginTime(dbItem.getLastLoginTime());
         return systemUserDAO.update(item);
     }
 
