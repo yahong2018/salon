@@ -37,7 +37,17 @@ public class PicturesDAO extends BaseDAOWithEntity<Pictures> {
         return this.getByWhere(where, parameters);
     }
 
-    public Pictures getPicturesForCondition(Long id,Byte recordType,Byte picType){
+    public List<Pictures> getPicturesForCondition(Long id,Byte recordType,Byte picType){
+        String where = "master_data_id=#{id} and record_type = #{recordType} and pic_type= #{picType}";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+        parameters.put("recordType", recordType);
+        parameters.put("picType", picType);
+        return this.getByWhere(where, parameters);
+    }
+
+
+    public Pictures getOnePicturesForCondition(Long id,Byte recordType,Byte picType){
         String where = "master_data_id=#{id} and record_type = #{recordType} and pic_type= #{picType}";
         Map parameters = new HashMap();
         parameters.put("id", id);
@@ -45,9 +55,6 @@ public class PicturesDAO extends BaseDAOWithEntity<Pictures> {
         parameters.put("picType", picType);
         return this.getOne(where, parameters);
     }
-
-
-
 
 
 }

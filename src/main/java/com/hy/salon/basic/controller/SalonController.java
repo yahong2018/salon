@@ -1,5 +1,7 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.service.SalonService;
@@ -55,20 +57,23 @@ public class SalonController extends SimpleCRUDController<Salon> {
         }
 
         r.setMsg("请求成功");
-        r.setMsgcode("0");
+        r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         r.setData(salon);
         return r;
 
     }
 
+
+
+
     @ResponseBody
-    @RequestMapping("getStoreData")
+    @RequestMapping(value="getStoreList",method = RequestMethod.GET)
     @ApiOperation(value="获取门店列表", notes="获取门店列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
     })
-    public Result getStireData(String recordId) {
+    public Result getStoreList(Long recordId) {
         Result r= new Result();
         if( null == recordId || "".equals(recordId)){
             r.setMsg("美容院号不能为空");
@@ -76,10 +81,10 @@ public class SalonController extends SimpleCRUDController<Salon> {
             r.setSuccess(false);
             return r;
         }
-        List<Salon> StoreList=salonService.getSalonForStoreId(recordId);
+        List<Salon> StoreList=salonService.getSalonForStoreId2(recordId);
 
         r.setMsg("请求成功");
-        r.setMsgcode("0");
+        r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         r.setData(StoreList);
 
@@ -107,7 +112,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         Salon store=salonService.getSalonForId(recordId);
 
         r.setMsg("请求成功");
-        r.setMsgcode("0");
+        r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         r.setData(store);
         return r;
@@ -126,14 +131,14 @@ public class SalonController extends SimpleCRUDController<Salon> {
         int i= salonDao.update(condition);
         if(i != 1){
             r.setMsg("修改失败");
-            r.setMsgcode("200");
+            r.setMsgcode(StatusUtil.ERROR);
             r.setSuccess(false);
 
             return r;
         }
 
         r.setMsg("修改成功");
-        r.setMsgcode("0");
+        r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
 
         return r;

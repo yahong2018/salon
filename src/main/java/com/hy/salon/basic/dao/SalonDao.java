@@ -23,9 +23,18 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getOne(where, parameters);
     }
 
+    public Salon getSalonForStoreId(Long id){
+        String where = "record_id=#{id}";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getOne(where, parameters);
+    }
 
 
-    public List<Salon> getSalonForStoreId(String parentId){
+
+
+    public List<Salon> getSalonForStoreId2(Long parentId){
         String where="parent_id=#{parentId}";
         Map parameters = new HashMap();
         parameters.put("parentId", parentId);

@@ -1,5 +1,6 @@
 package com.hy.salon.basic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -17,6 +18,8 @@ import java.sql.Timestamp;
     private String tel;
     private Timestamp entryTime;
     private Double workAge;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Timestamp birthDay;
     private int gender;
     private String special;
     private String dream;
