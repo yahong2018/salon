@@ -325,26 +325,4 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     }
 
 
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-        String s="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
-        JSONArray jsonArr=JSONArray.parseArray(s);
-        for(int i =0 ; i<jsonArr.size(); i++){
-            JSONObject jsonObj=jsonArr.getJSONObject(i);
-            System.out.println("recordType======"+jsonObj.getString("recordType"));
-            System.out.println("itemId======"+jsonObj.getString("itemId"));
-
-        }
-
-
-
-    }
-
-
 }

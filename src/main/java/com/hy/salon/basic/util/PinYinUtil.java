@@ -80,9 +80,12 @@ public class PinYinUtil {
         return buf.toString();
     }
 
-    /**
+/*
+    */
+/**
      * 测试
-     */
+     *//*
+
     public static void main(String[] args) {
         String str = "中国梦ChainDream2018";
         char str2=str.charAt(0);
@@ -93,6 +96,7 @@ public class PinYinUtil {
         System.out.println("获取中文首字母"+getPinYinHeadChar(str));
         System.out.println(getCnASCII(str));
     }
+*/
 
 
 }
