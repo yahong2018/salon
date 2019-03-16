@@ -69,10 +69,10 @@ create table stuff
   store_id                         bigint                          not null,  -- 所属门店
   stuff_name                       varchar(50)                     not null,  -- 姓名
   tel                              varchar(50)                     not null,  -- 电话
-  gender                           tinyint                         not null,  -- 性别：    0.男     1.女
-  entry_time                       datetime                        not null,  -- 入职时间
-  work_age                         double(3,1)                     not null,  -- 工作年限
-  birth_day                        datetime                        not null,  -- 生日
+  gender                           tinyint                         not null,  -- 性别：    0.男     1.女 2.未知
+  entry_time                       datetime                        null,  -- 入职时间
+  work_age                         double(3,1)                     null,  -- 工作年限
+  birth_day                        datetime                        null,  -- 生日
   special                          varchar(120)                    null,      -- 特长
   dream                            varchar(120)                    null,      -- 梦想
   weixin                           varchar(50)                     null,      -- 微信
