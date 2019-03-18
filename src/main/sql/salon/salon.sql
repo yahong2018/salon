@@ -424,7 +424,7 @@ create table pictures
 (
   record_id                        bigint    auto_increment        not null ,
   master_data_id                   bigint                          not null,     -- 主记录编号
-  record_type                      tinyint                         not null,     -- 记录类型: 0.美容院（门店）  1. 员工    2. 项目/卡   3.套卡   4.充值卡  5.产品    6.会员/顾客    7. 护理日志
+  record_type                      tinyint                         not null,     -- 记录类型: 0.美容院（门店）  1. 员工    2. 项目/卡   3.套卡   4.充值卡  5.产品    6.会员/顾客    7. 护理日志    8.档案
   pic_type                         tinyint                         not null,     -- 照片类型: 0.普通照片   1.营业执照（1张)    2.身份证（要有2张，正反面各1张）  3.开户许可(1张)
   pic_url                          varchar(255)                    not null,     -- 照片: 如果以http|https开头，则是外部绝对地址，否则为内部相对地址。
 
