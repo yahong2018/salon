@@ -98,6 +98,8 @@ public class SystemRoleService {
         grantList.removeIf(x -> x.getRecordId() == null
                 || oldList.stream().anyMatch(y -> x.getProgramId().equals(y.getProgramId()) && x.getPrivilegeCode().equals(y.getPrivilegeCode()))
         );
+//        grantList.removeIf(x -> oldList.stream().anyMatch(y -> x.getProgramId().equals(y.getProgramId()) && x.getPrivilegeCode().equals(y.getPrivilegeCode()))
+//        );
 
         for (RolePrivilege old : revokeList) {
             this.revokePrivilege(roleId, old);
@@ -215,10 +217,28 @@ public class SystemRoleService {
             SystemProgram son = parentPrograms[i];
             SystemMenuWithPrivilege sonMenu = menuWithPrivilegeFromProgram(son, privilegeList);
             children[i] = sonMenu;
-
-            if (son.isFolder()) {
-                this.buildMenuWithPrivilege(programList, privilegeList, son, sonMenu);
+            SystemProgram[] parentProgramsTwo = programList.stream()
+                    .filter(x -> x.getParentId().equals(son.getRecordId())
+                            && !x.getRecordId().equals(sonMenu.getProgramId())
+                    ).sorted(Comparator.comparing(SystemProgram::getShowOrder))
+                    .toArray(SystemProgram[]::new);
+            if(parentProgramsTwo.length>0){
+                SystemMenuWithPrivilege[] childrenTwo = new SystemMenuWithPrivilege[parentProgramsTwo.length];
+                sonMenu.setChildren(childrenTwo);
+                for (int j = 0; j < parentProgramsTwo.length; j++) {
+                    SystemProgram son2 = parentProgramsTwo[j];
+                    SystemMenuWithPrivilege sonMenu2 = menuWithPrivilegeFromProgram(son2, privilegeList);
+                    childrenTwo[j] = sonMenu2;
+                }
             }
+
+//            if(son.getUrl().equals(" ")||son.getUrl().equals("")||son.getUrl()==null){
+//                this.buildMenuWithPrivilege(programList, privilegeList, son, sonMenu);
+//            }
+
+//            if(!(son.getRecordId().equals(son.getProgramCode())&&son.getRecordId().equals(son.getParentId()))){
+//                this.buildMenuWithPrivilege(programList, privilegeList, son, sonMenu);
+//            }
         }
     }
 

@@ -1,4 +1,6 @@
 initMenu();
+
+var html = '';
 function initMenu(){
 	 $.ajax({  
 	     url:"mainPage/getUserMenu.handler",
@@ -10,53 +12,141 @@ function initMenu(){
 	    		//  return;
 	    	 // }
 	    	 var menu = $("#menu");
-	    	 $.each(data, function(i,item){
-	             var a = $("<a href='javascript:;'></a>");
-	             
-	             var css = item.css;
-	             if(css!=null && css!=""){
-	            	 a.append("<i aria-hidden='true' class='  fa " + css +"'></i>");
-	             }
-	             a.append("<cite>"+item.programName+"</cite>");
-	             a.attr("lay-id", item.programId);
-	             
-	             var href = item.url;
-	             if(href != null && href != ""){
-	                a.attr("data-url", href);
-	             }
-	             
-	             var li = $("<li class='layui-nav-item'></li>");
-	             if (i == 0) {
-	            	 li.addClass("layui-nav-itemed");
-	             }
-	             li.append(a);
-	             
-	             //二级菜单
-	             var child2 = item.children;
-	             if(child2 != null && child2.length > 0){
-	            	 $.each(child2, function(j,item2){
-	            		 var ca = $("<a href='javascript:;'></a>");
-                         ca.attr("data-url", item2.url);
-                         ca.attr("lay-id", item2.programId);
-                         
-                         var css2 = item2.css;
-                         if(css2!=null && css2!=""){
-                        	 ca.append("<i aria-hidden='true' class='fa " + css2 +"'></i>");
-                         }
-                         
-                         ca.append("<cite>"+item2.programName+"</cite>");
-                         
-                         var dd = $("<dd></dd>");
-                         dd.append(ca);
-                         
-                         var dl = $("<dl class='layui-nav-child site-demo-active '></dl>");
-                         dl.append(dd);
-                         
-                         li.append(dl);
-	            	 });
-	            }
-	            menu.append(li);
-	        });
+			 var ulHtml = '<ul class="layui-nav layui-nav-tree beg-navbar">';
+			 for (var i = 0; i < data.length; i++) {
+				 if (data[i].spread) {
+					 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
+				 } else {
+					 ulHtml += '<li class="layui-nav-item">';
+				 }
+				 if (data[i].children !== undefined && data[i].children !== null && data[i].children.length > 0) {
+					 ulHtml += '<a  lay-id="'+data[i].programId+'" >' + data[i].programName;
+					 ulHtml += '<span class="layui-nav-more"></span>';
+					 ulHtml += '</a>';
+					 ulHtml += '<dl class="layui-nav-child">';
+					 //二级菜单
+					 for (var j = 0; j < data[i].children.length; j++) {
+						 //是否有孙子节点
+						 if (data[i].children[j].children !== undefined && data[i].children[j].children !== null && data[i].children[j].children.length > 0) {
+							 ulHtml += '<dd>';
+							 ulHtml += '<a lay-id="'+data[i].children[j].programId+'" data-url="'+ data[i].children[j].url +'">' + data[i].children[j].programName;
+							 ulHtml += '<span class="layui-nav-more"></span>';
+							 ulHtml += '</a>';
+							 //三级菜单
+							 ulHtml += '<dl class="layui-nav-child">';
+							 var grandsonNodes = data[i].children[j].children;
+							 for (var k = 0; k < grandsonNodes.length; k++) {
+								 ulHtml += '<dd>';
+								 ulHtml += '<a lay-id="'+grandsonNodes[k].programId+'" data-url="'+ grandsonNodes[k].url +'">' + grandsonNodes[k].programName + '</a>';
+								 ulHtml += '</dd>';
+							 }
+							 ulHtml += '</dl>';
+							 ulHtml += '</dd>';
+						 }else{
+							 ulHtml += '<dd>';
+							 ulHtml += '<a lay-id="'+data[i].children[j].programId+'" data-url="'+data[i].children[j].url+'">' + data[i].children[j].programName;
+							 ulHtml += '</a>';
+							 ulHtml += '</dd>';
+						 }
+						 //ulHtml += '<dd title="' + data[i].children[j].title + '">';
+					 }
+					 ulHtml += '</dl>';
+				 } else {
+					 var dataUrl = (data[i].url !== undefined && data[i].url !== '') ? 'data-url="' + data[i].url + '"' : '';
+					 //ulHtml += '<a href="javascript:;" ' + dataUrl + '>';
+					 ulHtml += '<a lay-id="'+data[i].programId+'" data-url="' + data[i].url + '"' + dataUrl + '>';
+					 if (data[i].icon !== undefined && data[i].icon !== '') {
+						 if (data[i].icon.indexOf('fa-') !== -1) {
+							 ulHtml += '<i class="fa ' + data[i].icon + '" aria-hidden="true" data-icon="' + data[i].icon + '"></i>';
+						 } else {
+							 ulHtml += '<i class="layui-icon" data-icon="' + data[i].icon + '">' + data[i].icon + '</i>';
+						 }
+					 }
+					 ulHtml += '<cite>' + data[i].programName + '</cite>';
+					 ulHtml += '</a>';
+				 }
+				 ulHtml += '</li>';
+			 }
+			 ulHtml += '</ul>';
+
+			 menu.append(ulHtml);
+	    	//  $.each(data, function(i,item){
+	        //      var a = $("<a href='javascript:;'></a>");
+			//
+	        //      var css = item.css;
+	        //      if(css!=null && css!=""){
+	        //     	 a.append("<i aria-hidden='true' class='  fa " + css +"'></i>");
+	        //      }
+	        //      a.append("<cite>"+item.programName+"</cite>");
+	        //      a.attr("lay-id", item.programId);
+			//
+	        //      var href = item.url;
+	        //      if(href != null && href != ""){
+	        //         a.attr("data-url", href);
+	        //      }
+			//
+	        //      var li = $("<li class='layui-nav-item'></li>");
+	        //      if (i == 0) {
+	        //     	 li.addClass("layui-nav-itemed");
+	        //      }
+	        //      li.append(a);
+			//
+	        //      //二级菜单
+	        //      var child2 = item.children;
+	        //      if(child2 != null && child2.length > 0){
+	        //     	 $.each(child2, function(j,item2){
+	        //     		 var ca = $("<a href='javascript:;'></a>");
+            //              ca.attr("data-url", item2.url);
+            //              ca.attr("lay-id", item2.programId);
+			//
+            //              var css2 = item2.css;
+            //              if(css2!=null && css2!=""){
+            //             	 ca.append("<i aria-hidden='true' class='fa " + css2 +"'></i>");
+            //              }
+			//
+            //              ca.append("<cite>"+item2.programName+"</cite>");
+			//
+            //              var dd = $("<dd></dd>");
+            //              dd.append(ca);
+			//
+            //              var dl = $("<dl class='layui-nav-child site-demo-active '></dl>");
+			//
+			//
+			// 			 var child3 = item2.children;
+			// 			 if(child3 != null && child3.length > 0){
+			// 				 $.each(child3, function(k,item3){
+			// 					 var ca = $("<a href='javascript:;'></a>");
+			// 					 ca.attr("data-url", item3.url);
+			// 					 ca.attr("lay-id", item3.programId);
+			//
+			// 					 var css2 = item3.css;
+			// 					 if(css2!=null && css2!=""){
+			// 						 ca.append("<i aria-hidden='true' class='fa " + css2 +"'></i>");
+			// 					 }
+			//
+			// 					 ca.append("<cite>"+item3.programName+"</cite>");
+			//
+			// 					 var ol = $("<ol></ol>");
+			// 					 var li = $("<li></li>");
+			// 					 li.append(ca);
+			// 					 ol.append(li);
+			// 					 dd.append(ol);
+			//
+			// 					 // var dl = $("<dl class='layui-nav-child site-demo-active '></dl>");
+			// 					 // dl.append(dd);
+			// 					 //
+			// 					 // li.append(dl);
+			//
+			// 				 });
+			// 			 }
+			//
+			// 			 dl.append(dd);
+			//
+			// 			 li.append(dl);
+	        //     	 });
+	        //     }
+	        //     menu.append(li);
+	        // });
 	     }
 	 });
 }

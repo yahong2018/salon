@@ -23,6 +23,7 @@ public class SystemProgram extends EntityObject<String> {
     }
 
     public boolean isFolder() {
-        return StringUtils.isEmpty(this.url);
+        //return StringUtils.isEmpty(this.url);
+        return  this.url.equals("");
     }
 }
