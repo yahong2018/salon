@@ -451,7 +451,7 @@ create table member
   weixin                           varchar(50)                     not null,   -- 微信
   birthday                         datetime                        null,       -- 生日
   zodiac                           tinyint                         null,       -- 星座
-  member_grade_id                  bigint                          not null,   -- 分类
+  member_grade_id                  bigint                          not null,   -- 分类 0 A类  1 B类 2 C类 3 D类
   -- member_tag                                                                -- 会员标签
 
   blood_type                       tinyint                         null,       -- 血型
