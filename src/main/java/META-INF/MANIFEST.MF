@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Class-Path: log4j-api-2.11.1.jar classmate-1.4.0.jar spring-boot-start
+ er-json-2.1.0.RELEASE.jar spring-beans-5.1.2.RELEASE.jar commons-lang
+ 3-3.8.1.jar mybatis-callable-1.0.jar tomcat-embed-el-9.0.12.jar sprin
+ g-messaging-5.1.2.RELEASE.jar jackson-module-parameter-names-2.9.7.ja
+ r guava-20.0.jar swagger-annotations-1.5.14.jar spring-web-5.1.2.RELE
+ ASE.jar spring-boot-configuration-processor-2.1.0.RELEASE.jar spring-
+ jcl-5.1.2.RELEASE.jar spring-tx-5.0.8.RELEASE.jar jackson-annotations
+ -2.9.0.jar spring-boot-starter-2.1.0.RELEASE.jar spring-webmvc-5.1.2.
+ RELEASE.jar tomcat-embed-websocket-9.0.12.jar springfox-swagger2-2.8.
+ 0.jar springfox-spi-2.8.0.jar validation-api-2.0.1.Final.jar mysql-co
+ nnector-java-8.0.13.jar thymeleaf-spring5-3.0.11.RELEASE.jar jboss-lo
+ gging-3.3.2.Final.jar spring-boot-2.1.0.RELEASE.jar slf4j-log4j12-1.7
+ .21.jar spring-plugin-core-1.2.0.RELEASE.jar springfox-spring-web-2.8
+ .0.jar spring-boot-starter-tomcat-2.1.0.RELEASE.jar mybatis-spring-1.
+ 3.1.jar springfox-swagger-ui-2.8.0.jar spring-boot-starter-logging-2.
+ 1.0.RELEASE.jar pagehelper-5.1.2.jar spring-core-5.1.2.RELEASE.jar fa
+ stjson-1.2.49.jar spring-boot-starter-thymeleaf-2.1.0.RELEASE.jar sna
+ keyaml-1.23.jar spring-boot-starter-jdbc-2.1.0.RELEASE.jar mybatis-3.
+ 4.5.jar spring-aop-5.1.2.RELEASE.jar spring-plugin-metadata-1.2.0.REL
+ EASE.jar HikariCP-3.2.0.jar hibernate-validator-6.0.13.Final.jar myba
+ tis-spring-boot-starter-1.2.0.jar jackson-datatype-jdk8-2.9.7.jar com
+ mons-io-2.6.jar spring-boot-devtools-2.1.0.RELEASE.jar jsqlparser-1.0
+ .jar slf4j-api-1.7.21.jar spring-websocket-5.1.2.RELEASE.jar springfo
+ x-swagger-common-2.8.0.jar spring-boot-starter-web-2.1.0.RELEASE.jar 
+ thymeleaf-extras-java8time-3.0.1.RELEASE.jar unbescape-1.1.6.RELEASE.
+ jar log4j-to-slf4j-2.11.1.jar commons-dbcp2-2.5.0.jar mybatis-spring-
+ boot-autoconfigure-1.2.0.jar javassist-3.21.0-GA.jar jackson-core-2.9
+ .7.jar attoparser-2.0.5.RELEASE.jar reflections-0.9.11.jar mapstruct-
+ 1.2.0.Final.jar spring-boot-autoconfigure-2.1.0.RELEASE.jar thymeleaf
+ -3.0.11.RELEASE.jar jul-to-slf4j-1.7.25.jar spring-context-5.1.2.RELE
+ ASE.jar swagger-models-1.5.14.jar springfox-schema-2.8.0.jar tomcat-e
+ mbed-core-9.0.12.jar jackson-datatype-jsr310-2.9.7.jar javax.annotati
+ on-api-1.3.2.jar spring-expression-5.1.2.RELEASE.jar spring-boot-star
+ ter-websocket-2.1.0.RELEASE.jar jackson-databind-2.9.7.jar log4j-1.2.
+ 17.jar byte-buddy-1.9.3.jar springfox-core-2.8.0.jar commons-pool2-2.
+ 6.0.jar pinyin4j-2.5.0.jar spring-jdbc-4.3.14.RELEASE.jar
+Main-Class: com.hy.salon.sys.SalonApplication
+

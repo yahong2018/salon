@@ -37,9 +37,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	/**
 	 * 外部文件访问
 	 */
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**").addResourceLocations("/templates/**");
-	}
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		registry.addResourceHandler("/static/**").addResourceLocations("/templates/**");
+//	}
 
 }
