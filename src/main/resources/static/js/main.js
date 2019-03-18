@@ -133,7 +133,11 @@ layui.use(['layer', 'element'], function() {
       //layer.msg(elem.text());
     });
 	var $ = layui.$;
-
+	$(".quxiao").on("click",function(){
+		// window.parent.location.reload(); //刷新父页面
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);  // 关闭layer
+	})
 
 	  //触发事件
 	   active = {

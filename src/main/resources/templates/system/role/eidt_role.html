@@ -6,6 +6,8 @@
 <title>用户</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
 </head>
 <style type="text/css">
  body{
@@ -71,7 +73,7 @@
         <div class="layui-form-item" style="margin-left: 140px;">
             <!--<p id="btnGroup" class="pull-right">-->
                 <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
-                <button class="layui-btn" onclick="quxiao()">取消</button>
+                <button class="layui-btn quxiao" >取消</button>
             <!--</p>-->
         </div>
         <input name="recordId" id="recordId"  type="hidden" value="" class="layui-input">
@@ -98,13 +100,6 @@
     layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
 	  var form = layui.form;
 	  var $ = layui.jquery;
-	  var laydate=layui.laydate;
-	  /* function quxiao(){
-	  	alert(111);
-	  } */
-	   var $ = layui.jquery,
-	   upload = layui.upload;
-
 	  form.on('submit(*)', function(data){
 	  	console.log(data.field);
 	    var url ='';
