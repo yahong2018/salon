@@ -40,4 +40,7 @@ public class Member extends TraceableEntity<Long> {
     private Double debt    ;            // 账户欠款
     private Double amountConsumer ;     // 总消费
     private Double amountCharge  ;      //总充值
+    //新增属性
+    private String primaryName  ;   //负责美容师
+    private String salonName  ;   //店名
 }
