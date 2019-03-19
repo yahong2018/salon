@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
@@ -48,6 +49,9 @@ public class AttendanceSheetService {
         scheduleParameter.put("stuffId", condition.getStuffId());
         scheduleParameter.put("day", sdf.format(condition.getAttendanceTime()));
         Schedule schedule = scheduleDao.getOne(scheduleWhere, scheduleParameter);
+
+        SimpleDateFormat sdfs = new SimpleDateFormat("HHmm");
+
         Shift shift=null;
         if(schedule.getShiftId()!=-1){
             //查询班次
@@ -62,14 +66,15 @@ public class AttendanceSheetService {
             timeSheet.setStuffId(condition.getStuffId());
             timeSheet.setDay(condition.getAttendanceTime());
             timeSheet.setTimeStart(condition.getAttendanceTime());
-            if(condition.getAttendanceTime().compareTo(shift.getTimeStart())<=0){
+            String s = condition.getAttendanceTime().toString();
+            if((Integer.parseInt(sdfs.format(condition.getAttendanceTime()))<Integer.parseInt(shift.getTimeStart()))){
                 timeSheet.setTimeSheetType(0);//出勤类型正常
             }else{
                 timeSheet.setTimeSheetType(1);//出勤类型迟到
             }
             timeSheetDao.insert(timeSheet);
         }else{
-            if(condition.getAttendanceTime().compareTo(shift.getTimeEnd())<0){
+            if((Integer.parseInt(sdfs.format(condition.getAttendanceTime()))>Integer.parseInt(shift.getTimeEnd()))){
                 if(one.getTimeSheetType()==1){
                     one.setTimeSheetType(4);//4 又迟到又早退
                 }else{
@@ -79,6 +84,10 @@ public class AttendanceSheetService {
             one.setTimeEnd(condition.getAttendanceTime());
             timeSheetDao.update(one);
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
