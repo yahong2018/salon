@@ -110,4 +110,12 @@
 	        select role_id from role_user  where user_id = #{userId}
          )
     </select>
+
+    <select id="GET_PROGRAM_PRIVILEGE_BY_PROGRAM_ID" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.ProgramPrivilege">
+        select *
+          from program_privilege
+         where  program_id = #{programId}
+    </select>
+
+
 </mapper>

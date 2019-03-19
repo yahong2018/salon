@@ -50,4 +50,8 @@ public class ProgramPrivilegeService {
 	public int getPageListCountByProgramId(Map map, Map parameters) {
 		return programPrivilegeDAO.getPageListCountByProgramId(map, parameters);
 	}
+
+    public void insert(ProgramPrivilege pp) {
+        programPrivilegeDAO.insert(pp);
+    }
 }

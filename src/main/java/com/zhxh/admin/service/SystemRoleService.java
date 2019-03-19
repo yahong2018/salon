@@ -248,10 +248,10 @@ public class SystemRoleService {
         menu.setProgramName(top.getProgramName());
         menu.setUrl(top.getUrl());
         menu.setGlyph(top.getGlyph());
-        if (menu.isFolder()) {
-            menu.setDataType("app.model.admin.SystemMenuTreeModel");
-            menu.setExpanded(true);
-        } else {
+//        if (menu.isFolder()) {
+//            menu.setDataType("app.model.admin.SystemMenuTreeModel");
+//            menu.setExpanded(true);
+//        } else {
             //
             //1.只有是实际运行的程序而不是一个文件夹，才需要显示权限。
             //2.如果有其他的权限，"运行"权限是默认具备的,不需要显示。
@@ -267,7 +267,7 @@ public class SystemRoleService {
                 voList[i] = vo;
             }
             menu.setChildren(voList);
-        }
+        //}
 
         return menu;
     }
