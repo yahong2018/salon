@@ -10,6 +10,7 @@ public class Result<T> implements Serializable {
     private String msgcode;
     private String msg;
     private Boolean success;
+    private int total;
     private T data;
 
 }
