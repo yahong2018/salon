@@ -536,8 +536,8 @@ create table shift
   record_id                        bigint      auto_increment      not null,
   store_id                         bigint                          not null,   -- 门店
   shift_type                       tinyint                         not null,   -- 班次：0.全  1.早   2. 中   3.晚
-  time_start                       datetime                        not null,   -- 开始时间
-  time_end                         datetime                        not null,   -- 结束时间
+  time_start                       varchar(12)                              not null,   -- 开始时间
+  time_end                         varchar(12)                              not null,   -- 结束时间
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,

@@ -277,8 +277,8 @@
         <result column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="shift_type" property="shiftType" jdbcType="TINYINT" />
-        <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
-        <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+        <result column="time_start" property="timeStart" jdbcType="VARCHAR" />
+        <result column="time_end" property="timeEnd" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="Pictures" type="com.hy.salon.basic.entity.Pictures" extends="com.zhxh.core.data.TraceableEntity">

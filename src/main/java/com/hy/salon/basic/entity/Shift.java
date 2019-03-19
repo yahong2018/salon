@@ -15,6 +15,7 @@ public class Shift extends TraceableEntity<Long> {
     private Long recordId ;
     private Long storeId  ;//门店
     private Integer shiftType;//班次：0.全  1.早   2. 中   3.晚
-    private Date timeStart  ;// 开始时间
-    private Date timeEnd  ;//结束时间
+    private  String timeStart  ;// 开始时间
+
+    private String timeEnd  ;//结束时间
 }
