@@ -86,8 +86,4 @@ public class AttendanceSheetService {
         }
     }
 
-    public static void main(String[] args) {
-
-    }
-
 }
