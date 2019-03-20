@@ -51,4 +51,21 @@ public class TimeSheetService {
         }
         return voList;
     }
+
+    public void getTimeSheetBySalonId(String salonId, String time) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("storeId", salonId);
+        String where = "store_id=#{storeId}";
+        Map listMap = new HashMap();
+        listMap.put("where", where);
+        //门店下所有员工
+        List<Stuff> list = stuffDao.getList(listMap, parameters);
+        for (Stuff stuff : list) {
+            //查询所有员工的出勤
+            TimeSheet timeSheet=timeSheetDao.getTSheets(stuff.getRecordId(),time);
+            if(timeSheet!=null){
+
+            }
+        }
+    }
 }

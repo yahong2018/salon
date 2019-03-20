@@ -1,15 +1,11 @@
 package com.hy.salon.basic.service;
 
 import com.github.pagehelper.PageHelper;
-import com.hy.salon.basic.dao.MemberDao;
-import com.hy.salon.basic.dao.SalonDao;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.Member;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.vo.MemberTagVo;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +19,17 @@ public class MemberService {
     @Resource(name = "memberDao")
     private MemberDao memberDao;
 
+    @Resource(name = "memberTagDao")
+    private MemberTagDao memberTagDao;
+
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
 
     @Resource(name = "salonDao")
     private SalonDao salonDao;
+
+    @Resource(name = "tagDao")
+    private TagDao tagDao;
 
     public List<Member> getArchives(Long initialStoreId) {
         List<Member> list=new ArrayList<>();
@@ -43,7 +45,7 @@ public class MemberService {
         }
         return list;
     }
-    public List<Member> getArchivespc(Long storeId,String pageNum,String pageSize) {
+    public List<Member> getArchivespc(Long storeId,String pageNum,String pageSize,String memberName,String tel) {
         List<Salon> list=new ArrayList<>();
         Salon salon = salonDao.getSalonForId(storeId);
         if(salon.getParentId()<0){
@@ -64,6 +66,12 @@ public class MemberService {
             Map listMap = new HashMap();
             String where = "initial_store_id=#{initialStoreId}";
             listMap.put("where", where);
+            /*if(memberName!=null && memberName!=""){
+                listMap.put("where", "initial_store_id=#{initialStoreId} and "+memberName);
+            }else if(tel!=null && tel!=""){
+                listMap.put("where", "initial_store_id=#{initialStoreId} and "+tel);
+                parameters.put("tel", tel);
+            }*/
             List<Member> memberList =memberDao.getList(listMap, parameters);
             vo.addAll(memberList);
         }
@@ -105,5 +113,49 @@ public class MemberService {
         member.setAmountConsumer(0.0);
         member.setAmountCharge(0.0);
         memberDao.insert(member);
+    }
+
+    public List<Member> getMemberTag(Long storeId) {
+        List<Salon> list=new ArrayList<>();
+        Salon salon = salonDao.getSalonForId(storeId);
+        if(salon.getParentId()<0){
+            Map Map = new HashMap();
+            String where = "parent_id=#{parentId}";
+            Map.put("where",where);
+            Map parameters = new HashMap();
+            parameters.put("parentId", salon.getRecordId());
+            List<Salon> salonList = salonDao.getList(Map, parameters);
+            salonList.add(salon);
+            list.addAll(salonList);
+        }
+        List<Member> vo=new ArrayList<>();
+        for (Salon salon1 : list) {
+            Map parameters = new HashMap();
+            parameters.put("initialStoreId", salon1.getRecordId());
+            Map listMap = new HashMap();
+            String where = "initial_store_id=#{initialStoreId}";
+            listMap.put("where", where);
+            List<Member> memberList =memberDao.getList(listMap, parameters);
+            vo.addAll(memberList);
+        }
+        //List<Member> VoList=new ArrayList<>();
+        for (Member member : vo) {
+            Map parameter = new HashMap();
+            parameter.put("memberId",member.getRecordId());
+            Map Map = new HashMap();
+            String where = "member_id=#{memberId}";
+            Map.put("where", where);
+            //List<MemberTag> memberList =memberTagDao.getList(Map, parameter);
+            /*if(memberList!=null){
+                for (MemberTag memberTag : memberList) {
+                    Map parametertag = new HashMap();
+                    parametertag.put("recordId",memberTag.getTagId());
+                    String tagwhere = "record_id=#{recordId}";
+                    Tag one = tagDao.getOne(tagwhere, parametertag);
+                    member.setTagName(one.getTagName());
+                }
+            }*/
+        }
+        return vo;
     }
 }
