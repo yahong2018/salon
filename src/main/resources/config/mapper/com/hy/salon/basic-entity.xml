@@ -309,4 +309,15 @@
         <result column="visual_range_id" property="visualRangeId" jdbcType="BIGINT" />
     </resultMap>
 
+    <resultMap id="MemberTag" type="com.hy.salon.basic.entity.MemberTag" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="tag_id" property="tagId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="Tag" type="com.hy.salon.basic.entity.Tag" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="record_type" property="recordType" jdbcType="TINYINT" />
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    </resultMap>
 </mapper>
