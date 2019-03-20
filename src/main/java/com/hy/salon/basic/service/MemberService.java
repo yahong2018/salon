@@ -1,5 +1,6 @@
 package com.hy.salon.basic.service;
 
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.MemberDao;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
@@ -41,6 +42,31 @@ public class MemberService {
             list = addAttribute(memberDao.getList(listMap, parameters));
         }
         return list;
+    }
+    public List<Member> getArchivespc(Long storeId,String pageNum,String pageSize) {
+        List<Salon> list=new ArrayList<>();
+        Salon salon = salonDao.getSalonForId(storeId);
+        if(salon.getParentId()<0){
+            Map Map = new HashMap();
+            String where = "parent_id=#{parentId}";
+            Map.put("where",where);
+            Map parameters = new HashMap();
+            parameters.put("parentId", salon.getRecordId());
+            List<Salon> salonList = salonDao.getList(Map, parameters);
+            salonList.add(salon);
+            list.addAll(salonList);
+        }
+        PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
+        List<Member> vo=new ArrayList<>();
+        for (Salon salon1 : list) {
+            Map parameters = new HashMap();
+            parameters.put("initialStoreId", salon1.getRecordId());
+            Map listMap = new HashMap();
+            String where = "initial_store_id=#{initialStoreId}";
+            listMap.put("where", where);
+            vo = addAttribute(memberDao.getList(listMap, parameters));
+        }
+        return vo;
     }
     private List<Member> addAttribute(List<Member> list){
         for (Member member : list) {
