@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -81,7 +82,6 @@ public class MemberController extends SimpleCRUDController<Member> {
         Result result = new Result();
         try {
             List<Member> list = memberService.getArchivespc(stuff.getStoreId(),page,limit);
-            result.setTotal(memberDao.getPageListCount(new HashMap()));
             result.setData(list);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -144,6 +144,26 @@ public class MemberController extends SimpleCRUDController<Member> {
                 memberService.addMember(member);
             }else{
                 memberDao.update(member);
+            }
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+    }
+    /**
+     * 删除顾客
+     */
+    @ResponseBody
+    @RequestMapping(value = "deleteMember",method = RequestMethod.POST)
+    public Result deleteMember(@RequestBody String[] ids) {
+        Result result = new Result();
+        try {
+            for (String id : ids) {
+                memberDao.deleteById(id);
             }
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
