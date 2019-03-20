@@ -64,7 +64,8 @@ public class MemberService {
             Map listMap = new HashMap();
             String where = "initial_store_id=#{initialStoreId}";
             listMap.put("where", where);
-            vo = addAttribute(memberDao.getList(listMap, parameters));
+            List<Member> memberList =memberDao.getList(listMap, parameters);
+            vo.addAll(memberList);
         }
         return vo;
     }
