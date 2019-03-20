@@ -43,4 +43,6 @@ public class Member extends TraceableEntity<Long> {
     //新增属性
     private String primaryName  ;   //负责美容师
     private String salonName  ;   //店名
+
+    private String tagName;// 标签
 }

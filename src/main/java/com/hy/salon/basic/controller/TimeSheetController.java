@@ -60,4 +60,31 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         }
         return result;
     }
+
+    /**
+     * 考勤2
+     * @param time
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetBySalonId",method = RequestMethod.GET)
+    @ApiOperation(value="获取当天門店考勤", notes="获取当天門店考勤")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "salonId", value = "門店id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当天日期", required = true, dataType = "String")
+    })
+    public Result getTimeSheetBySalonId(String salonId,String time){
+        Result result=new Result();
+        try {
+            timeSheetService.getTimeSheetBySalonId(salonId,time);
+            //result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
 }

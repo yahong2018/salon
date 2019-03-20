@@ -20,4 +20,12 @@ public class TimeSheetDao extends BaseDAOWithEntity<TimeSheet> {
         parameters.put("eTime", eTime);
         return this.getOne(where,parameters);
     }
+    public TimeSheet getTSheets(Long recordId,String time) {
+        String where = "stuff_id=#{recordId} and 'day'=#{time}";
+        //String where = "stuff_id=#{recordId}";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("stuffId", recordId);
+        parameters.put("time", time);
+        return this.getOne(where,parameters);
+    }
 }
