@@ -2,6 +2,7 @@ package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.TimeSheetDao;
+import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.TimeSheet;
 import com.hy.salon.basic.service.StuffService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/timeSheet")
@@ -36,21 +38,21 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     }
 
     /**
-     * 获取当天每家门店考勤情况
+     * 重写当月每家门店考勤
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getTimeSheet",method = RequestMethod.GET)
+    @RequestMapping(value = "getTimeSheets",method = RequestMethod.GET)
     @ApiOperation(value="获取当天每家门店考勤", notes="获取当天每家门店考勤")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "cTime", value = "开始时间", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "eTime", value = "结束时间", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
-    public Result getTimeSheet(String cTime, String eTime){
+    public Result getTimeSheets(Long recordId,String time){
         Result result=new Result();
         try {
-            List<TimeSheetVo> timeSheet = timeSheetService.getTimeSheet(cTime, eTime);
-            result.setData(timeSheet);
+            List<Map> list = timeSheetService.getTimeSheets(recordId, time);
+            result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){
@@ -60,7 +62,6 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         }
         return result;
     }
-
     /**
      * 考勤2
      * @param time
@@ -70,14 +71,88 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     @RequestMapping(value = "getTimeSheetBySalonId",method = RequestMethod.GET)
     @ApiOperation(value="获取当天門店考勤", notes="获取当天門店考勤")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "salonId", value = "門店id", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "time", value = "当天日期", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "salonId", value = "門店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
-    public Result getTimeSheetBySalonId(String salonId,String time){
+    public Result getTimeSheetBySalonId(Long salonId,String time){
         Result result=new Result();
         try {
-            timeSheetService.getTimeSheetBySalonId(salonId,time);
-            //result.setData(list);
+            List<Map> list = timeSheetService.getTimeSheetBySalonId(salonId, time);
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 考勤3
+     * @param time
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetByStuffId",method = RequestMethod.GET)
+    @ApiOperation(value="获取员工考勤情况", notes="获取员工考勤情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
+    })
+    public Result getTimeSheetByStuffId(Long stuffId,String time){
+        Result result=new Result();
+        try {
+            Map map = timeSheetService.getTimeSheetByStuffId(stuffId, time);
+            result.setData(map);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 查询员工未打卡记录
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeId",method = RequestMethod.GET)
+    @ApiOperation(value="查询员工未打卡记录", notes="查询员工未打卡记录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
+    })
+    public Result getTimeId(Long stuffId,String time){
+        Result result=new Result();
+        try {
+            List<Schedule> list = timeSheetService.getTimeId(stuffId, time);
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 查询员工未打卡记录详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetDetails",method = RequestMethod.GET)
+    @ApiOperation(value="查询员工未打卡记录详情", notes="查询员工未打卡记录详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当天日期", required = true, dataType = "String")
+    })
+    public Result getTimeSheetDetails(Long stuffId,String time){
+        Result result=new Result();
+        try {
+            Map map = timeSheetService.getTimeSheetDetails(stuffId, time);
+            result.setData(map);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){
