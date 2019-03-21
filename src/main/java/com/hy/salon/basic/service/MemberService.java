@@ -55,7 +55,6 @@ public class MemberService {
             Map parameters = new HashMap();
             parameters.put("parentId", salon.getRecordId());
             List<Salon> salonList = salonDao.getList(Map, parameters);
-            salonList.add(salon);
             list.addAll(salonList);
         }
         PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
