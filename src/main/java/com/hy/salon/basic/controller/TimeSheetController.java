@@ -1,6 +1,7 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.dao.TimeSheetDao;
 import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.entity.Stuff;
@@ -9,6 +10,8 @@ import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.service.TimeSheetService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.TimeSheetVo;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
@@ -16,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +36,10 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     private TimeSheetDao timeSheetDao;
     @Resource(name = "timeSheetService")
     private TimeSheetService timeSheetService;
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
     @Override
     protected BaseDAOWithEntity<TimeSheet> getCrudDao() {
         return timeSheetDao;
@@ -49,6 +57,11 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
     public Result getTimeSheets(Long recordId,String time){
+        if(StringUtils.isEmpty(recordId)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            recordId=stuff.getStoreId();
+        }
         Result result=new Result();
         try {
             List<Map> list = timeSheetService.getTimeSheets(recordId, time);
