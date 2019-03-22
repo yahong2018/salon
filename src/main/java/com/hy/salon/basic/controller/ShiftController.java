@@ -1,11 +1,20 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.StuffDao;
+import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Shift;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.NurseLogService;
+import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.ShiftService;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequest;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +37,53 @@ import java.util.Map;
 public class ShiftController {
     @Resource(name = "shiftService")
     private ShiftService shiftService;
+    @Resource(name="authenticateService")
+    private AuthenticateService authenticateService;
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+    @Resource(name = "salonService")
+    private SalonService salonService;
+
+
+    /**
+     * 查询一个门店的排班
+     */
+    @RequestMapping("/getSalonShift")
+    @ResponseBody
+    public List<Shift> getSalonShift(HttpServletRequest request){
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        List<Shift>  list =shiftService.getSalonShift(stuff.getStoreId());
+
+        return  list;
+    }
+
+    /**
+     * 查询门店排班
+     */
+    @RequestMapping("/getSalonShiftList")
+    @ResponseBody
+    public ExtJsResult getList(HttpServletRequest request,int page){
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        ExtJsResult StoreList=salonService.getSalonForStoreIdSystem(request,stuff.getStoreId(),new ListRequestBaseHandler() {
+            @Override
+            public List getByRequest(ListRequest listRequest) {
+                return salonService.getSalonDao().getPageList(listRequest.toMap(), null);
+            }
+
+            @Override
+            public int getRequestListCount(ListRequest listRequest) {
+                return salonService.getSalonDao().getPageListCount(listRequest.toMap(), null);
+            }
+        });
+
+        return  StoreList;
+    }
+
+
     /**
      * 保存修改排班设置
      */

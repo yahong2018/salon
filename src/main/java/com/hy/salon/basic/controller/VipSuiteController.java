@@ -57,6 +57,8 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
 
 
+
+
     @ResponseBody
     @RequestMapping("/addVipSuite")
     @ApiOperation(value="添加充值卡", notes="添加充值卡")

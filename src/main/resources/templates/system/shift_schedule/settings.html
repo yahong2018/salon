@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>门店排班</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+</head>
+<style type="text/css">
+  body{
+    height: 100%;
+    width: 100%;
+    margin-top: 11px;
+  }
+
+
+</style>
+
+<body >
+<!-- 内容主体区域 -->
+<div class="layui-fluid layui-form">
+  <div class="layui-form-item">
+    <div class="layui-input-inline " style=" width: 124px;">
+      <button class="layui-btn layui-btn-primary addUser">门店排班</button>
+     </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">搜索选择框</label>
+      <div class="layui-input-inline">
+        <select name="modules"  lay-search="" class="userKey">
+          <option value="">直接选择或搜索选择</option>
+          <option value="salon_name">门店名称</option>
+          <option value="tel">门店电话</option>
+          <option value="address">门店地址</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <div class="layui-input-inline">
+        <input type="text" name="userKey" class="layui-input userKeyValue ">
+      </div>
+      <div class="layui-input-inline">
+        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+        </button></div>
+    </div>
+  </div>
+</div>
+
+<div id="pTable" >
+  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="layui_table_id" style="width: 1680px">
+
+  </table>
+<!--  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>-->
+  <div id="laypage"></div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+  layui.use(['form','laydate','layer','table','laypage','util'],function(){
+    var form = layui.form;
+    var laydate=layui.laydate;
+    var $ = layui.$;
+    productsearch(1);
+
+    function productsearch(page,filterExpr) {
+
+      var table = layui.table;
+      laydate = layui.laydate,
+      laypage = layui.laypage;
+      var form = layui.form;
+      table.render({
+        elem : '#layui_table_id',
+        url : '/hy/basic/shift/getSalonShiftList',
+        cols : [ [
+              {checkbox: true,
+                filter:'test'
+              }
+              ,
+              {
+                field : 'recordId',
+                title : 'recordId',
+                sort : true,
+                align : 'center'
+              }
+              , {
+                field : 'salonName',
+                title : '门店名称' +
+                        '星期一',
+                align : 'center'
+              }
+              , {
+                field : 'tel',
+                title : '门店电话',
+                align : 'center',
+              }
+              , {
+                field : 'address',
+                title : '门店地址',
+                align : 'center'
+              }
+              , {
+                field : 'morningShift',
+                title : '早班',
+                align : 'center'
+              }
+              , {
+                field : 'middleShift',
+                title : '中班',
+                align : 'center'
+              }
+              , {
+                field : 'eveningShift',
+                title : '晚班',
+                align : 'center'
+              }
+              , {
+                field : 'allShift',
+                title : '全班',
+                align : 'center'
+              }
+
+
+        ] ],
+        page : true,
+        where : {
+          filterExpr:filterExpr,
+        },
+        responseHandler: function (res, curr,count) {
+          // $('#pageNum').val(curr);
+          // var mycars=new Array();
+          // var tit=res.rootProperty;
+          // for (var i=0;i<tit.length;i++){
+          //   mycars[i]={field:'ex'+i, title:tit[i].salonName, align:'center',width:'120'};
+          // }
+          // table.init('layui_table_id',{
+          //   cols:[mycars]
+          //   ,data:res.rootProperty
+          //   ,limit:10
+          // });
+          return {
+            "count": res.total,
+            "data": res.rootProperty,
+            "code": 0,
+          //code值为200表示成功
+            "msg": ""
+          }
+        },
+        done : function(res, curr, count) {
+          var mycars=new Array();
+          var tit=res.rootProperty;
+          // for (var i=0;i<tit.length;i++){
+          //   if(i==0){
+          //     var j = 0;
+          //     for (var p in tit[i]){
+          //       console.log(p);
+          //       mycars[j]={field:p, title:p, align:'center',width:'120'};
+          //       j++;
+          //     }
+          //   }
+          //
+          //
+          // }
+          // table.init('layui_table_id',{
+          //   cols:[mycars]
+          //   ,data:res.rootProperty
+          //   ,limit:1000,
+          //   count: res.total,
+          //   code: 0,
+          //   msg: ""
+          // });
+          console.log(res)
+          $('#pageNum').val(curr);
+
+        }
+      })
+      // table.on('checkbox(test)', function(obj){
+      //   console.log(layui.table.checkStatus('layui_table_id'));
+      // });
+     // 监听工具条
+      table.on('tool(layui_table_id)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        var data = obj.data, //获得当前行数据
+                layEvent = obj.event; //获得 lay-event 对应的值
+        if (layEvent == 'detail') {
+          queryById(data.id);
+        } else if (layEvent == 'del') {
+          //alert(data.id)
+          var pageNum = $('#pageNum').val();
+          layer.confirm('真的删除行么', function(index){
+            deleteById(data.id);
+            layer.close(index);
+            //向服务端发送删除指令
+          });
+        } else if (layEvent === 'edit') {
+          layer.msg('编辑操作');
+        }
+      });
+      //常规用法
+      laydate.render({
+        elem : '#createDate'
+      });
+      //常规用法
+      laydate.render({
+        elem : '#processingTime'
+      });
+
+    }
+
+    $(".check").on("click", function() {
+
+      var userKey=$('.userKey option:selected').val();
+      if(userKey!=""){
+        var userKeyValue = $('.userKeyValue').val();
+        var temp = userKey+"='"+userKeyValue+"'";
+        productsearch(1, temp);
+      }else{
+        productsearch(1);
+      }
+
+    })
+    $(".tingzhi").on("click",function(){
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length>1||data.length<1){
+        alert("请选中一条数据");
+        return false;
+      }
+      $.ajax({
+        type:'POST',
+        url:'/admin/systemUsers/disableUser.handler',
+        data: {userId:data[0].recordId},
+        success: function(data){
+          alert("操作成功！");
+          productsearch(1);
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+    })
+
+
+    $(".qidong").on("click",function(){
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length>1||data.length<1){
+        alert("请选中一条数据");
+        return false;
+      }
+      $.ajax({
+        type:'POST',
+        url:'/admin/systemUsers/enableUser.handler',
+        data: {userId:data[0].recordId},
+        success: function(data){
+          alert("操作成功！");
+          productsearch(1);
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+    })
+      $(".shouquan").on("click",function(){
+          var data = layui.table.checkStatus('layui_table_id').data;
+          if(data.length<1){
+              alert("请选中一条数据");
+              return false;
+          }
+          layer.open({
+              type:2,
+              area:[482+'px',315+'px'],
+              fix:false,
+              offset: '80px',
+              maxmin:true,
+              shadeClose:true,
+              scrollbar: false,
+              shade:0.4,
+              title:'授权',
+              content:['authorize.html'],
+              success:function(layero,index){
+                  var iframe = window['layui-layer-iframe' + index];
+                  // 向子页面的全局函数child传参
+                  iframe.child(data[0]);
+                  console.log("成功");
+              },
+              fail:function(data){
+                  console.log(data);
+              }
+          })
+      })
+
+
+    $(".deleteUser").on("click",function(){
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length<1){
+        alert("请选中一条数据");
+        return false;
+      }
+      var deleteList = [];
+      for(var i=0 ;i<data.length;i++){
+        var id = data[i].recordId;
+        var temp =id+"";
+        deleteList.push(temp);
+      }
+      console.log(deleteList);
+      $.ajax({
+        type:'POST',
+        url:'/admin/systemUsers/delete.handler',
+        //data: JSON.stringify(deleteList),
+        data: JSON.stringify(deleteList),
+        contentType: "application/json",
+        success: function(data){
+          alert("操作成功！");
+          productsearch(1);
+         // window.parent.location.reload(); //刷新父页面
+         // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+          //parent.layer.close(index);  // 关闭layer
+
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+
+    })
+
+    $(".addUser").on("click",function(){
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length>1){
+        alert("请选中一条数据");
+        return false;
+      }
+      layer.open({
+        type:2,
+        area:[1000+'px',638+'px'],
+        fix:false,
+        offset: '80px',
+        maxmin:true,
+        shadeClose:true,
+        scrollbar: false,
+        shade:0.4,
+        title:'设置班次',
+        content:['settingShift.html'],
+        success:function(layero,index){
+          var iframe = window['layui-layer-iframe' + index];
+          // 向子页面的全局函数child传参
+          iframe.child(data[0]);
+          console.log("成功");
+        },
+        fail:function(data){
+          console.log(data);
+        }
+      })
+    })
+    $(".updateUser").on("click",function(){
+      console.log(layui.table.checkStatus('layui_table_id'));
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length>1){
+        alert("请选中一条数据");
+        return false;
+      }
+      layer.open({
+        type:2,
+        area:[482+'px',315+'px'],
+        fix:false,
+        offset: '80px',
+        maxmin:true,
+        shadeClose:true,
+        scrollbar: false,
+        shade:0.4,
+        title:'修改用户',
+        content:['add_user.html'],
+        success:function(layero,index){
+          // 获取子页面的iframe
+          var iframe = window['layui-layer-iframe' + index];
+          // 向子页面的全局函数child传参
+          iframe.child(data[0]);
+          console.log("成功");
+        },
+        fail:function(data){
+          console.log(data);
+        }
+      })
+    })
+
+  });
+  function userStatus(t){
+     if(t==0){
+       return '启用';
+     }else{
+       return '禁用';
+     }
+    return util.toDateString(t1);
+  }
+</script>
+
+
+<script type="text/html" id="userStatus">
+
+
+        {{ userStatus(d.userStatus) }}
+</script>

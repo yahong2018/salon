@@ -10,7 +10,6 @@ import java.util.List;
 public class ListRequestProcessHandler {
     public ExtJsResult getListFromHttpRequest(HttpServletRequest request, ListRequestBaseHandler listHandler) {
         ListRequest listRequest = getListRequest(request);
-
         ExtJsResult result = new ExtJsResult();
         result.setTotal(0);
         try {

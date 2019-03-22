@@ -1,0 +1,40 @@
+
+#test-n2 {
+	position: relative;
+	min-height: 400px !important;
+	width: 100% !important;
+}
+
+#test-n2  #layui-laydate1,#test-n2  #layui-laydate1 .layui-laydate-main,#test-n2 .layui-laydate-content table{
+	width: 100%;
+}
+
+#test-n2 .layui-laydate-content table tbody{
+	height:calc(100vh - 240px)!important;
+}
+.text_box{
+	padding: 15px !important;
+}
+
+
+
+
+#test-n3 {
+	position: relative;
+	min-height: 400px !important;
+	width: 100% !important;
+}
+
+#layui-laydate1{
+	width: 100% !important;
+}
+#test-n3  #layui-laydate1 .layui-laydate-main{
+	width:50%;
+}
+
+#test-n3  #layui-laydate1 .layui-laydate-main table{
+	width: 100% !important;
+}
+#test-n3 .layui-laydate-content table tbody{
+	height:calc(100vh - 240px)!important;
+}

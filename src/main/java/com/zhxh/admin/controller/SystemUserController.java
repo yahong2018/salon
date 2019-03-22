@@ -33,6 +33,7 @@ public class SystemUserController {
     @RequestMapping("getAllUsers.handler")
     @ResponseBody
     public ExtJsResult getAllUsers(HttpServletRequest request, HttpServletResponse response) {
+
         return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {

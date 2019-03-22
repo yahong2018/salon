@@ -129,6 +129,19 @@
         and b.`day` between #{timeStart} and #{timeEnd};
     </select>
 
+    <select id="GET_SCHEDULE_BY_TIME_AND_STUFFID"  parameterType="java.util.Map" resultType="Map" >
+        SELECT
+            s.record_id as recordId,
+            s.stuff_id as stuffId,
+            s.day as day,
+            ss.shift_type as shiftType
+        FROM
+            schedule s
+        LEFT JOIN `shift` ss ON s.shift_id = ss.record_id
+        WHERE s.stuff_id = #{stuffId} and
+         s.`day` between #{timeStart} and #{timeEnd};
+    </select>
+
 
 
     <select id="GET_ROLE_BY_USERID"  parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemRole">

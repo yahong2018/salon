@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>用户</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-input-inline{width: 214px !important}
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+ <div class="x-body layui-anim layui-anim-up">
+  <div class="layui-fluid">
+  
+    <form class="layui-form layui-form-pane1" lay-filter="first">
+        <div class="layui-form-item">
+        </div>
+      <div class="layui-form-item">
+          <div class="layui-inline">
+              <label class="layui-form-label">早班时间</label>
+              <div class="layui-input-inline">
+                  <input type="text" class="layui-input morningShift" id="test1" name="morningShift" placeholder="H点m分">
+                  <input type="hidden" class="layui-input" id="shiftType1" name="shiftType1" value="1" >
+
+              </div>
+          </div>
+          <div class="layui-inline">
+              <label class="layui-form-label">中班时间</label>
+              <div class="layui-input-inline">
+                  <input type="text" class="layui-input middleShift" id="test2" name="middleShift" placeholder="H点m分">
+                  <input type="hidden" class="layui-input" id="shiftType2" name="shiftType2" value="2" >
+              </div>
+          </div>
+      </div>
+        <div class="layui-form-item">
+
+        </div>
+        <div class="layui-form-item">
+
+        </div>
+       <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">晚班时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input eveningShift" id="test3" name="eveningShift" placeholder="H点m分">
+                    <input type="hidden" class="layui-input" id="shiftType3" name="shiftType3" value="3" >
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">全班时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input allShift" id="test4" name="allShift" placeholder="H点m分">
+                    <input type="hidden" class="layui-input" id="shiftType0" name="shiftType0" value="0" >
+                </div>
+            </div>
+        </div>
+       <div class="layui-form-item">
+
+      </div>
+        <div class="layui-form-item" style="text-align: center;">
+            <!--<p id="btnGroup" class="pull-right">-->
+                <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
+                <button class="layui-btn quxiao" >取消</button>
+            <!--</p>-->
+        </div>
+        <input name="recordId" id="recordId"  type="hidden" value="" class="layui-input">
+    </form>
+  </div>
+  </div>
+  </body>
+  </html>
+<script type="text/javascript">
+    function child(data){
+        var $ = layui.jquery;
+        var recordId = data.recordId;
+
+        var recordId = data.recordId;
+        $('#recordId').val(recordId);
+
+        var morningShift = data.morningShift;
+        $('.morningShift').val(morningShift);
+        var middleShift = data.middleShift;
+        $('.middleShift').val(middleShift);
+        var eveningShift = data.eveningShift;
+        $('.eveningShift').val(eveningShift);
+        var allShift = data.allShift;
+        $('.allShift').val(allShift);
+        console.log(data);
+    }
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+
+	  var form = layui.form;
+	  var $ = layui.jquery;
+	  var laydate=layui.laydate;
+        laydate.render({
+            elem: '#test1'//所要绑定的元素
+            ,type: 'time'
+            ,range: '~'//设置 分割字符
+            ,format: 'HH:mm',//显示的格式，只显示:例如3H，不显示分秒
+            done: function(value){
+                //回调函数
+                $('#data').val('');
+                var chart_post = {};
+                var strArr = value.split('~');
+                chart_post.start = strArr[0];
+                chart_post.end = strArr[1];
+                chart_post.type = 2;
+                console.log(chart_post);
+            }
+        });
+        laydate.render({
+            elem: '#test2'//所要绑定的元素
+            ,type: 'time'
+            ,range: '~'//设置 分割字符
+            ,format: 'HH:mm',//显示的格式，只显示:例如3H，不显示分秒
+            done: function(value){
+                //回调函数
+                $('#data').val('');
+                var chart_post = {};
+                var strArr = value.split('~');
+                chart_post.start = strArr[0];
+                chart_post.end = strArr[1];
+                chart_post.type = 2;
+                console.log(chart_post);
+            }
+        });
+        laydate.render({
+            elem: '#test3'//所要绑定的元素
+            ,type: 'time'
+            ,range: '~'//设置 分割字符
+            ,format: 'HH:mm',//显示的格式，只显示:例如3H，不显示分秒
+            done: function(value){
+                //回调函数
+                $('#data').val('');
+                var chart_post = {};
+                var strArr = value.split('~');
+                chart_post.start = strArr[0];
+                chart_post.end = strArr[1];
+                chart_post.type = 2;
+                console.log(chart_post);
+            }
+        });
+        laydate.render({
+            elem: '#test4'//所要绑定的元素
+            ,type: 'time'
+            ,range: '~'//设置 分割字符
+            ,format: 'HH:mm',//显示的格式，只显示:例如3H，不显示分秒
+            done: function(value){
+                //回调函数
+                $('#data').val('');
+                var chart_post = {};
+                var strArr = value.split('~');
+                chart_post.start = strArr[0];
+                chart_post.end = strArr[1];
+                chart_post.type = 2;
+                console.log(chart_post);
+            }
+        });
+	  /* function quxiao(){
+	  	alert(111);
+	  } */
+	   var $ = layui.jquery,
+	   upload = layui.upload;
+
+	  form.on('submit(*)', function(data){
+	  	console.log(data.field);
+	  	var field = data.field;
+	  	var listShift = [];
+        var recordId = field.recordId;
+
+	  	var allShift = field.allShift;
+	  	var allShiftlist = allShift.split("~");
+	  	var allShiftData  = {};
+          allShiftData.timeStart = allShiftlist[0];
+          allShiftData.timeEnd =  allShiftlist[1];
+          allShiftData.storeId = recordId
+          allShiftData.shiftType = 0;
+          listShift.push(allShiftData);
+	  	var eveningShift = field.eveningShift;
+
+          var eveningShiftlist = eveningShift.split("~");
+          var eveningShiftData  = {};
+          eveningShiftData.timeStart = eveningShiftlist[0];
+          eveningShiftData.timeEnd =  eveningShiftlist[1];
+          eveningShiftData.storeId = recordId
+          eveningShiftData.shiftType = 3;
+          listShift.push(eveningShiftData);
+
+	  	var middleShift = field.middleShift;
+
+          var middleShiftlist = middleShift.split("~");
+          var middleShiftData  = {};
+          middleShiftData.timeStart = middleShiftlist[0];
+          middleShiftData.timeEnd =  middleShiftlist[1];
+          middleShiftData.storeId = recordId
+          middleShiftData.shiftType = 2;
+          listShift.push(middleShiftData);
+
+	  	var morningShift = field.morningShift;
+
+          var morningShiftlist = morningShift.split("~");
+          var morningShiftData  = {};
+          morningShiftData.timeStart = morningShiftlist[0];
+          morningShiftData.timeEnd =  morningShiftlist[1];
+          morningShiftData.storeId = recordId
+          morningShiftData.shiftType = 1;
+          listShift.push(morningShiftData);
+
+	    var url ='/hy/basic/shift/saveShift';
+	    $.ajax({
+	    	type:'POST',
+            url:url,
+	    	data: JSON.stringify(listShift),
+            contentType: "application/json",
+	    	success: function(data){
+                alert("操作成功！");
+    			window.parent.location.reload(); //刷新父页面
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);  // 关闭layer
+	    	},
+	    	error:function(data){
+	    		alert("操作失败");
+	    		console.log(data);
+	    	}
+	    })
+	    return false;
+	  });
+
+})
+
+
+</script>  

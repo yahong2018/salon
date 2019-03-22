@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>layui日历</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+  <link rel="stylesheet" href="../../../layui/css/date.css">
+  <style>
+      #test-n2 .layui-laydate-main {
+          width: 700px;
+      }
+
+      #test-n2 .layui-laydate-content td, #test-n2 .layui-laydate-content th {
+          width: 100px;
+          height: 60px;
+      }
+
+
+
+        /*.laydate-day-mark {*/
+            /*background-color: #5FB878;*/
+            /*color: white;*/
+        /*}*/
+
+        /*span.laydate-day-mark {*/
+            /*line-height: 60px;*/
+        /*}*/
+
+        /*.laydate-day-mark::after {*/
+            /*background-color: #5FB878;*/
+        /*}*/
+
+      .form{
+          /* border: 1px solid red; */
+          float: right;
+          margin-top: -9px;
+      }
+      .layui-form-item .layui-input-inline {
+          float: left;
+          margin-right: 10px;
+      }
+      .xiu{
+          color: #6eff35;
+      }
+      .zao{
+          color: #1e33ff;
+      }
+      .zhong{
+          color: #ffcd13;
+      }
+      .wan{
+          color:#FF793A;
+      }
+      .quan{
+          color:red;
+      }
+ </style>
+</head>
+<body>
+
+<div class="layui-container" style="padding: 15px;">  
+  <div class="layui-row">
+    <div class="layui-col-md12">
+    <blockquote class="layui-elem-quote"><span class="stuffName"></span>
+        <form class="layui-form form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">班次</label>
+                <div class="layui-input-block">
+                    <input type="radio" class="radio zaoban" name="erweima" value="早" title="早" checked="" lay-filter="erweima">
+                    <input type="radio" class="radio zhongban" name="erweima" value="中" title="中" checked="" lay-filter="erweima">
+                    <input type="radio" class="radio wanban" name="erweima" value="晚" title="晚" checked="" lay-filter="erweima">
+                    <input type="radio" class="radio quanban" name="erweima" value="全班" title="全班" checked="" lay-filter="erweima">
+                    <input type="radio" class="radio xiuxi" name="erweima" value="休" title="休" checked="" lay-filter="erweima">
+                    <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
+                </div>
+
+            </div>
+
+        </form>
+    </blockquote>
+
+    <div class="layui-inline" id="test-n2" ></div>
+
+    </div>
+  </div>
+</div>
+
+<input type="hidden" name="stuffId" class="stuffId" value="">
+<input type="hidden" name="dayText" class="dayText" value="">
+<input type="hidden" name="dayList" class="dayList " value="">
+
+<input type="hidden" name="dayListInsert" class="dayListInsert" value="">
+<script>
+    function child(data){
+        var $ = layui.jquery;
+        // for (var p in data){
+        //     $('.laydate-theme-grid table tbody').find('[lay-ymd="' + p + '"]').append('<span style="margin-top: 6px;display: block;">data[p]</span>')
+        // }
+        $(".stuffName").text(data.name);
+        $(".stuffId").val(data.stuffId);
+        $(".dayList").val(JSON.stringify(data));
+    }
+    function getBanCi(){
+        var $ = layui.jquery;
+        $.ajax({
+            type:'GET',
+            url:'/hy/basic/shift/getSalonShift',
+            success: function(data){
+                for( var i = 0; i < data.length; i++ )
+                {
+                    if(data[i].shiftType=='0'){
+                        $(".quanban").attr("shiftid",data[i].recordId);
+                    }else if(data[i].shiftType=='1'){
+                        $(".zaoban").attr("shiftid",data[i].recordId);
+                    }else if(data[i].shiftType=='2'){
+                        $(".zhongban").attr("shiftid",data[i].recordId);
+                    }else if(data[i].shiftType=='3'){
+                        $(".wanban").attr("shiftid",data[i].recordId);
+                    }
+                   // var  html = "<input type='radio' value='早' checked='' class='radio' name='erweima'/>";
+                   //  $(".layui-input-block").append(html);
+                }
+
+            },
+            error:function(data){
+                alert("操作失败");
+                console.log(data);
+            }
+        })
+    }
+layui.use(['layer', 'form', 'jquery', 'laydate'], function () {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                laydate = layui.laydate,
+                form = layui.form;
+
+
+    getBanCi();
+    form.on('submit(*)', function(data){
+        var list= $(".dayListInsert").val();
+        console.log(list);
+        var url ='/hy/basic/schedule/updateStuffSchedule';
+        $.ajax({
+            type:'POST',
+            url:url,
+            data: list,
+            contentType: "application/json",
+            success: function(data){
+                alert("操作成功！");
+                window.parent.location.reload(); //刷新父页面
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);  // 关闭layer
+
+            },
+            error:function(data){
+                alert("操作失败");
+                console.log(data);
+            }
+        })
+        return false;
+    });
+    form.on('radio(erweima)', function (data) {
+        var dayClass = $(".dayText").val();
+        $("#"+dayClass).text(data.value);
+        $("#"+dayClass).removeClass();
+        var radioClass = "";
+        if(data.value=='休'){
+            $("#"+dayClass).addClass("xiu");
+        }else if(data.value=='早'){
+            $("#"+dayClass).addClass("zao");
+            radioClass = "zaoban";
+        }else if(data.value=='中'){
+            $("#"+dayClass).addClass("zhong");
+            radioClass = "zhongban";
+        }else if(data.value=='晚'){
+            $("#"+dayClass).addClass("wan");
+            radioClass = "wanban";
+        }else if(data.value=='全班'){
+            $("#"+dayClass).addClass("quan");
+            radioClass = "quanban";
+        }
+        var dayList = $(".dayList").val();
+        dayList = JSON.parse(dayList);
+        //把原来数据修改
+
+        var checkDay = "";//选中时间
+        var year = "";
+        var month = "";
+        var day = "";
+        for (var p in dayList){
+            var tempList = p.split("-");
+            if(tempList.length==1){
+                continue;
+            }
+            tempList[1] = tempList[1].replace(/\b(0+)/gi,"");
+            tempList[2] = tempList[2].replace(/\b(0+)/gi,"");
+            var ptemp = tempList[0]+"-"+tempList[1]+"-"+tempList[2];
+            var ptempid = tempList[0]+tempList[1]+tempList[2];
+            if(dayClass==ptempid){
+                checkDay =p;
+                year = tempList[0];
+                month = tempList[1];
+                day = tempList[2];
+                dayList[p] = data.value;
+                break;
+            }
+        }
+
+        $(".dayList").val(JSON.stringify(dayList));
+        var insertDay = {};
+
+        insertDay.shiftId = $("."+radioClass).attr("shiftid");
+        insertDay.stuffId = $(".stuffId").val();
+
+        var dayListInsert =  $(".dayListInsert").val();
+        var tempList =[];
+        if(dayListInsert!=''){
+            tempList = JSON.parse(dayListInsert);
+        }
+
+        var myDate=new Date();
+        myDate.setFullYear(year,month-1,day);
+
+        insertDay.day = myDate;
+        if(tempList.length==0){
+            tempList.push(insertDay);
+        }
+        for(var k=0;k<tempList.length;k++){
+            if(tempList[k].day==myDate){
+                tempList[k].shiftId  = $("."+radioClass).attr("shiftid");
+            }else{
+                tempList.push(insertDay);
+            }
+        }
+
+        $(".dayListInsert").val(JSON.stringify(tempList));
+    });
+
+        //定义json
+        var data = {'2018-12-01': '', '2018-12-02': '', '2018-12-03': ''};
+        var new_date = new Date();
+        loding_date(new_date, data);
+
+
+        //日历插件调用方法
+        function loding_date(date_value, data) {
+            laydate.render({
+                elem: '#test-n2'
+                , type: 'date'
+                , theme: 'grid'
+                , max: '2099-06-16 23:59:59'
+                , position: 'static'
+                ,format:'yyyy-MM-dd'
+                , value: date_value
+                , ready: function (value) {
+                    console.log(value);
+                    hide_mr(value);
+                    var tempDate = value.year+""+value.month+""+value.date+"";
+                    $(".dayText").val(tempDate);
+                        var data = $(".dayList").val();
+                        data = JSON.parse(data);
+                        for (var p in data){
+                            var tempList = p.split("-");
+                            if(tempList.length==1){
+                                continue;
+                            }
+                            tempList[1] = tempList[1].replace(/\b(0+)/gi,"");
+                            tempList[2] = tempList[2].replace(/\b(0+)/gi,"");
+                            var ptemp = tempList[0]+"-"+tempList[1]+"-"+tempList[2];
+                            var ptempid = tempList[0]+tempList[1]+tempList[2];
+                            $('.laydate-theme-grid table tbody').find('[lay-ymd="' + ptemp + '"]').append('<span class="" id="'+ptempid +'" style="margin-top: 6px;display: block;">'+data[p]+'</span>')
+                            if(data[p]=='休'){
+                                $("#"+ptempid).addClass("xiu");
+                            }else if(data[p]=='早班'){
+                                $("#"+ptempid).addClass("zao");
+                            }else if(data[p]=='中班'){
+                                $("#"+ptempid).addClass("zhong");
+                            }else if(data[p]=='晚班'){
+                                $("#"+ptempid).addClass("wan");
+                            }else if(data[p]=='全班'){
+                                $("#"+ptempid).addClass("quan");
+                            }
+
+                        }
+
+
+                    $(".radio").each(function(index, el) {
+
+                        el.checked= false;})
+                }
+                , done: function (value, date, endDate) {
+                    
+                    chose_moban(value, data)
+                }
+                , change: function (value, date) {
+                    $(".radio").each(function(index, el) {
+
+                        el.checked= false;})
+
+                    form.render('radio');
+                    hide_mr(date);
+					
+                }
+                , mark: data//重要json！
+
+            });
+        }
+
+
+        function hide_mr(value) {
+            var mm = value.year + '-' + value.month + '-' + value.date;
+        }
+
+        //定义添加/编辑标注方法
+        function chose_moban(obj_date, markJson) {
+            $('#test-n2').html('');//重要！由于插件是嵌套指定容器，再次调用前需要清空原日历控件
+            if (markJson.hasOwnProperty(obj_date)) {
+                delete markJson[obj_date]
+            } else {
+                //添加属性
+                markJson[obj_date] = ''
+            }
+            loding_date(obj_date, markJson);//重要！，再标注一个日期后会刷新当前日期变为初始值，所以必须调用当前选定日期。
+
+        }
+
+
+    })
+</script> 
+</body>
+</html>

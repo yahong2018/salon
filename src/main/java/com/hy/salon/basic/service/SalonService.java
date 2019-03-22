@@ -2,9 +2,13 @@ package com.hy.salon.basic.service;
 
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.entity.Salon;
+import com.zhxh.admin.dao.SystemUserDAO;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Component("salonService")
@@ -18,7 +22,9 @@ public class SalonService {
 
         return salonDao.getSalon();
     }
-
+    public SalonDao getSalonDao() {
+        return this.salonDao;
+    }
 
     public Salon getSalonForId(Long id){
 
@@ -41,4 +47,7 @@ public class SalonService {
     }
 
 
+    public ExtJsResult getSalonForStoreIdSystem(HttpServletRequest request, Long storeId, ListRequestBaseHandler handler) {
+            return  salonDao.getSalonForCreateIdSystem(request,storeId,handler);
+    }
 }
