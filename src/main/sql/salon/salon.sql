@@ -261,21 +261,38 @@ create table vip_suite_item
   record_id                        bigint     auto_increment         not null,
   vip_suite_id                     bigint                            not null,  -- 充值卡id
   record_type                      tinyint                           not null,  -- 记录类型:0.单次折扣  1.疗程折扣  2.产品折扣
-  discount_time                    tinyint                           not null,    -- 单次折扣
-  discount_period                  tinyint                           not null,    -- 疗程折扣
-  discount_production              tinyint                           not null,    -- 产品折扣
-  item_id                          bigint                            not null,  -- 折扣项目：服务/产品
+  discount_time                    tinyint                           null,      -- 单次折扣
+  discount_period                  tinyint                           null,      -- 疗程折扣
+  discount_production              tinyint                           null,      -- 产品折扣
 
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
+  create_date                      datetime                          not null,
+  create_by                        bigint                            not null,
+  update_date                      datetime                          null,
+  update_by                        bigint                            null,
+  opt_lock                         int                               null,
 
   primary key (record_id),
   index idx_vip_suite_item_01(record_type),
   index idx_vip_suite_item_02(item_id)
 )comment '充值卡折扣项目';
+
+create table vip_suite_item_discount_range
+(
+    record_id                     bigint       auto_increment        not null,
+    vip_suite_item_id             bigint                             not null, -- 充值卡折扣类型
+    service_id                    bigint                             not null, -- 项目的系列id
+
+    create_date                   datetime                           not null,
+    create_by                     bigint                             not null,
+    update_date                   datetime                           null,
+    update_by                     bigint                             null,
+    opt_lock                      int                                null,
+
+    primary key (record_id),
+    index idx_vip_suite_item_discount_range_01(vip_suite_item_id),
+    index idx_vip_suite_item_discount_range_02(service_id)
+
+)comment '充值卡折扣项目适用范围表';
 
 create table product_series
 (
@@ -963,6 +980,8 @@ create table visual_range_mapping
   index idx_visual_range_mapping_01(notice_id),
   index idx_visual_range_mapping_02(visual_range_id)
 )comment '可视范围映射表';
+
+
 
 #
 #
