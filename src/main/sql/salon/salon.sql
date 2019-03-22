@@ -368,7 +368,7 @@ create table product_property
 
 create table product_property_map
 (
-  record_id                      bigint             atuto_increment       not null,
+  record_id                      bigint             auto_increment        not null,
   product_id                     bigint                                   not null,
   product_property_id            bigint                                   not null,
 
