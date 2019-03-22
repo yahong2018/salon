@@ -1,5 +1,6 @@
 package com.hy.salon.basic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -19,7 +20,9 @@ public class Salon extends TraceableEntity<Long> {
     private Boolean door2Door;
     private Integer bedNum;
     private Double area;
+    @JsonFormat(pattern="HH：mm")
     private Date timeOpen;
+    @JsonFormat(pattern="HH：mm")
     private Date timeClose;
     private String description;
 }

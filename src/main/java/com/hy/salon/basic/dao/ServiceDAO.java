@@ -32,6 +32,16 @@ public class ServiceDAO extends BaseDAOWithEntity<Service> {
 
     }
 
+    public List<Service> queryServiceForServiceId(Long serviceId,Long storeId){
+        String where="service_series_id=#{serviceId} and store_id = #{storeId}";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        parameters.put("serviceId", serviceId);
+        return this.getByWhere(where,parameters);
+    }
+
+
+
 
     public List<ServiceVo> getServiceForSuit(Long id) {
         Map parameters = new HashMap();

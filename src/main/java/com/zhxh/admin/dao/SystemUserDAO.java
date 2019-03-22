@@ -16,4 +16,8 @@ public class SystemUserDAO extends BaseDAOWithEntity<SystemUser> {
 
         return this.getOne(where,parameters);
     }
+
+
+
+
 }

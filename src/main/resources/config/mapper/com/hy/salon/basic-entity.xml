@@ -10,7 +10,7 @@
 
     <resultMap id="Stuff" type="com.hy.salon.basic.entity.Stuff"  extends="com.zhxh.core.data.TraceableEntity">
         <result property="recordId" column="record_id"/>
-        <result column="store_id" property="storeId" jdbcType="BIGINT" />
+        <result property="storeId" column="store_id"/>
         <result property="stuffName" column="stuff_name"/>
         <result property="tel" column="tel"/>
         <result property="gender" column="gender"/>
@@ -22,11 +22,6 @@
         <result property="weixin" column="weixin"/>
         <result property="qq" column="qq"/>
         <result property="address" column="address"/>
-        <result property="createDate" column="create_date"/>
-        <result property="createBy" column="create_by"/>
-        <result property="updateDate" column="update_date"/>
-        <result property="updateBy" column="update_by"/>
-        <result property="optLock" column="opt_lock"/>
     </resultMap>
 
 
@@ -288,10 +283,11 @@
         <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
     </resultMap>
 
-    <resultMap id="RoleAction" type="com.hy.salon.basic.entity.RoleAction" extends="com.zhxh.core.data.TraceableEntity">
+    <resultMap id="RoleAction" type="com.hy.salon.basic.entity.RoleAction" extends="com.zhxh.core.data.EntityObject">
         <result column="stuff_id" jdbcType="BIGINT" property="stuffId" />
         <result column="system_user_id" jdbcType="BIGINT" property="systemUserId" />
     </resultMap>
+
 
     <resultMap id="Notice" type="com.hy.salon.basic.entity.Notice" extends="com.zhxh.core.data.TraceableEntity">
         <result column="salon_id" property="salonId" jdbcType="BIGINT" />

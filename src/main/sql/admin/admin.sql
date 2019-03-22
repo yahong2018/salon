@@ -5,7 +5,7 @@ CREATE TABLE system_user
   user_name                 VARCHAR(50)                NOT NULL,
   pwd                       VARCHAR(50)                NOT NULL,
   user_status               TINYINT                    NOT NULL,     -- 账户状态： 0.正常   1.停用
-  email                     VARCHAR(255)               NOT NULL,
+  email                     VARCHAR(255)               NULL,
   online                    BIT                        NOT NULL DEFAULT 0, -- 0.离线  1.在线
   last_login_time           DATETIME                   NULL ,              -- 最后登录时间
 

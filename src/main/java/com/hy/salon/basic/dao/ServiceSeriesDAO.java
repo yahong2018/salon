@@ -23,6 +23,20 @@ public class ServiceSeriesDAO extends BaseDAOWithEntity<ServiceSeries> {
         return this.getByWhere(where,parameters);
     }
 
+    public ServiceSeries getServiceForRecordId(Long recordId){
+        String where="record_id = #{recordId} ";
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+        return this.getOne(where,parameters);
+    }
+
+    public List<ServiceSeries> getServiceSeriesForstoreId(Long storeId){
+        String where="store_id = #{storeId} and parent_id != 0";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        return this.getByWhere(where,parameters);
+    }
+
     public List<ServiceSeries> getServiceSeriesForId(Long Id){
         String where="parent_id = #{recordId}";
         Map parameters = new HashMap();
