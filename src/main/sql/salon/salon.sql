@@ -322,13 +322,7 @@ create table product
   product_series_id                bigint                           not null,   -- 产品品牌/系列
   price_market                     double(8,2)                      not null,   -- 市场价
   price                            double(8,2)                      not null,   -- 优惠价
-
   product_code                     varchar(20)                      null,       -- 产品编号
-  specification                    int                              null,       -- 规格:就是数量，比如3kg/瓶
-  specification_unit               tinyint                          null,       -- 规格单位：0. g(克)   1.Kg(千克)  2.ml(毫升)  3.L(升)
-  product_unit_id                  bigint                           not null,   -- 单位：瓶/袋/包等
---  part_of_applicable_id            bigint                           not null,   -- 适用部位
---  efficiency_tag_id                bigint                           not null,   -- 功效
 
   bar_code                         varchar(100)                     null,       -- 二维码/条形码
   shelf_life                       tinyint                          not null,   -- 保质期(月)
@@ -355,53 +349,27 @@ create table product
   index idx_product_07(stock_of_pre_warning)
 ) comment '产品';
 
-create table product_unit
+create table product_property
 (
-  record_id                        bigint        auto_increment    not null,
-  unit_name                        varchar(50)                     not null,
+    record_id                    bigint           auto_increment       not null,
+    property_name                varchar(50)                           not null, -- 属性名称
+    property_type                tinyint                               not null, -- 属性类型 0 规格 1 单位 2 适用部位 3 功效
 
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
+    primary key(record_id),
+    index idx_product_property_01(property_name),
+    index idx_product_property_02(property_type)
+)comment '产品基础属性表';
 
-
-  primary key (record_id),
-  index idx_product_unit_01(unit_name)
-)comment '产品单位';
-
-create table body_part
+create table product_property_map
 (
-  record_id                        bigint         auto_increment   not null ,
-  part_name                        varchar(50)                     not null,  -- 部位名称
+  record_id                      bigint             atuto_increment       not null,
+  product_id                     bigint                                   not null,
+  product_property_id            bigint                                   not null,
 
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
-
-  primary key (record_id),
-  index idx_body_part_01(part_name)
-)comment '部位';
-
-create table product_body_part
-(
-  record_id                        bigint       auto_increment     not null,
-  product_id                       bigint                          not null,
-
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
-
-
-  primary key (record_id),
-  index idx_product_body_part_01(product_id)
-) comment '产品作用部位';
-
+  primary key(record_id),
+  index idx_product_property_map_01(product_id),
+  index idx_product_property_map_02(product_property_id)
+)comment '产品属性关系表';
 
 create table tag
 (
@@ -419,24 +387,6 @@ create table tag
   index idx_tag_01(record_type),
   index idx_tag_02(tag_name)
 )comment '标签';
-
-create table product_tag
-(
-  record_id                        bigint         auto_increment   not null ,
-  tag_id                           bigint                          not null,
-
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
-
-
-  primary key (record_id),
-  index idx_product_tag_01(tag_id)
-)comment '产品功效';
-
-
 
 create table pictures
 (
@@ -946,7 +896,7 @@ create table role_action
   primary key (record_id),
   index idx_role_action_01(stuff_id),
   index idx_role_action_02(system_user_id)
-)comment '角色权限映射表'
+)comment '角色权限映射表';
 
 create table notice
 (
