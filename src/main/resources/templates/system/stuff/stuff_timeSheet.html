@@ -159,7 +159,7 @@
                     url:'/hy/basic/timeSheet/getSalon',
                     success: function(data){
                       var dataList =data.data;
-                        var html="";
+                        var html="<option value=''>请选择门店</option>";
                         for(var i=0;i<dataList.length;i++){
                             html+="<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>";
                         }
