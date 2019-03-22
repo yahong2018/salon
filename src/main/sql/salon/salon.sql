@@ -279,7 +279,7 @@ create table vip_suite_item
 create table vip_suite_item_discount_range
 (
     record_id                     bigint       auto_increment        not null,
-    vip_suite_item_id             bigint                             not null, -- 充值卡折扣类型
+    vip_suite_item_id             bigint                             not null, -- 充值卡折扣项目id
     service_id                    bigint                             not null, -- 项目的系列id
 
     create_date                   datetime                           not null,
