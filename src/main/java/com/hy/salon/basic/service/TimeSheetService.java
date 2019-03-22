@@ -1,5 +1,6 @@
 package com.hy.salon.basic.service;
 
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.StuffVo;
@@ -70,6 +71,7 @@ public class TimeSheetService {
             Map map = getTimeSheetByStuffId(stuff.getRecordId(), time);
             map.put("stuffId",stuff.getRecordId());
             map.put("stuffName",stuff.getStuffName());
+            map.put("tel",stuff.getTel());
             List<StuffVo> name = reservationDao.getStuffName(stuff.getRecordId());
             if(StringUtils.isEmpty(name)){
                 map.put("role",name.get(0).getRole());
@@ -133,7 +135,7 @@ public class TimeSheetService {
         return map;
     }
 
-    public List<Map> getTimeSheets(Long recordId,String time) {
+    public List<Map> getTimeSheets(Long recordId,String time,Integer page,Integer limit) {
         List<Map> vo=new ArrayList<>();
         //查询该美容院下所有门店
         Map parameters = new HashMap();
@@ -141,6 +143,7 @@ public class TimeSheetService {
         parameters.put("parentId", recordId);
         Map listMap = new HashMap();
         listMap.put("where", where);
+        PageHelper.startPage(page, limit);
         List<Salon> list = salonDao.getList(listMap, parameters);
         for (Salon salon : list) {
             Map reMap=new HashMap();
@@ -164,5 +167,15 @@ public class TimeSheetService {
             vo.add(reMap);
         }
         return vo;
+    }
+
+    public List<Salon> getSalon(Long storeId) {
+        Map parameters = new HashMap();
+        String where = "parent_id=#{parentId}";
+        parameters.put("parentId", storeId);
+        Map listMap = new HashMap();
+        listMap.put("where", where);
+        List<Salon> list = salonDao.getList(listMap, parameters);
+        return list;
     }
 }
