@@ -1,8 +1,10 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.dao.TimeSheetDao;
+import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.TimeSheet;
@@ -12,6 +14,7 @@ import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.TimeSheetVo;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.admin.service.SystemUserService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +44,10 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     private AuthenticateService authenticateService;
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
+
+    @Resource(name = "salonDao")
+    private SalonDao salonDao;
+
     @Override
     protected BaseDAOWithEntity<TimeSheet> getCrudDao() {
         return timeSheetDao;
@@ -56,7 +64,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
-    public Result getTimeSheets(Long recordId,String time){
+    public Result getTimeSheets(Long recordId,String time,Integer page,Integer limit){
         if(StringUtils.isEmpty(recordId)){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
@@ -64,7 +72,8 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         }
         Result result=new Result();
         try {
-            List<Map> list = timeSheetService.getTimeSheets(recordId, time);
+            List<Map> list = timeSheetService.getTimeSheets(recordId, time,page,limit);
+            result.setTotal(salonDao.getPageListCount(new HashMap())-1);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -88,6 +97,11 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
     public Result getTimeSheetBySalonId(Long salonId,String time){
+        if(StringUtils.isEmpty(salonId)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            salonId=stuff.getStoreId();
+        }
         Result result=new Result();
         try {
             List<Map> list = timeSheetService.getTimeSheetBySalonId(salonId, time);
@@ -166,6 +180,27 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         try {
             Map map = timeSheetService.getTimeSheetDetails(stuffId, time);
             result.setData(map);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 获取分店
+     */
+    @ResponseBody
+    @RequestMapping(value = "getSalon",method = RequestMethod.GET)
+    public Result getSalon(){
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        Result result=new Result();
+        try {
+            List<Salon> list = timeSheetService.getSalon(stuff.getStoreId());
+            result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){
