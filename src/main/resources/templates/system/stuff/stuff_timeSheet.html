@@ -33,7 +33,7 @@
             <label class="layui-form-label">选择门店</label>
             <div class="layui-input-inline" id="qq">
                 <select id="salon" name="salon">
-                    <!--<option></option>-->
+
                     <!--<option value="0571">杭州</option>-->
                 </select>
             </div>
@@ -70,8 +70,7 @@
 
 <script type="text/javascript">
 
-    layui.use(['form','laydate','layer','table','laypage','util'],function(){
-
+    layui.use(['form','laydate','layer','table','laypage','util','jquery'],function(){
 
         var laydate = layui.laydate;
 
@@ -158,17 +157,14 @@
                 $.ajax({
                     type:'get',
                     url:'/hy/basic/timeSheet/getSalon',
-                    //data: {userId:data[0].recordId},
                     success: function(data){
                       var dataList =data.data;
                         var html="";
                         for(var i=0;i<dataList.length;i++){
                             html+="<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>";
-                            //$("#select").append("<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>");
-                            //alert(html);
                         }
-                        //alert(html);
                         $("#salon").append(html);
+                        form.render('select');
                     },
                     error:function(data){
                         alert("操作失败");
@@ -230,7 +226,7 @@
             }
             $.ajax({
                 type:'POST',
-                url:'/admin/systemUsers/disableUser.handler',
+                url:'',
                 data: {userId:data[0].recordId},
                 success: function(data){
                     alert("操作成功！");
@@ -252,7 +248,7 @@
             }
             $.ajax({
                 type:'POST',
-                url:'/admin/systemUsers/enableUser.handler',
+                url:'',
                 data: {userId:data[0].recordId},
                 success: function(data){
                     alert("操作成功！");
