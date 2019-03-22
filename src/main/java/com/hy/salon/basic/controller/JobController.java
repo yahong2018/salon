@@ -2,6 +2,7 @@ package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.dao.JobDAO;
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -118,5 +120,27 @@ public class JobController extends SimpleCRUDController<Job> {
         }
     }
 
+    /**
+     * 职务管理
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getJobs",method = RequestMethod.GET)
+    public Result getJobs(Integer page,Integer limit){
+        Result result=new Result();
+        try {
+            List<Job> list = jobDAO.getAll();
+            result.setData(list);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return  result;
+    }
 
 }
