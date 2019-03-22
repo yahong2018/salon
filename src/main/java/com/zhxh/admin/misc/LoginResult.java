@@ -1,6 +1,7 @@
 package com.zhxh.admin.misc;
 
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.Salon;
 import com.zhxh.admin.entity.SystemRole;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +20,5 @@ public class LoginResult {
     private Long salonId;
     private List<SystemRole> listRole;
     private List<Job> listJob;
+    private List<Salon> listSalon;
 }

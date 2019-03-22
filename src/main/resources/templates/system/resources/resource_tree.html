@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>用户</title>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <link rel="stylesheet"  href="../../../css/zTreeStyle/zTreeStyle.css">
+    <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>
+
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+}
+.ztree {
+    margin: 0;
+    padding: 5px;
+    color: #333;
+}
+.hidden{
+	display:none;
+}
+.controls input[type='text']{border: 1px solid #e6e6e6;height: 26px}
+</style>
+
+<body >
+<!-- 内容主体区域 -->
+<div class="layui-row layui-col-space5">
+    <div class="layui-col-md5 border">
+        <div class="layui-fluid layui-form">
+            <div class="layui-form-item">
+                <div class="layui-input-inline " style=" width: 638px;">
+                    <button class="layui-btn layui-btn-primary updateRolePower">菜单资源配置</button>
+                    <!--      <button class="layui-btn">默认按钮</button>
+                          <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
+                </div>
+
+            </div>
+        </div>
+        <div id="treeDiv" >
+            <div class="layui-form-item ">
+                <div class="layui-inline">
+                    <div class="tree tree-selectable"><ul id="tree" class="ztree"></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<input name="listMenuId" id="listMenuId"  type="hidden" value="" class="layui-input">
+
+</body>
+<script type="text/javascript">
+    $(function(){
+    
+   /*  $(".controls :radio").click(function(){
+	 }); */
+    //新增菜单按钮
+    $(".addNewResource").click(function() {
+    	$('.menuName2').addClass("hidden");
+    	$('.orderNum2').addClass("hidden");
+    	
+    	
+    	$('.menuName').removeClass("hidden");
+    	$('.orderNum').removeClass("hidden");
+    	$('.iconClass').removeClass("hidden");
+        $("#myModal,.page-mask").addClass("in")
+        $('#parentId').val(0);
+        $('#hasChildren').val(1);
+        
+    });
+    $(".closeNews").click(function(){
+     	$("#myModal,.page-mask").removeClass("in")
+    });
+    
+    $(".closeNewsChildren").click(function(){
+     	$('#myModal,.page-mask').removeClass('in');
+    });
+
+
+    //保存新子订单
+    $(".saveInfo").click(function(){
+    	var formdata ={};
+		var menuName = $('#menuName').val();
+		var menuLvl = $('input[name="menuLvl"]:checked').val();
+		var menuType = $('input[name="menuType"]:checked').val();
+		var menuUrl = $("#menuUrl").val();
+		var id = $('#menuId').val();
+
+		formdata.id= id;
+		$.ajax({
+			type: 'post',
+			dataType: 'json', 
+			data:{
+				"menu":JSON.stringify(formdata)
+			},
+			url:'${basePath}menu/addMenu',
+			success:function(res){
+				var data = JSON.parse(res);
+				if(data.state=='success'){
+					$('#myModal,.page-mask').removeClass('in');
+					var data = data.treeList;
+					console.log(JSON.stringify(data));
+			        var t = $("#tree");
+			        t = $.fn.zTree.init(t, setting, data);
+			        demoIframe = $("#testIframe");
+			        demoIframe.bind("load", loadReady);
+			        var zTree = $.fn.zTree.getZTreeObj("tree");
+				}
+				//alert(data);
+			}
+		})
+    })
+});
+
+var setting = {
+    expandSpeed : "slow",
+    // check: {
+    //     enable: true
+    // },
+    view: {
+        addHoverDom: addResource,
+        removeHoverDom: removeHoverDom,
+        dblClickExpand: false,
+        showLine: true,
+        selectedMulti: false
+    },
+    /* edit: {
+       enable: true,
+       editNameSelectAll: true,
+       showRemoveBtn: removeResource,
+       showRenameBtn: renameResource
+  }, */
+    data: {
+        simpleData: {
+            enable:true,
+            idKey: "uuid",
+            pIdKey: "resourceParent",
+            rootPId: "0"
+        }
+    },
+    callback: {
+        beforeClick: function(treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("tree");
+            if (treeNode.isParent) {
+                zTree.expandNode(treeNode);
+                return false;
+            } else {
+                demoIframe.attr("src",treeNode.file + ".html");
+                return true;
+            }
+        }
+    }
+};
+var newCount = 1;
+function addResource(treeId, treeNode) {
+	
+    var sObj = $("#" + treeNode.tId + "_span");
+    if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+    var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+        + "' title='add node' onfocus='this.blur();'></span>";
+        
+    var editStr = "<span class='button edit' id='eidtBtn_" + treeNode.tId
+        + "' title='edit node' onfocus='this.blur();'></span>";
+    sObj.after(editStr);
+    sObj.after(addStr);
+    var btn = $("#addBtn_"+treeNode.tId);
+    
+    var eidt =  $("#eidtBtn_"+treeNode.tId);
+    if (btn) btn.bind("click", function(){
+        var parentId = treeNode.id;
+        $('#parentId').val(parentId);
+         $('#menuName').val('');
+    	$('#orderNum').val('');
+    	$('#menuUrl').val('');
+    	$('#menuDesc').val('');
+    	$('#menuId').val('');
+    	$('#hasChildren').val(0);
+        $('.menuName').addClass("hidden");
+    	$('.orderNum').addClass("hidden");
+    	$('.iconClass').addClass("hidden");
+    	$('.menuName2').removeClass("hidden");
+    	$('.orderNum2').removeClass("hidden");
+        $('#myModal,.page-mask').addClass('in');
+    });
+
+}
+function removeHoverDom(treeId, treeNode) {
+    $("#addBtn_"+treeNode.tId).unbind().remove();
+    $("#eidtBtn_"+treeNode.tId).unbind().remove();
+};
+
+var removeResource = function () {
+
+}
+
+var renameResource = function () {
+
+}
+$(document).ready(function(){
+		// var data =${treeList};
+		// console.log(JSON.stringify(data));
+        // var t = $("#tree");
+        // t = $.fn.zTree.init(t, setting, data);
+        // demoIframe = $("#testIframe");
+        // demoIframe.bind("load", loadReady);
+        // var zTree = $.fn.zTree.getZTreeObj("tree");
+});
+
+function loadReady() {
+    var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+        htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+        maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+        h = demoIframe.height() >= maxH ? minH:maxH ;
+    if (h < 530) h = 530;
+    demoIframe.height(h);
+}
+
+  </script>

@@ -3,8 +3,10 @@ package com.zhxh.admin.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.StuffJob;
 import com.hy.salon.basic.service.JobService;
@@ -53,6 +55,9 @@ public class LoginController {
     @Resource(name="jobService")
     private JobService jobService;
 
+    @Resource(name = "salonDao")
+    private SalonDao salonDao;
+
 
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
@@ -84,6 +89,9 @@ public class LoginController {
             List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 
 
+            List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
+
+            result.setListSalon(salonList);
             result.setSalonId(stuff.getStoreId());
             result.setListRole(list);
             result.setListJob(listJob);

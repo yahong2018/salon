@@ -16,7 +16,7 @@ import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.core.web.SimpleCRUDController;
+import com.zhxh.core.web.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,23 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     protected BaseDAOWithEntity<VipSuite> getCrudDao() {
         return vipSuiteDao;
     }
+    private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
+    @ResponseBody
+    @RequestMapping("/getVipSuiteList")
+    @ApiOperation(value="获取充值卡列表", notes="获取充值卡列表")
+    public ExtJsResult getVipSuiteList(HttpServletRequest request, HttpServletResponse response){
+        return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
+            @Override
+            public List getByRequest(ListRequest listRequest) {
+                return vipSuiteDao.getPageList(listRequest.toMap(), null);
+            }
 
+            @Override
+            public int getRequestListCount(ListRequest listRequest) {
+                return vipSuiteDao.getPageListCount(listRequest.toMap(), null);
+            }
+        });
+    }
 
 
     @ResponseBody

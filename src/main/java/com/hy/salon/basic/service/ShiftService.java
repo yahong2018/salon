@@ -19,17 +19,26 @@ public class ShiftService {
             Map parameters = new HashMap();
             parameters.put("storeId", list.get(0).getStoreId());
             Map listMap = new HashMap();
-            String where="store_id=#{storeId}";
+            String where=" store_id=#{storeId} ";
             listMap.put("where", where);
             List<Shift> shiftList = shiftDao.getList(listMap, parameters);
             if(shiftList!=null && shiftList.size()>0){
                 //删除旧的排班记录
-                shiftDao.deleteByWhere(where, parameters);
+                String whereDelete=" where store_id=#{storeId} ";
+                shiftDao.deleteByWhere(whereDelete, parameters);
             }
             //保存新的排班记录
             for (Shift shift : list) {
                 shiftDao.insert(shift);
             }
         }
+    }
+
+    public List<Shift> getSalonShift(Long storeId) {
+        String where="store_id = #{storeId}";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+
+       return shiftDao.getByWhere(where,parameters);
     }
 }

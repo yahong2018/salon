@@ -8,19 +8,26 @@ import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.utils.StringUtilsExt;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -53,6 +60,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
 
     @Resource(name = "jobDAO")
     private JobDAO jobDao;
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDAO;
+
+    @Resource(name = "roleActionDao")
+    private RoleActionDAO roleActionDao;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDao;
+
+
 
 
     @Override
@@ -142,6 +160,95 @@ public class StuffController extends SimpleCRUDController<Stuff> {
 
             stuffDao.update(condition);
             r.setMsg("修改成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
+    /**
+     * 添加员工
+     */
+    @ResponseBody
+    @RequestMapping(value="addStuff",method = RequestMethod.POST)
+    @ApiOperation(value="添加员工", notes="添加员工")
+    @Transactional(rollbackFor = Exception.class)
+    public Result addStuff(@RequestBody Stuff condition, StuffJob stuffJobCondition,Byte jobLevel ) {
+        Result r= new Result();
+        try {
+            //检查该手机号是否被使用
+            SystemUser user=systemUserDAO.getUserByCode(condition.getTel());
+            if(null != user){
+                r.setMsg("该账号已被使用");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+
+            condition.setGender(new Byte("2"));
+            condition.setCreateDate(new Date());
+            stuffDao.insert(condition);
+            stuffJobCondition.setStuffId(condition.getRecordId());
+
+            Job j=jobDao.getJobForJobLevel(jobLevel);
+            stuffJobCondition.setJobId(j.getRecordId());
+            stuffJobDao.insert(stuffJobCondition);
+
+            SystemUser userController=new SystemUser();
+            userController.setUserCode(condition.getTel());
+            userController.setUserName(condition.getStuffName());
+            String passwordMd5 =StringUtilsExt.getMd5("123456");
+            userController.setPassword(passwordMd5);
+            userController.setUserStatus(0);
+            systemUserDAO.insert(userController);
+
+            RoleAction roleAction=new RoleAction();
+            roleAction.setStuffId(condition.getRecordId());
+            roleAction.setSystemUserId(userController.getRecordId());
+            roleActionDao.insert(roleAction);
+
+            RoleUser roleUser=new RoleUser();
+            roleUser.setRoleId(new Long(2));
+            roleUser.setUserId(userController.getRecordId());
+            roleUserDao.insert(roleUser);
+
+
+
+            r.setMsg("添加成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+    /**
+     * 搜索家人模糊查询(仅院长角色可调)
+     */
+    @ResponseBody
+    @RequestMapping(value="fuzzyQueryStuff",method = RequestMethod.GET)
+    @ApiOperation(value="搜索家人模糊查询(仅院长角色可调)", notes="搜索家人模糊查询(仅院长角色可调)")
+    public Result fuzzyQueryStuff(String stuffName) {
+        Result r= new Result();
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
+            Map<String,String> stuff=stuffDao.fuzzyQueryStuff(stuffName,stuffCondition.getStoreId());
+
+            r.setData(stuff);
+            r.setMsg("查询成功");
             r.setMsgcode(StatusUtil.OK);
             r.setSuccess(true);
 

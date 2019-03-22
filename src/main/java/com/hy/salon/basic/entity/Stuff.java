@@ -26,13 +26,6 @@ import java.sql.Timestamp;
     private String weixin;
     private String qq;
     private String address;
-    private Timestamp createDate;
-    private Long createBy;
-    private Timestamp updateDate;
-    private Long updateBy;
-    private int optLock;
-
-
 
 
 

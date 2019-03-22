@@ -18,4 +18,12 @@ public class JobDAO extends BaseDAOWithEntity<Job> {
 
         return this.getOne(where, parameters);
     }
+
+    public Job getJobForJobLevel(Byte jobLevel){
+        String where = "job_level=#{jobLevel}";
+        Map parameters = new HashMap();
+        parameters.put("jobLevel", jobLevel);
+
+        return this.getOne(where, parameters);
+    }
 }

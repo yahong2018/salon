@@ -50,4 +50,6 @@ public class Service extends TraceableEntity<Long> {
 
     private int optLock;
 
+    private String picUrl;
+
 }

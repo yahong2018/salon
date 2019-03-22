@@ -1,5 +1,7 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.dao.ServiceSeriesDAO;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.ServiceSeries;
@@ -13,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -163,23 +166,61 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     public Result queryAllServiceSeries(){
         Result r= new Result();
         SystemUser user = authenticateService.getCurrentLogin();
-        List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(user.getRecordId());
-        Map m=new HashMap<String, Object>();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
+
+        JSONArray jsonArr2=new JSONArray();
 
         for(ServiceSeries s:serList){
             List<ServiceSeries> sonSerList=serviceSeriesDao.getServiceSeriesForId(s.getRecordId());
-            m.put(s.getSeriesName(),sonSerList);
+            JSONObject jsonObj2=new JSONObject();
 
+            jsonObj2.put("ServiceRecordId",s.getRecordId());
+            jsonObj2.put("ServiceName",s.getSeriesName());
+            jsonObj2.put("ServiceList",sonSerList);
+            jsonArr2.add(jsonObj2);
         }
+
         r.setMsg("获取成功");
         r.setMsgcode("0");
         r.setSuccess(true);
-        r.setData(m);
+        r.setData(jsonArr2);
         return r;
 
 
     }
 
+    /**
+     * pc获取类别
+     */
+    @ResponseBody
+    @RequestMapping("/queryParentServiceSeries")
+    @ApiOperation(value="查找一级类别", notes="查找一级类别")
+    public Result queryParentServiceSeries(Long serviceSeriesId){
+        Result r= new Result();
+        JSONObject jsonObj=new JSONObject();
+
+        ServiceSeries serviceSeries=serviceSeriesDao.getServiceForRecordId(serviceSeriesId);
+
+        ServiceSeries parentSeries=serviceSeriesDao.getServiceForRecordId(serviceSeries.getParentId());
+
+        List<ServiceSeries> seriesList=serviceSeriesDao.getServiceSeriesForCreateId(new Long(2));
+
+        List<ServiceSeries> sonSeriesList= serviceSeriesDao.getServiceSeriesForId(serviceSeries.getParentId());
+
+
+        jsonObj.put("seriesList",seriesList);
+
+        jsonObj.put("sonSeriesList",sonSeriesList);
+
+        jsonObj.put("parentSeries",serviceSeries.getParentId());
+
+        r.setMsg("获取成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        r.setData(jsonObj);
+        return r;
+    }
 
 
 

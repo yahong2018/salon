@@ -1,11 +1,16 @@
 package com.hy.salon.basic.service;
 
+import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.ScheduleDao;
 import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.vo.ShiftVo;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +19,9 @@ import java.util.Map;
 public class ScheduleService {
     @Resource(name = "scheduleDao")
     private ScheduleDao scheduleDao;
-
+    public ScheduleDao getScheduleDao() {
+        return this.scheduleDao;
+    }
     public List<ShiftVo> getScheduleByTime(Long recordId, String timeStart, String timeEnd) {
         return scheduleDao.getScheduleByTime(recordId,timeStart,timeEnd);
     }
@@ -33,5 +40,10 @@ public class ScheduleService {
             }
             scheduleDao.insert(schedule);
         }
+    }
+
+    public ExtJsResult getScheduleForStoreIdSystem(Date[] dataList,Date timeStartDate, Date timeEndDate,HttpServletRequest request, Long recordId, ListRequestBaseHandler listRequestBaseHandler) {
+        return scheduleDao.getScheduleForStoreIdSystem(dataList,timeStartDate,timeEndDate,request,recordId,listRequestBaseHandler);
+
     }
 }
