@@ -355,6 +355,12 @@ create table product_property
     property_name                varchar(50)                           not null, -- 属性名称
     property_type                tinyint                               not null, -- 属性类型 0 规格 1 单位 2 适用部位 3 功效
 
+    create_date                  datetime                              not null,
+    create_by                    bigint                                not null,
+    update_date                  datetime                              null,
+    update_by                    bigint                                null,
+    opt_lock                     int                                   null,
+
     primary key(record_id),
     index idx_product_property_01(property_name),
     index idx_product_property_02(property_type)
@@ -365,6 +371,12 @@ create table product_property_map
   record_id                      bigint             atuto_increment       not null,
   product_id                     bigint                                   not null,
   product_property_id            bigint                                   not null,
+
+  create_date                    datetime                                 not null,
+  create_by                      bigint                                   not null,
+  update_date                    datetime                                 null,
+  update_by                      bigint                                   null,
+  opt_lock                       int                                      null,
 
   primary key(record_id),
   index idx_product_property_map_01(product_id),
