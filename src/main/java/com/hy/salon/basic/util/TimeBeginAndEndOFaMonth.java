@@ -29,17 +29,6 @@ public class TimeBeginAndEndOFaMonth {
         return dates;
     }
 
-
-    public static void main(String[] args) {
-        getDates("2019","03");
-/*        int year = 2019, month = 03;
-        Date beginTime = getBeginTime(year, month);
-        System.out.println(sdf.format(beginTime));
-
-        Date endTime = getEndTime(year, month);
-        System.out.println(sdf.format(endTime));*/
-    }
-
     public static Date getBeginTime(int year, int month) {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate localDate = yearMonth.atDay(1);
