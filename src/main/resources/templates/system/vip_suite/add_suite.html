@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>用户</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+
+    <script type="text/javascript" src="../../../js/jquery-1.7.2.js"></script>
+
+    <link rel="stylesheet" href="../../../js/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+    <script type="text/javascript" src="../../../js/zyupload/zyupload-1.0.0.min.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+ .layui-upload-img {
+     width: 170px;
+     height: 119px;
+     margin: 0 10px 10px 0;
+ }
+.layui-input-inline{width: 214px !important}
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+ <div class="x-body layui-anim layui-anim-up">
+  <div class="layui-fluid">
+  
+    <form class="layui-form layui-form-pane1" lay-filter="first">
+        <div class="layui-form-item">
+            <h2>基本信息</h2>
+        </div>
+      <div class="layui-form-item">
+         <label class="layui-form-label"><span class="text-error">*</span>充值卡名称：</label>
+         <div class="layui-input-inline">
+          <input name="userCode" id="userCode" placeholder="请输入" value="" class="layui-input">
+          </div>
+      </div>
+      <div class="layui-form-item">
+         <label class="layui-form-label"><span class="text-error">*</span>充值面额：</label>
+         <div class="layui-input-inline">
+          <input name="userName" id="userName" placeholder="请输入"  value="" class="layui-input">
+          </div>
+      </div>
+<h2 style="text-align: center;">折扣类型</h2>
+<div style="border-bottom:1px dashed #C0C0C0;border-top:1px dashed #C0C0C0">
+    <div class="layui-form-item" pane="">
+        <div class="layui-input-block">
+            <input type="checkbox" name="danxuan" lay-skin="primary" title="单选" checked="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+        <div class="layui-input-inline">
+            <input name="danxuanZ"  placeholder="请输入"  value="" class="layui-input">
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+        <div class="layui-input-inline">
+            <input name="danxuanFW"  placeholder="请输入"  id="zhekou" value="" class="layui-input">
+            <input name="zhekouListFW"  class="zhekou" type="hidden"  class="layui-input">
+        </div>
+        <button class="layui-btn zhekou  checkButton"  name="zhekou" type="button">选择范围</button>
+    </div>
+
+</div>
+
+        <div style="border-bottom:1px dashed #C0C0C0;">
+            <div class="layui-form-item" pane="">
+                <div class="layui-input-block">
+                    <input type="checkbox" name="liaocheng" lay-skin="primary" title="疗程卡" checked="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+                <div class="layui-input-inline">
+                    <input name="liaochengZ"  placeholder="请输入"  value="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+                <div class="layui-input-inline">
+                    <input name="liaochengFW"  placeholder="请输入" id="liaocheng" value="" class="layui-input">
+                    <input name="liaochengListFW"  class="liaocheng" type="hidden"  class="layui-input">
+
+                </div>
+                <button class="layui-btn checkButton" name="liaocheng" type="button">选择范围</button>
+            </div>
+
+        </div>
+        <div style="border-bottom:1px dashed #C0C0C0;">
+            <div class="layui-form-item" pane="">
+                <div class="layui-input-block">
+                    <input type="checkbox" name="chanping" lay-skin="primary" title="产品" checked="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+                <div class="layui-input-inline">
+                    <input name="chanpingZ"  placeholder="请输入"  value="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+                <div class="layui-input-inline">
+                    <input name="chanpingFW"  placeholder="请输入" id="chanpin"  value="" class="layui-input">
+                    <input name="chanpinFWList" type="hidden" placeholder="请输入" class="chanpin"  value="" class="layui-input">
+                </div>
+                <button class="layui-btn checkButton" name="chanpin" type="button">选择范围</button>
+            </div>
+
+        </div>
+
+      <div class="layui-form-item">
+            <label class="layui-form-label"><span class="text-error">*</span>充值卡介绍：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="jieshao" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="record_status" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+
+        <div class="layui-upload" style="margin: auto;height: auto!important; height: 200px;
+    min-height: 200px;">
+            <div style="position: absolute;top: 100px; left: 20px;">
+
+            </div>
+            <div id="zyupload" class="zyupload"></div>
+            <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+            <!--<div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1">
+                <p id="demoText"></p>
+            </div>-->
+            <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+                <!--<legend>拖拽上传</legend>-->
+            <!--</fieldset>-->
+
+            <!--<div class="layui-upload-drag" id="test10">-->
+                <!--<i class="layui-icon"></i>-->
+                <!--<p>点击上传，或将文件拖拽到此处</p>-->
+            <!--</div>-->
+            <!--<div class="layui-upload-list" style="float: right;">-->
+                <!--<img class="layui-upload-img" src="" id="demo1">-->
+                <!--<p id="demoText"></p>-->
+            <!--</div>-->
+
+
+            <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+                <!--<legend>拖拽上传</legend>-->
+            <!--</fieldset>-->
+
+            <!--<div class="layui-upload-drag" id="test11">-->
+                <!--<i class="layui-icon"></i>-->
+                <!--<p>点击上传，或将文件拖拽到此处</p>-->
+            <!--</div>-->
+            <!--<div class="layui-upload-list" style="float: right;">-->
+                <!--<img class="layui-upload-img" src="" id="demo11">-->
+                <!--<p id="demoText11"></p>-->
+            <!--</div>-->
+        </div>
+
+        <div class="layui-form-item" style="position: relative;margin-left: 140px;">
+            <!--<p id="btnGroup" class="pull-right">-->
+                <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
+                <button class="layui-btn quxiao" >取消</button>
+            <!--</p>-->
+        </div>
+        <input name="recordId"  class="recordId" type="hidden"  class="layui-input">
+    </form>
+  </div>
+  </div>
+ <input name="picList"  class="picList" type="hidden"  class="layui-input">
+
+  </body>
+  </html>
+
+<script type="text/javascript">
+    function parentF(data){
+        console.log(data);
+        var name = "";
+        var arr = data.arr;
+        var id   = data.parId;
+        for(var i=0;i<arr.length;i++){
+            var temp =arr[i];
+            name = name +temp.value+", ";
+        }
+        $("#"+id).val(name);
+
+    }
+    function child(data){
+        var $ = layui.jquery;
+        var recordId = data;
+        $('.recordId').val(recordId);
+
+        console.log(data);
+        console.log($('.recordId').val());
+        $("#zyupload").zyUpload({
+            width            :   "650px",                 // 宽度
+            height           :   "",                 // 宽度
+            itemWidth        :   "140px",                 // 文件项的宽度
+            itemHeight       :   "115px",                 // 文件项的高度
+            url              :   "/hy/basic/pictures/fileUpload?record_type=4",              // 上传文件的路径
+            fileType         :   ["jpg","png","txt","js","exe"],// 上传文件的类型
+            fileSize         :   51200000,                // 上传文件的大小
+            multiple         :   true,                    // 是否可以多个文件上传
+            dragDrop         :   true,                    // 是否可以拖动上传文件
+            tailor           :   true,                    // 是否可以裁剪图片
+            del              :   true,                    // 是否可以删除文件
+            finishDel        :   false,  				  // 是否在上传文件完成后删除预览
+            data:{dataID:123},
+            /* 外部获得的回调接口 */
+            onSelect: function(selectFiles, allFiles){    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+                console.info("当前选择了以下文件：");
+                console.info(selectFiles);
+            },
+            onDelete: function(file, files){              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+                console.info("当前删除了此文件：");
+                console.info(file.name);
+            },
+            onSuccess: function(file, response){          // 文件上传成功的回调方法
+                console.info("此文件上传成功：");
+                console.info(file.name);
+                console.info("此文件上传到服务器地址：");
+                console.info(response);
+                response = JSON.parse(response);
+                var list = response.data;
+                var picList = JSON.parse($(".picList").val());
+                for(index in list){
+                    console.log(list[index].recordId);
+                    picList.push(list[index].recordId);
+                }
+                $(".picList").val(JSON.stringify(picList));
+                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+            },
+            onFailure: function(file, response){          // 文件上传失败的回调方法
+                console.info("此文件上传失败：");
+                console.info(file.name);
+            },
+            onComplete: function(response){           	  // 上传完成的回调方法
+                console.info("文件上传完成");
+                console.info(response);
+            }
+        });
+    }
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+	  var form = layui.form;
+	  var $ = layui.jquery;
+	  var laydate=layui.laydate;
+	   var $ = layui.jquery,
+	   upload = layui.upload;
+        $(".checkButton").on("click",function(){
+            var data = this;
+            var name = data.name;
+            alert(name);
+            layer.open({
+                type:2,
+                area:[720+'px',500+'px'],
+                fix:false,
+                offset: '80px',
+                maxmin:true,
+                shadeClose:true,
+                shade:0.4,
+                title:'选择适应范围',
+                content:['check_service.html'],
+                success:function(layero,index){
+                    // 获取子页面的iframe
+                    var iframe = window['layui-layer-iframe' + index];
+                    // 向子页面的全局函数child传参
+                    iframe.child(name);
+                    console.log("成功");
+                },
+                fail:function(data){
+                    console.log(data);
+                }
+            })
+        })
+        console.log($('#recordId').val());
+        var id = "22";
+
+	  form.on('submit(*)', function(data){
+	  	console.log(data.field);
+	    $.ajax({
+	    	type:'POST',
+            url:url,
+	    	data: data.field,
+	    	success: function(data){
+                alert("操作成功！");
+    			window.parent.location.reload(); //刷新父页面
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);  // 关闭layer
+
+	    	},
+	    	error:function(data){
+	    		alert("操作失败");
+	    		console.log(data);
+	    	}
+	    })
+	    return false;
+	  });
+
+})
+
+
+</script>  

@@ -1,8 +1,12 @@
 package com.zhxh.core.data;
 
 import com.zhxh.core.exception.BusinessException;
+import com.zhxh.core.web.ListRequest;
+import com.zhxh.core.web.PageListRequest;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -130,5 +134,14 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
     protected int doDelete(T item) {
         return sqlHelper.delete(item);
     }
-
+    protected ListRequest getListRequest(HttpServletRequest request) {
+        ListRequest listRequest;
+        if(StringUtils.isNotEmpty(request.getParameter("page"))){
+            listRequest = new PageListRequest();
+        }else{
+            listRequest = new ListRequest();
+        }
+        listRequest.fromServletRequest(request);
+        return listRequest;
+    }
 }

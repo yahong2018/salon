@@ -1,5 +1,6 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.PicturesDAO;
@@ -22,9 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @Api(value = "PicturesController|照片控制器")
@@ -38,6 +37,61 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
     protected BaseDAOWithEntity<Pictures> getCrudDao() {
         return picturesDao;
     }
+
+    @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONArray fileUpload(List<MultipartFile> file, HttpServletRequest request,byte record_type) {
+        JSONArray jsonArray = new JSONArray();
+        if (file != null) {      // 判断上传的文件是否为空
+            for(MultipartFile fileOnde :file) {
+                Pictures condition = new Pictures();
+                String path = null;// 文件路径
+                String type = null;// 文件类型
+                String fileName = fileOnde.getOriginalFilename();// 文件原名称
+                System.out.println("上传的文件原名称:" + fileName);
+                // 判断文件类型
+                type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
+                if (type != null) {// 判断文件类型是否为空
+                    if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                        // 设置存放图片文件的路径
+                        UUID uuid = UUID.randomUUID();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+                        System.out.println(df.format(new Date()));
+
+                        String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                        java.io.File folder = new java.io.File(dir);
+                        if (!folder.exists()) {
+                            folder.mkdirs();     ///如果不存在，创建目录
+                        }
+                        path = dir+"/"+uuid+"."+type;
+                        condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                        condition.setRecordType(record_type);
+                        condition.setPicType((byte)0);
+                        try {
+                            fileOnde.transferTo(new File(path));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("文件成功上传到指定目录下");
+                        picturesDao.insert(condition);
+                        JSONObject jsonObj=new JSONObject();
+                        jsonObj.put("recordId",condition.getRecordId());
+                        jsonObj.put("picId",condition.getRecordId());
+                        jsonObj.put("oldName",fileName);
+                        jsonObj.put("url",condition.getPicUrl());
+                        jsonObj.put("code",0);
+                        jsonArray.add(jsonObj);
+                    } else {
+                        System.out.println("不是我们想要的文件类型,请按要求重新上传");
+                        return null;
+                    }
+                }
+            }
+            //File dest = new File("D:\\develop\\salon\\src\\main\\resources\\static\\img\\myImage\\" + fileOnde.getOriginalFilename());
+        }
+        return jsonArray;
+    }
+
 
     /**
      * 图片上传

@@ -11,6 +11,7 @@ import com.hy.salon.basic.entity.ServiceSeries;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.VipSuite;
 import com.hy.salon.basic.entity.VipSuiteItem;
+import com.hy.salon.basic.service.VipSuiteService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.admin.entity.SystemUser;
@@ -21,6 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +40,9 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
     @Resource(name = "vipSuiteDao")
     private VipSuiteDAO vipSuiteDao;
+
+    @Resource(name = "vipSuiteService")
+    private VipSuiteService vipSuiteService;
 
     @Resource(name = "vipSuiteItemDao")
     private VipSuiteItemDAO vipSuiteItemDao;
@@ -61,7 +66,15 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     @RequestMapping("/getVipSuiteList")
     @ApiOperation(value="获取充值卡列表", notes="获取充值卡列表")
     public ExtJsResult getVipSuiteList(HttpServletRequest request, HttpServletResponse response){
-        return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
+
+        String store_id  = request.getParameter("store_id");
+        if(StringUtils.isEmpty(store_id)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            store_id = stuff.getStoreId()+"";
+        }
+       long storeId  = Long.valueOf(store_id).longValue();
+        ExtJsResult VipSuiteList=vipSuiteService.getVipSuiteListIdSystem(storeId, request,new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
                 return vipSuiteDao.getPageList(listRequest.toMap(), null);
@@ -72,6 +85,8 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                 return vipSuiteDao.getPageListCount(listRequest.toMap(), null);
             }
         });
+
+        return VipSuiteList;
     }
 
 
