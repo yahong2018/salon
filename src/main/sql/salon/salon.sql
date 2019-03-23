@@ -261,9 +261,7 @@ create table vip_suite_item
   record_id                        bigint     auto_increment         not null,
   vip_suite_id                     bigint                            not null,  -- 充值卡id
   record_type                      tinyint                           not null,  -- 记录类型:0.单次折扣  1.疗程折扣  2.产品折扣
-  discount_time                    tinyint                           null,      -- 单次折扣
-  discount_period                  tinyint                           null,      -- 疗程折扣
-  discount_production              tinyint                           null,      -- 产品折扣
+  discount                         tinyint                           not null,  -- 折扣
 
   create_date                      datetime                          not null,
   create_by                        bigint                            not null,
