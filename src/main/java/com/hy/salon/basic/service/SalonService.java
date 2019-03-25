@@ -17,7 +17,6 @@ public class SalonService {
     @Resource(name = "salonDao")
     private SalonDao salonDao;
 
-
     public List<Salon> getSalon(){
 
         return salonDao.getSalon();

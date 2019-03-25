@@ -1,5 +1,6 @@
 package com.hy.salon.basic.service;
 
+import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
@@ -81,6 +82,33 @@ public class TimeSheetService {
         return vo;
     }
 
+    /**
+     * 员工姓名条件搜索
+     * @param salonId
+     * @param time
+     * @param name
+     * @return
+     */
+    public List<Map> getTimeSheetBySalonId(Long salonId, String time,String name) {
+        List<Map> vo=new ArrayList<>();
+        //门店下所有员工
+        List<Stuff> list = stuffDao.getStuffForStoreId(salonId);
+        for (Stuff stuff : list) {
+            if(stuff.getStuffName().equals(name)){
+                Map map = getTimeSheetByStuffId(stuff.getRecordId(), time);
+                map.put("stuffId",stuff.getRecordId());
+                map.put("stuffName",stuff.getStuffName());
+                map.put("tel",stuff.getTel());
+                List<StuffVo> StuffList = reservationDao.getStuffName(stuff.getRecordId());
+                if(StringUtils.isEmpty(StuffList)){
+                    map.put("role",StuffList.get(0).getRole());
+                }
+                vo.add(map);
+            }
+        }
+        return vo;
+    }
+
     public Map getTimeSheetByStuffId(Long stuffId, String time) {
         Map map=new HashMap();
         int i=0;
@@ -129,9 +157,11 @@ public class TimeSheetService {
         Shift shift=shiftDao.getById(schedule.getShiftId());
         //店名字,班次,上班时间,下班时间
         map.put("salonName",salon.getSalonName());
-        map.put("shiftType",shift.getShiftType());//0.全  1.早   2. 中   3.晚
-        map.put("timeStart",shift.getTimeStart());
-        map.put("timeEnd",shift.getTimeEnd());
+        if(shift!=null){
+            map.put("shiftType",shift.getShiftType());//0.全  1.早   2. 中   3.晚
+            map.put("timeStart",shift.getTimeStart());
+            map.put("timeEnd",shift.getTimeEnd());
+        }
         return map;
     }
 
@@ -177,5 +207,16 @@ public class TimeSheetService {
         listMap.put("where", where);
         List<Salon> list = salonDao.getList(listMap, parameters);
         return list;
+    }
+
+    public List<Map> getTimeSheetInit(Long salonId, String time) {
+        PageHelper.startPage(Integer.parseInt("0"), Integer.parseInt("10"));
+        List<Map> map=new ArrayList<>();
+        List<Salon> salon = getSalon(salonId);
+        for (Salon salon1 : salon) {
+            List<Map> list = getTimeSheetBySalonId(salon1.getRecordId(), time);
+            map.addAll(list);
+        }
+        return map;
     }
 }
