@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.entity.VipSuite;
 import com.hy.salon.basic.entity.VipSuiteItem;
+import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
@@ -69,4 +70,16 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
         er.setTotal(count);
         return  er;
     }
+
+    public List<Map<String,String>> getServiceSeriesForVip(Long vipSuiteId,Long recordType) {
+        Map parameters = new HashMap();
+        parameters.put("vipSuiteId", vipSuiteId);
+        parameters.put("recordType", recordType);
+
+        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_BIN_SERVICE_FOR_VIP, parameters);
+    }
+
+
+    protected final static String SQL_QUERY_BIN_SERVICE_FOR_VIP = "com.hy.salon.basic.dao.QUERY_BIN_SERVICE_FOR_VIP";
+
 }
