@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -91,7 +92,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
 
     @ResponseBody
-    @RequestMapping("/addVipSuite")
+    @RequestMapping( "/addVipSuite")
     @ApiOperation(value="添加充值卡", notes="添加充值卡")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "suiteName", value = "充值卡名称", required = true, dataType = "String"),
@@ -101,8 +102,9 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
 
     })
-    public Result addVipSuite(VipSuite condition,String bindingJson,String picIdList){
+    public Result addVipSuite(HttpServletRequest request, VipSuite condition, String bindingJson, String picIdList){
         Result r= new Result();
+        String  vs =  request.getParameter("condition");
         //先写死，后面改
 //        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
         try {
