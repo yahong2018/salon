@@ -38,7 +38,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
         return picturesDao;
     }
 
-    @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileUpload")
     @ResponseBody
     public JSONArray fileUpload(List<MultipartFile> file, HttpServletRequest request,byte record_type) {
         JSONArray jsonArray = new JSONArray();

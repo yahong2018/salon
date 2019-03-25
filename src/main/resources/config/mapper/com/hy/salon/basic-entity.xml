@@ -169,7 +169,7 @@
 <!--        <result column="discount_time" property="discountTime" jdbcType="TINYINT" />-->
 <!--        <result column="discount_period" property="discountPeriod" jdbcType="TINYINT" />
         <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />-->
-        <result column="item_id" property="itemId" jdbcType="BIGINT" />
+      <!--  <result column="item_id" property="itemId" jdbcType="BIGINT" />-->
     </resultMap>
 
 
@@ -317,4 +317,11 @@
         <result column="record_type" property="recordType" jdbcType="TINYINT" />
         <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
     </resultMap>
+
+    <resultMap id="VipSuiteItemDiscountRange" type="com.hy.salon.basic.entity.VipSuiteItemDiscountRange" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="vip_suite_item_id" property="vipSuiteItemId" jdbcType="BIGINT" />
+        <result column="service_id" property="serviceId" jdbcType="BIGINT" />
+
+    </resultMap>
+
 </mapper>

@@ -24,7 +24,7 @@
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 438px;">
       <button class="layui-btn layui-btn-primary addUser">新增充值卡</button>
-      <button class="layui-btn updateUser">修改充值卡</button>
+      <button class="layui-btn updateSuite">修改充值卡</button>
       <button class="layui-btn layui-btn-normal deleteUser">删除充值卡</button>
 <!--      <button class="layui-btn">默认按钮</button>
       <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
@@ -279,6 +279,29 @@
 
     })
 
+    $(".updateSuite").on("click",function(){
+      layer.open({
+        type:2,
+        area:[888+'px',666+'px'],
+        fix:false,
+        offset: '80px',
+        maxmin:true,
+        shadeClose:true,
+        scrollbar: false,
+        shade:0.4,
+        title:'新增充值卡',
+        content:['add_suite.html'],
+        success:function(layero,index){
+          var iframe = window['layui-layer-iframe' + index];
+          // 向子页面的全局函数child传参
+          iframe.child(1233333);
+          console.log("成功");
+        },
+        fail:function(data){
+          console.log(data);
+        }
+      })
+    })
     $(".addUser").on("click",function(){
       layer.open({
         type:2,

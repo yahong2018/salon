@@ -56,9 +56,10 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
                 JSONObject jsonObjectC = new JSONObject();
                 jsonObjectC.put("vipSuiteId",vsi.getVipSuiteId());
                 jsonObjectC.put("recordType",vsi.getRecordType());
-                jsonObjectC.put("discountTime",vsi.getDiscountTime());
-                jsonObjectC.put("discountPeriod",vsi.getDiscountPeriod());
-                jsonObjectC.put("discountProduction",vsi.getDiscountProduction());
+                jsonObjectC.put("discount",vsi.getDiscount());
+//                jsonObjectC.put("discountTime",vsi.getDiscountTime());
+//                jsonObjectC.put("discountPeriod",vsi.getDiscountPeriod());
+//                jsonObjectC.put("discountProduction",vsi.getDiscountProduction());
                 jsonArrayC.add(jsonObjectC);
             }
             jsonObject.put("VipSuiteItemList",jsonArrayC);
