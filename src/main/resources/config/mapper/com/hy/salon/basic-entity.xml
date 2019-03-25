@@ -165,9 +165,10 @@
     <resultMap id="VipSuiteItem" type="com.hy.salon.basic.entity.VipSuiteItem" extends="com.zhxh.core.data.TraceableEntity">
         <result column="vip_suite_id" property="vipSuiteId" jdbcType="BIGINT" />
         <result column="record_type" property="recordType" jdbcType="TINYINT" />
-        <result column="discount_time" property="discountTime" jdbcType="TINYINT" />
-        <result column="discount_period" property="discountPeriod" jdbcType="TINYINT" />
-        <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />
+        <result column="discount" property="discount" jdbcType="TINYINT" />
+<!--        <result column="discount_time" property="discountTime" jdbcType="TINYINT" />-->
+<!--        <result column="discount_period" property="discountPeriod" jdbcType="TINYINT" />
+        <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />-->
         <result column="item_id" property="itemId" jdbcType="BIGINT" />
     </resultMap>
 
