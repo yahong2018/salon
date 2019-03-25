@@ -19,15 +19,8 @@ create  table city
   record_id                        bigint    auto_increment        not null,
   city_code                        varchar(12)                     not null,     -- 编码 (省/市)  500235
   city_name                        varchar(50)                     not null,     -- 名称    东城区
-  parent_id                        bigint                          not null,     -- 所属上级(上级省份或者上级城市)  9
-  name_path                        varchar(500)                    not null,     -- 路径:广东省东莞市东城区
-
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
-
+  parent_id                        varchar(12)                     not null,     -- 所属上级(上级省份或者上级城市)  9
+  name_path                        varchar(500)                    null,         -- 路径:广东省东莞市东城区
 
   primary key (record_id),
   index idx_city_01(city_code),
