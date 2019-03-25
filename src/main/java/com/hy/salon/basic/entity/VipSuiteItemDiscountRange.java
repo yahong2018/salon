@@ -5,16 +5,15 @@ import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTableConfiguration("vip_suite_item")
+@DataTableConfiguration("vip_suite_item_discount_range")
 @Getter
 @Setter
-public class VipSuiteItem extends TraceableEntity<Long> {
-    private Long vipSuiteId;
+public class VipSuiteItemDiscountRange extends TraceableEntity<Long> {
 
-    private Byte recordType;
 
-    private Byte discount;
+    private Long vipSuiteItemId;
 
+    private Long serviceId;
 
 
 }
