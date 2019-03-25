@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +27,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/vipSuite")
@@ -102,9 +105,11 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
 
     })
+    @Transactional(rollbackFor = Exception.class)
     public Result addVipSuite(HttpServletRequest request, VipSuite condition, String bindingJson, String picIdList){
         Result r= new Result();
         String  vs =  request.getParameter("condition");
+        condition =  JSONObject.parseObject(vs,VipSuite.class);
         //先写死，后面改
 //        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
         try {
@@ -328,14 +333,28 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
 
         try {
-            vipSuiteDao.deleteById(recordId);
+
             //删除绑定的项目
             List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(recordId);
             if(!suiteItemList.isEmpty()){
-                for(VipSuiteItem v:suiteItemList){
-                    vipSuiteItemDao.delete(v);
-                }
-            }
+            for(VipSuiteItem vsi:suiteItemList){
+               long id =  vsi.getRecordId();
+                String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+                Map parameters = new HashMap();
+                parameters.put("vipSuiteItemId",id);
+                vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
+                vipSuiteItemDao.delete(vsi);
+            }}
+            String where = " where master_data_id=#{masterDataId} ";
+            Map parameters = new HashMap();
+            parameters.put("masterDataId",recordId);
+            picturesDao.deleteByWhere(where,parameters);
+            vipSuiteDao.deleteById(recordId);
+//            if(!suiteItemList.isEmpty()){
+//                for(VipSuiteItem v:suiteItemList){
+//                    vipSuiteItemDao.delete(v);
+//                }
+//            }
 
 
 
