@@ -48,6 +48,8 @@ create table salon(
   area                             double(8,2)                     not null default 0.00,  -- 面积：门店专用
   time_open                        time                            null,                   -- 营业开始时间：门店专用
   time_close                       time                            null,                   -- 营业结束时间：门店专用
+  longitude                        decimal(10,7)                   not null,               -- 经度
+  latitude                         decimal(10,7)                   not null,               -- 纬度
   description                      varchar(500)                    null,                   -- 简介
 
   create_date                      datetime                        not null,
@@ -61,6 +63,16 @@ create table salon(
   index idx_beauty_salon_02(tel),
   index idx_beauty_salon_03(city_id)
 )comment '美容院/门店';
+
+create table salon_invite_code(
+  record_id                      bigint          auto_increment           not null,
+  salon_id                       bigint                                   not null, -- 美容院id
+  invite_code                    bigint                                   not null, -- 美容院的邀请码
+
+  primary key (record_id),
+  index idx_salon_invite_code_01(salon_id),
+  index idx_salon_invite_code_02(invite_code)
+)comment '美容院邀请码';
 
 
 create table stuff
