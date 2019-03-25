@@ -230,7 +230,7 @@ group by ss.record_id;
     <!--查询已经绑定充值卡的项目 -->
     <select id="QUERY_BIN_SERVICE_FOR_VIP"  parameterType="java.util.Map" resultType="java.util.Map" >
 
-   SELECT ss.record_id as seriesId,ss.series_name as seriesName,svsi.record_type as recordType FROM salon.vip_suite_item_discount_range as svsidr
+   SELECT ss.record_id as seriesId,ss.series_name as seriesName,svsi.record_type as recordType,svsi.discount FROM salon.vip_suite_item_discount_range as svsidr
     left join salon.service_series  as ss on ss.record_id = svsidr.service_id
     left join salon.vip_suite_item as svsi on svsi.record_id=svsidr.vip_suite_item_id
     where svsi.vip_suite_id =#{vipSuiteId} and svsi.record_type=#{recordType}
