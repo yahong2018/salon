@@ -203,5 +203,39 @@ and ss.store_id in(select salon.record_id from salon.salon as salon where salon.
 
     </select>
 
+    <!--根据类别查询项目 -->
+    <select id="QUERY_SERVICE_FOR_SERIES"  parameterType="java.util.Map" resultType="java.util.Map" >
+
+    SELECT ss.service_name as serviceName,ss.price as sriceMarket,ss.record_id as recordId,
+(SELECT record_id FROM salon.service_series   where record_id= #{parentId}) as seriesId
+,(SELECT series_name FROM salon.service_series   where record_id= #{parentId}) as seriesName
+FROM salon.service as ss where ss.service_series_id in(SELECT sss.record_id FROM salon.service_series as sss where sss.parent_id= #{parentId})
+group by ss.record_id;
+
+
+    </select>
+
+
+    <!--查询已经绑定套卡的项目 -->
+    <select id="QUERY_BIN_SERVICE_FOR_SERIES"  parameterType="java.util.Map" resultType="java.util.Map" >
+
+   SELECT ss.record_id as recordId,ss.service_name as serviceName FROM salon.service as ss
+    where ss.record_id in(select sssi.service_id from salon.service_suite_item as sssi where sssi.service_suite_id = #{suiteId});
+
+
+    </select>
+
+
+
+    <!--查询已经绑定充值卡的项目 -->
+    <select id="QUERY_BIN_SERVICE_FOR_VIP"  parameterType="java.util.Map" resultType="java.util.Map" >
+
+   SELECT ss.record_id as seriesId,ss.series_name as seriesName,svsi.record_type as recordType FROM salon.vip_suite_item_discount_range as svsidr
+    left join salon.service_series  as ss on ss.record_id = svsidr.service_id
+    left join salon.vip_suite_item as svsi on svsi.record_id=svsidr.vip_suite_item_id
+    where svsi.vip_suite_id =#{vipSuiteId} and svsi.record_type=#{recordType}
+    ;
+
+    </select>
 
 </mapper>
