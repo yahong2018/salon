@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +202,76 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         Result result=new Result();
         try {
             List<Salon> list = timeSheetService.getSalon(stuff.getStoreId());
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 考勤2pc
+     * @param time
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetBySalonIds",method = RequestMethod.GET)
+    public Result getTimeSheetBySalonIds(Long salonId,String time,String name){
+        if(StringUtils.isEmpty(salonId)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            salonId=stuff.getStoreId();
+        }
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+        Result result=new Result();
+        try {
+            List<Map> list=null;
+            String s="";
+            if(time!=null&&time!=""){
+                String[] str = time.split("-");
+                StringBuffer sb = new StringBuffer();
+                for(int i = 0; i < str.length;i++){
+                    sb.append(str[i]);
+                }
+                s= sb.toString();
+            }else{
+                s=sdf.format(new Date());
+            }
+            if(name!=null){
+                list = timeSheetService.getTimeSheetBySalonId(salonId, s,name);
+            }else{
+                list = timeSheetService.getTimeSheetBySalonId(salonId, s);
+            }
+            result.setTotal(stuffDao.getPageListCount(new HashMap()));
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 初始化
+     * @param time
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetInit",method = RequestMethod.GET)
+    public Result getTimeSheetInit(Long salonId,String time){
+        if(StringUtils.isEmpty(salonId)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            salonId=stuff.getStoreId();
+        }
+        Result result=new Result();
+        try {
+            List<Map> list = timeSheetService.getTimeSheetInit(salonId,time);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
