@@ -60,7 +60,7 @@ create table salon(
 create table salon_invite_code(
   record_id                      bigint          auto_increment           not null,
   salon_id                       bigint                                   not null, -- 美容院id
-  invite_code                    bigint                                   not null, -- 美容院的邀请码
+  invite_code                    varchar(10)                              not null, -- 美容院的邀请码
 
   primary key (record_id),
   index idx_salon_invite_code_01(salon_id),
