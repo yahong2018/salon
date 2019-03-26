@@ -187,21 +187,29 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
 
     })
-    public Result updateVipSuite(VipSuite condition,String bindingJson,String picIdList){
+    public Result updateVipSuite(VipSuite condition,String bindingJson,String picIdList,HttpServletRequest request){
         Result r= new Result();
         //先写死，后面改
 //        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"12,13,14\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"20,24,25\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"36,30,31\"}]";
         try {
+
+            String  vs =  request.getParameter("condition");
+            condition =  JSONObject.parseObject(vs,VipSuite.class);
             int ii =vipSuiteDao.update(condition);
             if(ii != 0){
-                //解除绑定关系，重新绑定
-                List<VipSuiteItem> itemList= vipSuiteItemDao.queryVipSuitForId(condition.getRecordId());
-                if(!itemList.isEmpty()){
-                    for(VipSuiteItem v:itemList){
-                        vipSuiteItemDao.delete(v);
-                    }
+                //删除绑定的项目
+                List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(condition.getRecordId());
+                if(!suiteItemList.isEmpty()){
+                    for(VipSuiteItem vsi:suiteItemList){
+                        long id =  vsi.getRecordId();
+                        String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+                        Map parameters = new HashMap();
+                        parameters.put("vipSuiteItemId",id);
+                        vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
+                        vipSuiteItemDao.delete(vsi);
+                    }}
 
-                }
+
 
                 //解析绑定json，绑定关系
                 JSONArray jsonArr=JSONArray.parseArray(bindingJson);
@@ -226,6 +234,18 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                             vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
                             vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
                         }
+                    }
+                }
+            }
+
+            if(null != picIdList && !"".equals(picIdList)){
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for(String s:str){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
                     }
                 }
             }
