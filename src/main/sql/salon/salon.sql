@@ -578,7 +578,7 @@ create table time_sheet
   time_start                        datetime                       null,      -- 上班时间
   time_end                          datetime                       null,      -- 下班时间
 
-  time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 休假  4. 又迟到又早退  ** 没有记录  旷工/缺勤
+  time_sheet_type                   tinyint                        not null,  -- 出勤类型：0.正常  1.迟到   2.早退    3. 休假  4. 又迟到又早退  5. 签到缺勤  6. 签退缺勤 ** 没有记录  旷工/缺勤
 
   create_date                       datetime                        not null,
   create_by                         bigint                          not null,
