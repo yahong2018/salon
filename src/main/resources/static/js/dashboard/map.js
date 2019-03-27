@@ -1,3 +1,7 @@
+var dom = document.getElementById("mapChart");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
 var data = [
     {name: '海门', value: 9},
     {name: '鄂尔多斯', value: 12},
@@ -398,6 +402,12 @@ var convertData = function (data) {
 };
 
 option = {
+    title: {
+        text: '全国门店分布图',
+        subtext: '',
+        sublink: '',
+        left: 'center'
+    },
     tooltip : {
         trigger: 'item'
     },
@@ -562,4 +572,7 @@ option = {
             zlevel: 1
         }
     ]
-};
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}

@@ -7,132 +7,147 @@
     <link rel="stylesheet" href="../css/dashboard/css.css">
     <link rel="stylesheet" href="../css/dashboard/demo.css">
     <link rel="stylesheet" href="../css/dashboard/ready.css">
+
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=o2j36l89xTzZM6hBW25DYhrBUYGAaT8E&__ec_v__=20190126"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
 </head>
 <body>
-<div style="height: 20px"></div>
-<div class="row">
-    <div class="col-md-3">
-        <div class="card card-stats card-warning">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-5">
-                        <div class="icon-big text-center">
-                            <i class="la la-users"></i>
+<div style="height: 20px;margin: 30px">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card card-stats card-warning">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-users"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">新增门店数</p>
+                                <h4 class="card-title">1,294</h4>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-7 d-flex align-items-center">
-                        <div class="numbers">
-                            <p class="card-category">新增门店数</p>
-                            <h4 class="card-title">1,294</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-stats card-success">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-bar-chart"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">今日充值统计</p>
+                                <h4 class="card-title">$ 1,345</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-stats card-danger">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-newspaper-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">今日划卡总额</p>
+                                <h4 class="card-title">1303</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-stats card-primary">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">今日新增会员数</p>
+                                <h4 class="card-title">576</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-stats card-success">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-5">
-                        <div class="icon-big text-center">
-                            <i class="la la-bar-chart"></i>
-                        </div>
-                    </div>
-                    <div class="col-7 d-flex align-items-center">
-                        <div class="numbers">
-                            <p class="card-category">今日充值统计</p>
-                            <h4 class="card-title">$ 1,345</h4>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">门店分布图</h4>
+                    <p class="card-category">
+                        各美容院门店在省内的分布情况</p>
+                </div>
+                <div id="mapChart" style="width: 98%;height: 500px;"></div>
+                <script src="../js/dashboard/map.js"></script>
+                <div class="card-body">
+                    <div class="mapcontainer">
+                        <div class="map">
+                            <span>数据来源于合一</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-stats card-danger">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <div class="icon-big text-center">
-                            <i class="la la-newspaper-o"></i>
-                        </div>
-                    </div>
-                    <div class="col-7 d-flex align-items-center">
-                        <div class="numbers">
-                            <p class="card-category">今日划卡总额</p>
-                            <h4 class="card-title">1303</h4>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">来源统计</h4>
+                    <p class="card-category">
+                        本月用户统计</p>
+                </div>
+                <div class="card-body">
+                    <div id="monthlyChart" style="width: 98%;height: 500px;"></div>
+                    <script src="../js/dashboard/monthlyChart.js"></script>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card card-stats card-primary">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-5">
-                        <div class="icon-big text-center">
-                            <i class="la la-check-circle"></i>
-                        </div>
-                    </div>
-                    <div class="col-7 d-flex align-items-center">
-                        <div class="numbers">
-                            <p class="card-category">今日新增会员数</p>
-                            <h4 class="card-title">576</h4>
-                        </div>
-                    </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">热销产品</h4>
+                    <p class="card-category">
+                        热销产品月份分析</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-9">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">门店分布图</h4>
-                <p class="card-category">
-                    各美容院门店在省内的分布情况</p>
-            </div>
-            <script src="../js/dashboard/map.js"></script>
-            <div class="card-body">
-                <div class="mapcontainer">
-                    <div class="map">
-                        <span>数据来源于合一</span>
-                    </div>
+                <div class="card-body">
+                    <div id="salesChart" style="width: 98%;height: 500px;"></div>
+                    <script src="../js/dashboard/salesChart.js"></script>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">来源统计</h4>
-                <p class="card-category">
-                    本月用户统计</p>
-            </div>
-            <div class="card-body">
-                <div id="monthlyChart" class="chart chart-pie"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">热销产品</h4>
-                <p class="card-category">
-                    热销产品月份分析</p>
-            </div>
-            <div class="card-body">
-                <div id="salesChart" class="chart"></div>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script src="../js/echarts.min.js"></script>
 </html>

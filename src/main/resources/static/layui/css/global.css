@@ -21,7 +21,7 @@
 
 .header-index{background-color: #080018; border: none;}
 
-.layui-layout-admin .header-demo{border-bottom-color: #1AA094; background-color: #fff;}
+.layui-layout-admin .header-demo{border-bottom-color: #01AAED; background-color: #fff;}
 .header-demo .logo{left: 40px;}
 .header-demo .layui-nav{top: 0;}
 .header-demo .layui-nav .layui-nav-item{margin: 0 10px; line-height: 65px;}
@@ -270,7 +270,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 	height: 100%;
 }
 .admin-nav-card>.layui-tab-title{
-	border-bottom: 1px solid #1AA094;
+	border-bottom: 1px solid #01AAED;
 }
 .admin-nav-card .layui-tab-title cite{
 	font-style: normal;
@@ -278,7 +278,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 }
 .admin-nav-card>.layui-tab-title .layui-this{
 	color: white;
-    background-color: #1AA094;
+    background-color: #01AAED;
 }
 .admin-nav-card>.layui-tab-title .layui-this:after{
 	border-bottom: 0;
@@ -306,10 +306,10 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 	width: 60px; height: 60px; border-radius: 100%;
 }
 .admin-header-lock-name{
-	color: #009688;margin: 8px 0 15px 0;
+	color: #01AAED;margin: 8px 0 15px 0;
 }
 .admin-header-lock-input{
-	width: 150px; color: #FFFFFF; height: 30px; border: 0;background-color: #009688; padding: 0 7px; border-radius: 2px;
+	width: 150px; color: #FFFFFF; height: 30px; border: 0;background-color: #01AAED; padding: 0 7px; border-radius: 2px;
 }
 /*table*/
 .site-table tbody tr td {text-align: center;}
@@ -324,12 +324,12 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 .admin-side-toggle,.admin-side-full{
 	position: absolute; cursor: pointer;
     z-index: 19940201;
-    left: 200px;
+    left: 280px;
     color: white;
     text-align: center;
     width: 30px;
     height: 30px;
-    background-color: #1AA094;
+    background-color: #01AAED;
     line-height: 30px;
     top: 25%;
 }
