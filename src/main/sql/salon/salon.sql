@@ -44,6 +44,7 @@ create table salon(
   longitude                        decimal(10,7)                   not null,               -- 经度
   latitude                         decimal(10,7)                   not null,               -- 纬度
   description                      varchar(500)                    null,                   -- 简介
+  audit                            tinyint                         not null default 0,     -- 门店的审核状态 0 审核不通过 1 审核通过
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
