@@ -948,6 +948,22 @@ create table visual_range_mapping
   index idx_visual_range_mapping_02(visual_range_id)
 )comment '可视范围映射表';
 
+create table operate_log
+(
+  record_id                    bigint                 auto_increment            not null,
+  opt_user_id                  bigint                                           not null, -- 操作用户
+  opt_role_id                  bigint                                           not null, -- 操作用户角色
+  opt_action                   varchar(10)                                      not null, -- 操作动作
+  opt_date                     datetime                                         not null, -- 操作时间
+  opt_info                     varchar(100)                                     not null, -- 操作的详细描述
+  opt_terminal                 tinyint                                          null,     -- 操作端 0 web 1 android 2 ios 3 手机浏览器 4 小程序 5 其他
+  opt_url                      varchar(500)                                     null,     -- 请求url
+  opt_statu                    int                                              null,     -- 请求状态 200 404 500
+  opt_result                   varchar(10)                                      not null, -- 操作结果 成功 失败
+
+  primary key (record_id),
+  index idx_operate_log_01(opt_user_id)
+)comment '系统操作日志';
 
 
 #
