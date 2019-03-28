@@ -26,6 +26,8 @@ import java.sql.Timestamp;
     private String weixin;
     private String qq;
     private String address;
+    private String picUrl;
+    private String jobName;
 
 
 

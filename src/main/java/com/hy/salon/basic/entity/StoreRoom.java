@@ -19,7 +19,7 @@ public class StoreRoom extends TraceableEntity<Long> {
 
     private String roomName;
 
-    private Byte recordStatus;
+    private String recordStatus;
 
     private Date createDate;
 

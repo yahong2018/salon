@@ -91,6 +91,15 @@ public class LoginController {
 
             List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
 
+
+            Salon salon=salonDao.getSalonForId(stuff.getStoreId());
+            if(salon.getAudit() == 0){
+                result.setCode(LoginResult.LOGIN_CODE_ERROR);
+                result.setMessage("门店还未通过审核！");
+                return result;
+            }
+
+
             result.setListSalon(salonList);
             result.setSalonId(stuff.getStoreId());
             result.setListRole(list);

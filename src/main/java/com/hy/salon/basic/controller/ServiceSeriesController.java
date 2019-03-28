@@ -130,11 +130,17 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     @ResponseBody
     @RequestMapping("/queryServiceSeries")
     @ApiOperation(value="查找一级类别", notes="查找一级类别")
-    public Result queryServiceSeries(){
+    public Result queryServiceSeries(Long SalonId){
         Result r= new Result();
-        SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-        List<ServiceSeries> seriesList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
+        List<ServiceSeries> seriesList=null;
+        if(SalonId != null){
+            seriesList=serviceSeriesDao.getServiceSeriesForCreateId(SalonId);
+        }else{
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            seriesList=serviceSeriesDao.getServiceSeriesForCreateId(stuff.getStoreId());
+        }
+
 
         r.setMsg("获取成功");
         r.setMsgcode("0");
@@ -221,6 +227,28 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
         r.setData(jsonObj);
         return r;
     }
+
+    /**
+     * pc获取类别
+     */
+    @ResponseBody
+    @RequestMapping("/queryParentSeries")
+    @ApiOperation(value="查找一级类别", notes="查找一级类别")
+    public Result queryParentSeries(Long recordId){
+        Result r= new Result();
+        JSONObject jsonObj=new JSONObject();
+
+        List<ServiceSeries> seriesList=serviceSeriesDao.getServiceSeriesForCreateId(recordId);
+
+        jsonObj.put("seriesList",seriesList);
+
+        r.setMsg("获取成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        r.setData(jsonObj);
+        return r;
+    }
+
 
 
 

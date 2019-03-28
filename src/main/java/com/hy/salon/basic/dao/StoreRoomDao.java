@@ -22,6 +22,13 @@ public class StoreRoomDao extends BaseDAOWithEntity<StoreRoom> {
         return this.getByWhere(where,parameters);
     }
 
+    public StoreRoom getRoomForRecordId(Long recordId){
+        String where="record_id=#{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+        return this.getOne(where,parameters);
+    }
+
     public StoreRoom getRoomForName(String name,Long storeId){
         String where = "room_name=#{roomName} and store_id=#{storeId}";
         Map parameters = new HashMap();

@@ -3,14 +3,12 @@ package com.hy.salon.basic.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.PicturesDAO;
 import com.hy.salon.basic.dao.ServiceDAO;
 import com.hy.salon.basic.dao.ServiceSeriesDAO;
 import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.Pictures;
-import com.hy.salon.basic.entity.Service;
-import com.hy.salon.basic.entity.ServiceSeries;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
@@ -21,11 +19,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -111,12 +111,25 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @ResponseBody
     @RequestMapping("/addService")
     @ApiOperation(value="添加次卡", notes="添加次卡")
-    public Result addService(Service condition,String picIdList){
+    public Result addService(HttpServletRequest request, Service condition, String picIdList){
+
+
+        String  vs =  request.getParameter("condition");
+        condition =  JSONObject.parseObject(vs, Service.class);
         Result r= new Result();
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
         condition.setStoreId(stuff.getStoreId());
+
+
+        if(condition.getCardType() == 0){
+            condition.setPriceMarket(new Double(-1));
+            condition.setTimeTotal(-1);
+        }else{
+            condition.setPricePerTime(new Double(-1));
+        }
+
         int i=serviceDao.insert(condition);
         if(i!=1){
             r.setMsg("添加失败");
@@ -216,6 +229,34 @@ public class ServiceController extends SimpleCRUDController<Service> {
         r.setSuccess(true);
         r.setData(jsonArr);
         return r;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value="deleteSeries",method = RequestMethod.GET)
+    @ApiOperation(value="获取次卡通过项目分类", notes="获取次卡通过项目分类")
+    public Result deleteSeries(Long recordId){
+        Result r= new Result();
+        serviceDao.deleteById(recordId);
+        r.setMsg("删除成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        return r;
+    }
+
+    @RequestMapping("batchDelete")
+    @ResponseBody
+    public Result batchDelete(@RequestBody Long[] recordIdList) {
+        Result r= new Result();
+        for(Long recordId:recordIdList){
+            serviceDao.deleteById(recordId);
+        }
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
     }
 
 }

@@ -20,9 +20,10 @@ public class Salon extends TraceableEntity<Long> {
     private Boolean door2Door;
     private Integer bedNum;
     private Double area;
-    @JsonFormat(pattern="HH：mm")
-    private Date timeOpen;
-    @JsonFormat(pattern="HH：mm")
-    private Date timeClose;
+    private Integer audit;
+    private String timeOpen;
+    private String timeClose;
+    private Double longitude;
+    private Double latitude;
     private String description;
 }

@@ -39,8 +39,8 @@ create table salon(
   door_2_door                      bit                             not null default 0,     -- 是否上门服务:美容院专用
   bed_num                          int                             not null default 0,     -- 床位数：门店专用
   area                             double(8,2)                     not null default 0.00,  -- 面积：门店专用
-  time_open                        time                            null,                   -- 营业开始时间：门店专用
-  time_close                       time                            null,                   -- 营业结束时间：门店专用
+  time_open                        varchar(50)                            null,                   -- 营业开始时间：门店专用
+  time_close                       varchar(50)                            null,                   -- 营业结束时间：门店专用
   longitude                        decimal(10,7)                   not null,               -- 经度
   latitude                         decimal(10,7)                   not null,               -- 纬度
   description                      varchar(500)                    null,                   -- 简介

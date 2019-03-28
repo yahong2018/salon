@@ -1,6 +1,7 @@
 package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.StoreRoomDao;
 import com.hy.salon.basic.entity.StoreRoom;
@@ -43,20 +44,19 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
      * 获取门店下房间信息
      */
     @ResponseBody
-    @RequestMapping("getSroreRoom")
+    @RequestMapping("getStoreRoom")
     @ApiOperation(value="获取门店下房间信息", notes="以门店Id获取门店下房间信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店Id", required = true, dataType = "Long"),
 
     })
-    public Result getSroreRoom(String recordId){
+    public Result getStoreRoom(String recordId,int page){
         Result r= new Result();
-        if( null == recordId || "".equals(recordId)){
-            r.setMsgcode(StatusUtil.ERROR);
-            r.setMsg("美容院号不能为空");
-            r.setSuccess(false);
-            return r;
-        }
+
+
+
+        r.setTotal(storeRoomService.getRoomForStoreId(recordId).size());
+        PageHelper.startPage(page, 10);
         List<StoreRoom> roomList=storeRoomService.getRoomForStoreId(recordId);
 
         r.setMsgcode(StatusUtil.OK);
@@ -117,6 +117,37 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
     public Result updateRoomData(StoreRoom storeRoom){
 
         Result r= new Result();
+        int i =storeRoomService.updateRoom(storeRoom);
+        if(i != 1){
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setMsg("修改失败");
+            r.setSuccess(true);
+            return r;
+        }
+
+        r.setMsgcode(StatusUtil.OK);
+        r.setMsg("修改成功");
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
+    /**
+     * 房间开启与关闭
+     */
+    @ResponseBody
+    @RequestMapping("openAndClose")
+    public Result openAndClose(StoreRoom storeRoom){
+
+        Result r= new Result();
+        storeRoom=storeRoomDao.getRoomForRecordId(storeRoom.getRecordId());
+
+        if(storeRoom.getRecordStatus().equals("0")){
+            storeRoom.setRecordStatus("1");
+        }else{
+            storeRoom.setRecordStatus("0");
+        }
         int i =storeRoomService.updateRoom(storeRoom);
         if(i != 1){
             r.setMsgcode(StatusUtil.ERROR);
