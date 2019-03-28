@@ -965,6 +965,24 @@ create table operate_log
   index idx_operate_log_01(opt_user_id)
 )comment '系统操作日志';
 
+create table verification_code_temporary
+(
+  record_id                    bigint                 auto_increment            not null,
+  phone_no                     varchar(11)                                      not null, -- 手机号码
+  verification_code            varchar(10)                                      not null, -- 验证码
+  valid_time                   tinyint                                          not null, -- 有效时间
+  effectiveness                tinyint                                          not null, -- 有效性 0 有效 1 无效
+
+  create_date                  datetime                                         not null, -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_verification_code_temporary_01(phone_no)
+)comment '短信验证码临时表';
+
 
 #
 #
