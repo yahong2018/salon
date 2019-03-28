@@ -2,6 +2,7 @@ package com.zhxh.admin.misc;
 
 import com.hy.salon.basic.entity.Job;
 import com.hy.salon.basic.entity.Salon;
+import com.hy.salon.basic.entity.Stuff;
 import com.zhxh.admin.entity.SystemRole;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,4 +22,6 @@ public class LoginResult {
     private List<SystemRole> listRole;
     private List<Job> listJob;
     private List<Salon> listSalon;
+
+    private Stuff stuff;
 }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>员工排班</title>
+  <title>审核列表</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -22,32 +22,41 @@
 <!-- 内容主体区域 -->
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
-    <div class="layui-input-inline " style=" width: 124px;">
-      <button class="layui-btn layui-btn-primary addUser">员工排班</button>
+    <div class="layui-input-inline " style=" width: 638px;">
+      <!--<button class="layui-btn layui-btn-primary addService">新增项目</button>-->
+      <!--<button class="layui-btn updateUser">修改项目</button>-->
+      <button class="layui-btn layui-btn-normal deleteUser">通过审核</button>
+      <!--<button class="layui-btn layui-btn-normal qidong">启用账户</button>-->
+      <!--<button class="layui-btn layui-btn-normal tingzhi">停止账户</button>-->
+      <!--<button class="layui-btn layui-btn-normal shouquan">授权</button>-->
+<!--      <button class="layui-btn">默认按钮</button>
+      <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
      </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">搜索选择框</label>
-      <div class="layui-input-inline">
-        <select name="modules"  lay-search="" class="userKey">
-          <option value="">直接选择或搜索选择</option>
-          <option value="stuff_name">员工名称</option>
-        </select>
-      </div>
-    </div>
-    <div class="layui-inline">
-      <div class="layui-input-inline">
-        <input type="text" name="userKey" class="layui-input userKeyValue ">
-      </div>
-      <div class="layui-input-inline">
-        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
-          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-        </button></div>
-    </div>
+    <!--<div class="layui-inline">-->
+      <!--<label class="layui-form-label">搜索选择框</label>-->
+      <!--<div class="layui-input-inline">-->
+        <!--<select name="modules"  lay-search="" class="userKey">-->
+          <!--<option value="">直接选择或搜索选择</option>-->
+          <!--<option value="user_code">项目名称</option>-->
+          <!--&lt;!&ndash;<option value="user_name">用户名称</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="email">email</option>&ndash;&gt;-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-inline">-->
+      <!--<div class="layui-input-inline">-->
+        <!--<input type="text" name="userKey" class="layui-input userKeyValue ">-->
+      <!--</div>-->
+      <!--<div class="layui-input-inline">-->
+        <!--<button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">-->
+          <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+        <!--</button></div>-->
+    <!--</div>-->
   </div>
 </div>
 
 <div id="pTable" >
-  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="layui_table_id" style="width: 1680px">
+  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
 
   </table>
 <!--  <script type="text/html" id="barDemo">
@@ -68,85 +77,73 @@
 
     function productsearch(page,filterExpr) {
 
-      var table = layui.table;
+      var table = layui.table,
       laydate = layui.laydate,
       laypage = layui.laypage;
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/schedule/getAdminScheduleByTime?page='+page,
+        url : '/hy/basic/salon/getAuditStoreList',
         cols : [ [
+              {checkbox: true,
+                filter:'test'
+              }
+              ,
+              {
+                field : 'salonName',
+                title : '门店名称',
+                align : 'center'
+              }
+              , {
+                field : 'tel',
+                title : '联系电话',
+                align : 'center'
+              }
+              , {
+                field : 'address',
+                title : '地址',
+                align : 'center'
+              }
+              , {
+                field : 'door2Door',
+                title : '是否上门服务',
+                align : 'center',
+                templet: '#door2Door'
+              }
+              , {
+                field : 'audit',
+                title : '是否通过审核',
+                align : 'center',
+                templet: '#audit'
+              }
+
+
 
         ] ],
-        page : false,
+        page : true,
         where : {
-          filterExpr:filterExpr,
-          time:"2019-03",
-          recordId:2
+          filterExpr:filterExpr,'storeId':2,
         },
         responseHandler: function (res, curr,count) {
-          //return res;
-          // $('#pageNum').val(curr);
-          // var mycars=new Array();
-          // var tit=res.rootProperty;
-          // for (var i=0;i<tit.length;i++){
-          //   mycars[i]={field:'ex'+i, title:tit[i].salonName, align:'center',width:'120'};
-          // }
-          // table.init('layui_table_id',{
-          //   cols:[mycars]
-          //   ,data:res.rootProperty
-          //   ,limit:10
-          // });
+          $('#pageNum').val(curr);
           return {
             "count": res.total,
             "data": res.data,
             "code": 0,//code值为200表示成功
-            "msg": "",
-              "listKey":res.listKey,
+            "msg": ""
           }
         },
         done : function(res, curr, count) {
-          var mycars=new Array();
-          var tit=res.data;
-          var listKey = res.listKey;
-          mycars[0] = {checkbox:true,filter:'layui_table_id'};
-          for(var i=0;i<listKey.length;i++){
-            mycars[i+1]={field:listKey[i], title:listKey[i], align:'center',width:'120'};
-          }
-          // for (var i=0;i<tit.length;i++){
-          //   if(i==0){
-          //     var j = 0;
-          //     for (var p in tit[i]){
-          //       console.log(p);
-          //       mycars[j]={field:p, title:p, align:'center',width:'120'};
-          //       j++;
-          //     }
-          //   }
-          //
-          //
-          // }
-          table.init('layui_table_id',{
-            cols:[mycars]
-            ,data:res.data,
-            count:12
-          });
-          laypage.render({
-            elem:'laypage'
-            ,count:count
-            ,curr:page
-            ,limit:10
-            ,layout: ['prev', 'page', 'next', 'skip','count','limit']
-            ,jump:function (obj,first) {
-              if(!first){
-                curnum = obj.curr;;
-                productsearch(curnum)
-              }
-            }
-          })
+          console.log(res)
+          $('#pageNum').val(curr);
+
         }
       })
+      // table.on('checkbox(test)', function(obj){
+      //   console.log(layui.table.checkStatus('layui_table_id'));
+      // });
      // 监听工具条
-      table.on('tool(layui_table_id)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+      table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data, //获得当前行数据
                 layEvent = obj.event; //获得 lay-event 对应的值
         if (layEvent == 'detail') {
@@ -264,21 +261,21 @@
         alert("请选中一条数据");
         return false;
       }
-      var deleteList = [];
+      var recordIdList = [];
       for(var i=0 ;i<data.length;i++){
         var id = data[i].recordId;
         var temp =id+"";
-        deleteList.push(temp);
+        recordIdList.push(temp);
       }
-      console.log(deleteList);
+      console.log(recordIdList);
       $.ajax({
         type:'POST',
-        url:'/admin/systemUsers/delete.handler',
+        url:'/hy/basic/salon/auditPass',
         //data: JSON.stringify(deleteList),
-        data: JSON.stringify(deleteList),
+        data: JSON.stringify(recordIdList),
         contentType: "application/json",
         success: function(data){
-          alert("操作成功！");
+
           productsearch(1);
          // window.parent.location.reload(); //刷新父页面
          // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -293,28 +290,24 @@
 
     })
 
-    $(".addUser").on("click",function(){
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1){
-        alert("请选中一条数据");
-        return false;
-      }
+    $(".addService").on("click",function(){
       layer.open({
         type:2,
-        area:[750+'px',638+'px'],
+        area:[482+'px',355+'px'],
         fix:false,
         offset: '80px',
         maxmin:true,
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'排班设置',
-        content:['stuff_setting_update.html'],
+        title:'新增用户',
+        content:['add_service.html'],
         success:function(layero,index){
-          var iframe = window['layui-layer-iframe' + index];
-          // 向子页面的全局函数child传参
-          iframe.child(data[0]);
           console.log("成功");
+          var iframe = window['layui-layer-iframe' + index];
+          var salonId=2;
+          iframe.child(salonId);
+
         },
         fail:function(data){
           console.log(data);
@@ -324,21 +317,22 @@
     $(".updateUser").on("click",function(){
       console.log(layui.table.checkStatus('layui_table_id'));
       var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1){
+      if(data.length >1 || data.length == 0){
         alert("请选中一条数据");
         return false;
       }
+
       layer.open({
         type:2,
-        area:[482+'px',315+'px'],
+        area:["850px","650px"],
         fix:false,
         offset: '80px',
         maxmin:true,
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'修改用户',
-        content:['add_user.html'],
+        title:'修改项目',
+        content:['update_service.html'],
         success:function(layero,index){
           // 获取子页面的iframe
           var iframe = window['layui-layer-iframe' + index];
@@ -353,19 +347,35 @@
     })
 
   });
-  function userStatus(t){
-     if(t==0){
-       return '启用';
+  function door2Door(t){
+     if(t == true){
+       return '是';
      }else{
-       return '禁用';
+       return '否';
      }
+    return util.toDateString(t1);
+  }
+
+  function audit(t){
+    if(t==0){
+    return '未通过';
+  }else if(t==1){
+    return '通过';
+  }
     return util.toDateString(t1);
   }
 </script>
 
 
-<script type="text/html" id="userStatus">
+<script type="text/html" id="door2Door">
 
 
-        {{ userStatus(d.userStatus) }}
+        {{ door2Door(d.door2Door) }}
+
+
+</script>
+
+<script type="text/html" id="audit">
+  {{ audit(d.audit) }}
+
 </script>

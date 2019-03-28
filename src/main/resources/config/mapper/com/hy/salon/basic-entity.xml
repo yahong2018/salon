@@ -35,8 +35,8 @@
         <result column="door_2_door" property="door2Door" jdbcType="BIT" />
         <result column="bed_num" property="bedNum" jdbcType="INTEGER" />
         <result column="area" property="area" jdbcType="DOUBLE" />
-        <result column="time_open" property="timeOpen" jdbcType="TIME" />
-        <result column="time_close" property="timeClose" jdbcType="TIME" />
+        <result column="time_open" property="timeOpen" jdbcType="TIMESTAMP" />
+        <result column="time_close" property="timeClose" jdbcType="TIMESTAMP" />
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -322,6 +322,20 @@
         <result column="vip_suite_item_id" property="vipSuiteItemId" jdbcType="BIGINT" />
         <result column="service_id" property="serviceId" jdbcType="BIGINT" />
 
+    </resultMap>
+
+    <resultMap id="City" type="com.hy.salon.basic.entity.City" extends="com.zhxh.core.data.EntityObject">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+        <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+        <result column="name_path" property="namePath" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <resultMap id="SalonInviteCode" type="com.hy.salon.basic.entity.SalonInviteCode" extends="com.zhxh.core.data.EntityObject">
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
+        <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
     </resultMap>
 
 </mapper>

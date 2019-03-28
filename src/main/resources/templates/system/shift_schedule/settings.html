@@ -145,7 +145,7 @@
           // });
           return {
             "count": res.total,
-            "data": res.rootProperty,
+            "data": res.data,
             "code": 0,
           //code值为200表示成功
             "msg": ""
@@ -153,7 +153,7 @@
         },
         done : function(res, curr, count) {
           var mycars=new Array();
-          var tit=res.rootProperty;
+          var tit=res.data;
           // for (var i=0;i<tit.length;i++){
           //   if(i==0){
           //     var j = 0;

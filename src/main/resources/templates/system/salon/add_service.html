@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>添加项目</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+    <link rel="stylesheet" href="../../../js/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+    <script type="text/javascript" src="../../../js/zyupload/zyupload-1.0.0.min.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-input-inline{width: 214px !important}
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+ <div class="x-body layui-anim layui-anim-up">
+  <div class="layui-fluid">
+  
+    <form class="layui-form layui-form-pane1" lay-filter="first" >
+        <div class="layui-form-item">
+        </div>
+      <div class="layui-form-item">
+          <div class="layui-inline">
+         <label class="layui-form-label"><span class="text-error">*</span>项目名称：</label>
+         <div class="layui-input-inline">
+          <input name="serviceName" id="serviceName" placeholder="请输入" value="" class="layui-input">
+          </div>
+          </div>
+
+      </div>
+        <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><span class="text-error"></span>选择类别：</label>
+            <div class="layui-input-inline">
+                <select name="parentSeriesId" id="parentSeriesId" lay-verify="required" lay-search=""  lay-filter="parentSerSelect">
+                    <option value="">请选择类别</option>
+                </select>
+            </div>
+
+        </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label"><span class="text-error"></span>选择系列：</label>
+                <div class="layui-input-inline">
+                    <select name="serviceSeriesId" id="serviceSeriesId" lay-verify="required" lay-search="">
+
+                    </select>
+                </div>
+
+            </div>
+        </div>
+       <div class="layui-form-item">
+           <label class="layui-form-label">卡类别：</label>
+           <div class="layui-input-inline">
+               <select name="cardType" id="cardType"   lay-verify="required" lay-search="" lay-filter="test">
+                   <option value="0">次卡</option>
+                   <option value="1">月卡</option>
+                   <option value="2">季卡</option>
+                   <option value="3">半年卡</option>
+                   <option value="4">年卡</option>
+               </select>
+           </div>
+
+
+           <input type="hidden" id="expiredTime" name="expiredTime" value=""/>
+           <!--<div class="layui-inline" id="expiredTimeType">-->
+               <!--<label class="layui-form-label">有效期：</label>-->
+               <!--<div class="layui-input-inline">-->
+                   <!--<input name="expiredTime" id="expiredTime" placeholder="请输入"  value="" class="layui-input">-->
+               <!--</div>-->
+           <!--</div>-->
+           <div class="layui-inline" id="periodPerTimeType">
+               <label class="layui-form-label">单次时长(分)：</label>
+               <div class="layui-input-inline">
+                   <input name="periodPerTime" id="periodPerTime" placeholder="请输入"  value="" class="layui-input">
+               </div>
+           </div>
+       </div>
+
+
+
+        <div class="layui-form-item">
+        <div class="layui-inline"  id="pricePerTimeType">
+            <label class="layui-form-label">单次价格：</label>
+            <div class="layui-input-inline">
+                <input name="pricePerTime" id="pricePerTime" placeholder="请输入"  value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline"  id="priceMarketType">
+            <label class="layui-form-label">市场价格：</label>
+            <div class="layui-input-inline">
+                <input name="priceMarket" id="priceMarket" placeholder="请输入"  value="" class="layui-input">
+            </div>
+        </div>
+        </div>
+        <div class="layui-form-item">
+        <div class="layui-inline"  id="priceType">
+            <label class="layui-form-label" id="priceLabel">办卡价格：</label>
+            <div class="layui-input-inline">
+                <input name="price" id="price" placeholder="请输入"  value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">回访天数：</label>
+            <div class="layui-input-inline">
+                <input name="returnVisit" id="returnVisit" placeholder="请输入"  value="" class="layui-input">
+            </div>
+        </div>
+        </div>
+        <div class="layui-form-item" id="timeTotalType">
+            <label class="layui-form-label">包含次数：</label>
+            <div class="layui-input-inline">
+                <input name="timeTotal" id="timeTotal" placeholder="请输入"  value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">简介：</label>
+            <div class="layui-input-inline">
+
+                <textarea name="description" id="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+        <div id="zyupload" class="zyupload"></div>
+
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否停用：</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="recordStatus"  id="recordStatus" lay-skin="switch"  lay-text="ON|OFF">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 140px;">
+            <!--<p id="btnGroup" class="pull-right">-->
+                <button class="layui-btn save"  lay-submit="" lay-filter="*" >保存</button>
+                <button class="layui-btn quxiao" >取消</button>
+            <!--</p>-->
+        </div>
+        <input name="recordId" id="recordId"  type="hidden"  class="layui-input">
+        <input name="storeId" id="storeId"  type="hidden"  class="layui-input">
+        <!--<input name="picRecordId1" id="picRecordId1" placeholder="请输入"  value="" class="layui-input">-->
+        <input name="picRecordId1" id="picRecordId1"  type="hidden"  class="layui-input">
+        <input name="picRecordId2" id="picRecordId2"  type="hidden"  class="layui-input">
+        <input name="picRecordId3" id="picRecordId3"  type="hidden"  class="layui-input">
+        <input name="picRecordId4" id="picRecordId4"  type="hidden"  class="layui-input">
+        <input name="picRecordId5" id="picRecordId5"  type="hidden"  class="layui-input">
+        <input name="picRecordId6" id="picRecordId6"  type="hidden"  class="layui-input">
+        <input name="picList"  class="picList" type="hidden"  class="layui-input">
+
+
+    </form>
+  </div>
+  </div>
+  </body>
+  </html>
+<script type="text/javascript">
+
+
+
+    //重新渲染表单
+
+    function renderForm(){
+
+        layui.use('form', function(){
+
+            var form = layui.form;
+            form.render();
+
+        });
+
+    }
+
+
+
+    function child(salonId){
+        var $ = layui.jquery;
+
+
+        $.ajax({
+            url:"/hy/basic/serviceSeries/queryServiceSeries",
+            type:"get",
+            data:{"SalonId":salonId},
+            dataType:"json",
+            success:function(dataJson){
+
+                var selDom = $("#parentSeriesId");//根据id获取select的jquery对象
+
+
+
+                $.each(dataJson.data, function (i, n) {
+                    // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+                    selDom.append("<option value="+n.recordId+">"+n.seriesName+"</option>");//添加option
+                    console.log(n.seriesName);
+                });
+
+
+
+                renderForm();
+
+            },
+            error:function(){
+                alert("驳回异常")
+            }
+        });
+
+
+
+            $("#pricePerTimeType").show();
+            $("#priceType").show();
+
+            $("#priceMarketType").hide();
+            $("#timeTotalType").hide();
+            $("#priceLabel").text("办卡价格(元)");
+
+
+
+
+
+
+        $("#zyupload").zyUpload({
+            width            :   "650px",                 // 宽度
+            height           :   "",                 // 宽度
+            itemWidth        :   "140px",                 // 文件项的宽度
+            itemHeight       :   "115px",                 // 文件项的高度
+            url              :   "/hy/basic/pictures/fileUpload?record_type=2",              // 上传文件的路径
+            fileType         :   ["jpg","png","txt","js","exe"],// 上传文件的类型
+            fileSize         :   51200000,                // 上传文件的大小
+            multiple         :   true,                    // 是否可以多个文件上传
+            dragDrop         :   true,                    // 是否可以拖动上传文件
+            tailor           :   true,                    // 是否可以裁剪图片
+            del              :   true,                    // 是否可以删除文件
+            finishDel        :   false,  				  // 是否在上传文件完成后删除预览
+            /* 外部获得的回调接口 */
+            onSelect: function(selectFiles, allFiles){    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+                console.info("当前选择了以下文件：");
+                console.info(selectFiles);
+            },
+            onDelete: function(file, files){              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+                console.info("当前删除了此文件：");
+                console.info(file.name);
+            },
+            onSuccess: function(file, response){          // 文件上传成功的回调方法
+                console.info("此文件上传成功：");
+                console.info(file.name);
+                console.info("此文件上传到服务器地址：");
+                console.info(response);
+                response = JSON.parse(response);
+                var list = response.data;
+                var picList = $(".picList").val();
+                var temp =[];
+                if(picList!=""){
+                    var tempList = JSON.parse(picList);
+                    temp.push(tempList);
+                }
+                for(index in list){
+                    console.log(list[index].recordId);
+                    temp.push(list[index].recordId);
+                }
+                $(".picList").val(temp);
+                console.info("picList============================================"+$(".picList").val());
+                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+            },
+            onFailure: function(file, response){          // 文件上传失败的回调方法
+                console.info("此文件上传失败：");
+                console.info(file.name);
+            },
+            onComplete: function(response){           	  // 上传完成的回调方法
+                console.info("文件上传完成");
+                console.info(response);
+            }
+        });
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    layui.use([ 'form'], function() {
+    var form=layui.form;
+
+    form.on('select(test)', function(data){
+        console.log('进来了2');
+        console.log(data.elem); //得到select原始DOM对象
+        console.log(data.value); //得到被选中的值
+        console.log(data.othis); //得到美化后的DOM对象
+        var carType=data.value;
+
+        if(carType == 0){
+            $("#pricePerTimeType").show();
+            $("#priceType").show();
+
+            $("#priceMarketType").hide();
+            $("#timeTotalType").hide();
+            $("#priceLabel").text("办卡价格(元)");
+
+
+        }else if(carType == 1){
+            $("#pricePerTimeType").hide();
+
+            $("#priceMarketType").show();
+            $("#timeTotalType").show();
+            $("#priceLabel").text("优惠价格(元)");
+        }else if(carType == 2){
+            $("#pricePerTimeType").hide();
+
+            $("#priceMarketType").show();
+            $("#timeTotalType").show();
+            $("#priceLabel").text("优惠价格(元)");
+        }else if(carType == 3){
+            $("#pricePerTimeType").hide();
+
+            $("#priceMarketType").show();
+            $("#timeTotalType").show();
+            $("#priceLabel").text("优惠价格(元)");
+        }else if(carType == 4){
+            $("#pricePerTimeType").hide();
+
+            $("#priceMarketType").show();
+            $("#timeTotalType").show();
+            $("#priceLabel").text("优惠价格(元)");
+        }
+
+    });
+
+        form.on('select(parentSerSelect)', function(data){
+            var parentSerId=data.value;
+            $.ajax({
+                url:"/hy/basic/serviceSeries/querySonServiceSeries",
+                type:"get",
+                data:{"recordId":parentSerId},
+                dataType:"json",
+                success:function(dataJson){
+                    var sonSele = $("#serviceSeriesId");//根据id获取select的jquery对象
+                    sonSele.find("option").remove();
+                    $.each(dataJson.data, function (i, n) {
+                        // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+                        sonSele.append("<option value="+n.recordId+">"+n.seriesName+"</option>");//添加option
+                        console.log(n.seriesName);
+                    });
+
+                    renderForm();
+                },
+                error:function(){
+                    alert("驳回异常")
+                }
+            });
+        });
+    })
+
+
+
+
+
+
+
+    layui.use(["jquery", "upload", "form", "layer", "element"], function () {
+
+        element = layui.element,
+            layer = layui.layer,
+            upload = layui.upload,
+            form = layui.form;
+        //拖拽上传
+        var  recordId=$("#picRecordId1").val();
+        console.log('上传recordId'+recordId);
+        var masterDataId=12;
+
+        var uploadInst = upload.render({
+
+            elem: '#headImg1'
+            , url: '/hy/basic/pictures/uploadPicForPC'
+            ,data: {"recordType":0,"picType":0,"masterDataId":$("#picRecordId1").val(),"recordId":recordId}
+            , size: 500
+            , before: function (obj) {
+                console.log('成功返回');
+
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+
+                });
+            }
+            , done: function (res) {
+                console.log(res.msg);
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+                /*   console.log(res.data.src);*/
+                window.parent.uploadHeadImage(res.data.src);
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #8f8f8f;">上传成功!!!</span>');
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+        element.init();
+    });
+
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate=layui.laydate;
+        /* function quxiao(){
+            alert(111);
+        } */
+        var $ = layui.jquery,
+            upload = layui.upload;
+
+        form.on('submit(*)', function(data){
+            console.log(data.field);
+
+            var dataList = data.field;
+            var service = {};
+
+            service.serviceName = dataList.serviceName;
+            service.serviceSeriesId = dataList.serviceSeriesId;
+            service.cardType = dataList.cardType;
+            service.periodPerTime = dataList.periodPerTime;
+            service.pricePerTime = dataList.pricePerTime;
+            service.priceMarket = dataList.priceMarket;
+            service.price = dataList.price;
+            service.returnVisit = dataList.returnVisit;
+            service.timeTotal = dataList.timeTotal;
+            service.description = dataList.description;
+            service.suiteName = dataList.suiteName;
+
+
+            if(dataList.recordStatus=='on'){
+                service.recordStatus = 1
+            }else{
+                service.recordStatus = 0;
+            }
+
+            var url = '/hy/basic/service/addService';
+            var picList= $(".picList").val();
+            $.ajax({
+                type:'POST',
+                url:url,
+                data:{
+                    condition:JSON.stringify(service),
+                    picIdList:picList
+                } ,
+                contentType: "application/x-www-form-urlencoded",
+                success: function(data){
+                    alert("操作成功！");
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    /* alert("操作成功");
+                    if(type=="update"){
+                        window.parent.location.reload(); //刷新父页面
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);  // 关闭layer
+                    }else{
+                        window.location.reload();
+                        //window.location.href="${basePath}ryOrderConfig/queryList";
+                    } */
+
+                    //window.location.href="${basePath}ryOrderConfig/queryList";
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+            return false;
+        });
+
+    })
+
+
+
+
+
+
+</script>  

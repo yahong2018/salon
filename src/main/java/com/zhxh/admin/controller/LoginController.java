@@ -85,12 +85,22 @@ public class LoginController {
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
             long id = systemUser.getRecordId();
             Stuff stuff=stuffDao.getStuffForUser(id);
+
             List<SystemRole> list = systemRoleService.getRoleListById(id);
             List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 
 
             List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
 
+
+            Salon salon=salonDao.getSalonForId(stuff.getStoreId());
+            if(salon.getAudit() == 0){
+                result.setCode(LoginResult.LOGIN_CODE_ERROR);
+                result.setMessage("门店还未通过审核！");
+                return result;
+            }
+
+            result.setStuff(stuff);
             result.setListSalon(salonList);
             result.setSalonId(stuff.getStoreId());
             result.setListRole(list);

@@ -73,6 +73,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
 
 
 
+
+
     @Override
     protected BaseDAOWithEntity<Stuff> getCrudDao() {
         return stuffDao;
@@ -86,24 +88,71 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping("getStuff")
     @ApiOperation(value="获取员工按美容院分类", notes="获取员工按美容院分类")
-    public Result getStuff(){
+    public Result getStuff(String jobLevel){
         SystemUser user = authenticateService.getCurrentLogin();
-
-        List<Salon> stuffList=salonService.getSalonForCreateId(user.getRecordId());
+        Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
         Result r= new Result();
-        JSONArray jsonArr=new JSONArray();
-        if(!stuffList.isEmpty()){
-            for(Salon s :stuffList){
-               List<Stuff> stuff= stuffService.getStuffForStoreId(s.getRecordId());
-                JSONObject jsonObj=new JSONObject();
-                jsonObj.put("stuff",stuff);
-                jsonObj.put("salonName",s.getSalonName());
-                jsonArr.add(jsonObj);
-            }
+        if(jobLevel.equals("0")){
+            List<Salon> stuffList=salonDao.getSalonForStore(stuff2.getStoreId());
 
+//        List<Salon> stuffList=salonService.getSalonForCreateId(user.getRecordId());
+
+            JSONArray jsonArr=new JSONArray();
+            if(!stuffList.isEmpty()){
+                for(Salon s :stuffList){
+                    List<Stuff> stuff= stuffService.getStuffForStoreId(s.getRecordId());
+                    for(Stuff ss:stuff){
+                        Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                        if(null!=pic){
+                            ss.setPicUrl(pic.getPicUrl());
+                        }
+                        List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                        if(stuffJobList.size() != 1 ){
+                            for(StuffJob sj:stuffJobList){
+                                Job job=jobDao.getJobForId(sj.getJobId());
+                                String str=ss.getJobName()+","+job.getJobName();
+                                ss.setJobName(str);
+                            }
+
+                        }
+
+                    }
+                    JSONObject jsonObj=new JSONObject();
+                    jsonObj.put("stuff",stuff);
+                    jsonObj.put("salonName",s.getSalonName());
+                    jsonArr.add(jsonObj);
+                }
+
+
+            }
+            r.setData(jsonArr);
+        }else{
+            JSONArray jsonArr=new JSONArray();
+            List<Stuff> stuff= stuffService.getStuffForStoreId(stuff2.getStoreId());
+            for(Stuff ss:stuff){
+                Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                if(null!=pic){
+                    ss.setPicUrl(pic.getPicUrl());
+                }
+                List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                if(stuffJobList.size() != 1 ){
+                    for(StuffJob sj:stuffJobList){
+                        Job job=jobDao.getJobForId(sj.getJobId());
+                        String str=ss.getJobName()+","+job.getJobName();
+                        ss.setJobName(str);
+                    }
+
+                }
+
+            }
+            JSONObject jsonObj=new JSONObject();
+            jsonObj.put("stuff",stuff);
+            jsonArr.add(jsonObj);
 
         }
-        r.setData(jsonArr);
+
+
+
         r.setMsg("获取成功");
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
@@ -177,10 +226,10 @@ public class StuffController extends SimpleCRUDController<Stuff> {
      * 添加员工
      */
     @ResponseBody
-    @RequestMapping(value="addStuff",method = RequestMethod.POST)
+    @RequestMapping(value="addStuff")
     @ApiOperation(value="添加员工", notes="添加员工")
     @Transactional(rollbackFor = Exception.class)
-    public Result addStuff(@RequestBody Stuff condition, StuffJob stuffJobCondition,Byte jobLevel ) {
+    public Result addStuff( Stuff condition, String jobLevel ) {
         Result r= new Result();
         try {
             //检查该手机号是否被使用
@@ -195,11 +244,20 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             condition.setGender(new Byte("2"));
             condition.setCreateDate(new Date());
             stuffDao.insert(condition);
-            stuffJobCondition.setStuffId(condition.getRecordId());
 
-            Job j=jobDao.getJobForJobLevel(jobLevel);
-            stuffJobCondition.setJobId(j.getRecordId());
-            stuffJobDao.insert(stuffJobCondition);
+
+            String[] str = jobLevel.split(",");
+            for(String s :str){
+                StuffJob stuffJobCondition=new StuffJob();
+                stuffJobCondition.setStuffId(condition.getRecordId());
+                Job j=jobDao.getJobForJobLevel(new Byte(s));
+                stuffJobCondition.setJobId(j.getRecordId());
+                stuffJobDao.insert(stuffJobCondition);
+            }
+
+//            Job j=jobDao.getJobForJobLevel(jobLevel);
+//            stuffJobCondition.setJobId(j.getRecordId());
+//            stuffJobDao.insert(stuffJobCondition);
 
             SystemUser userController=new SystemUser();
             userController.setUserCode(condition.getTel());

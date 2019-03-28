@@ -79,9 +79,30 @@
 </html>
 <script type="text/javascript">
     function child(data){
-        var $ = layui.jquery;
-        $("#parId").val(data);
-        console.log(data);
+        alert(3333);
+        layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+            var $ = layui.jquery;
+            var form  = layui.form;
+            var parId = data.name;
+            var listId=  data.idList;
+            var list = listId.split(",");
+            getAllServiceSeries(list);
+
+/*            for(index in list){
+                var id = list[index].trim();
+                var val = $("#"+id);
+                console.log(val);
+                if(id!=""){
+                    $("#"+id).attr("checked","checked");
+                    $("input[name='liaocheng']").prop("checked", true);
+                }
+
+                form.render();
+            }*/
+            $("#parId").val(parId);
+            console.log(data);
+        })
+
     }
     function clickAll(data){
         console.log(data);
@@ -89,7 +110,7 @@
        alert(data);
     }
 
-    function getAllServiceSeries(){
+    function getAllServiceSeries(listId){
         var $ = layui.jquery;
         var form  = layui.form;
         $.ajax({
@@ -108,11 +129,16 @@
                     input.setAttribute("type","checkbox");
                     input.setAttribute("name","check");
                     input.setAttribute("value",service.ServiceName);
-                    input.setAttribute("lay-skin","primary");
+                   // input.setAttribute("lay-skin","primary");
                     input.setAttribute("title",service.ServiceName);
                     input.setAttribute("id",service.ServiceRecordId);
                     input.setAttribute("lay-filter","allChoose");
                     $liP.append(input);
+                    for(index2 in listId){
+                        if(listId[index2]==service.ServiceRecordId){
+                            input.setAttribute("checked","true");
+                        }
+                    }
                    // var input = '<input type="checkbox" name="check[]" value="全选" lay-skin="primary" title="全选" lay-filter="oneChoose">';
                     $("#ulList").append($liP);
                     var ServiceList = service.ServiceList;
@@ -124,12 +150,17 @@
                         input.setAttribute("type","checkbox");
                         input.setAttribute("name","check");
                         input.setAttribute("value",ServiceList[index2].seriesName);
-                        input.setAttribute("lay-skin","primary");
+                        //input.setAttribute("lay-skin","primary");
                         input.setAttribute("title",ServiceList[index2].seriesName);
                         input.setAttribute("pId",service.ServiceRecordId);
                         input.setAttribute("class",service.ServiceRecordId);
                         input.setAttribute("id",ServiceList[index2].recordId);
                         input.setAttribute("lay-filter","oneChoose");
+                        for(index3 in listId){
+                            if(listId[index3]==ServiceList[index2].recordId){
+                                input.setAttribute("checked","true");
+                            }
+                        }
                         li.append(input);
                         //li.append('<input type="checkbox" name="check[]" value="'+ServiceList[index].seriesName+'" lay-skin="primary" title="'+ServiceList[index].seriesName+'" lay-filter="oneChoose">');
                         ul.append(li);
@@ -148,14 +179,16 @@
     layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
         var form = layui.form;
         var $ = layui.jquery;
-        getAllServiceSeries();
+        $("input[name='哈哈哈']").prop("checked", true);
         form.on('checkbox(oneChoose)', function (data) {
             var dataInput = $(data.elem);
             var classs = dataInput.context.className;
             var id = dataInput.context.pid;
             var a = data.elem.checked;
             if (a == true) {
-                $("#"+classs).prop("checked", true);
+                var temp = $("#"+classs);
+                console.log(temp);
+                temp.prop("checked", true);
                 form.render('checkbox');
             } else {
                 $("#"+classs).prop("checked", false);

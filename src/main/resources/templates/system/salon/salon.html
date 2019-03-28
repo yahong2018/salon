@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>员工排班</title>
+  <title>美容院列表</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -22,32 +22,41 @@
 <!-- 内容主体区域 -->
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
-    <div class="layui-input-inline " style=" width: 124px;">
-      <button class="layui-btn layui-btn-primary addUser">员工排班</button>
+    <div class="layui-input-inline " style=" width: 638px;">
+      <button class="layui-btn layui-btn-primary addUser">新增美容院</button>
+      <!--<button class="layui-btn updateUser">修改用户</button>-->
+      <!--<button class="layui-btn layui-btn-normal deleteUser">删除用户</button>-->
+      <!--<button class="layui-btn layui-btn-normal qidong">启用账户</button>-->
+      <!--<button class="layui-btn layui-btn-normal tingzhi">停止账户</button>-->
+      <!--<button class="layui-btn layui-btn-normal shouquan">授权</button>-->
+<!--      <button class="layui-btn">默认按钮</button>
+      <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
      </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">搜索选择框</label>
-      <div class="layui-input-inline">
-        <select name="modules"  lay-search="" class="userKey">
-          <option value="">直接选择或搜索选择</option>
-          <option value="stuff_name">员工名称</option>
-        </select>
-      </div>
-    </div>
-    <div class="layui-inline">
-      <div class="layui-input-inline">
-        <input type="text" name="userKey" class="layui-input userKeyValue ">
-      </div>
-      <div class="layui-input-inline">
-        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
-          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-        </button></div>
-    </div>
+    <!--<div class="layui-inline">-->
+      <!--<label class="layui-form-label">搜索选择框</label>-->
+      <!--<div class="layui-input-inline">-->
+        <!--<select name="modules"  lay-search="" class="userKey">-->
+          <!--<option value="">直接选择或搜索选择</option>-->
+          <!--<option value="user_code">用户账号</option>-->
+          <!--<option value="user_name">用户名称</option>-->
+          <!--<option value="email">email</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-inline">-->
+      <!--<div class="layui-input-inline">-->
+        <!--<input type="text" name="userKey" class="layui-input userKeyValue ">-->
+      <!--</div>-->
+      <!--<div class="layui-input-inline">-->
+        <!--<button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">-->
+          <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+        <!--</button></div>-->
+    <!--</div>-->
   </div>
 </div>
 
 <div id="pTable" >
-  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="layui_table_id" style="width: 1680px">
+  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
 
   </table>
 <!--  <script type="text/html" id="barDemo">
@@ -68,85 +77,72 @@
 
     function productsearch(page,filterExpr) {
 
-      var table = layui.table;
+      var table = layui.table,
       laydate = layui.laydate,
       laypage = layui.laypage;
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/schedule/getAdminScheduleByTime?page='+page,
+        url : '/hy/basic/salon/getStoreList',
         cols : [ [
+              {checkbox: true,
+                filter:'test'
+              }
+              ,
+              {
+                field : 'recordId',
+                title : 'recordId',
+                sort : true,
+                align : 'center'
+              }
+              , {
+                field : 'salonName',
+                title : '美容院名称',
+                align : 'center'
+              }
+              , {
+                field : 'tel',
+                title : '手机',
+                align : 'center'
+              }
+              , {
+                field : 'address',
+                title : '地址',
+                align : 'center'
+              }
+              , {
+                field : 'door2Door',
+                title : '是否上门服务',
+                align : 'center'
+              }
+
+
 
         ] ],
-        page : false,
+        page : true,
         where : {
           filterExpr:filterExpr,
-          time:"2019-03",
-          recordId:2
         },
         responseHandler: function (res, curr,count) {
-          //return res;
-          // $('#pageNum').val(curr);
-          // var mycars=new Array();
-          // var tit=res.rootProperty;
-          // for (var i=0;i<tit.length;i++){
-          //   mycars[i]={field:'ex'+i, title:tit[i].salonName, align:'center',width:'120'};
-          // }
-          // table.init('layui_table_id',{
-          //   cols:[mycars]
-          //   ,data:res.rootProperty
-          //   ,limit:10
-          // });
+          $('#pageNum').val(curr);
           return {
             "count": res.total,
             "data": res.data,
             "code": 0,//code值为200表示成功
-            "msg": "",
-              "listKey":res.listKey,
+            "msg": ""
           }
         },
         done : function(res, curr, count) {
-          var mycars=new Array();
-          var tit=res.data;
-          var listKey = res.listKey;
-          mycars[0] = {checkbox:true,filter:'layui_table_id'};
-          for(var i=0;i<listKey.length;i++){
-            mycars[i+1]={field:listKey[i], title:listKey[i], align:'center',width:'120'};
-          }
-          // for (var i=0;i<tit.length;i++){
-          //   if(i==0){
-          //     var j = 0;
-          //     for (var p in tit[i]){
-          //       console.log(p);
-          //       mycars[j]={field:p, title:p, align:'center',width:'120'};
-          //       j++;
-          //     }
-          //   }
-          //
-          //
-          // }
-          table.init('layui_table_id',{
-            cols:[mycars]
-            ,data:res.data,
-            count:12
-          });
-          laypage.render({
-            elem:'laypage'
-            ,count:count
-            ,curr:page
-            ,limit:10
-            ,layout: ['prev', 'page', 'next', 'skip','count','limit']
-            ,jump:function (obj,first) {
-              if(!first){
-                curnum = obj.curr;;
-                productsearch(curnum)
-              }
-            }
-          })
+          console.log(res)
+          $('#pageNum').val(curr);
+
         }
       })
+      // table.on('checkbox(test)', function(obj){
+      //   console.log(layui.table.checkStatus('layui_table_id'));
+      // });
      // 监听工具条
-      table.on('tool(layui_table_id)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+      table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data, //获得当前行数据
                 layEvent = obj.event; //获得 lay-event 对应的值
         if (layEvent == 'detail') {
@@ -294,26 +290,18 @@
     })
 
     $(".addUser").on("click",function(){
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1){
-        alert("请选中一条数据");
-        return false;
-      }
       layer.open({
         type:2,
-        area:[750+'px',638+'px'],
+        area:[482+'px',355+'px'],
         fix:false,
         offset: '80px',
         maxmin:true,
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'排班设置',
-        content:['stuff_setting_update.html'],
+        title:'新增美容院',
+        content:['add_salon.html'],
         success:function(layero,index){
-          var iframe = window['layui-layer-iframe' + index];
-          // 向子页面的全局函数child传参
-          iframe.child(data[0]);
           console.log("成功");
         },
         fail:function(data){

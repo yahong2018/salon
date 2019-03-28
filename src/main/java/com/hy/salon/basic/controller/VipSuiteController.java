@@ -217,7 +217,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                     for(int i=0;i<jsonArr.size();i++){
                         JSONObject jsonObj=jsonArr.getJSONObject(i);
                         String recordType=jsonObj.getString("recordType");
-                        String itemId=jsonObj.getString("itemId");
+                        String itemId=jsonObj.getString("serviceId");
                         String discount=jsonObj.getString("discount");
 
                         //绑定父类
@@ -367,45 +367,36 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "String"),
     })
-    public Result deleteVipSuite(Long recordId){
+    public Result deleteVipSuite(@RequestBody Long[] userIdList){
         Result r= new Result();
-
-
-
-        try {
-
-            //删除绑定的项目
-            List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(recordId);
-            if(!suiteItemList.isEmpty()){
-            for(VipSuiteItem vsi:suiteItemList){
-               long id =  vsi.getRecordId();
-                String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+        for(Long recordId:userIdList) {
+            try {
+                //删除绑定的项目
+                List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(recordId);
+                if(!suiteItemList.isEmpty()){
+                    for(VipSuiteItem vsi:suiteItemList){
+                        long id =  vsi.getRecordId();
+                        String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+                        Map parameters = new HashMap();
+                        parameters.put("vipSuiteItemId",id);
+                        vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
+                        vipSuiteItemDao.delete(vsi);
+                    }}
+                String where = " where master_data_id=#{masterDataId} ";
                 Map parameters = new HashMap();
-                parameters.put("vipSuiteItemId",id);
-                vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
-                vipSuiteItemDao.delete(vsi);
-            }}
-            String where = " where master_data_id=#{masterDataId} ";
-            Map parameters = new HashMap();
-            parameters.put("masterDataId",recordId);
-            picturesDao.deleteByWhere(where,parameters);
-            vipSuiteDao.deleteById(recordId);
-//            if(!suiteItemList.isEmpty()){
-//                for(VipSuiteItem v:suiteItemList){
-//                    vipSuiteItemDao.delete(v);
-//                }
-//            }
-
-
-
-            r.setMsg("删除成功");
-            r.setSuccess(true);
-            r.setMsgcode(StatusUtil.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
+                parameters.put("masterDataId",recordId);
+                picturesDao.deleteByWhere(where,parameters);
+                vipSuiteDao.deleteById(recordId);
+                r.setMsg("删除成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
         }
+
         return r;
     }
 

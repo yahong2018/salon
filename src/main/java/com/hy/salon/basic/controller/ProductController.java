@@ -62,10 +62,10 @@ public class ProductController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "salonId", value = "美容院ID", required = true, dataType = "Long")
     })
-    public Result getProductList(Long salonId){
+    public Result getProductList(Long salonId,Long productClass,Long productSeriesId){
         Result result=new Result();
         try {
-            List<Product> list=productService.getProductList(salonId);
+            List<Product> list=productDao.getProdectForCondition(salonId,productClass,productSeriesId);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setMsg("查询成功");

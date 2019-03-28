@@ -13,7 +13,12 @@ import java.util.List;
 @Setter
 public class TraceableEntity<T> extends EntityObject<T> {
     public static void fillCreateInfo(TraceableEntity entity){
-        entity.setCreateBy(AuthenticateService.getCurrentLogin().getRecordId());
+        if(AuthenticateService.getCurrentLogin()!=null){
+            entity.setCreateBy(AuthenticateService.getCurrentLogin().getRecordId());
+        }else{
+            entity.setCreateBy(new Long(1));
+        }
+
         entity.setCreateDate(new Date());
     }
 

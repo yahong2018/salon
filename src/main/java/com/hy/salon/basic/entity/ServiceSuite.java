@@ -1,5 +1,6 @@
 package com.hy.salon.basic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -22,9 +23,9 @@ public class ServiceSuite extends TraceableEntity<Long> {
     private Double priceMarket;
 
     private Double price;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date timeCreate;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date timeExpired;
 
     private Byte recordStatus;

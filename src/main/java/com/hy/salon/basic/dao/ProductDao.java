@@ -25,5 +25,24 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return this.getOne(where, parameters);
     }
 
+    public List<Product> getProdectForCondition(Long salonId,Long productClass,Long productSeriesId){
+
+        String where = "store_id=#{salonId} ";
+        if(null != productClass && productClass!=0){
+            where=where+" and product_class=#{productClass}";
+        }
+
+        if(null != productSeriesId && productSeriesId!=0){
+            where=where+" and product_series_id=#{productSeriesId}";
+        }
+
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        parameters.put("productClass", productClass);
+        parameters.put("productSeriesId", productSeriesId);
+
+        return this.getByWhere(where, parameters);
+    }
+
     protected final static String SQL_GET_PRODUCT_LIST = "com.hy.salon.basic.dao.GET_PRODUCT_LIST";
 }

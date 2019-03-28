@@ -48,7 +48,28 @@ public class ServiceDAO extends BaseDAOWithEntity<Service> {
         parameters.put("id", id);
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SERVICE_FOR_SUIT, parameters);
     }
+
+    public List<Map<String,String>> queryServiceForSeries(Long parentId) {
+        Map parameters = new HashMap();
+        parameters.put("parentId", parentId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_SERVICE_FOR_SERIES, parameters);
+    }
+
+    public List<Map<String,String>> queryBinServiceForSeries(Long suiteId) {
+        Map parameters = new HashMap();
+        parameters.put("suiteId", suiteId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_BIN_SERVICE_FOR_SERIES, parameters);
+    }
+
     protected final static String SQL_GET_SERVICE_FOR_SUIT = "com.hy.salon.basic.dao.GET_SERVICE_FOR_SUIT";
+
+    protected final static String SQL_QUERY_SERVICE_FOR_SERIES = "com.hy.salon.basic.dao.QUERY_SERVICE_FOR_SERIES";
+
+    protected final static String SQL_QUERY_BIN_SERVICE_FOR_SERIES = "com.hy.salon.basic.dao.QUERY_BIN_SERVICE_FOR_SERIES";
+
+
+
+
 
 
 

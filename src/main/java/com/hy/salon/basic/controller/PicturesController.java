@@ -433,6 +433,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
             result.setMsg("没有找到相对应的文件");
             return null;
         }
+
         picturesDao.insert(condition);
         JSONObject jsonObj=new JSONObject();
         jsonObj.put("picId",condition.getRecordId());

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>考勤</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+     font-size:23px;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-input-inline{width: 214px !important}
+
+    .layui-row{
+        margin-top: 22px;
+    }
+    .layui-col-md12{
+        margin-top: 12px;
+    }
+    .grid-demo-bg1, .grid-demo{
+        margin-top: 8px;
+    }
+    .fontSize{
+        font-size:33px;
+    }
+    .yuefen{
+        width: 84px;
+        border: 1px solid;
+        /* align-content: center; */
+        text-align: center;
+        margin: auto;
+        border-radius: 25px;
+        background-color: #ddddec;
+        color: #3713bf;
+    }
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+<!-- <div class="x-body layui-anim layui-anim-up">-->
+     <div class="layui-container" style="width:100%;border:1px solid red;text-align: center;background-color: #10a1e2;">
+      <div class="layui-row ">
+          <div class="layui-col-xs3">
+              <div class="grid-demo grid-demo-bg1"><div class="yuefen">1月</div></div>
+          </div>
+          <div class="layui-col-xs3">
+              <div class="grid-demo"><div class="yuefen">2月</div></div>
+          </div>
+          <div class="layui-col-xs3">
+              <div class="grid-demo grid-demo-bg1"><div class="yuefen">3月</div></div>
+          </div>
+          <div class="layui-col-xs3">
+              <div class="grid-demo"><div class="yuefen">4月</div></div>
+          </div>
+      </div>
+         <div class="layui-row">
+             <div class="layui-col-xs3">
+                 <div class="grid-demo grid-demo-bg1"><div class="yuefen">5月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo"><div class="yuefen">6月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo grid-demo-bg1"><div class="yuefen">7月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo"><div class="yuefen">8月</div></div>
+             </div>
+         </div>
+         <div class="layui-row">
+             <div class="layui-col-xs3">
+                 <div class="grid-demo grid-demo-bg1"><div class="yuefen">9月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo"><div class="yuefen">10月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo grid-demo-bg1"><div class="yuefen">11月</div></div>
+             </div>
+             <div class="layui-col-xs3">
+                 <div class="grid-demo"><div class="yuefen">12月</div></div>
+             </div>
+         </div>
+
+         <div class="layui-row">
+             <div class="layui-col-xs12 layui-col-md12">
+                 <div class="grid-demo grid-demo-bg2">本月出勤天数</div>
+             </div>
+             <div class="layui-col-xs12 layui-col-md12">
+                 <div class="grid-demo grid-demo-bg2">22天</div>
+             </div>
+         </div>
+    </div>
+
+ <div class="layui-container fontSize" style="width:100%;border:1px solid red;text-align: center;margin-top: 54px;">
+     <div class="layui-row ">
+         <div class="layui-col-xs4">
+             <div class="grid-demo grid-demo-bg1">迟到次数</div>
+             <div class="grid-demo grid-demo-bg1 lateNum" ><a ></a></div>
+         </div>
+         <div class="layui-col-xs4">
+             <div class="grid-demo">早退次数</div>
+             <div class="grid-demo leaveEarlyNum"><a></a></div>
+         </div>
+         <div class="layui-col-xs4">
+             <div class="grid-demo grid-demo-bg1">缺勤天数</div>
+             <div class="grid-demo grid-demo-bg1 absenceFromDutyNum"><a></a></div>
+         </div>
+     </div>
+     <div class="layui-row ">
+         <div class="layui-col-xs4">
+             <div class="grid-demo grid-demo-bg1">签到遗漏</div>
+             <div class="grid-demo grid-demo-bg1 checkinOmission"><a></a></div>
+         </div>
+         <div class="layui-col-xs4">
+             <div class="grid-demo">签退遗留</div>
+             <div class="grid-demo signOmission"><a></a></div>
+         </div>
+         <div class="layui-col-xs4">
+             <div class="grid-demo grid-demo-bg1">请假天数</div>
+             <div class="grid-demo grid-demo-bg1 leaveNum"><a></a></div>
+         </div>
+     </div>
+ </div>
+<input type="hidden" class="stuffId"/>
+  </body>
+  </html>
+<script type="text/javascript">
+    function child(data){
+        var $ = layui.jquery;
+        var stuffId = data.stuffId;
+        $(".stuffId").val(stuffId);
+        var lateNum = data.lateNum;
+        $('.lateNum a').html(lateNum);
+
+        var leaveEarlyNum = data.leaveEarlyNum;
+        $('.leaveEarlyNum a').html(leaveEarlyNum);
+
+        var absenceFromDutyNum = data.absenceFromDutyNum;
+        $('.absenceFromDutyNum a ').html(absenceFromDutyNum);
+
+        var checkinOmission = data.checkinOmission;
+        $('.checkinOmission a ').html(checkinOmission);
+
+        var signOmission = data.signOmission;
+        $('.signOmission a ').html(signOmission);
+
+        var leaveNum = data.leaveNum;
+        $('.leaveNum a ').html(leaveNum);
+    }
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+	  var form = layui.form;
+	  var $ = layui.jquery;
+	  var laydate=layui.laydate;
+	   upload = layui.upload;
+        $(".grid-demo .yuefen").on("click",function(){
+            console.log(this.innerText);
+            alert(this.textContent);
+
+            $.ajax({
+                type:'POST',
+                url:url,
+                data: data.field,
+                success: function(data){
+                    alert("操作成功！");
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+        })
+
+	  form.on('submit(*)', function(data){
+
+	    $.ajax({
+	    	type:'POST',
+            url:url,
+	    	data: data.field,
+	    	success: function(data){
+                alert("操作成功！");
+    			window.parent.location.reload(); //刷新父页面
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);  // 关闭layer
+
+	    	},
+	    	error:function(data){
+	    		alert("操作失败");
+	    		console.log(data);
+	    	}
+	    })
+	  });
+
+})
+
+
+</script>  

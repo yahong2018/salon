@@ -62,6 +62,14 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getByWhere(where,parameters);
     }
 
+
+    public List<Salon> getSalonForStore(Long storeId){
+        String where=" parent_id = #{storeId}";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        return this.getByWhere(where,parameters);
+    }
+
     public ListRequest getListRequest(HttpServletRequest request) {
         ListRequest listRequest;
         if(StringUtils.isNotEmpty(request.getParameter("page"))){
@@ -80,7 +88,8 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         //PageHelper.startPage(page, 10);
         //List<Salon> list = this.getByWhere(where,parameters);
         ListRequest listRequest = getListRequest(request);
-        listRequest.setWhere(listRequest.getWhere()==""?" parent_id="+storeId:listRequest.getWhere()+" and  parent_id="+storeId);
+        listRequest.setWhere(listRequest.getWhere()==""?" parent_id="+storeId+" or record_id="+storeId:listRequest.getWhere()+" and parent_id="+storeId +" or record_id="+storeId);
+
         List list2 = listHandler.getByRequest(listRequest);
         int listCount = listHandler.getRequestListCount(listRequest);
         ExtJsResult ejr  = new ExtJsResult();
@@ -117,7 +126,7 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         }
 
         ejr.setTotal(listCount);
-        ejr.setRootProperty(listSalonShift);
+        ejr.setData(listSalonShift);
         return ejr;
     }
 }
