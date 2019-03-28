@@ -12,7 +12,7 @@ public class messageUtil {
 
 
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
 
         String testUsername = "18002875588"; //在短信宝注册的用户名
         String testPassword = "chen0769"; //在短信宝注册的密码
@@ -29,7 +29,7 @@ public class messageUtil {
 
         String result = request(httpUrl, httpArg.toString());
         System.out.println(result);
-    }
+    }*/
 
     public static String request(String httpUrl, String httpArg) {
         BufferedReader reader = null;

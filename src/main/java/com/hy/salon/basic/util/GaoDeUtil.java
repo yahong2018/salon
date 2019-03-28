@@ -51,7 +51,7 @@ public class GaoDeUtil {
     }
 
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         System.out.println(GaoDeUtil.getLatAndLonByAddress("广东省东莞市东城区莞樟路115-3"));
         double[] aaa = GaoDeUtil.getLatAndLonByAddress("广东省东莞市东城区莞樟路115-3");
         System.out.println(aaa);
@@ -60,5 +60,5 @@ public class GaoDeUtil {
         }
         System.out.println(GaoDeUtil.getLatAndLonByAddress("广东省深圳市福田区天安数码城创业科技大厦一期"));
 
-    }
+    }*/
 }

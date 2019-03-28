@@ -53,7 +53,7 @@ public class MapUtils {
     }
 
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         double[] aaa = MapUtils.getLatAndLonByAddress("广东省东莞市大岭山镇车至尊");
         System.out.println(aaa);
         for (double cccc : aaa) {
@@ -61,6 +61,6 @@ public class MapUtils {
         }
 
 
-    }
+    }*/
 
-    }
+}
