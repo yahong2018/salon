@@ -26,9 +26,9 @@
       <button class="layui-btn layui-btn-primary addUser">新增充值卡</button>
       <button class="layui-btn updateSuite">修改充值卡</button>
       <button class="layui-btn layui-btn-normal deleteUser">删除充值卡</button>
-<!--      <button class="layui-btn">默认按钮</button>
-      <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
-     </div>
+      <!--      <button class="layui-btn">默认按钮</button>
+            <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
+    </div>
     <div class="layui-inline">
       <label class="layui-form-label">搜索选择框</label>
       <div class="layui-input-inline">
@@ -56,10 +56,10 @@
   <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
 
   </table>
-<!--  <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-  </script>-->
+  <!--  <script type="text/html" id="barDemo">
+      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>-->
   <div id="laypage"></div>
 </div>
 </body>
@@ -75,38 +75,38 @@
     function productsearch(page,filterExpr) {
 
       var table = layui.table,
-      laydate = layui.laydate,
-      laypage = layui.laypage;
+              laydate = layui.laydate,
+              laypage = layui.laypage;
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
         url : '/hy/basic/vipSuite/getVipSuiteList',
         cols : [ [
-              {checkbox: true,
-                filter:'test'
-              }
-              ,
-              {
-                field : 'recordId',
-                title : 'recordId',
-                sort : true,
-                align : 'center'
-              }
-              , {
-                field : 'suiteName',
-                title : '套卡名称',
-                align : 'center'
-              }
-              , {
-                field : 'price',
-                title : '金额',
-                align : 'center',
-              }
-              , {
-                field : 'description',
-                title : '描述',
-                align : 'center'
-              }
+          {checkbox: true,
+            filter:'test'
+          }
+          ,
+          {
+            field : 'recordId',
+            title : 'recordId',
+            sort : true,
+            align : 'center'
+          }
+          , {
+            field : 'suiteName',
+            title : '套卡名称',
+            align : 'center'
+          }
+          , {
+            field : 'price',
+            title : '金额',
+            align : 'center',
+          }
+          , {
+            field : 'description',
+            title : '描述',
+            align : 'center'
+          }
 
         ] ],
         page : true,
@@ -117,7 +117,7 @@
           $('#pageNum').val(curr);
           return {
             "count": res.total,
-            "data": res.rootProperty,
+            "data": res.data,
             "code": 0,//code值为200表示成功
             "msg": ""
           }
@@ -131,7 +131,7 @@
       // table.on('checkbox(test)', function(obj){
       //   console.log(layui.table.checkStatus('layui_table_id'));
       // });
-     // 监听工具条
+      // 监听工具条
       table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data, //获得当前行数据
                 layEvent = obj.event; //获得 lay-event 对应的值
@@ -214,34 +214,34 @@
         }
       })
     })
-      $(".shouquan").on("click",function(){
-          var data = layui.table.checkStatus('layui_table_id').data;
-          if(data.length<1){
-              alert("请选中一条数据");
-              return false;
-          }
-          layer.open({
-              type:2,
-              area:[482+'px',315+'px'],
-              fix:false,
-              offset: '80px',
-              maxmin:true,
-              shadeClose:true,
-              scrollbar: false,
-              shade:0.4,
-              title:'授权',
-              content:['authorize.html'],
-              success:function(layero,index){
-                  var iframe = window['layui-layer-iframe' + index];
-                  // 向子页面的全局函数child传参
-                  iframe.child(data[0]);
-                  console.log("成功");
-              },
-              fail:function(data){
-                  console.log(data);
-              }
-          })
+    $(".shouquan").on("click",function(){
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length<1){
+        alert("请选中一条数据");
+        return false;
+      }
+      layer.open({
+        type:2,
+        area:[482+'px',315+'px'],
+        fix:false,
+        offset: '80px',
+        maxmin:true,
+        shadeClose:true,
+        scrollbar: false,
+        shade:0.4,
+        title:'授权',
+        content:['authorize.html'],
+        success:function(layero,index){
+          var iframe = window['layui-layer-iframe' + index];
+          // 向子页面的全局函数child传参
+          iframe.child(data[0]);
+          console.log("成功");
+        },
+        fail:function(data){
+          console.log(data);
+        }
       })
+    })
 
 
     $(".deleteUser").on("click",function(){
@@ -258,18 +258,12 @@
       }
       console.log(deleteList);
       $.ajax({
-        type:'POST',
-        url:'/admin/systemUsers/delete.handler',
-        //data: JSON.stringify(deleteList),
+        url:'/hy/basic/vipSuite/deleteVipSuite',
         data: JSON.stringify(deleteList),
         contentType: "application/json",
         success: function(data){
           alert("操作成功！");
           productsearch(1);
-         // window.parent.location.reload(); //刷新父页面
-         // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-          //parent.layer.close(index);  // 关闭layer
-
         },
         error:function(data){
           alert("操作失败");
@@ -280,6 +274,12 @@
     })
 
     $(".updateSuite").on("click",function(){
+      console.log(layui.table.checkStatus('layui_table_id'));
+      var data = layui.table.checkStatus('layui_table_id').data;
+      if(data.length>1){
+        alert("请选中一条数据");
+        return false;
+      }
       layer.open({
         type:2,
         area:[888+'px',666+'px'],
@@ -294,7 +294,7 @@
         success:function(layero,index){
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          iframe.child(1233333);
+          iframe.child(data[0].recordId);
           console.log("成功");
         },
         fail:function(data){
@@ -317,7 +317,7 @@
         success:function(layero,index){
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          iframe.child(1233333);
+          iframe.child();
           console.log("成功");
         },
         fail:function(data){
@@ -347,7 +347,7 @@
           // 获取子页面的iframe
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          iframe.child(data[0]);
+          iframe.child(data[0].recordId);
           console.log("成功");
         },
         fail:function(data){
@@ -358,11 +358,11 @@
 
   });
   function userStatus(t){
-     if(t==0){
-       return '启用';
-     }else{
-       return '禁用';
-     }
+    if(t==0){
+      return '启用';
+    }else{
+      return '禁用';
+    }
     return util.toDateString(t1);
   }
 </script>
@@ -371,5 +371,5 @@
 <script type="text/html" id="userStatus">
 
 
-        {{ userStatus(d.userStatus) }}
+  {{ userStatus(d.userStatus) }}
 </script>

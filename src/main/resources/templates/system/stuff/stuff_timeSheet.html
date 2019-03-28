@@ -30,27 +30,47 @@
                   <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">选择门店</label>
+            <label class="layui-form-label" style="width:70px">选择门店</label>
             <div class="layui-input-inline" id="qq">
                 <select id="salon" name="salon">
 
                     <!--<option value="0571">杭州</option>-->
                 </select>
             </div>
-            <label class="layui-form-label">选择时间</label>
-            <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+           <!-- <label class="layui-form-label">选择时间</label>
+            <div class="layui-inline"> &lt;!&ndash; 注意：这一层元素并不是必须的 &ndash;&gt;
                 <input type="text" class="layui-input" id="test1">
             </div>
-
+-->
         </div>
         <div class="layui-inline">
-            <div class="layui-input-inline">
+<!--            <div class="layui-input-inline">
                 <input type="text" name="userKey" class="layui-input userKeyValue ">
-            </div>
-            <div class="layui-input-inline">
+            </div>-->
+<!--            <div class="layui-input-inline" style="width: 38px;">
                 <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
                     <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                </button></div>
+                </button>
+
+            </div>-->
+            <div class="layui-input-inline" style="width: 179px;">
+            <label class="layui-form-label">应出勤数：</label>
+            <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+                <input type="text" class="layui-input attendanceNum" style="width: 58px;"/>
+            </div>
+            </div>
+            <div class="layui-input-inline" style="width: 179px;">
+            <label class="layui-form-label">共出勤数：</label>
+            <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+                <input type="text" class="layui-input hasAttendanceNum" style="width: 58px;"/>
+            </div>
+            </div>
+            <div class="layui-input-inline" style="width: 179px;">
+            <label class="layui-form-label">异常数：</label>
+            <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+                <input type="text" class="layui-input yichangNum" style="width: 58px;"/>
+            </div>
+            </div>
             <!--<button class='layui-btn'>详情</button>-->
         </div>
     </div>
@@ -81,9 +101,9 @@
         var form = layui.form;
         var laydate=layui.laydate;
         var $ = layui.$;
-        productsearch(1);
+        productsearch(1,"123",2,"2019-03");
 
-        function productsearch(page,filterExpr) {
+        function productsearch(page,filterExpr,salonId,time) {
 
             var table = layui.table,
                 laydate = layui.laydate,
@@ -114,17 +134,32 @@
                         align : 'center'
                     }
                     , {
-                        field : 'attendanceNum',
-                        title : '应出勤',
+                        field : 'lateNum',
+                        title : '迟到次数',
                         align : 'center'
                     }, {
-                        field : 'attendance',
-                        title : '共出勤',
+                        field : 'leaveEarlyNum',
+                        title : '早退次数',
                         align : 'center'
                     }
                     , {
-                        field : 'attendanceE',
-                        title : '异常',
+                        field : 'absenceFromDutyNum',
+                        title : '缺勤天数',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'checkinOmission',
+                        title : '签到遗漏',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'signOmission',
+                        title : '签退遗漏',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'leaveNum',
+                        title : '请假天数',
                         align : 'center'
                     }
                     ,{
@@ -135,10 +170,15 @@
                 ] ],
                 page : true,
                 where : {
+                    salonId:salonId,
+                    time:time,
                     filterExpr:filterExpr,
                 },
                 responseHandler: function (res, curr,count) {
                     $('#pageNum').val(curr);
+                    $(".attendanceNum").val(res.attendanceNum);
+                    $(".hasAttendanceNum").val(res.hasAttendanceNum);
+                    $(".yichangNum").val(res.yichangNum);
                     return {
                         "count": res.total,
                         "data": res.data,
@@ -185,14 +225,10 @@
                     //alert(data.id)
                     var pageNum = $('#pageNum').val();
                     layer.confirm('真的删除行么', function(index){
-                        deleteById(data.id);
                         layer.close(index);
-                        //向服务端发送删除指令
                     });
                 } else if (layEvent === 'edit') {
-                    //layer.msg('查看操作');
-                    var salonId = obj.data.recordId;
-                    window.location.href="timeSheetDetails.html?salonId="+salonId; //在原有窗口打开
+                    timeSeetingItem(data);
                 }
             });
             //常规用法
@@ -239,143 +275,30 @@
             })
         })
 
-
-        $(".qidong").on("click",function(){
-            var data = layui.table.checkStatus('layui_table_id').data;
-            if(data.length>1||data.length<1){
-                alert("请选中一条数据");
-                return false;
-            }
-            $.ajax({
-                type:'POST',
-                url:'',
-                data: {userId:data[0].recordId},
-                success: function(data){
-                    alert("操作成功！");
-                    productsearch(1);
-                },
-                error:function(data){
-                    alert("操作失败");
-                    console.log(data);
-                }
-            })
-        })
-        $(".shouquan").on("click",function(){
-            var data = layui.table.checkStatus('layui_table_id').data;
-            if(data.length<1){
-                alert("请选中一条数据");
-                return false;
-            }
+        function timeSeetingItem (data) {
             layer.open({
                 type:2,
-                area:[482+'px',315+'px'],
+                area:[882+'px',615+'px'],
                 fix:false,
                 offset: '80px',
                 maxmin:true,
                 shadeClose:true,
                 scrollbar: false,
                 shade:0.4,
-                title:'授权',
-                content:['authorize.html'],
+                title:'考勤',
+                content:['timeSheetItem.html'],
                 success:function(layero,index){
                     var iframe = window['layui-layer-iframe' + index];
                     // 向子页面的全局函数child传参
-                    iframe.child(data[0]);
+                    iframe.child(data);
                     console.log("成功");
                 },
                 fail:function(data){
                     console.log(data);
                 }
             })
-        })
+        }
 
-
-        $(".deleteMember").on("click",function(){
-            var data = layui.table.checkStatus('layui_table_id').data;
-            if(data.length<1){
-                alert("请选中一条数据");
-                return false;
-            }
-            var deleteList = [];
-            for(var i=0 ;i<data.length;i++){
-                var id = data[i].recordId;
-                var temp =id+"";
-                deleteList.push(temp);
-            }
-            console.log(deleteList);
-            $.ajax({
-                type:'POST',
-                url:'/hy/basic/member/deleteMember',
-                data: JSON.stringify(deleteList),
-                contentType: "application/json",
-                success: function(data){
-                    alert("操作成功！");
-                    productsearch(1);
-                    // window.parent.location.reload(); //刷新父页面
-                    // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    //parent.layer.close(index);  // 关闭layer
-
-                },
-                error:function(data){
-                    alert("操作失败");
-                    console.log(data);
-                }
-            })
-
-        })
-
-        $(".addMember").on("click",function(){
-            layer.open({
-                type:2,
-                //area:[482+'px',355+'px'],
-                area:[600+'px',400+'px'],
-                fix:false,
-                offset: '80px',
-                maxmin:true,
-                shadeClose:true,
-                scrollbar: false,
-                shade:0.4,
-                title:'新增顾客',
-                content:['add_member.html'],
-                success:function(layero,index){
-                    console.log("成功");
-                },
-                fail:function(data){
-                    console.log(data);
-                }
-            })
-        })
-        $(".updateMember").on("click",function(){
-            console.log(layui.table.checkStatus('layui_table_id'));
-            var data = layui.table.checkStatus('layui_table_id').data;
-            if(data.length>1){
-                alert("请选中一条数据");
-                return false;
-            }
-            layer.open({
-                type:2,
-                //area:[482+'px',315+'px'],
-                area:[600+'px',400+'px'],
-                fix:false,
-                offset: '80px',
-                maxmin:true,
-                shadeClose:true,
-                scrollbar: false,
-                shade:0.4,
-                title:'修改用户',
-                content:['add_member.html'],
-                success:function(layero,index){
-                    // 获取子页面的iframe
-                    var iframe = window['layui-layer-iframe' + index];
-                    // 向子页面的全局函数child传参
-                    iframe.child(data[0]);
-                    console.log("成功");
-                },
-                fail:function(data){
-                    console.log(data);
-                }
-            })
-        })
 
     });
 

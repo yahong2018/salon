@@ -66,7 +66,7 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
             jsonObject.put("VipSuiteItemList",jsonArrayC);
             jsonArray.add(jsonObject);
         }
-        er.setRootProperty(jsonArray);
+        er.setData(jsonArray);
         er.setTotal(count);
         return  er;
     }

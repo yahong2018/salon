@@ -4,6 +4,7 @@ import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.vo.MyResult;
 import com.hy.salon.basic.vo.StuffVo;
 import com.hy.salon.basic.vo.TimeSheetVo;
 import org.springframework.stereotype.Component;
@@ -64,12 +65,17 @@ public class TimeSheetService {
         return voList;
     }
 
-    public List<Map> getTimeSheetBySalonId(Long salonId, String time) {
+    public List<Map> getTimeSheetBySalonId(MyResult result, Long salonId, String time) {
         List<Map> vo=new ArrayList<>();
         //门店下所有员工
         List<Stuff> list = stuffDao.getStuffForStoreId(salonId);
+
         for (Stuff stuff : list) {
-            Map map = getTimeSheetByStuffId(stuff.getRecordId(), time);
+            /*String aNum = "";
+            Integer haNum= 0;
+            Integer yNum = 0;*/
+            MyResult result1 = new MyResult();
+            Map map = getTimeSheetByStuffIdNew(result1,stuff.getRecordId(), time);
             map.put("stuffId",stuff.getRecordId());
             map.put("stuffName",stuff.getStuffName());
             map.put("tel",stuff.getTel());
@@ -77,6 +83,34 @@ public class TimeSheetService {
             if(StringUtils.isEmpty(name)){
                 map.put("role",name.get(0).getRole());
             }
+//            result1.getAttendanceNum();
+////            result.getAttendanceNum();
+            result.setAttendanceNum(result.getAttendanceNum()+result1.getAttendanceNum());
+            result.setHasAttendanceNum(result.getHasAttendanceNum()+result1.getHasAttendanceNum());
+            result.setYichangNum(result.getYichangNum()+result1.getYichangNum());
+            vo.add(map);
+        }
+        return vo;
+    }
+
+    public List<Map> getTimeSheetBySalonId(Long salonId, String time) {
+        List<Map> vo=new ArrayList<>();
+        //门店下所有员工
+        List<Stuff> list = stuffDao.getStuffForStoreId(salonId);
+
+        for (Stuff stuff : list) {
+           MyResult result =new  MyResult();
+            Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
+            map.put("stuffId",stuff.getRecordId());
+            map.put("stuffName",stuff.getStuffName());
+            map.put("tel",stuff.getTel());
+            List<StuffVo> name = reservationDao.getStuffName(stuff.getRecordId());
+            if(StringUtils.isEmpty(name)){
+                map.put("role",name.get(0).getRole());
+            }
+//            attendanceNum = attendanceNum+aNum;
+//            hasAttendanceNum = hasAttendanceNum+haNum;
+//            yichangNum = yichangNum+yNum;
             vo.add(map);
         }
         return vo;
@@ -89,13 +123,14 @@ public class TimeSheetService {
      * @param name
      * @return
      */
-    public List<Map> getTimeSheetBySalonId(Long salonId, String time,String name) {
+    public List<Map> getTimeSheetBySalonId(int attendanceNum,int hasAttendanceNum,int yichangNum,Long salonId, String time,String name) {
         List<Map> vo=new ArrayList<>();
         //门店下所有员工
         List<Stuff> list = stuffDao.getStuffForStoreId(salonId);
+        MyResult result = new MyResult();
         for (Stuff stuff : list) {
             if(stuff.getStuffName().equals(name)){
-                Map map = getTimeSheetByStuffId(stuff.getRecordId(), time);
+                Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
                 map.put("stuffId",stuff.getRecordId());
                 map.put("stuffName",stuff.getStuffName());
                 map.put("tel",stuff.getTel());
@@ -109,31 +144,157 @@ public class TimeSheetService {
         return vo;
     }
 
-    public Map getTimeSheetByStuffId(Long stuffId, String time) {
+    /**
+     * 一个月的
+     * @param result
+     * @param stuffId
+     * @param time
+     * @return
+     */
+    public Map getTimeSheetByStuffIdNew(MyResult result,Long stuffId, String time) {
         Map map=new HashMap();
         int i=0;
         //查询该员工一个月的排班,减掉休息就是应该出勤
         List<Schedule> list = scheduleDao.getPaiByStuffIdTime(stuffId, time);
-        for (Schedule schedule : list) {
-            if(schedule.getShiftId()!=-1){
-                i++;
-            }
-        }
+        result.setAttendanceNum(list.size());
+
         List<TimeSheet> timeSheet=timeSheetDao.getTSheets(stuffId,time);
+
+        result.setHasAttendanceNum(timeSheet.size());
+        int yInt = 0;
+
+        int lateNum = 0;
+        int leaveEarlyNum = 0;
+        int absenceFromDutyNum = 0;
+        int checkinOmission = 0;
+        int signOmission = 0;
+        int leaveNum = 0;
+        int temp = 0;
+        for (Schedule schedule : list) {
+            Boolean flag = false;
+            for (TimeSheet ts :timeSheet){
+                if(temp==0){
+                    if(ts.getTimeSheetType()==1){
+                        lateNum = lateNum+1;
+                    }else if(ts.getTimeSheetType()==2){
+                        leaveEarlyNum = leaveEarlyNum+1;
+                    }else if(ts.getTimeSheetType()==3){
+                        leaveNum = leaveNum+1;
+                    }
+
+                    if(ts.getTimeStart()==null||ts.getTimeStart().equals("")){
+                        checkinOmission = checkinOmission+1;
+                    }else if(ts.getTimeEnd()==null||ts.getTimeEnd().equals("")){
+                        signOmission = signOmission+1;
+                    }
+
+                    if(ts.getTimeSheetType()!=0){
+                        yInt=yInt+1;
+                    }
+                }
+                if(schedule.getDay().equals(ts.getDay())){
+                    flag = true;
+                    break;
+                }else{
+                    flag = false;
+                }
+
+            }
+            if(!flag){
+                absenceFromDutyNum = absenceFromDutyNum+1;
+            }
+            temp ++;
+        }
+        result.setYichangNum(yInt);
+        map.put("lateNum",lateNum);
+        map.put("leaveEarlyNum",leaveEarlyNum);
+        map.put("absenceFromDutyNum",absenceFromDutyNum);
+        map.put("checkinOmission",checkinOmission);
+        map.put("signOmission",signOmission);
+        map.put("leaveNum",leaveNum);
         //正常出勤,缺勤
-        if(timeSheet!=null){
+        /*if(timeSheet!=null){
             map.put("attendance",timeSheet.size());
             if(i-timeSheet.size()>0){
                 map.put("attendanceE",i-timeSheet.size());
             }else{
                 map.put("attendanceE",0);
             }
-        }
+        }*/
         //应出勤,
-        map.put("attendanceNum",i);
+        //map.put("attendanceNum",i);
         return map;
     }
 
+    /**
+     * 一天的
+     * @param result
+     * @param stuffId
+     * @param time
+     * @return
+     */
+    public Map getTimeSheetByStuffId(MyResult result,Long stuffId, String time) {
+        Map map=new HashMap();
+        int i=0;
+        //查询该员工一个月的排班,减掉休息就是应该出勤
+        Schedule schedule = scheduleDao.getPaiByStuffId(stuffId, time);
+        List<TimeSheet> timeSheet=timeSheetDao.getTSheets(stuffId,time);
+
+        result.setHasAttendanceNum(timeSheet.size());
+
+        int yInt = 0;
+        int lateNum = 0;
+        int leaveEarlyNum = 0;
+        int absenceFromDutyNum = 0;
+        int checkinOmission = 0;
+        int signOmission = 0;
+        int leaveNum = 0;
+        int temp = 0;
+/*        for (Schedule schedule : list) {
+            Boolean flag = false;
+            for (TimeSheet ts :timeSheet){
+                if(temp==0){
+                    if(ts.getTimeSheetType()==1){
+                        lateNum = lateNum+1;
+                    }else if(ts.getTimeSheetType()==2){
+                        leaveEarlyNum = leaveEarlyNum+1;
+                    }else if(ts.getTimeSheetType()==3){
+                        leaveNum = leaveNum+1;
+                    }
+
+                    if(ts.getTimeStart()==null||ts.getTimeStart().equals("")){
+                        checkinOmission = checkinOmission+1;
+                    }else if(ts.getTimeEnd()==null||ts.getTimeEnd().equals("")){
+                        signOmission = signOmission+1;
+                    }
+
+                    if(ts.getTimeSheetType()!=0){
+                        yInt=yInt+1;
+                    }
+                }
+                if(schedule.getDay().equals(ts.getDay())){
+                    flag = true;
+                    break;
+                }else{
+                    flag = false;
+                }
+
+            }
+            if(!flag){
+                absenceFromDutyNum = absenceFromDutyNum+1;
+            }
+            temp ++;
+        }*/
+        result.setYichangNum(yInt);
+        map.put("lateNum",lateNum);
+        map.put("leaveEarlyNum",leaveEarlyNum);
+        map.put("absenceFromDutyNum",absenceFromDutyNum);
+        map.put("checkinOmission",checkinOmission);
+        map.put("signOmission",signOmission);
+        map.put("leaveNum",leaveNum);
+
+        return map;
+    }
     public List<Schedule> getTimeId(Long stuffId, String time) {
         List<Schedule> vo=new ArrayList<>();
         //查询该员工一个月的排班
@@ -184,8 +345,9 @@ public class TimeSheetService {
             int attendanceE=0;
             //查询门店下所有员工
             List<Stuff> stuffList = stuffDao.getStuffForStoreId(salon.getRecordId());
+            MyResult result = new MyResult();
             for (Stuff stuff : stuffList) {
-                Map map = getTimeSheetByStuffId(stuff.getRecordId(), time);
+                Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
                 //应出勤,共出勤,异常
                 attendanceNum+= Integer.parseInt(map.get("attendanceNum").toString());
                 attendance+= Integer.parseInt(map.get("attendance").toString());
@@ -209,13 +371,13 @@ public class TimeSheetService {
         return list;
     }
 
-    public List<Map> getTimeSheetInit(Long salonId, String time) {
+    public List<Map> getTimeSheetInit(int attendanceNum,int hasAttendanceNum,int yichangNum,Long salonId, String time) {
         PageHelper.startPage(Integer.parseInt("0"), Integer.parseInt("10"));
         List<Map> map=new ArrayList<>();
         List<Salon> salon = getSalon(salonId);
         for (Salon salon1 : salon) {
-            List<Map> list = getTimeSheetBySalonId(salon1.getRecordId(), time);
-            map.addAll(list);
+//            List<Map> list = getTimeSheetBySalonId( "", "", "",salon1.getRecordId(), time);
+//            map.addAll(list);
         }
         return map;
     }

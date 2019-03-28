@@ -22,15 +22,16 @@ public class ShiftService {
             String where=" store_id=#{storeId} ";
             listMap.put("where", where);
             List<Shift> shiftList = shiftDao.getList(listMap, parameters);
-            if(shiftList!=null && shiftList.size()>0){
-                //删除旧的排班记录
-                String whereDelete=" where store_id=#{storeId} ";
-                shiftDao.deleteByWhere(whereDelete, parameters);
+            for(Shift sf : shiftList){
+                for (Shift shift : list) {
+                    if(sf.getShiftType().equals(shift.getShiftType())){
+                        sf.setTimeStart(shift.getTimeStart());
+                        sf.setTimeEnd(shift.getTimeEnd());
+                    }
+                }
+                shiftDao.update(sf);
             }
-            //保存新的排班记录
-            for (Shift shift : list) {
-                shiftDao.insert(shift);
-            }
+
         }
     }
 

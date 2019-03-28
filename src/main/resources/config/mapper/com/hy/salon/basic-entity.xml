@@ -35,11 +35,8 @@
         <result column="door_2_door" property="door2Door" jdbcType="BIT" />
         <result column="bed_num" property="bedNum" jdbcType="INTEGER" />
         <result column="area" property="area" jdbcType="DOUBLE" />
-        <result column="audit" property="audit" jdbcType="TINYINT" />
-        <result column="time_open" property="timeOpen" jdbcType="TIME" />
-        <result column="time_close" property="timeClose" jdbcType="TIME" />
-        <result column="longitude" property="longitude" jdbcType="DOUBLE" />
-        <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+        <result column="time_open" property="timeOpen" jdbcType="TIMESTAMP" />
+        <result column="time_close" property="timeClose" jdbcType="TIMESTAMP" />
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
 

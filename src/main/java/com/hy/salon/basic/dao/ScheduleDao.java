@@ -40,8 +40,30 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
     }
     //查询当月一个月的排班
     public List<Schedule> getPaiByStuffIdTime(Long stuffId, String time) {
-        String timeStart=time+"00";
-        String timeEnd=time+"31";
+        Calendar now = Calendar.getInstance();
+
+        System.out.println("年: " + now.get(Calendar.YEAR));
+        int nowY = now.get(Calendar.YEAR);
+        int nowM = now.get(Calendar.MONTH);
+        int nowD = now.get(Calendar.DAY_OF_MONTH);
+        System.out.println("月: " + (now.get(Calendar.MONTH) + 1) + "");
+
+        System.out.println("日: " + now.get(Calendar.DAY_OF_MONTH));
+        String [] temp = time.split("-");
+        String timeEnd="";
+        //String newStr = temp[1].replaceAll("^(0+)", "");
+        String newStr ="";
+        if((nowM+"").length()==1){
+            newStr = "0"+(nowM+1);
+        }
+        if(temp[1].equals(newStr)){
+             timeEnd=time+"-"+nowD;
+        }else{
+            timeEnd = time+"-31";
+        }
+
+        String timeStart=time+"-01";
+
         String where = "stuff_id=#{stuffId} and day between  #{timeStart} and  #{timeEnd}";
         Map map=new HashMap();
         map.put("where",where);
@@ -111,7 +133,7 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
             i++;
             jsonArray.add(json);
         }
-        ejr.setRootProperty(jsonArray);
+        ejr.setData(jsonArray);
         ejr.setTotal(count);
         ejr.setListKey(listKey);
         return  ejr;

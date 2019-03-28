@@ -1,5 +1,6 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Salon;
@@ -97,6 +98,31 @@ public class ShiftController {
         Result result=new Result();
         try {
             shiftService.saveShift(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 保存修改排班设置
+     */
+    @ResponseBody
+    @RequestMapping(value = "saveShiftAPP")
+    @ApiOperation(value="保存或修改門店排班设置", notes="保存或修改門店排班设置")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据  {\"list\":[{\"storeId\": \"xxx\",\"shiftType\": \"xxx\",\"timeStart\": \"xxx\",\"timeEnd\": \"xxx\"}]}", required = true, dataType = "List<Shift>")
+    })
+    public Result saveShiftAPP(HttpServletRequest request){
+        String list  = request.getParameter("list");
+        List<Shift> listS =   JSONArray.parseArray(list,Shift.class);
+        Result result=new Result();
+        try {
+            shiftService.saveShift(listS);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){

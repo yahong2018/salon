@@ -85,6 +85,7 @@ public class LoginController {
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
             long id = systemUser.getRecordId();
             Stuff stuff=stuffDao.getStuffForUser(id);
+
             List<SystemRole> list = systemRoleService.getRoleListById(id);
             List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 
@@ -99,7 +100,7 @@ public class LoginController {
                 return result;
             }
 
-
+            result.setStuff(stuff);
             result.setListSalon(salonList);
             result.setSalonId(stuff.getStoreId());
             result.setListRole(list);

@@ -1592,7 +1592,7 @@ var ZYFILE = {
 */
 
 (function($,undefined){
-	$.fn.zyUpload = function(options,param){
+	$.fn.zyUpload = function(options,param){0
 		var otherArgs = Array.prototype.slice.call(arguments, 1);
 		if (typeof options == 'string') {
 			var fn = this[0][options];
@@ -1642,6 +1642,7 @@ var ZYFILE = {
 			 * 返回: 无
 			 */
 			this.createHtml = function(){
+				alert();
 				var multiple = "";  // 设置多选的参数
 				para.multiple ? multiple = "multiple" : multiple = "";
 				var html= '';
@@ -1774,6 +1775,7 @@ var ZYFILE = {
 			 * 返回: 预览的html
 			 */
 			this.funDisposePreviewHtml = function(file, e){
+				alert(123);
 				var html = "";
 				var imgWidth = parseInt(para.itemWidth.replace("px", ""))-15;
 				var imgHeight = parseInt(para.itemHeight.replace("px", ""))-10;

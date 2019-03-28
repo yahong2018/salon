@@ -73,7 +73,8 @@ public class ScheduleController  {
                 return stuffDao.getPageListCount(listRequest.toMap(), null);
             }
         });
-
+        StoreList.setSuccess(true);
+        StoreList.setMsgcode(StatusUtil.OK);
         return  StoreList;
     }
     /**

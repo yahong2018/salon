@@ -21,7 +21,7 @@ public class ListRequestProcessHandler {
             } else {
                 result.setTotal(listCount);
             }
-            result.setRootProperty(list);
+            result.setData(list);
         } catch (Exception e) {
             Logger.error(e);
         }

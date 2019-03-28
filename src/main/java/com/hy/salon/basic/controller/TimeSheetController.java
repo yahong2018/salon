@@ -1,15 +1,11 @@
 package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.SalonDao;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.dao.TimeSheetDao;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Schedule;
-import com.hy.salon.basic.entity.Stuff;
-import com.hy.salon.basic.entity.TimeSheet;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.service.TimeSheetService;
+import com.hy.salon.basic.vo.MyResult;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.TimeSheetVo;
 import com.zhxh.admin.entity.SystemUser;
@@ -21,13 +17,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +39,10 @@ import java.util.Map;
 public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     @Resource(name = "timeSheetDao")
     private TimeSheetDao timeSheetDao;
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
+    @Resource(name = "scheduleDao")
+    private ScheduleDao scheduleDao;
     @Resource(name = "timeSheetService")
     private TimeSheetService timeSheetService;
     @Resource(name = "authenticateService")
@@ -87,26 +90,107 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         return result;
     }
     /**
-     * 考勤2
-     * @param time
+     * 获取个人一天的考勤
+     */
+    @ResponseBody
+    @RequestMapping(value = "getOneTimeSheetByStuffId",method = RequestMethod.GET)
+    @ApiOperation(value="获取月門店考勤", notes="获取当月門店考勤")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "日期", required = true, dataType = "String")
+    })
+    public Result getOneTimeSheetByStuffId(HttpServletRequest request){
+        String stuffId = request.getParameter("stuffId");
+        String time = request.getParameter("time");
+        String filterExpr   = request.getParameter("filterExpr");
+        long stuffIdL = Long.parseLong(stuffId);
+        if(StringUtils.isEmpty(stuffIdL)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            stuffIdL=stuff.getRecordId();
+        }
+        MyResult result = new MyResult();
+        try {
+            String cTime = time+"00:00:00";
+            String eTime = time+"24:59:59";
+
+            TimeSheet timeSheet=timeSheetDao.getTSheet(stuffIdL,cTime,eTime);
+            Schedule schedule = scheduleDao.getPaiByStuffId(stuffIdL, time);
+
+            Pictures pictures = picturesDao.getOnePicturesForCondition(stuffIdL,(byte)1,(byte)0);
+
+
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+
+    /**
+     * 获取个人当月的考勤
+     */
+    @ResponseBody
+    @RequestMapping(value = "getTimeSheetByStuffId",method = RequestMethod.GET)
+    @ApiOperation(value="获取月門店考勤", notes="获取当月門店考勤")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
+    })
+    public Result getTimeSheetByStuffId(HttpServletRequest request){
+        String stuffId = request.getParameter("stuffId");
+        String time = request.getParameter("time");
+        String filterExpr   = request.getParameter("filterExpr");
+        long stuffIdL = Long.parseLong(stuffId);
+        if(StringUtils.isEmpty(stuffIdL)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            stuffIdL=stuff.getRecordId();
+        }
+        MyResult result = new MyResult();
+        try {
+            Map list = timeSheetService.getTimeSheetByStuffIdNew(result,stuffIdL, time);
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 获取当月的一个门店的考勤
+     * @param
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "getTimeSheetBySalonId",method = RequestMethod.GET)
-    @ApiOperation(value="获取当天門店考勤", notes="获取当天門店考勤")
+    @ApiOperation(value="获取月門店考勤", notes="获取当月門店考勤")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "salonId", value = "門店id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
-    public Result getTimeSheetBySalonId(Long salonId,String time){
+    public Result getTimeSheetBySalonId(HttpServletRequest request){
+
+        String salonIdS = request.getParameter("salonId");
+        String time = request.getParameter("time");
+        String filterExpr   = request.getParameter("filterExpr");
+        long salonId = Long.parseLong(salonIdS);
         if(StringUtils.isEmpty(salonId)){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             salonId=stuff.getStoreId();
         }
-        Result result=new Result();
+        MyResult result = new MyResult();
         try {
-            List<Map> list = timeSheetService.getTimeSheetBySalonId(salonId, time);
+            List<Map> list = timeSheetService.getTimeSheetBySalonId(result,salonId, time);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -122,7 +206,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
      * @param time
      * @return
      */
-    @ResponseBody
+/*    @ResponseBody
     @RequestMapping(value = "getTimeSheetByStuffId",method = RequestMethod.GET)
     @ApiOperation(value="获取员工考勤情况", notes="获取员工考勤情况")
     @ApiImplicitParams({
@@ -130,9 +214,9 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
     public Result getTimeSheetByStuffId(Long stuffId,String time){
-        Result result=new Result();
+        MyResult result=new MyResult();
         try {
-            Map map = timeSheetService.getTimeSheetByStuffId(stuffId, time);
+            Map map = timeSheetService.getTimeSheetByStuffId(result,stuffId, time);
             result.setData(map);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -142,7 +226,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             result.setMsgcode(StatusUtil.ERROR);
         }
         return result;
-    }
+    }*/
     /**
      * 查询员工未打卡记录
      */
@@ -241,7 +325,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                 s=sdf.format(new Date());
             }
             if(name!=null){
-                list = timeSheetService.getTimeSheetBySalonId(salonId, s,name);
+                list = timeSheetService.getTimeSheetBySalonId(0,0,0,salonId, s,name);
             }else{
                 list = timeSheetService.getTimeSheetBySalonId(salonId, s);
             }
@@ -271,7 +355,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         }
         Result result=new Result();
         try {
-            List<Map> list = timeSheetService.getTimeSheetInit(salonId,time);
+            List<Map> list = timeSheetService.getTimeSheetInit(0,0,0,salonId,time);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);

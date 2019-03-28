@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>用户</title>
-  <link rel="stylesheet" href="../../../layui/css/layui.css">
-  <script src="../../../layui/layui.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户</title>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <script src="../../../layui/layui.js"></script>
     <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../../../js/main.js"></script>
 
@@ -15,198 +15,199 @@
     <script type="text/javascript" src="../../../js/zyupload/zyupload-1.0.0.min.js"></script>
 </head>
 <style type="text/css">
- body{
-  height: 100%;
-  width: 100%;
- }
- .layui-form-label{width: 130px}
- .btn {
-    background-color: #e5e5e5;
-    background-image: none;
-    filter: none;
-    border: 0;
-    padding: 7px 14px;
-    text-shadow: none;
-    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #333333;
-    cursor: pointer;
-    outline: none;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    box-shadow: none !important;
-    -webkit-border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    border-radius: 0 !important;
-}
- .layui-upload-img {
-     width: 170px;
-     height: 119px;
-     margin: 0 10px 10px 0;
- }
-.layui-input-inline{width: 214px !important}
+    body{
+        height: 100%;
+        width: 100%;
+    }
+    .layui-form-label{width: 130px}
+    .btn {
+        background-color: #e5e5e5;
+        background-image: none;
+        filter: none;
+        border: 0;
+        padding: 7px 14px;
+        text-shadow: none;
+        font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        cursor: pointer;
+        outline: none;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        box-shadow: none !important;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+    }
+    .layui-upload-img {
+        width: 170px;
+        height: 119px;
+        margin: 0 10px 10px 0;
+    }
+    .layui-input-inline{width: 214px !important}
 </style>
 
 <body>
- <!-- 内容主体区域 -->
- <div class="x-body layui-anim layui-anim-up">
-  <div class="layui-fluid">
-  
-    <form class="layui-form layui-form-pane1" lay-filter="first">
-        <div class="layui-form-item">
-            <h2>基本信息</h2>
-        </div>
-      <div class="layui-form-item">
-         <label class="layui-form-label"><span class="text-error">*</span>充值卡名称：</label>
-         <div class="layui-input-inline">
-          <input name="suiteName" id="suiteName" placeholder="请输入" value="" class="layui-input">
-          </div>
-      </div>
-      <div class="layui-form-item">
-         <label class="layui-form-label"><span class="text-error">*</span>充值面额：</label>
-         <div class="layui-input-inline">
-          <input name="price" id="price" placeholder="请输入"  value="" class="layui-input">
-          </div>
-      </div>
-<h2 style="text-align: center;">折扣类型</h2>
-<div style="border-bottom:1px dashed #C0C0C0;border-top:1px dashed #C0C0C0">
-    <div class="layui-form-item" pane="">
-        <div class="layui-input-block">
-            <input type="checkbox" name="danxuan" lay-skin="primary" title="单选" >
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
-        <div class="layui-input-inline">
-            <input name="danxuanZ"  placeholder="请输入"  value="" class="layui-input">
+<!-- 内容主体区域 -->
+<div class="x-body layui-anim layui-anim-up">
+    <div class="layui-fluid">
 
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
-        <div class="layui-input-inline">
-            <input name="danxuanFW"  placeholder="请输入"  id="zhekou" value="" class="layui-input">
-            <input name="danxuanFWId"  class="zhekou" type="hidden"  class="layui-input">
-        </div>
-        <button class="layui-btn zhekou  checkButton"  name="zhekou" type="button">选择范围</button>
-    </div>
+        <form class="layui-form layui-form-pane1" lay-filter="first">
+            <div class="layui-form-item">
+                <h2>基本信息</h2>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>充值卡名称：</label>
+                <div class="layui-input-inline">
+                    <input name="suiteName" id="suiteName" placeholder="请输入" value="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>充值面额：</label>
+                <div class="layui-input-inline">
+                    <input name="price" id="price" placeholder="请输入"  value="" class="layui-input">
+                </div>
+            </div>
+            <h2 style="text-align: center;">折扣类型</h2>
+            <div style="border-bottom:1px dashed #C0C0C0;border-top:1px dashed #C0C0C0">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="danxuan" lay-skin="primary" title="单选" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+                    <div class="layui-input-inline">
+                        <input name="danxuanZ"  placeholder="请输入"  value="" class="layui-input">
 
-</div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+                    <div class="layui-input-inline">
+                        <input name="danxuanFW"  placeholder="请输入"  id="zhekou" value="" class="layui-input">
+                        <input name="danxuanFWId"  class="zhekou" type="hidden"  class="layui-input">
+                    </div>
+                    <button class="layui-btn zhekou  checkButton"  name="zhekou" type="button">选择范围</button>
+                </div>
 
-        <div style="border-bottom:1px dashed #C0C0C0;">
-            <div class="layui-form-item" pane="">
+            </div>
+
+            <div style="border-bottom:1px dashed #C0C0C0;">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="liaocheng" lay-skin="primary" title="疗程卡" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+                    <div class="layui-input-inline">
+                        <input name="liaochengZ"  placeholder="请输入"  value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+                    <div class="layui-input-inline">
+                        <input name="liaochengFW"  placeholder="请输入" id="liaocheng" value="" class="layui-input">
+                        <input name="liaochengListFWId"  class="liaocheng" type="hidden"  class="layui-input">
+
+                    </div>
+                    <button class="layui-btn checkButton" name="liaocheng" type="button">选择范围</button>
+                </div>
+
+            </div>
+            <div style="border-bottom:1px dashed #C0C0C0;">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="chanping" lay-skin="primary" title="产品" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
+                    <div class="layui-input-inline">
+                        <input name="chanpingZ"  placeholder="请输入"  value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
+                    <div class="layui-input-inline">
+                        <input name="chanpingFW"  placeholder="请输入" id="chanpin"  value="" class="layui-input">
+                        <input name="chanpinFWListId"  class="chanpin" type="hidden" placeholder="请输入" class="chanpin"
+                               value="" class="layui-input">
+                    </div>
+                    <button class="layui-btn checkButton" name="chanpin" type="button">选择范围</button>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>充值卡介绍：</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="liaocheng" lay-skin="primary" title="疗程卡" >
+                    <textarea placeholder="请输入内容" id="description" name="description" class="layui-textarea"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
-                <div class="layui-input-inline">
-                    <input name="liaochengZ"  placeholder="请输入"  value="" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
-                <div class="layui-input-inline">
-                    <input name="liaochengFW"  placeholder="请输入" id="liaocheng" value="" class="layui-input">
-                    <input name="liaochengListFWId"  class="liaocheng" type="hidden"  class="layui-input">
-
-                </div>
-                <button class="layui-btn checkButton" name="liaocheng" type="button">选择范围</button>
-            </div>
-
-        </div>
-        <div style="border-bottom:1px dashed #C0C0C0;">
-            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">是否开启</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="chanping" lay-skin="primary" title="产品" >
+                    <input type="checkbox" name="vipSuiteStatus" lay-skin="switch" lay-text="ON|OFF">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
-                <div class="layui-input-inline">
-                    <input name="chanpingZ"  placeholder="请输入"  value="" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
-                <div class="layui-input-inline">
-                    <input name="chanpingFW"  placeholder="请输入" id="chanpin"  value="" class="layui-input">
-                    <input name="chanpinFWListId"  class="chanpin" type="hidden" placeholder="请输入" class="chanpin"  value="" class="layui-input">
-                </div>
-                <button class="layui-btn checkButton" name="chanpin" type="button">选择范围</button>
-            </div>
 
-        </div>
-
-      <div class="layui-form-item">
-            <label class="layui-form-label"><span class="text-error">*</span>充值卡介绍：</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" name="description" class="layui-textarea"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否开启</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="vipSuiteStatus" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-
-        <div class="layui-upload" style="margin: auto;height: auto!important; height: 200px;
+            <div class="layui-upload" style="margin: auto;height: auto!important; height: 200px;
     min-height: 200px;">
-            <div style="position: absolute;top: 100px; left: 20px;">
+                <div style="position: absolute;top: 100px; left: 20px;">
 
-            </div>
-            <div id="zyupload" class="zyupload"></div>
-            <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
-            <!--<div class="layui-upload-list">
-                <img class="layui-upload-img" id="demo1">
-                <p id="demoText"></p>
-            </div>-->
-            <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+                </div>
+                <div id="zyupload" class="zyupload"></div>
+                <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+                <!--<div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>-->
+                <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
                 <!--<legend>拖拽上传</legend>-->
-            <!--</fieldset>-->
+                <!--</fieldset>-->
 
-            <!--<div class="layui-upload-drag" id="test10">-->
+                <!--<div class="layui-upload-drag" id="test10">-->
                 <!--<i class="layui-icon"></i>-->
                 <!--<p>点击上传，或将文件拖拽到此处</p>-->
-            <!--</div>-->
-            <!--<div class="layui-upload-list" style="float: right;">-->
+                <!--</div>-->
+                <!--<div class="layui-upload-list" style="float: right;">-->
                 <!--<img class="layui-upload-img" src="" id="demo1">-->
                 <!--<p id="demoText"></p>-->
-            <!--</div>-->
+                <!--</div>-->
 
 
-            <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+                <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
                 <!--<legend>拖拽上传</legend>-->
-            <!--</fieldset>-->
+                <!--</fieldset>-->
 
-            <!--<div class="layui-upload-drag" id="test11">-->
+                <!--<div class="layui-upload-drag" id="test11">-->
                 <!--<i class="layui-icon"></i>-->
                 <!--<p>点击上传，或将文件拖拽到此处</p>-->
-            <!--</div>-->
-            <!--<div class="layui-upload-list" style="float: right;">-->
+                <!--</div>-->
+                <!--<div class="layui-upload-list" style="float: right;">-->
                 <!--<img class="layui-upload-img" src="" id="demo11">-->
                 <!--<p id="demoText11"></p>-->
-            <!--</div>-->
-        </div>
+                <!--</div>-->
+            </div>
 
-        <div class="layui-form-item" style="position: relative;margin-left: 140px;">
-            <!--<p id="btnGroup" class="pull-right">-->
+            <div class="layui-form-item" style="position: relative;margin-left: 140px;">
+                <!--<p id="btnGroup" class="pull-right">-->
                 <button  type="button" class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
                 <button class="layui-btn quxiao" >取消</button>
-            <!--</p>-->
-        </div>
-        <input name="recordId"  class="recordId" type="hidden"  class="layui-input">
-        <input name="picList"  class="picList" type="hidden"  class="layui-input">
-        <input name="storeId"  class="storeId" type="hidden"  class="layui-input">
+                <!--</p>-->
+            </div>
+            <input name="recordId"  class="recordId" type="hidden"  class="layui-input">
+            <input name="picList"  class="picList" type="hidden"  class="layui-input">
+            <input name="storeId"  class="storeId" type="hidden"  class="layui-input">
 
-    </form>
-  </div>
-  </div>
+        </form>
+    </div>
+</div>
 
-  </body>
-  </html>
+</body>
+</html>
 
 <script type="text/javascript">
     function parentF(data){
@@ -224,12 +225,106 @@
         $("."+id).val(idTemp);
     }
     function child(data){
-        var $ = layui.jquery;
-        var recordId = data;
-        $('.recordId').val(recordId);
+        if(data!=undefined){
+            layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+                var $ = layui.jquery;
+                var form = layui.form;
+                var recordId = data;
+                alert(recordId)
+                $('.recordId').val(recordId);
+                $.ajax({
+                    type:'GET',
+                    url:'/hy/basic/vipSuite/queryVipSuiteData',
+                    data:{recordId:recordId},
+                    success: function(data){
+                        console.log(data);
+                        var picUrl = data.data.picUrl;
+                        var serviceData = data.data.serviceData;
+                        var vipSuit = data.data.vipSuit;
+                        $(".storeId").val(vipSuit.storeId);
+                        console.log(vipSuit);
+                        console.log(serviceData);
+                        console.log(picUrl);
+                        $("input[name='suiteName']").val(vipSuit.suiteName);
+                        $("#description").val(vipSuit.description);
+                        if(vipSuit.vipSuiteStatus==0){
+                            $("input[name='vipSuiteStatus']").prop("checked", true)
+                        }
 
-        console.log(data);
-        console.log($('.recordId').val());
+                        $("input[name='price']").val(vipSuit.price);
+
+
+                        var liaocheng  ="";
+                        var chanping = "";
+
+                        var zhekou = "";
+
+                        var liaochengId  ="";
+                        var chanpingId = "";
+
+                        var zhekouId = "";
+                        for(index in serviceData){
+                            var serviceP = serviceData[index];
+                            for(index2 in serviceP){
+                                var service = serviceP[index2];
+                                var recordType = service.recordType;
+                                if(recordType==0){
+                                    zhekou=zhekou+service.seriesName+",";
+                                    zhekouId = zhekouId+service.seriesId+",";
+                                    $("input[name='danxuanZ']").val(service.discount);
+
+
+                                    $("input[name='danxuan']").prop("checked", true);
+
+                                }else if(recordType==1){
+                                    liaocheng=liaocheng+service.seriesName+",";
+                                    liaochengId=liaochengId+service.seriesId+",";
+                                    $("input[name='liaocheng']").prop("checked", true);
+                                    $("input[name='liaochengZ']").val(service.discount);
+                                }else if(recordType ==2){
+                                    chanping = chanping+service.seriesName+",";
+                                    chanpingId = chanpingId+service.seriesId+",";
+                                    $("input[name='chanping']").prop("checked", true)
+                                    $("input[name='chanpingZ']").val(service.discount);
+                                }
+                            }
+
+                        }
+                        $(".zhekou").val(zhekouId);
+                        $("#zhekou").val(zhekou);
+
+                        $(".chanping").val(chanpingId);
+                        $("#chanping").val(chanping);
+
+                        $(".liaocheng").val(liaochengId);
+                        $("#liaocheng").val(liaocheng);
+                        form.render('checkbox');
+                        var picList = $(".picList").val();
+                        var temp =[];
+                        if(picList!=""){
+                            var tempList = JSON.parse(picList);
+                            temp.push(tempList);
+                        }
+                        for(index in picUrl){
+                            var pic = picUrl[index];
+                            var Url= pic.picUrl;
+                            getUpdateImage(Url);
+                            temp.push(pic.recordId);
+                        }
+                        $(".picList").val(temp);
+
+                    },
+                    error:function(data){
+                        alert("操作失败");
+                        console.log(data);
+                    }
+                })
+                console.log(data);
+                console.log($('.recordId').val());
+
+            })
+        }
+
         $("#zyupload").zyUpload({
             width            :   "650px",                 // 宽度
             height           :   "",                 // 宽度
@@ -244,7 +339,8 @@
             del              :   true,                    // 是否可以删除文件
             finishDel        :   false,  				  // 是否在上传文件完成后删除预览
             /* 外部获得的回调接口 */
-            onSelect: function(selectFiles, allFiles){    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+            onSelect: function(selectFiles, allFiles){
+                //getUpdateImage()// 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
                 console.info("当前选择了以下文件：");
                 console.info(selectFiles);
             },
@@ -270,7 +366,6 @@
                     temp.push(list[index].recordId);
                 }
                 $(".picList").val(temp);
-                console.info("picList============================================"+$(".picList").val());
                 $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
             },
             onFailure: function(file, response){          // 文件上传失败的回调方法
@@ -296,20 +391,72 @@
             }
         })
     }
+    function getUpdateImage(picUrl){
+        var file = {};
+        file.index = 10;
+        file.name = "测试"
+        var html = "";
+        var para = {};
+        para.itemWidth = "140px";
+        para.itemHeight = "115px";
+        para.tailor = true;
+        para.del = true;
+        var imgWidth ="125";
+        var imgHeight = "105";
+        var srcImage = "http://127.0.0.1:8080"+picUrl;
+        var editHtml = "";
+        var delHtml = "";
+
+        if(para.tailor){  // 显示裁剪按钮
+            editHtml = '<span class="file_edit" data-index="'+file.index+'" title="编辑"></span>';
+        }
+        if(para.del){  // 显示删除按钮
+            delHtml = '<span class="file_del" data-index="'+file.index+'" title="删除"></span>';
+        }
+        html += '<div id="uploadList_'+ file.index +'" class="upload_append_list">';
+        html += '	<div class="file_bar">';
+        html += '		<div style="padding:5px;">';
+        html += '			<p class="file_name" title="'+file.name+'">' + file.name + '</p>';
+        html += 			editHtml;  // 编辑按钮的html
+        html += 			delHtml;   // 删除按钮的html
+        html += '		</div>';
+        html += '	</div>';
+        html += '	<a style="height:'+para.itemHeight+';width:'+para.itemWidth+';" href="#" class="imgBox">';
+        html += '		<div class="uploadImg" style="width:'+imgWidth+'px;max-width:'+imgWidth+'px;max-
+        height:'+imgHeight+'px;">';
+        html += '			<img id="uploadImage_'+file.index+'" class="upload_image" src="' + srcImage + '"
+        style="width:125px" />';
+        html += '		</div>';
+        html += '	</a>';
+        html += '	<p id="uploadProgress_'+file.index+'" class="file_progress"></p>';
+        html += '	<p id="uploadFailure_'+file.index+'" class="file_failure">上传失败，请重试</p>';
+        html += '	<p id="uploadTailor_'+file.index+'" class="file_tailor" tailor="false">裁剪完成</p>';
+        html += '	<p id="uploadSuccess_'+file.index+'" class="file_success"></p>';
+        html += '</div>';
+        $("#preview").append(html);
+    }
 
     layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
-	  var form = layui.form;
-	  var $ = layui.jquery;
-	  var laydate=layui.laydate;
-	   var $ = layui.jquery,
-	   upload = layui.upload;
-
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate=layui.laydate;
+        var $ = layui.jquery,
+            upload = layui.upload;
 
 
         $(".checkButton").on("click",function(){
+            var recordId = $('.recordId').val();
+            var idList ="";
             var data = this;
             var name = data.name;
-            alert(name);
+            if(recordId!=""){
+                idList =  $("."+name).val();
+            }
+
+            var temp = {};
+            temp.name = name;
+            temp.idList = idList;
+
             layer.open({
                 type:2,
                 area:[720+'px',500+'px'],
@@ -324,7 +471,7 @@
                     // 获取子页面的iframe
                     var iframe = window['layui-layer-iframe' + index];
                     // 向子页面的全局函数child传参
-                    iframe.child(name);
+                    iframe.child(temp);
                     console.log("成功");
                 },
                 fail:function(data){
@@ -335,75 +482,84 @@
         console.log($('#recordId').val());
         var id = "22";
 
-	  form.on('submit(*)', function(data){
-	  	console.log(data.field);
-	  	var dataList = data.field;
-	  	var vip_suite = {};
-          //vip_suite.storeId = dataList.storeId;
-          vip_suite.suiteName = dataList.suiteName;
-          vip_suite.description = dataList.description;
-          if(dataList.vipSuiteStatus=="on"){
-              vip_suite.vipSuiteStatus = 0;
-          }else{
-              vip_suite.vipSuiteStatus = 1;
-          }
-          vip_suite.price = dataList.price;
-          var danxuan  = dataList.danxuan;
-          var liaocheng = dataList.liaocheng;
-          var chanping = dataList.chanping;
-          var itemList = [];
+        form.on('submit(*)', function(data){
+            console.log(data.field);
+            var dataList = data.field;
+            var vip_suite = {};
+            //vip_suite.storeId = dataList.storeId;
+            vip_suite.suiteName = dataList.suiteName;
+            vip_suite.description = dataList.description;
+            vip_suite.storeId =dataList.storeId;
+            if(dataList.vipSuiteStatus=="on"){
+                vip_suite.vipSuiteStatus = 0;
+            }else{
+                vip_suite.vipSuiteStatus = 1;
+            }
+            vip_suite.price = dataList.price;
+            var danxuan  = dataList.danxuan;
+            var liaocheng = dataList.liaocheng;
+            var chanping = dataList.chanping;
+            var itemList = [];
             if(danxuan=='on'){
-              var   item = {};
+                var   item = {};
                 item.recordType = 0;
                 item.discount =dataList.danxuanZ;
                 item.serviceId = dataList.danxuanFWId;
                 itemList.push(item);
             }
-          if(liaocheng=='on'){
-              var item = {};
-              item.recordType = 1;
-              item.discount =dataList.liaochengZ;
-              item.serviceId = dataList.liaochengListFWId
-              itemList.push(item);
-          }
-          if(chanping=='on'){
-              var item = {};
-              item.recordType = 2;
-              item.discount =dataList.chanpingZ;
-              item.serviceId = dataList.chanpinFWListId;
-              itemList.push(item);
-          }
-          //vip_suite.bindingJson =itemList;
-
-          var picList= $(".picList").val();
-          // vip_suite.picList = picList;
-          console.log(vip_suite);
-	    $.ajax({
-	    	type:'POST',
-            url:'/hy/basic/vipSuite/addVipSuite',
-	    	data:{
-                condition:JSON.stringify(vip_suite),
-                bindingJson:JSON.stringify(itemList),
-                picIdList:picList
+            if(liaocheng=='on'){
+                var item = {};
+                item.recordType = 1;
+                item.discount =dataList.liaochengZ;
+                item.serviceId = dataList.liaochengListFWId
+                itemList.push(item);
             }
-            ,
-            contentType: "application/x-www-form-urlencoded",
-	    	success: function(data){
-                alert("操作成功！");
-    			// window.parent.location.reload(); //刷新父页面
-				// var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				// parent.layer.close(index);  // 关闭layer
+            if(chanping=='on'){
+                var item = {};
+                item.recordType = 2;
+                item.discount =dataList.chanpingZ;
+                item.serviceId = dataList.chanpinFWListId;
+                itemList.push(item);
+            }
+            //vip_suite.bindingJson =itemList;
+            var recordId = $('.recordId').val();
+            var picList= $(".picList").val();
+            // vip_suite.picList = picList;
+            console.log(vip_suite);
+            var url = "";
+            if(recordId!=""){
+                vip_suite.recordId = recordId;
+                url =  "/hy/basic/vipSuite/updateVipSuite"
+            }else{
+                url =  "/hy/basic/vipSuite/addVipSuite";
+            }
 
-	    	},
-	    	error:function(data){
-	    		alert("操作失败");
-	    		console.log(data);
-	    	}
-	    })
-	    return false;
-	  });
+            $.ajax({
+                type:'POST',
+                url:url,
+                data:{
+                    condition:JSON.stringify(vip_suite),
+                    bindingJson:JSON.stringify(itemList),
+                    picIdList:picList
+                }
+                ,
+                contentType: "application/x-www-form-urlencoded",
+                success: function(data){
+                    alert("操作成功！");
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
 
-})
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+            return false;
+        });
+
+    })
 
 
-</script>  
+</script>
