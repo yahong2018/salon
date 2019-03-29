@@ -614,6 +614,25 @@ create table attendance_sheet
   index idx_attendance_sheet_03(attendance_time)
 )comment '签到表';
 
+create table retroactive
+(
+  record_id                        bigint         auto_increment      not null,
+  date                             datetime                           not null, -- 补卡时间
+  reson                            varchar(100)                       not null, -- 补卡原因
+  audit_statu                      tinyint                            not null, -- 审核状态  0 通过  1 不通过
+  user_id                          bigint                             not null, -- 审核人
+  audit_opinion                    varchar(100)                       not null, -- 审核意见
+
+  create_date                      datetime                           not null,
+  create_by                        bigint                             not null,
+  update_date                      datetime                           null,
+  update_by                        bigint                             null,
+  opt_lock                         int                                null,
+
+  primary key (record_id),
+  index idx_retroactive_01(date),
+  index idx_retroactive_02(audit_statu)
+)comment '补签记录表';
 
 create table reservation
 (
