@@ -617,6 +617,7 @@ create table attendance_sheet
 create table retroactive
 (
   record_id                        bigint         auto_increment      not null,
+  audit_person                     bigint                             not null, -- 申请人 ： 员工id
   date                             datetime                           not null, -- 补卡时间
   reson                            varchar(100)                       not null, -- 补卡原因
   audit_statu                      tinyint                            not null, -- 审核状态  0 通过  1 不通过
