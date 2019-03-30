@@ -16,10 +16,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.swing.plaf.synth.SynthTableUI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 @Transactional(rollbackFor = Exception.class)
 @Component("timeSheetService")
 public class TimeSheetService {
@@ -361,8 +360,13 @@ public class TimeSheetService {
     //查询员工未打卡记录详情
     public Map getTimeSheetDetails(Long stuffId, String time) {
         Map map=new HashMap();
-        //查询该员工当天排班信息
-        Schedule schedule=scheduleDao.getPaiByStuffId(stuffId,time);
+       try{
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+           String curDate = sdf.format(sdf.parse(time));
+
+           //查询该员工当天排班信息
+           Schedule schedule=scheduleDao.getPaiByStuffId(stuffId,curDate);
+
         //查询该员工信息得到门店id
         Stuff stuff = stuffDao.getById(stuffId);
         Salon salon = salonDao.getSalonForId(stuff.getStoreId());
@@ -375,6 +379,10 @@ public class TimeSheetService {
             map.put("timeStart",shift.getTimeStart());
             map.put("timeEnd",shift.getTimeEnd());
         }
+
+       }catch (Exception e){
+           e.printStackTrace();
+       }
         return map;
     }
 

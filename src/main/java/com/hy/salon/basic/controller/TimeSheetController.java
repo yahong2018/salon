@@ -135,133 +135,136 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "time", value = "日期", required = true, dataType = "String")
     })
     public Result getOneTimeSheetByStuffId(HttpServletRequest request){
-        String storeId = request.getParameter("storeId");
-        String stuffId = request.getParameter("stuffId");
-        String time = request.getParameter("time");
-        String filterExpr   = request.getParameter("filterExpr");
-        long stuffIdL = Long.parseLong(stuffId);
-        Stuff stuff= null;
-        long storeIdL =  Long.parseLong(storeId);
-        if(StringUtils.isEmpty(stuffIdL)||StringUtils.isEmpty(storeId)){
-            SystemUser user = authenticateService.getCurrentLogin();
-             stuff=stuffDao.getStuffForUser(user.getRecordId());
-            stuffIdL=stuff.getRecordId();
-            storeIdL = stuff.getStoreId();
-        }
         MyResult result = new MyResult();
         try {
-            String cTime = time+" 00:00:00";
-            String eTime = time+" 23:59:59";
-
-            //TimeSheet timeSheet=timeSheetDao.getTSheet(stuffIdL,cTime,eTime);
-            Pictures pictures = picturesDao.getOnePicturesForCondition(stuffIdL,(byte)1,(byte)0);
-            Schedule schedule = scheduleDao.getPaiByStuffId(stuffIdL, time);
-            if(schedule==null){
-                result.setMsg("当天没有排班信息");
-                result.setMsgcode("0");
-                JSONObject json = new JSONObject();
-                json.put("picturesUrl",pictures.getPicUrl());
-                json.put("type",3);
-                result.setData(json);
-                return  result;
+            String storeId = request.getParameter("storeId");
+            String stuffId = request.getParameter("stuffId");
+            String time = request.getParameter("time");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            time = sdf.format(sdf.parse(time));
+            String filterExpr = request.getParameter("filterExpr");
+            long stuffIdL = Long.parseLong(stuffId);
+            Stuff stuff = null;
+            long storeIdL = Long.parseLong(storeId);
+            if (StringUtils.isEmpty(stuffIdL) || StringUtils.isEmpty(storeId)) {
+                SystemUser user = authenticateService.getCurrentLogin();
+                stuff = stuffDao.getStuffForUser(user.getRecordId());
+                stuffIdL = stuff.getRecordId();
+                storeIdL = stuff.getStoreId();
             }
 
+            try {
+                String cTime = time + " 00:00:00";
+                String eTime = time + " 23:59:59";
 
-           List<AttendanceSheet> listA = attendanceSheetDao.getTAttendanceSheet(stuffIdL,cTime,eTime);
-            String shiftWhere = "store_id=#{storeId} and record_id=#{recordId}";
-            Map<String, Object> shiftParameter = new HashMap<>();
-            shiftParameter.put("storeId", storeIdL);
-            shiftParameter.put("recordId",schedule.getShiftId());
-            Shift shift=shiftDao.getOne(shiftWhere, shiftParameter);
-            if(shift==null){
-                result.setMsg("门店未设置排班");
-                result.setMsgcode("0");
-                JSONObject json = new JSONObject();
-                json.put("picturesUrl",pictures.getPicUrl());
-                json.put("type",4);
-                result.setData(json);
-                return  result;
-            }
+                //TimeSheet timeSheet=timeSheetDao.getTSheet(stuffIdL,cTime,eTime);
+                Pictures pictures = picturesDao.getOnePicturesForCondition(stuffIdL, (byte) 1, (byte) 0);
+                Schedule schedule = scheduleDao.getPaiByStuffId(stuffIdL, time);
+                if (schedule == null) {
+                    result.setMsg("当天没有排班信息");
+                    result.setMsgcode("0");
+                    JSONObject json = new JSONObject();
+                    json.put("picturesUrl", pictures.getPicUrl());
+                    json.put("type", 3);
+                    result.setData(json);
+                    return result;
+                }
 
 
-            Date zhongTime = DateString.getZhongJianTime(shift.getTimeEnd(),shift.getTimeStart());
+                List<AttendanceSheet> listA = attendanceSheetDao.getTAttendanceSheet(stuffIdL, cTime, eTime);
+                String shiftWhere = "store_id=#{storeId} and record_id=#{recordId}";
+                Map<String, Object> shiftParameter = new HashMap<>();
+                shiftParameter.put("storeId", storeIdL);
+                shiftParameter.put("recordId", schedule.getShiftId());
+                Shift shift = shiftDao.getOne(shiftWhere, shiftParameter);
+                if (shift == null) {
+                    result.setMsg("门店未设置排班");
+                    result.setMsgcode("0");
+                    JSONObject json = new JSONObject();
+                    json.put("picturesUrl", pictures.getPicUrl());
+                    json.put("type", 4);
+                    result.setData(json);
+                    return result;
+                }
 
-            JSONObject jsonK = new JSONObject();
-            JSONArray jsonArray =new JSONArray();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "HH:mm");
-            // String attendanceTime = dateFormat.format(condition.getAttendanceTime());
-            // System.out.println(attendanceTime);
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm");//创建日期转换对象HH:mm:ss为时分秒，年月日为yyyy-MM-dd
-            Date data   = new Date();
-            int sxtype = 1;
-            String newDate = dateFormat.format(data);
-            Date newD = df.parse(newDate);
-            boolean before = newD.before(zhongTime);
+
+                Date zhongTime = DateString.getZhongJianTime(shift.getTimeEnd(), shift.getTimeStart());
+
+                JSONObject jsonK = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                        "HH:mm");
+                // String attendanceTime = dateFormat.format(condition.getAttendanceTime());
+                // System.out.println(attendanceTime);
+                SimpleDateFormat df = new SimpleDateFormat("HH:mm");//创建日期转换对象HH:mm:ss为时分秒，年月日为yyyy-MM-dd
+                Date data = new Date();
+                int sxtype = 1;
+                String newDate = dateFormat.format(data);
+                Date newD = df.parse(newDate);
+                boolean before = newD.before(zhongTime);
            /* if(!before){
                 type = 1;//下班卡
             }*/
 
-            String startTime = shift.getTimeStart();
-            String endTime = shift.getTimeEnd();
-            Date startTimeD = df.parse(startTime);
-            Date endTimeD = df.parse(endTime);
+                String startTime = shift.getTimeStart();
+                String endTime = shift.getTimeEnd();
+                Date startTimeD = df.parse(startTime);
+                Date endTimeD = df.parse(endTime);
 
 
+                JSONObject jsonS = new JSONObject();
+                jsonS.put("time", "无");
+                jsonS.put("address", "无");
+                jsonS.put("type", 1);
+                jsonS.put("abnormalType", 0);
+                jsonS.put("SBStartTime", startTime);
 
-            JSONObject jsonS = new JSONObject();
-            jsonS.put("time","无");
-            jsonS.put("address","无");
-            jsonS.put("type",1);
-            jsonS.put("abnormalType",0);
-            jsonS.put("SBStartTime",startTime);
-
-            JSONObject jsonX = new JSONObject();
-            jsonX.put("time","无");
-            jsonX.put("address","无");
-            jsonX.put("type",2);
-            jsonX.put("abnormalType",0);
-            jsonX.put("XBStartTime",endTime);
-            if(listA.size()>0){
-                if(listA.size()==1){
-                    //早上的
-                    String attendanceTime = dateFormat.format(listA.get(0).getAttendanceTime());
-                    Date dt2 = df.parse(attendanceTime);//打卡时间
-                    if(dt2.getTime()>startTimeD.getTime()){//迟到
-                        jsonS.put("abnormalType",1);
-                    }
-                    jsonS.put("SBStartTime",startTime);
-                    jsonS.put("time",listA.get(0).getAttendanceTime());
-                    jsonS.put("address",listA.get(0).getAddress());
-                    jsonS.put("type",1);
-                }else{
-                    if(listA.get(0).getAttendanceTime().getTime()<listA.get(1).getAttendanceTime().getTime()){
+                JSONObject jsonX = new JSONObject();
+                jsonX.put("time", "无");
+                jsonX.put("address", "无");
+                jsonX.put("type", 2);
+                jsonX.put("abnormalType", 0);
+                jsonX.put("XBStartTime", endTime);
+                if (listA.size() > 0) {
+                    if (listA.size() == 1) {
                         //早上的
-                        jsonS.put("time",listA.get(0).getAttendanceTime());
-                        jsonS.put("address",listA.get(0).getAddress());
-                        jsonS.put("type",1);
-
                         String attendanceTime = dateFormat.format(listA.get(0).getAttendanceTime());
-                        Date dt2 = df.parse(attendanceTime);//上班打卡时间
-                        if(dt2.getTime()>startTimeD.getTime()){//迟到
-                            jsonS.put("abnormalType",1);
+                        Date dt2 = df.parse(attendanceTime);//打卡时间
+                        if (dt2.getTime() > startTimeD.getTime()) {//迟到
+                            jsonS.put("abnormalType", 1);
                         }
-                        //晚上的
-                        jsonX.put("time",listA.get(1).getAttendanceTime());
-                        jsonX.put("address",listA.get(1).getAddress());
-                        jsonX.put("type",2);
+                        jsonS.put("SBStartTime", startTime);
+                        jsonS.put("time", listA.get(0).getAttendanceTime());
+                        jsonS.put("address", listA.get(0).getAddress());
+                        jsonS.put("type", 1);
+                    } else {
+                        if (listA.get(0).getAttendanceTime().getTime() < listA.get(1).getAttendanceTime().getTime()) {
+                            //早上的
+                            jsonS.put("time", listA.get(0).getAttendanceTime());
+                            jsonS.put("address", listA.get(0).getAddress());
+                            jsonS.put("type", 1);
+
+                            String attendanceTime = dateFormat.format(listA.get(0).getAttendanceTime());
+                            Date dt2 = df.parse(attendanceTime);//上班打卡时间
+                            if (dt2.getTime() > startTimeD.getTime()) {//迟到
+                                jsonS.put("abnormalType", 1);
+                            }
+                            //晚上的
+                            jsonX.put("time", listA.get(1).getAttendanceTime());
+                            jsonX.put("address", listA.get(1).getAddress());
+                            jsonX.put("type", 2);
 
 
-                        String attendanceTime1 = dateFormat.format(listA.get(1).getAttendanceTime());
-                        Date dt3 = df.parse(attendanceTime1);//下班打卡时间
-                        if(dt3.getTime()<endTimeD.getTime()){//早退
-                            jsonX.put("abnormalType",1);
+                            String attendanceTime1 = dateFormat.format(listA.get(1).getAttendanceTime());
+                            Date dt3 = df.parse(attendanceTime1);//下班打卡时间
+                            if (dt3.getTime() < endTimeD.getTime()) {//早退
+                                jsonX.put("abnormalType", 1);
+                            }
                         }
+                        sxtype = 2;
                     }
-                    sxtype = 2;
-                }
 
-            }
+                }
 
 /*            if(listA.size()>0){
                 for(AttendanceSheet as:listA){
@@ -287,19 +290,22 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             }else{
                 //没有签到
             }*/
-            jsonArray.add(jsonS);
-            jsonK.put("attendanceSheetList",jsonArray);
-            jsonK.put("picturesUrl",pictures.getPicUrl());
-            jsonK.put("sxtype",sxtype);//
+                jsonArray.add(jsonS);
+                jsonK.put("attendanceSheetList", jsonArray);
+                jsonK.put("picturesUrl", pictures.getPicUrl());
+                jsonK.put("sxtype", sxtype);//
 
-            result.setData(jsonK);
-            jsonArray.add(jsonX);
-            result.setSuccess(true);
-            result.setMsgcode(StatusUtil.OK);
+                result.setData(jsonK);
+                jsonArray.add(jsonX);
+                result.setSuccess(true);
+                result.setMsgcode(StatusUtil.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.setSuccess(false);
+                result.setMsgcode(StatusUtil.ERROR);
+            }
         }catch (Exception e){
             e.printStackTrace();
-            result.setSuccess(false);
-            result.setMsgcode(StatusUtil.ERROR);
         }
         return result;
     }
