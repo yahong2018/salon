@@ -126,6 +126,7 @@
                 type : 'POST',
                 url : '/login/doLogin',
                 data : $("#login-form").serialize(),
+                contentType: "application/x-www-form-urlencoded",
                 success : function(data) {
                     localStorage.setItem("token", data.token);
                     location.href = '/index.html';

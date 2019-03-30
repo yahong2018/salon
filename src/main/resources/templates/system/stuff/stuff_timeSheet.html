@@ -37,11 +37,36 @@
                     <!--<option value="0571">杭州</option>-->
                 </select>
             </div>
+            <div class="layui-input-inline" id="date">
+                <select id="time" name="salon">
+                    <option value="01">一月</option>
+                    <option value="02">二月</option>
+                    <option value="03">三月</option>
+                    <option value="04">四月</option>
+                    <option value="05">五月</option>
+                    <option value="06">六月</option>
+                    <option value="07">七月</option>
+                    <option value="08">八月</option>
+                    <option value="09">九月</option>
+                    <option value="10">十月</option>
+                    <option value="11">十一月</option>
+                    <option value="12">十二月</option>
+                </select>
+            </div>
            <!-- <label class="layui-form-label">选择时间</label>
             <div class="layui-inline"> &lt;!&ndash; 注意：这一层元素并不是必须的 &ndash;&gt;
                 <input type="text" class="layui-input" id="test1">
             </div>
 -->
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input type="text" name="userKey" class="layui-input userKeyValue ">
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                </button></div>
         </div>
         <div class="layui-inline">
 <!--            <div class="layui-input-inline">
@@ -243,15 +268,16 @@
         }
         //搜索
         $(".check").on("click", function() {
-            //
-            /*var userKey=$('.userKey option:selected').val();
+            productsearch(1,"123",2,"2019-03");
+            var myDate=new Date();
+            var userKey=$('#time option:selected').val();
             if(userKey!=""){
                 var userKeyValue = $('.userKeyValue').val();
                 var temp = userKey+"='"+userKeyValue+"'";
                 productsearch(1, temp);
             }else{
                 productsearch(1);
-            }*/
+            }
 
         })
         $(".tingzhi").on("click",function(){
@@ -276,17 +302,18 @@
         })
 
         function timeSeetingItem (data) {
+
             layer.open({
                 type:2,
-                area:[882+'px',615+'px'],
+                area:[882+'px',915+'px'],
                 fix:false,
                 offset: '80px',
                 maxmin:true,
                 shadeClose:true,
                 scrollbar: false,
                 shade:0.4,
-                title:'考勤',
-                content:['timeSheetItem.html'],
+                title:'个人考勤',
+                content:['stuff_timeSheetDetails.html'],
                 success:function(layero,index){
                     var iframe = window['layui-layer-iframe' + index];
                     // 向子页面的全局函数child传参

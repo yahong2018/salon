@@ -1,9 +1,12 @@
 package com.hy.salon.basic.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.MyResult;
 import com.hy.salon.basic.vo.StuffVo;
 import com.hy.salon.basic.vo.TimeSheetVo;
@@ -99,7 +102,7 @@ public class TimeSheetService {
         List<Stuff> list = stuffDao.getStuffForStoreId(salonId);
 
         for (Stuff stuff : list) {
-           MyResult result =new  MyResult();
+          /* MyResult result =new  MyResult();
             Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
             map.put("stuffId",stuff.getRecordId());
             map.put("stuffName",stuff.getStuffName());
@@ -111,7 +114,7 @@ public class TimeSheetService {
 //            attendanceNum = attendanceNum+aNum;
 //            hasAttendanceNum = hasAttendanceNum+haNum;
 //            yichangNum = yichangNum+yNum;
-            vo.add(map);
+            vo.add(map);*/
         }
         return vo;
     }
@@ -130,7 +133,7 @@ public class TimeSheetService {
         MyResult result = new MyResult();
         for (Stuff stuff : list) {
             if(stuff.getStuffName().equals(name)){
-                Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
+               /* Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
                 map.put("stuffId",stuff.getRecordId());
                 map.put("stuffName",stuff.getStuffName());
                 map.put("tel",stuff.getTel());
@@ -138,12 +141,60 @@ public class TimeSheetService {
                 if(StringUtils.isEmpty(StuffList)){
                     map.put("role",StuffList.get(0).getRole());
                 }
-                vo.add(map);
+                vo.add(map);*/
             }
         }
         return vo;
     }
+    /**
+     * 一个月的异常
+     * @param result
+     * @param stuffId
+     * @param time
+     * @return
+     */
+    public JSONArray getYCTimeSheetByStuffIdNew(MyResult result,Long stuffId, String time,String type) {
+        JSONArray jsonArray = new JSONArray();
 
+        List<TimeSheet> timeSheet=timeSheetDao.getTSheetsByType(stuffId,time,type);
+
+        //查询该员工一个月的排班,减掉休息就是应该出勤
+        if("queqin".equals(type)){
+            List<Schedule> list = scheduleDao.getPaiByStuffIdTime(stuffId, time);
+            result.setAttendanceNum(list.size());
+            for (Schedule schedule : list) {
+                Boolean flag = false;
+                for (TimeSheet ts :timeSheet){
+                        if(!schedule.getDay().equals(ts.getDay())){
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("timeStart", DateString.DateToString2(ts.getTimeStart()));
+                            jsonObject.put("timeEnd",DateString.DateToString2(ts.getTimeEnd()));
+                            jsonObject.put("day",DateString.DateToString(schedule.getDay()));
+                            jsonObject.put("type","缺勤");
+                            jsonArray.add(jsonObject);
+                        }
+
+                }
+
+            }
+        }else{
+            for (TimeSheet ts :timeSheet){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("timeStart",DateString.DateToString2(ts.getTimeStart()));
+                jsonObject.put("timeEnd",DateString.DateToString2(ts.getTimeEnd()));
+                jsonObject.put("day",DateString.DateToString(ts.getDay()));
+
+                if("chidao".equals(type)){
+                    jsonObject.put("type","迟到");
+                }
+                if("zaotui".equals(type)){
+                    jsonObject.put("type","早退");
+                }
+                jsonArray.add(jsonObject);
+            }
+        }
+        return jsonArray;
+    }
     /**
      * 一个月的
      * @param result
@@ -192,19 +243,10 @@ public class TimeSheetService {
                         yInt=yInt+1;
                     }
                 }
-                if(schedule.getDay().equals(ts.getDay())){
-                    flag = true;
-                    break;
-                }else{
-                    flag = false;
-                }
-
-            }
-            if(!flag){
-                absenceFromDutyNum = absenceFromDutyNum+1;
             }
             temp ++;
         }
+        absenceFromDutyNum = list.size() - timeSheet.size();
         result.setYichangNum(yInt);
         map.put("lateNum",lateNum);
         map.put("leaveEarlyNum",leaveEarlyNum);
@@ -233,15 +275,25 @@ public class TimeSheetService {
      * @param time
      * @return
      */
-    public Map getTimeSheetByStuffId(MyResult result,Long stuffId, String time) {
+    public Map getTimeSheetOneDayByStuffId(MyResult result,Long stuffId, String time) {
         Map map=new HashMap();
         int i=0;
-        //查询该员工一个月的排班,减掉休息就是应该出勤
+        //查询该员工一天的排班,减掉休息就是应该出勤
         Schedule schedule = scheduleDao.getPaiByStuffId(stuffId, time);
-        List<TimeSheet> timeSheet=timeSheetDao.getTSheets(stuffId,time);
 
-        result.setHasAttendanceNum(timeSheet.size());
+        if(schedule!=null){
+            result.setAttendanceNum(result.getAttendanceNum()+1);
+            TimeSheet timeSheet=timeSheetDao.getTSheet(stuffId,time+" 00:00:00",time+" 24:59:59");
+            if(timeSheet!=null){
+                result.setHasAttendanceNum(result.getHasAttendanceNum()+1);
+            }else{
+                result.setYichangNum(result.getYichangNum()+1);
+            }
+        }
 
+
+        //result.setYichangNum();
+/*
         int yInt = 0;
         int lateNum = 0;
         int leaveEarlyNum = 0;
@@ -249,7 +301,7 @@ public class TimeSheetService {
         int checkinOmission = 0;
         int signOmission = 0;
         int leaveNum = 0;
-        int temp = 0;
+        int temp = 0;*/
 /*        for (Schedule schedule : list) {
             Boolean flag = false;
             for (TimeSheet ts :timeSheet){
@@ -285,13 +337,13 @@ public class TimeSheetService {
             }
             temp ++;
         }*/
-        result.setYichangNum(yInt);
+/*        result.setYichangNum(yInt);
         map.put("lateNum",lateNum);
         map.put("leaveEarlyNum",leaveEarlyNum);
         map.put("absenceFromDutyNum",absenceFromDutyNum);
         map.put("checkinOmission",checkinOmission);
         map.put("signOmission",signOmission);
-        map.put("leaveNum",leaveNum);
+        map.put("leaveNum",leaveNum);*/
 
         return map;
     }
@@ -326,12 +378,21 @@ public class TimeSheetService {
         return map;
     }
 
+    /**
+     * 获取各个门店的一天的考勤
+     * @param recordId
+     * @param time
+     * @param page
+     * @param limit
+     * @return
+     */
     public List<Map> getTimeSheets(Long recordId,String time,Integer page,Integer limit) {
         List<Map> vo=new ArrayList<>();
         //查询该美容院下所有门店
         Map parameters = new HashMap();
-        String where = "parent_id=#{parentId}";
+        String where = "parent_id=#{parentId} or record_id=#{recordId}";
         parameters.put("parentId", recordId);
+        parameters.put("recordId", recordId);
         Map listMap = new HashMap();
         listMap.put("where", where);
         PageHelper.startPage(page, limit);
@@ -340,22 +401,15 @@ public class TimeSheetService {
             Map reMap=new HashMap();
             reMap.put("recordId",salon.getRecordId());
             reMap.put("salonName",salon.getSalonName());
-            int attendanceNum=0;
-            int attendance=0;
-            int attendanceE=0;
             //查询门店下所有员工
             List<Stuff> stuffList = stuffDao.getStuffForStoreId(salon.getRecordId());
             MyResult result = new MyResult();
             for (Stuff stuff : stuffList) {
-                Map map = getTimeSheetByStuffId(result,stuff.getRecordId(), time);
-                //应出勤,共出勤,异常
-                attendanceNum+= Integer.parseInt(map.get("attendanceNum").toString());
-                attendance+= Integer.parseInt(map.get("attendance").toString());
-                attendanceE+= Integer.parseInt(map.get("attendanceE").toString());
+                Map map = getTimeSheetOneDayByStuffId(result,stuff.getRecordId(), time);
             }
-            reMap.put("attendanceNum",attendanceNum);
-            reMap.put("attendance",attendance);
-            reMap.put("attendanceE",attendanceE);
+            reMap.put("attendanceNum",result.getAttendanceNum());
+            reMap.put("hasAttendanceNum",result.getHasAttendanceNum());
+            reMap.put("yichangNum",result.getYichangNum());
             vo.add(reMap);
         }
         return vo;
@@ -381,4 +435,9 @@ public class TimeSheetService {
         }
         return map;
     }
+
+   /* public List<Map> getYCTimeSheet(Long stuffId, String time, String type) {
+
+        //timeSheetDao.getTSheets();
+    }*/
 }

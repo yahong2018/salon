@@ -31,8 +31,11 @@
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="tel" property="tel" jdbcType="VARCHAR" />
         <result column="city_id" property="cityId" jdbcType="BIGINT" />
+        <result column="audit" property="audit" jdbcType="TINYINT" />
         <result column="address" property="address" jdbcType="VARCHAR" />
         <result column="door_2_door" property="door2Door" jdbcType="BIT" />
+        <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+        <result column="latitude" property="latitude" jdbcType="DOUBLE" />
         <result column="bed_num" property="bedNum" jdbcType="INTEGER" />
         <result column="area" property="area" jdbcType="DOUBLE" />
         <result column="time_open" property="timeOpen" jdbcType="TIMESTAMP" />

@@ -91,16 +91,16 @@ public class PinYinUtil {
 /**
      * 测试
      */
-
-/*    public static void main(String[] args) {
-*//*        String str = "中国梦ChainDream2018";
+/*
+    public static void main(String[] args) {
+        String str = "中国梦ChainDream2018";
         char str2=str.charAt(0);
 
         String s = String.valueOf(str2);
         System.out.println("获取第一个字符"+s);
         System.out.println("将汉字转换为全拼"+getPinYin(str));
         System.out.println("获取中文首字母"+getPinYinHeadChar(str));
-        System.out.println(getCnASCII(str));*//*
+        System.out.println(getCnASCII(str));
         Calendar nowTime = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "HH:mm");
@@ -111,6 +111,12 @@ public class PinYinUtil {
         try {
             Date dt1 = df.parse("15:00");//将字符串转换为date类型
             Date dt2 = df.parse("17:00");
+
+            long tme  = (dt1.getTime()+dt2.getTime())/2;
+
+            Date itemDate = new Date(tme);
+
+            System.out.println("yes"+itemDate);
             if(dt1.getTime()>dt2.getTime())//比较时间大小,如果dt1大于dt2
             {
                 System.out.println("yes");

@@ -1,7 +1,11 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.entity.AttendanceSheet;
+import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.service.AttendanceSheetService;
+import com.hy.salon.basic.service.SalonService;
+import com.hy.salon.basic.util.GaoDeUtil;
 import com.hy.salon.basic.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,7 +28,8 @@ public class AttendanceController {
     @Resource(name = "attendanceSheetService")
     private AttendanceSheetService attendanceSheetService;
 
-
+    @Resource(name = "salonService")
+    private SalonService salonService;
     /**
      * 考勤签到例子
      */
@@ -53,12 +58,22 @@ public class AttendanceController {
             @ApiImplicitParam(paramType="query", name = "address", value = "签到地址", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long")
     })
-    public Result SignIn(Long stuffId,String address,Long storeId){
+    public Result SignIn(Long stuffId,String address,Long storeId,Double longitude,Double latitude){
         Result result=new Result();
         AttendanceSheet condition=new AttendanceSheet();
         condition.setStuffId(stuffId);
         condition.setAttendanceTime(new Date());
         condition.setAddress(address);
+        Salon salon =  salonService.getSalonForId(storeId);
+        String myAddress = longitude+","+latitude;
+        String GAddress = salon.getLongitude()+","+salon.getLatitude();
+        boolean flag = GaoDeUtil.getBooleanAddress(myAddress,GAddress);
+        if(!flag){
+            result.setMsg("签到失败,不在签到范围");
+            result.setMsgcode("200");
+            result.setSuccess(false);
+            return result;
+        }
         try {
             attendanceSheetService.insert(condition,storeId);
             result.setMsg("签到成功");
@@ -70,6 +85,7 @@ public class AttendanceController {
             result.setMsgcode("200");
             result.setSuccess(false);
         }
+        System.out.println(JSONObject.toJSONString(result));
         return result;
     }
 

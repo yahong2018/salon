@@ -1,6 +1,8 @@
 package com.hy.salon.basic.util;
 
 import com.hy.salon.basic.vo.RequestResult;
+import net.sf.json.JSONObject;
+import net.sf.json.xml.XMLSerializer;
 
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -9,9 +11,9 @@ import java.util.regex.Pattern;
 
 
 public class GaoDeUtil {
-
-    private static String API = "https://restapi.amap.com/v3/distance?origins=113.842223,22.899965&destination=113.835765,22.905955&output=xml&key=<key>&type=0";
-
+    //https://restapi.amap.com/v3/distance?origins=113.783836,23.033806&destination=113.783836,23.033806&output=xml&key=<key>&type=0
+    //private static String API = "https://restapi.amap.com/v3/distance?origins=113.842223,22.899965&destination=113.835765,22.905955&output=xml&key=<key>&type=0";
+    private static String API = "https://restapi.amap.com/v3/distance?origins=";
     private static String KEY = "4f071e21116c6cdd1747f67220913890";
 
     private static Pattern pattern = Pattern.compile("\"location\":\"(\\d+\\.\\d+),(\\d+\\.\\d+)\"");
@@ -27,6 +29,33 @@ public class GaoDeUtil {
         API = API.replaceAll("<key>", KEY);
     }
 
+    public   static Boolean getBooleanAddress(String myAddress, String GAddress){
+        String temp = myAddress+"&destination=" +GAddress+
+                "&output=xml&key=4f071e21116c6cdd1747f67220913890&type=0";
+        String requestUrl = API+temp;
+        Boolean flag  = false;
+        RequestResult requestResult = RequestUtils.getJsonText(requestUrl, null);
+        if (200 != requestResult.getCode()) {
+            return false;
+        }
+        requestUrl = requestResult.getBody();
+        XMLSerializer xmlSerializer = new XMLSerializer();
+        String resutStr = xmlSerializer.read(requestUrl).toString();
+        JSONObject resultJson = JSONObject.fromObject(resutStr);
+        String results = resultJson.getString("results");
+        JSONObject resultStirngs = JSONObject.fromObject(results);
+
+
+        String result = resultStirngs.getString("result");
+        JSONObject resultStirng = JSONObject.fromObject(result);
+
+        int distance = resultStirng.getInt("distance");
+        if(distance<=200){
+            flag = true;
+        }
+        return flag;
+    }
+
     private static double[] getLatAndLonByAddress(String address) {
         try {
             String requestUrl = API;
@@ -35,6 +64,17 @@ public class GaoDeUtil {
                 return null;
             }
             requestUrl = requestResult.getBody();
+            XMLSerializer xmlSerializer = new XMLSerializer();
+            String resutStr = xmlSerializer.read(requestUrl).toString();
+            JSONObject resultJson = JSONObject.fromObject(resutStr);
+            String results = resultJson.getString("results");
+            JSONObject resultStirngs = JSONObject.fromObject(results);
+
+
+            String result = resultStirngs.getString("result");
+            JSONObject resultStirng = JSONObject.fromObject(result);
+
+            int distance = resultStirng.getInt("distance");
             if (requestUrl != null) {
                 Matcher matcher = pattern.matcher(requestUrl);
                 if (matcher.find() && matcher.groupCount() == 2) {
@@ -62,3 +102,4 @@ public class GaoDeUtil {
 
     }*/
 }
+

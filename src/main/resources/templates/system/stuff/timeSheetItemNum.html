@@ -121,90 +121,30 @@
          </div>
     </div>
 
- <div class="layui-container fontSize" style="width:100%;border:1px solid red;text-align: center;margin-top: 54px;">
-     <div class="layui-row ">
-         <div class="layui-col-xs4">
-             <div class="grid-demo grid-demo-bg1">迟到次数</div>
-             <div class="grid-demo grid-demo-bg1 lateNum" ><a class="1" onclick="getNum('chidao')"></a></div>
-         </div>
-         <div class="layui-col-xs4">
-             <div class="grid-demo">早退次数</div>
-             <div class="grid-demo leaveEarlyNum"><a  class="2" onclick="getNum('zaotui')"></a></div>
-         </div>
-         <div class="layui-col-xs4">
-             <div class="grid-demo grid-demo-bg1">缺勤天数</div>
-             <div class="grid-demo grid-demo-bg1 absenceFromDutyNum"><a class="3" onclick="getNum('queqin')"></a></div>
-         </div>
-     </div>
-     <div class="layui-row ">
-         <div class="layui-col-xs4">
-             <div class="grid-demo grid-demo-bg1">签到遗漏</div>
-             <div class="grid-demo grid-demo-bg1 checkinOmission"><a class="4"  onclick="getNum('qiandaoy')"></a></div>
-         </div>
-         <div class="layui-col-xs4">
-             <div class="grid-demo">签退遗留</div>
-             <div class="grid-demo signOmission"><a class="5" onclick="getNum('qiantuiy')"></a></div>
-         </div>
-         <div class="layui-col-xs4">
-             <div class="grid-demo grid-demo-bg1">请假天数</div>
-             <div class="grid-demo grid-demo-bg1 leaveNum"><a class="6" onclick="getNum('qingjia')"></a></div>
-         </div>
-     </div>
- </div>
 <input type="hidden" class="stuffId"/>
  <input type="hidden" class="yuefenid"/>
   </body>
   </html>
 <script type="text/javascript">
-    function getNum(data) {
-        alert(data);
-        var temp ={};
-        temp.type=  data;
-        temp.time =$(".backG").html();
-        temp.stuffId = $(".stuffId").val();
-        layer.open({
-            type:2,
-            area:[882+'px',615+'px'],
-            fix:false,
-            offset: '80px',
-            maxmin:true,
-            shadeClose:true,
-            scrollbar: false,
-            shade:0.4,
-            title:'考勤',
-            content:['timeSheetItemNum.html'],
-            success:function(layero,index){
-                var iframe = window['layui-layer-iframe' + index];
-                // 向子页面的全局函数child传参
-                iframe.child(temp);
-                console.log("成功");
+
+    function child(data){
+        var $ = layui.jquery;
+        var time = data.time;
+        var type = data.type;
+        var stuffId = data.stuffId;
+        $.ajax({
+            type:'GET',
+            url:"/hy/basic/timeSheet/getTimeSheetTypeTimeStuffId",
+            data:{time:time,type:type,stuffId:stuffId},
+            success: function(data){
+                var dataT = data.data;
+                console.log(data);
             },
-            fail:function(data){
+            error:function(data){
+                alert("操作失败");
                 console.log(data);
             }
         })
-    }
-    function child(data){
-        var $ = layui.jquery;
-        var stuffId = data.stuffId;
-        $(".stuffId").val(stuffId);
-        var lateNum = data.lateNum;
-        $('.lateNum a').html(lateNum);
-
-        var leaveEarlyNum = data.leaveEarlyNum;
-        $('.leaveEarlyNum a').html(leaveEarlyNum);
-
-        var absenceFromDutyNum = data.absenceFromDutyNum;
-        $('.absenceFromDutyNum a ').html(absenceFromDutyNum);
-
-        var checkinOmission = data.checkinOmission;
-        $('.checkinOmission a ').html(checkinOmission);
-
-        var signOmission = data.signOmission;
-        $('.signOmission a ').html(signOmission);
-
-        var leaveNum = data.leaveNum;
-        $('.leaveNum a ').html(leaveNum);
     }
 
     layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {

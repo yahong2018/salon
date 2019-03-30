@@ -57,9 +57,9 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
             newStr = "0"+(nowM+1);
         }
         if(temp[1].equals(newStr)){
-             timeEnd=time+"-"+nowD;
+             timeEnd=time+"-"+nowD;//当月就是拿到今天的时间
         }else{
-            timeEnd = time+"-31";
+            timeEnd = time+"-31";//其他月份的时候
         }
 
         String timeStart=time+"-01";
