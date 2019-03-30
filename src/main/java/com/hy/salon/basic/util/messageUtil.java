@@ -10,6 +10,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class messageUtil {
 
+    private static String USERNAME = "18002875588";
+
+    private static String PASSWORD = "chen0769";
+
+    private static String HTTPURL = "http://api.smsbao.com/sms";
+
 
 
 /*    public static void main(String[] args) {
@@ -30,6 +36,17 @@ public class messageUtil {
         String result = request(httpUrl, httpArg.toString());
         System.out.println(result);
     }*/
+
+    public static String sendMessage(String tel,String Content){
+        StringBuffer httpArg = new StringBuffer();
+        httpArg.append("u=").append(USERNAME).append("&");
+        httpArg.append("p=").append(md5(PASSWORD)).append("&");
+        httpArg.append("m=").append(tel).append("&");
+        httpArg.append("c=").append(encodeUrlString(Content, "UTF-8"));
+
+        return request(HTTPURL, httpArg.toString());
+
+    }
 
     public static String request(String httpUrl, String httpArg) {
         BufferedReader reader = null;

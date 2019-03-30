@@ -23,9 +23,9 @@
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 638px;">
-      <button class="layui-btn layui-btn-primary addService">新增项目</button>
-      <button class="layui-btn updateUser">修改项目</button>
-      <button class="layui-btn layui-btn-danger deleteUser">删除项目</button>
+      <button class="layui-btn layui-btn-primary addService">新增套卡</button>
+      <button class="layui-btn updateUser">修改套卡</button>
+      <button class="layui-btn layui-btn-danger deleteUser">删除套卡</button>
       <!--<button class="layui-btn layui-btn-normal qidong">启用账户</button>-->
       <!--<button class="layui-btn layui-btn-normal tingzhi">停止账户</button>-->
       <!--<button class="layui-btn layui-btn-normal shouquan">授权</button>-->
@@ -83,43 +83,42 @@
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/service/queryService',
+        url : '/hy/basic/serviceSuite/queryServiceSuite',
         cols : [ [
               {checkbox: true,
                 filter:'test'
               }
               ,
               {
-                field : 'serviceName',
-                title : '项目名称',
+                field : 'suiteName',
+                title : '套卡名称',
                 align : 'center'
               }
               , {
-                field : 'serviceSeriesId',
-                title : '项目类别/系列',
+                field : 'priceMarket',
+                title : '市场价格',
+                align : 'center'
+              }
+              , {
+                field : 'price',
+                title : '优惠价格',
+                align : 'center'
+              }
+              , {
+                field : 'timeEreate',
+                title : '建档时间',
+                align : 'center',
+              }
+              , {
+                field : 'timeExpired',
+                title : '失效时间',
                 align : 'center'
               }
               , {
                 field : 'recordStatus',
-                title : '项目状态',
+                title : '套卡状态',
                 align : 'center',
                 templet: '#recordStatus'
-              }
-              , {
-                field : 'cardType',
-                title : '卡类别',
-                align : 'center',
-                templet: '#cardType'
-              }
-              , {
-                field : 'price',
-                title : '办卡价格',
-                align : 'center'
-              }
-              , {
-                field : 'timeTotal',
-                title : '包含次数',
-                align : 'center'
               }
 
 
@@ -274,7 +273,7 @@
       console.log(recordIdList);
       $.ajax({
         type:'POST',
-        url:'/hy/basic/service/batchDelete',
+        url:'/hy/basic/serviceSuite/batchDelete',
         //data: JSON.stringify(deleteList),
         data: JSON.stringify(recordIdList),
         contentType: "application/json",
@@ -304,8 +303,8 @@
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'新增项目',
-        content:['add_service.html'],
+        title:'新增套卡',
+        content:['add_service_suite.html'],
         success:function(layero,index){
           console.log("成功");
           var iframe = window['layui-layer-iframe' + index];
@@ -336,7 +335,7 @@
         scrollbar: false,
         shade:0.4,
         title:'修改项目',
-        content:['update_service.html'],
+        content:['update_service_suite.html'],
         success:function(layero,index){
           // 获取子页面的iframe
           var iframe = window['layui-layer-iframe' + index];
@@ -354,26 +353,15 @@
   function recordStatus(t){
      if(t==0){
        return '启用';
-     }else{
-       return '禁用';
-     }
-    return util.toDateString(t1);
-  }
-
-  function cardType(t){
-    if(t==0){
-    return '次卡';
-  }else if(t==1){
-    return '月卡';
-  }else if(t==2){
-    return '季卡';
-  }else if(t==3){
-    return '半年卡';
-  }else if(t==4){
-      return '年卡';
+     }else if((t==1)){
+       return '停用';
+     }else if((t==2)){
+       return '失效';
     }
     return util.toDateString(t1);
   }
+
+
 </script>
 
 
@@ -385,7 +373,3 @@
 
 </script>
 
-<script type="text/html" id="cardType">
-  {{ cardType(d.cardType) }}
-
-</script>

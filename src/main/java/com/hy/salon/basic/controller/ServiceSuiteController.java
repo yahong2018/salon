@@ -18,11 +18,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -72,9 +74,14 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
 
     })
-    public Result addServiceSuite(ServiceSuite condition,String picIdList,String bindingJson){
+    public Result addServiceSuite(HttpServletRequest request, ServiceSuite condition, String picIdList, String bindingJson,String comeFrom){
         Result r= new Result();
         try {
+
+            if("PC".equals(comeFrom)){
+                String  vs =  request.getParameter("condition");
+                condition =  JSONObject.parseObject(vs, ServiceSuite.class);
+            }
             //先写死，后面改
 //            String bindingJson="[{\"serviceId\": 1,\"times\": 10},{\"serviceId\": 5,\"times\": 10},{\"serviceId\": 8,\"times\": 10}]";
             SystemUser user = authenticateService.getCurrentLogin();
@@ -139,11 +146,16 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
     })
-    public Result updateServiceSuite(ServiceSuite condition,String picIdList,String deletePicList){
+    public Result updateServiceSuite(ServiceSuite condition,String picIdList,String deletePicList,String comeFrom, String bindingJson,HttpServletRequest request){
         Result r= new Result();
         try {
+            if("PC".equals(comeFrom)){
+                String  vs =  request.getParameter("condition");
+                condition =  JSONObject.parseObject(vs, ServiceSuite.class);
+            }
+
             //先写死，后面改
-            String bindingJson="[{\"serviceId\":5,\"times\": 12},{\"serviceId\": 6,\"times\": 12},{\"serviceId\": 7,\"times\": 12}]";
+//            String bindingJson="[{\"serviceId\":5,\"times\": 12},{\"serviceId\": 6,\"times\": 12},{\"serviceId\": 7,\"times\": 12}]";
             int ii =serviceSuiteDao.update(condition);
             if(ii!=0){
                 //删除旧绑定，重新绑定
@@ -169,23 +181,29 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
                 }
             }
 
-            //插入照片关联
-            String[] str = picIdList.split(",");
-            for(String s:str){
-                Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                if(null != pic){
-                    pic.setMasterDataId(condition.getRecordId());
-                    picturesDao.update(pic);
+            if(null!=picIdList && !"".equals(picIdList)){
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for(String s:str){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
+                }
+
+            }
+            if(null!=deletePicList && !"".equals(deletePicList)){
+                //删除照片关联
+                String[] str2=deletePicList.split(",");
+                for(String s:str2){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        picturesDao.delete(pic);
+                    }
                 }
             }
-            //删除照片关联
-            String[] str2=deletePicList.split(",");
-            for(String s:str2){
-                Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                if(null != pic){
-                    picturesDao.delete(pic);
-                }
-            }
+
 
 
             r.setMsg("修改成功");
@@ -215,7 +233,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             }
 
             r.setTotal(serviceSuiteDao.querySuitItemForCreateId(storeId).size());
-            PageHelper.startPage(page, 10);
+            PageHelper.startPage(page, 40);
             List<ServiceSuite> suiteList= serviceSuiteDao.querySuitItemForCreateId(storeId);
 
 
@@ -243,12 +261,38 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
         Result r= new Result();
         try {
             ServiceSuite suite= serviceSuiteDao.querySuitItemDataForId(recordId);
-            List<ServiceVo> serviceVo=serviceDao.getServiceForSuit(suite.getRecordId());
+            List<Pictures> piclist= picturesDao.getPicturesForCondition(recordId,new Byte("3"),new Byte("0"));
+
+
+            List<Map<String,Object> > dataList=new ArrayList();
+            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(suite.getStoreId());
+
+            List<Map<String,Object>> binServiceList=serviceDao.queryBinServiceForSeries(recordId);
+
+            for(ServiceSeries s:serList){
+                List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
+                for(Map<String,Object> m:serviceList){
+                    dataList.add(m);
+                    m.put("isBin","0");
+                    m.put("times","");
+                }
+            }
+
+            for(Map<String,Object> m:dataList){
+                for(Map<String,Object> mm:binServiceList){
+                    if(m.get("recordId") == mm.get("recordId")){
+//                        ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,m.get("recordId"));
+//                        m.put("times",serviceSuiteItem.getTimes().toString());
+                        m.put("isBin","1");
+                    }
+
+                }
+            }
 
 
             Map dataMap =new HashMap<String, Object>();
             dataMap.put("serviceSuite",suite);
-            dataMap.put("serviceVo",serviceVo);
+            dataMap.put("piclist",piclist);
 
             r.setData(dataMap);
             r.setMsg("获取成功");
@@ -363,8 +407,8 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(salonId);
 
             for(ServiceSeries s:serList){
-                List<Map<String,String>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
-                for(Map<String,String> m:serviceList){
+                List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
+                for(Map<String,Object> m:serviceList){
                     dataList.add(m);
                 }
             }
@@ -395,22 +439,25 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
         Result r= new Result();
         try {
 
-            List<Map<String,String> > dataList=new ArrayList();
+            List<Map<String,Object> > dataList=new ArrayList();
             List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(salonId);
 
-            List<Map<String,String>> binServiceList=serviceDao.queryBinServiceForSeries(recordId);
+            List<Map<String,Object>> binServiceList=serviceDao.queryBinServiceForSeries(recordId);
 
             for(ServiceSeries s:serList){
-                List<Map<String,String>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
-                for(Map<String,String> m:serviceList){
+                List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
+                for(Map<String,Object> m:serviceList){
                     dataList.add(m);
                     m.put("isBin","0");
+                    m.put("times","");
                 }
             }
 
-            for(Map<String,String> m:dataList){
-                for(Map<String,String> mm:binServiceList){
+            for(Map<String,Object> m:dataList){
+                for(Map<String,Object> mm:binServiceList){
                     if(m.get("recordId") == mm.get("recordId")){
+//                        ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,m.get("recordId"));
+//                        m.put("times",serviceSuiteItem.getTimes().toString());
                         m.put("isBin","1");
                     }
 
@@ -431,6 +478,124 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
         return r;
     }
 
+    /**
+     * 获取套卡的服务项目列表
+     */
+    @ResponseBody
+    @RequestMapping("/queryServicePC")
+    @ApiOperation(value="获取套卡的服务项目列表", notes="通过套卡Id获取套卡的服务项目列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+    })
+    public Result queryServicePC(Long salonId){
+        Result r= new Result();
+        try {
+            JSONArray jsonArr=new JSONArray();
+            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(salonId);
+
+            for(ServiceSeries s:serList){
+                List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
+                JSONObject jsonObj=new JSONObject();
+                jsonObj.put("ServiceRecordId",s.getRecordId());
+                jsonObj.put("ServiceName",s.getSeriesName());
+                jsonObj.put("ServiceList",serviceList);
+                jsonArr.add(jsonObj);
+
+            }
+            r.setData(jsonArr);
+            r.setMsg("获取成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
+    /**
+     * 获取套卡的已经绑定服务项目列表
+     */
+    @ResponseBody
+    @RequestMapping("/queryBinServicePC")
+    @ApiOperation(value="获取套卡的绑定服务项目列表", notes="通过套卡Id获取套卡的绑定服务项目列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "Id", required = true, dataType = "Long"),
+    })
+    public Result queryBinServicePC(Long recordId,Long salonId){
+        Result r= new Result();
+        try {
+            JSONArray jsonArr=new JSONArray();
+            List<ServiceSeries> serList=serviceSeriesDao.getServiceSeriesForCreateId(salonId);
+
+            List<Map<String,Object>> binServiceList=serviceDao.queryBinServiceForSeries(recordId);
+
+            for(ServiceSeries s:serList){
+                List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
+                for(Map<String,Object> m:serviceList){
+
+                    m.put("times","");
+                    m.put("isBin","0");
+                    for(Map<String,Object> mm:binServiceList){
+                        if(m.get("recordId") == mm.get("recordId")){
+                            System.out.println("recordId+++++++++++"+mm.get("recordId"));
+//                            String str=mm.get("recordId");
+//                            if(str!=null){
+//                                ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,str);
+//                                m.put("times",serviceSuiteItem.getTimes().toString());
+//                            }
+
+                            m.put("isBin","1");
+                        }
+                    }
+                }
+                JSONObject jsonObj=new JSONObject();
+                jsonObj.put("ServiceRecordId",s.getRecordId());
+                jsonObj.put("ServiceName",s.getSeriesName());
+                jsonObj.put("ServiceList",serviceList);
+                jsonArr.add(jsonObj);
+            }
+
+
+
+            r.setData(jsonArr);
+            r.setMsg("获取成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
+    @RequestMapping("batchDelete")
+    @ResponseBody
+    public Result batchDelete(@RequestBody Long[] recordIdList) {
+        Result r= new Result();
+        for(Long recordId:recordIdList){
+            serviceSuiteDao.deleteById(recordId);
+            //删除旧绑定，重新绑定
+            List<ServiceSuiteItem> suitItem=serviceSuiteItemDao.querySuitItemForId(recordId);
+            if(!suitItem.isEmpty()){
+                for(ServiceSuiteItem s:suitItem){
+                    serviceSuiteItemDao.delete(s);
+                }
+            }
+        }
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
 
 
 

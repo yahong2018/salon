@@ -9,6 +9,7 @@ import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.util.MapUtils;
 import com.hy.salon.basic.util.UuidUtils;
+import com.hy.salon.basic.util.messageUtil;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.misc.MessageUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -674,6 +676,28 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
     }
 
+    /**
+     * 发送短信验证码
+     */
+    @RequestMapping("sendMessage")
+    @ResponseBody
+    public Result sendMessage(String tel){
+        Result r= new Result();
+        int  num=(int)(Math.random()*9000)+1000;
+        String typeCode=messageUtil.sendMessage(tel,"【EMK】您的验证码是"+num+",５分钟内有效。若非本人操作请忽略此消息。");
+        System.out.println("typeCode========================"+typeCode);
+        if(!"0".equals(typeCode)){
+            r.setMsg("请求失败");
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setSuccess(false);
+            return r;
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
 
 
 

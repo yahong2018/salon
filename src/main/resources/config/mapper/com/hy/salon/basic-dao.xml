@@ -194,11 +194,25 @@
     <!--根据美容院模糊查询店员 -->
     <select id="FUZZY_QUERY_STUFF"  parameterType="java.util.Map" resultType="java.util.Map" >
 
-      SELECT ss.record_id as recordId,ss.stuff_name as stuffName
-(SELECT sj.job_name FROM salon.job as sj where sj.record_id = (select stuff.job_id from salon.stuff_job as stuff
-where stuff.stuff_id= ss.record_id)) as jobName
- FROM salon.stuff as ss where ss.stuff_name like #{stuffName}
-and ss.store_id in(select salon.record_id from salon.salon as salon where salon.parent_id = #{salonId});
+--       SELECT ss.record_id as recordId,ss.stuff_name as stuffName
+-- (SELECT sj.job_name FROM salon.job as sj where sj.record_id = (select stuff.job_id from salon.stuff_job as stuff
+-- where stuff.stuff_id= ss.record_id)) as jobName
+--  FROM salon.stuff as ss where ss.stuff_name like #{stuffName}
+-- and ss.store_id in(select salon.record_id from salon.salon as salon where salon.parent_id = #{salonId});
+
+select * from salon.stuff as ss where ss.store_id in(select salon.record_id from salon.salon as salon where salon.parent_id = #{salonId})
+and ss.stuff_name like #{stuffName};
+
+
+    </select>
+
+    <!--根据美容院模糊查询店员(店长) -->
+    <select id="FUZZY_QUERY_STUFF2"  parameterType="java.util.Map" resultType="java.util.Map" >
+
+
+
+select * from salon.stuff as ss where ss.store_id in(select salon.record_id from salon.salon as salon where salon.record_id = #{salonId})
+and ss.stuff_name like #{stuffName};
 
 
     </select>
