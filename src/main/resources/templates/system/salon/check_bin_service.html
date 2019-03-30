@@ -140,15 +140,20 @@
                         input.setAttribute("class",service.ServiceRecordId);
                         input.setAttribute("id",ServiceList[index2].recordId);
                         input.setAttribute("lay-filter","oneChoose");
-                        if(ServiceList[index2].isBin == '1'){
-                            input.setAttribute("checked","checked");
-                        }
+
 
                         // <input name="danxuanFW"  placeholder="请输入"  id="bindingList" value="" class="layui-input">
                         var input2 =  document.createElement("input");
 
+                        if(ServiceList[index2].isBin == '1'){
+                            input.setAttribute("checked","checked");
+                            input2.setAttribute("value",ServiceList[index2].times);
+                        }else{
+                            input2.setAttribute("value","");
+                        }
+
                         input2.setAttribute("name","text");
-                        input2.setAttribute("value","");
+
                         input2.setAttribute("placeholder","请输入");
                         input2.setAttribute("class",service.ServiceRecordId);
                         input2.setAttribute("id",ServiceList[index2].recordId+"id");

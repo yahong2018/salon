@@ -233,7 +233,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             }
 
             r.setTotal(serviceSuiteDao.querySuitItemForCreateId(storeId).size());
-            PageHelper.startPage(page, 40);
+            PageHelper.startPage(page, 10);
             List<ServiceSuite> suiteList= serviceSuiteDao.querySuitItemForCreateId(storeId);
 
 
@@ -542,11 +542,11 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
                     for(Map<String,Object> mm:binServiceList){
                         if(m.get("recordId") == mm.get("recordId")){
                             System.out.println("recordId+++++++++++"+mm.get("recordId"));
-//                            String str=mm.get("recordId");
-//                            if(str!=null){
-//                                ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,str);
-//                                m.put("times",serviceSuiteItem.getTimes().toString());
-//                            }
+                            String str=mm.get("recordId").toString();
+                            if(str!=null){
+                                ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,str);
+                                m.put("times",serviceSuiteItem.getTimes().toString());
+                            }
 
                             m.put("isBin","1");
                         }
