@@ -23,6 +23,16 @@ public class ServiceSuiteItemDAO extends BaseDAOWithEntity<ServiceSuiteItem> {
 
     }
 
+    public ServiceSuiteItem querySuitItemForId(Long suiteId,String serviceId){
+        String where="service_suite_id = #{suiteId} and service_id = #{serviceId}";
+        Map parameters = new HashMap();
+        parameters.put("suiteId", suiteId);
+        parameters.put("serviceId", serviceId);
+        return this.getOne(where,parameters);
+
+
+    }
+
 
 
 

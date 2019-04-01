@@ -110,12 +110,11 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         if(stuffJobList.size() != 1 ){
                             for(StuffJob sj:stuffJobList){
                                 Job job=jobDao.getJobForId(sj.getJobId());
-                                String str=ss.getJobName()+","+job.getJobName();
-                                ss.setJobName(str);
+
+                                    String str=ss.getJobName()+","+job.getJobName();
+                                    ss.setJobName(str);
                             }
-
                         }
-
                     }
                     JSONObject jsonObj=new JSONObject();
                     jsonObj.put("stuff",stuff);
@@ -138,8 +137,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                 if(stuffJobList.size() != 1 ){
                     for(StuffJob sj:stuffJobList){
                         Job job=jobDao.getJobForId(sj.getJobId());
-                        String str=ss.getJobName()+","+job.getJobName();
-                        ss.setJobName(str);
+                            String str=ss.getJobName()+","+job.getJobName();
+                            ss.setJobName(str);
                     }
 
                 }
@@ -147,8 +146,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             }
             JSONObject jsonObj=new JSONObject();
             jsonObj.put("stuff",stuff);
+            jsonObj.put("salonName","");
             jsonArr.add(jsonObj);
-
+            r.setData(jsonArr);
         }
 
 
@@ -293,17 +293,21 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
     /**
-     * 搜索家人模糊查询(仅院长角色可调)
+     * 搜索家人模糊查询
      */
     @ResponseBody
-    @RequestMapping(value="fuzzyQueryStuff",method = RequestMethod.GET)
-    @ApiOperation(value="搜索家人模糊查询(仅院长角色可调)", notes="搜索家人模糊查询(仅院长角色可调)")
-    public Result fuzzyQueryStuff(String stuffName) {
+    @RequestMapping("fuzzyQueryStuff")
+    @ApiOperation(value="搜索家人模糊查询", notes="搜索家人模糊查询")
+    public Result fuzzyQueryStuff(String stuffName,Long salonId,String jobLevel) {
         Result r= new Result();
         try {
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
-            Map<String,String> stuff=stuffDao.fuzzyQueryStuff(stuffName,stuffCondition.getStoreId());
+//            SystemUser user = authenticateService.getCurrentLogin();
+//            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
+
+                List<Map<String,String>> stuff=stuffDao.fuzzyQueryStuff(stuffName,salonId,jobLevel);
+
+
+
 
             r.setData(stuff);
             r.setMsg("查询成功");

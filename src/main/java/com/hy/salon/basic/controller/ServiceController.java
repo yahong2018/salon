@@ -111,11 +111,14 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @ResponseBody
     @RequestMapping("/addService")
     @ApiOperation(value="添加次卡", notes="添加次卡")
-    public Result addService(HttpServletRequest request, Service condition, String picIdList){
+    public Result addService(HttpServletRequest request, Service condition, String picIdList,String comeFrom){
 
 
-        String  vs =  request.getParameter("condition");
-        condition =  JSONObject.parseObject(vs, Service.class);
+        if("PC".equals(comeFrom)){
+            String  vs =  request.getParameter("condition");
+            condition =  JSONObject.parseObject(vs, Service.class);
+        }
+
         Result r= new Result();
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>项目</title>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+</head>
+<style type="text/css">
+    body{
+        height: 100%;
+        width: 100%;
+    }
+    .layui-form-label{width: 130px}
+    .btn {
+        background-color: #e5e5e5;
+        background-image: none;
+        filter: none;
+        border: 0;
+        padding: 7px 14px;
+        text-shadow: none;
+        font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        cursor: pointer;
+        outline: none;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        box-shadow: none !important;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+    }
+    .layui-input-inline{width: 214px !important}
+    .hengxiang{
+        margin-left: 48px;  margin-top: 2px;
+    }
+
+    .hengxiang li{
+        float:left;
+        margin-top: 14px;
+        margin-left: 44px;
+    }
+    .dierceng{
+        margin-top: 75px; height: 122px;
+        border-bottom:1px dashed #C0C0C0;
+    }
+</style>
+
+<body>
+<!-- 内容主体区域 -->
+<div class="x-body layui-anim layui-anim-up">
+    <div class="layui-fluid">
+
+        <form class="layui-form layui-form-pane1" lay-filter="first">
+            <ul style="margin-bottom: 33px;" id="ulList">
+<!--                <li  class="dierceng">
+                    <input type="checkbox" name="check[]" value="全选" lay-skin="primary" title="全选" lay-filter="oneChoose">
+                    <ul  class="hengxiang">
+                        <li >
+                            <input type="checkbox" name="check[]" value="123" lay-skin="primary" title="123" lay-filter="oneChoose">
+                        </li>
+                    </ul>
+                </li>-->
+            </ul>
+            <div class="layui-form-item" style="margin-left: 140px;">
+                <button class="layui-btn save" type="button" lay-submit="" lay-filter="*">保存</button>
+                <button class="layui-btn quxiao" >取消</button>
+            </div>
+            <input name="recordId" id="recordId"  type="hidden" value="" class="layui-input">
+            <input name="parId" id="parId"  type="hidden" value="" class="layui-input">
+
+            <input name="salonId" id="salonId"  type="hidden" value="" class="salonId">
+            <input name="suiteId" id="suiteId"  type="hidden" value="" class="suiteId">
+
+
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    function child(dataList){
+        var $ = layui.jquery;
+        var form  = layui.form;
+        $("#parId").val(dataList.name);
+        $("#salonId").val(dataList.salonId);
+        $("#suiteId").val(dataList.suiteId);
+        console.log("salonId++++++++++++++++++++++++++++++"+$("#salonId").val());
+        console.log("suiteId+++++++++++++++++++++++++++++++"+$("#suiteId").val());
+        // form.render();
+
+
+
+
+        var salonId=$("#salonId").val();
+        var suiteId=$("#suiteId").val();
+        console.log("salonId============================="+$("#salonId").val());
+        console.log("suiteId============================="+$("#suiteId").val());
+
+        $.ajax({
+            type:'GET',
+            url:'/hy/basic/serviceSuite/queryBinServicePC?salonId='+salonId+"&recordId="+suiteId,
+            success: function(data) {
+                var list = data.data;
+                for(index in list){
+                    var service = list[index];
+                    var $liP = document.createElement("li");
+                    $liP.setAttribute("class","dierceng");
+                    /* $liP.setAttribute("value",service.ServiceName);
+                     $liP.value = service.ServiceName;*/
+                    //var $liP = " <li class='dierceng' value="++">"+service.ServiceName+"</li>";
+                    var input = document.createElement("input");
+                    input.setAttribute("type","checkbox");
+                    input.setAttribute("name","checks");
+                    input.setAttribute("value",service.ServiceName);
+                    input.setAttribute("lay-skin","primary");
+                    input.setAttribute("title",service.ServiceName);
+                    input.setAttribute("id",service.ServiceRecordId);
+                    input.setAttribute("lay-filter","allChoose");
+                    $liP.append(input);
+                    // var input = '<input type="checkbox" name="check[]" value="全选" lay-skin="primary" title="全选" lay-filter="oneChoose">';
+                    $("#ulList").append($liP);
+                    var ServiceList = service.ServiceList;
+                    var ul =  document.createElement("ul");
+                    ul.setAttribute("class","hengxiang");
+                    for(index2 in ServiceList){
+                        var li =  document.createElement("li");
+                        var input =  document.createElement("input");
+                        input.setAttribute("type","checkbox");
+                        input.setAttribute("name","check");
+                        input.setAttribute("value",ServiceList[index2].serviceName);
+                        input.setAttribute("lay-skin","primary");
+                        input.setAttribute("title",ServiceList[index2].serviceName);
+                        input.setAttribute("pId",service.ServiceRecordId);
+                        input.setAttribute("class",service.ServiceRecordId);
+                        input.setAttribute("id",ServiceList[index2].recordId);
+                        input.setAttribute("lay-filter","oneChoose");
+
+
+                        // <input name="danxuanFW"  placeholder="请输入"  id="bindingList" value="" class="layui-input">
+                        var input2 =  document.createElement("input");
+
+                        if(ServiceList[index2].isBin == '1'){
+                            input.setAttribute("checked","checked");
+                            input2.setAttribute("value",ServiceList[index2].times);
+                        }else{
+                            input2.setAttribute("value","");
+                        }
+
+                        input2.setAttribute("name","text");
+
+                        input2.setAttribute("placeholder","请输入");
+                        input2.setAttribute("class",service.ServiceRecordId);
+                        input2.setAttribute("id",ServiceList[index2].recordId+"id");
+
+                        input2.setAttribute("style","width: 30px;width: 11;");
+
+
+                        li.append(input);
+                        li.append(input2)
+                        //li.append('<input type="checkbox" name="check[]" value="'+ServiceList[index].seriesName+'" lay-skin="primary" title="'+ServiceList[index].seriesName+'" lay-filter="oneChoose">');
+                        ul.append(li);
+                    }
+                    $liP.append(ul);
+                    form.render();
+
+                }
+            },
+            error:function (data) {
+                console.log(data.data);
+
+            }
+        })
+
+
+    }
+    function clickAll(data){
+        console.log(data);
+
+       alert(data);
+    }
+
+    function getAllServiceSeries(){
+        var $ = layui.jquery;
+        var form  = layui.form;
+
+
+    }
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        getAllServiceSeries();
+        form.on('checkbox(oneChoose)', function (data) {
+            var dataInput = $(data.elem);
+            var classs = dataInput.context.className;
+            var id = dataInput.context.pid;
+            var a = data.elem.checked;
+            if (a == true) {
+                $("#"+classs).prop("checked", true);
+                form.render('checkbox');
+            } else {
+                $("#"+classs).prop("checked", false);
+                form.render('checkbox');
+            }
+        });
+        form.on('checkbox(allChoose)', function (data) {
+            var dataInput = $(data.elem);
+            var id = dataInput.context.id;
+
+            var a = data.elem.checked;
+            if (a == true) {
+                $("."+id).prop("checked", true);
+                form.render('checkbox');
+            } else {
+                $("."+id).prop("checked", false);
+                form.render('checkbox');
+            }
+        });
+        form.on('submit(*)', function(data){
+            console.log(data.field);
+            var arr = [];
+            $("input:checkbox[name='check']:checked").each(function(i){
+                var nameAndId = {};
+                var value = $(this).val();
+                var id = this.id;
+                nameAndId.value = value;
+                nameAndId.id = id;
+                nameAndId.times=$("#"+id+"id").val();
+
+                console.log("times============"+$("#"+id+"id").val());
+                arr.push(nameAndId);
+            });
+            console.log(arr);
+           var parId =  $("#parId").val();
+           var temp = {};
+           temp.parId = parId;
+           temp.arr = arr;
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);//关闭当前页
+            parent.parentF(temp);
+
+
+        });
+
+    })
+
+
+</script>

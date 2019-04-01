@@ -34,11 +34,17 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
     }
 
 
-    public Map fuzzyQueryStuff(String  stuffName,Long salonId) {
+    public List<Map<String,String>>  fuzzyQueryStuff(String  stuffName,Long salonId,String jobLevel) {
         Map parameters = new HashMap();
+        stuffName="%"+stuffName+"%";
         parameters.put("stuffName", stuffName);
         parameters.put("salonId", salonId);
-        return this.getSqlHelper().getSqlSession().selectOne(SQL_FUZZY_QUERY_STUFF, parameters);
+        if("0".equals(jobLevel)){
+            return this.getSqlHelper().getSqlSession().selectList(SQL_FUZZY_QUERY_STUFF, parameters);
+        }else{
+            return this.getSqlHelper().getSqlSession().selectList(SQL_FUZZY_QUERY_STUFF2, parameters);
+        }
+
     }
 
 
@@ -46,6 +52,8 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
     protected final static String SQL_GET_STUFF_BY_USER = "com.hy.salon.basic.dao.GET_STUFF_BY_USER";
 
     protected final static String SQL_FUZZY_QUERY_STUFF="com.hy.salon.basic.dao.FUZZY_QUERY_STUFF";
+
+    protected final static String SQL_FUZZY_QUERY_STUFF2="com.hy.salon.basic.dao.FUZZY_QUERY_STUFF2";
 
 
 

@@ -41,6 +41,10 @@
         <result column="time_open" property="timeOpen" jdbcType="TIMESTAMP" />
         <result column="time_close" property="timeClose" jdbcType="TIMESTAMP" />
         <result column="description" property="description" jdbcType="VARCHAR" />
+
+        <result column="audit" property="audit" jdbcType="TINYINT" />
+        <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+        <result column="latitude" property="latitude" jdbcType="DECIMAL" />
     </resultMap>
 
 
