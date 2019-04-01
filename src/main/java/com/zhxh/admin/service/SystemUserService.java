@@ -189,7 +189,7 @@ public class SystemUserService {
 
 		SystemProgram program = systemProgramDAO.getSystemProgramByUrl(pureUrl);
 		if(program==null) {
-			return true;
+			return false;
 		}
 		for(SystemRole role : roleList) {
 			if(systemRoleService.hasPrivilege(role.getRecordId(),program.getRecordId(), PRIVILEGE_RUN)) {
