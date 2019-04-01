@@ -136,6 +136,9 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
     })
     public Result getOneTimeSheetByStuffId(HttpServletRequest request){
         MyResult result = new MyResult();
+        Pictures pictures = null;
+        JSONObject jsonK = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         try {
             String storeId = request.getParameter("storeId");
             String stuffId = request.getParameter("stuffId");
@@ -158,7 +161,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                 String eTime = time + " 23:59:59";
 
                 //TimeSheet timeSheet=timeSheetDao.getTSheet(stuffIdL,cTime,eTime);
-                Pictures pictures = picturesDao.getOnePicturesForCondition(stuffIdL, (byte) 1, (byte) 0);
+                 pictures = picturesDao.getOnePicturesForCondition(stuffIdL, (byte) 1, (byte) 0);
                 Schedule schedule = scheduleDao.getPaiByStuffId(stuffIdL, time);
                 if (schedule == null) {
                     result.setMsg("当天没有排班信息");
@@ -166,6 +169,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                     JSONObject json = new JSONObject();
                     json.put("picturesUrl", pictures.getPicUrl());
                     json.put("type", 3);
+                    json.put("sxtype", 3);//没有排班信息
                     result.setData(json);
                     return result;
                 }
@@ -190,8 +194,8 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
 
                 Date zhongTime = DateString.getZhongJianTime(shift.getTimeEnd(), shift.getTimeStart());
 
-                JSONObject jsonK = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
+
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat(
                         "HH:mm");
                 // String attendanceTime = dateFormat.format(condition.getAttendanceTime());
@@ -291,15 +295,22 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                 //没有签到
             }*/
                 jsonArray.add(jsonS);
+                jsonArray.add(jsonX);
                 jsonK.put("attendanceSheetList", jsonArray);
-                jsonK.put("picturesUrl", pictures.getPicUrl());
+                jsonK.put("picturesUrl", pictures==null?"":pictures.getPicUrl());
                 jsonK.put("sxtype", sxtype);//
 
                 result.setData(jsonK);
-                jsonArray.add(jsonX);
+
                 result.setSuccess(true);
                 result.setMsgcode(StatusUtil.OK);
             } catch (Exception e) {
+                jsonK.put("attendanceSheetList", jsonArray);
+                jsonK.put("picturesUrl", pictures==null?"":pictures.getPicUrl());
+                jsonK.put("sxtype", 3);//
+                result.setData(jsonK);
+                result.setSuccess(true);
+                result.setMsgcode(StatusUtil.OK);
                 e.printStackTrace();
                 result.setSuccess(false);
                 result.setMsgcode(StatusUtil.ERROR);

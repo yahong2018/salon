@@ -35,6 +35,41 @@ public class ScheduleController  {
     private ScheduleService scheduleService;
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
+
+
+    /**
+     * 后台管理系统按月获取一个员工当月的排班信息
+     * recordId ,门店id
+     */
+    @RequestMapping(value = "getAdminStuffScheduleByTime",method = RequestMethod.GET)
+    @ApiOperation(value="按月获取一个员工当月的排班信息", notes="按月获取一个员工当月的排班信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工ID", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "某年某月", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "开始时间", required = false, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "结束时间", required = false, dataType = "String")
+    })
+    @ResponseBody
+    public ExtJsResult getAdminStuffScheduleByTime(HttpServletRequest request,Long recordId, String time, String timeStart, String timeEnd,String stuffId){
+        Date timeStartDate = null;
+        Date timeEndDate = null;
+        Date[] dataList = null;
+        if(StringUtils.isNotEmpty(time)){
+            String[] temp = time.split("-");
+            dataList = TimeBeginAndEndOFaMonth.getDates(temp[0],temp[1]);
+            timeStartDate =  TimeBeginAndEndOFaMonth.getBeginTime(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+            timeEndDate =  TimeBeginAndEndOFaMonth.getEndTime(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+        }else{
+            timeStartDate = DateString.StringToDate(timeStart);
+            timeEndDate = DateString.StringToDate(timeEnd);
+        }
+
+        ExtJsResult StoreList =  scheduleService.getAdminStuffScheduleByTime(dataList,timeStartDate,timeEndDate,recordId,stuffId);
+        return  StoreList;
+    }
+
+
+
     /**
      * 后台管理系统按月获取所有员工当月的排班信息
      * recordId ,门店id

@@ -206,6 +206,10 @@ and ss.stuff_name like #{stuffName};
 
     </select>
 
+    <select id="GET_STUFF_JOB_BY_STUFF_ID"  parameterType="java.util.Map" resultType="Map" >
+        SELECT j.record_id recordId ,j.job_level jobLevel FROM job j where j.record_id in (SELECT s.job_id as jobId from stuff_job s WHERE s.stuff_id = #{stuffId});
+    </select>
+
     <!--根据美容院模糊查询店员(店长) -->
     <select id="FUZZY_QUERY_STUFF2"  parameterType="java.util.Map" resultType="java.util.Map" >
 

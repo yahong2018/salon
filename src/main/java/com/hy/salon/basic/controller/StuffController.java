@@ -25,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -81,6 +79,103 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
     /**
+     * 后台管理系统获取员工按美容院分类
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("getStuffAdmin")
+    @ApiOperation(value="获取员工按美容院分类", notes="获取员工按美容院分类")
+    public Result getStuffAdmin(String jobLevel){
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
+        if(jobLevel==null){
+            List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
+            for(Map map:listMap){
+                jobLevel =  (String) map.get("jobLevel");
+            }
+        }
+        List<Map> listMap  = new ArrayList<>();
+        Result r= new Result();
+        if(jobLevel.equals("0")){
+            List<Salon> stuffList=salonDao.getAdminSalonForStore(stuff2.getStoreId());
+            JSONArray jsonArr=new JSONArray();
+            JSONObject jsonObj=new JSONObject();
+            if(!stuffList.isEmpty()){
+                for(Salon s :stuffList){
+                    Map map = new HashMap();
+                    map.put("recordId",s.getRecordId());
+                    map.put("salonName",s.getSalonName());
+                    listMap.add(map);
+                }
+
+                Salon s = stuffList.get(0);
+                long recordId = s.getRecordId();
+                List<Stuff> stuff= stuffService.getStuffForStoreId(recordId);
+                for(Stuff ss:stuff){
+                    Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                    if(null!=pic){
+                        ss.setPicUrl(pic.getPicUrl());
+                    }
+                    List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                    if(stuffJobList.size() != 1 ){
+                        for(StuffJob sj:stuffJobList){
+                            Job job=jobDao.getJobForId(sj.getJobId());
+                            String str=ss.getJobName()+","+job.getJobName();
+                            ss.setJobName(str);
+                        }
+
+                    }
+
+                }
+
+                jsonObj.put("stuff",stuff);
+                jsonObj.put("salonName",s.getSalonName());
+                //jsonArr.add(jsonObj);
+                jsonObj.put("listSalon",listMap);
+            }
+            r.setData(jsonObj);
+        }else{
+            JSONArray jsonArr=new JSONArray();
+            Salon salon = salonDao.getSalonForId(stuff2.getStoreId());
+            List<Stuff> stuff= stuffService.getStuffForStoreId(stuff2.getStoreId());
+            for(Stuff ss:stuff){
+                Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                if(null!=pic){
+                    ss.setPicUrl(pic.getPicUrl());
+                }
+                List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                if(stuffJobList.size() != 1 ){
+                    for(StuffJob sj:stuffJobList){
+                        Job job=jobDao.getJobForId(sj.getJobId());
+                        String str=ss.getJobName()+","+job.getJobName();
+                        ss.setJobName(str);
+                    }
+
+                }
+
+            }
+            Map map = new HashMap();
+            map.put("recordId",salon.getRecordId());
+            map.put("salonName",salon.getSalonName());
+            listMap.add(map);
+            JSONObject jsonObj=new JSONObject();
+            jsonObj.put("stuff",stuff);
+            jsonObj.put("listSalon",listMap);
+            r.setData(jsonObj);
+        }
+
+
+
+        r.setMsg("获取成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
+
+
+
+    /**
      * 获取员工按美容院分类
      *
      * @return
@@ -91,6 +186,16 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     public Result getStuff(String jobLevel){
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
+        if(jobLevel==null){
+            List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
+            for(Map map:listMap){
+               jobLevel =  (String) map.get("jobLevel");
+            }
+        }
+
+
+
+
         Result r= new Result();
         if(jobLevel.equals("0")){
             List<Salon> stuffList=salonDao.getSalonForStore(stuff2.getStoreId());
@@ -110,11 +215,12 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         if(stuffJobList.size() != 1 ){
                             for(StuffJob sj:stuffJobList){
                                 Job job=jobDao.getJobForId(sj.getJobId());
-
-                                    String str=ss.getJobName()+","+job.getJobName();
-                                    ss.setJobName(str);
+                                String str=ss.getJobName()+","+job.getJobName();
+                                ss.setJobName(str);
                             }
+
                         }
+
                     }
                     JSONObject jsonObj=new JSONObject();
                     jsonObj.put("stuff",stuff);
@@ -137,8 +243,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                 if(stuffJobList.size() != 1 ){
                     for(StuffJob sj:stuffJobList){
                         Job job=jobDao.getJobForId(sj.getJobId());
-                            String str=ss.getJobName()+","+job.getJobName();
-                            ss.setJobName(str);
+                        String str=ss.getJobName()+","+job.getJobName();
+                        ss.setJobName(str);
                     }
 
                 }
@@ -146,9 +252,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             }
             JSONObject jsonObj=new JSONObject();
             jsonObj.put("stuff",stuff);
-            jsonObj.put("salonName","");
             jsonArr.add(jsonObj);
-            r.setData(jsonArr);
+
         }
 
 
@@ -293,21 +398,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
     /**
-     * 搜索家人模糊查询
+     * 搜索家人模糊查询(仅院长角色可调)
      */
     @ResponseBody
-    @RequestMapping("fuzzyQueryStuff")
-    @ApiOperation(value="搜索家人模糊查询", notes="搜索家人模糊查询")
-    public Result fuzzyQueryStuff(String stuffName,Long salonId,String jobLevel) {
+    @RequestMapping(value="fuzzyQueryStuff",method = RequestMethod.GET)
+    @ApiOperation(value="搜索家人模糊查询(仅院长角色可调)", notes="搜索家人模糊查询(仅院长角色可调)")
+    public Result fuzzyQueryStuff(String stuffName) {
         Result r= new Result();
         try {
-//            SystemUser user = authenticateService.getCurrentLogin();
-//            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
-
-                List<Map<String,String>> stuff=stuffDao.fuzzyQueryStuff(stuffName,salonId,jobLevel);
-
-
-
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
+            Map<String,String> stuff=stuffDao.fuzzyQueryStuff(stuffName,stuffCondition.getStoreId());
 
             r.setData(stuff);
             r.setMsg("查询成功");

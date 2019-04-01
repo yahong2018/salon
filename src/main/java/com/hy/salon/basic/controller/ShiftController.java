@@ -51,13 +51,16 @@ public class ShiftController {
      */
     @RequestMapping("/getSalonShift")
     @ResponseBody
-    public List<Shift> getSalonShift(HttpServletRequest request){
+    public ExtJsResult getSalonShift(HttpServletRequest request){
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
         List<Shift>  list =shiftService.getSalonShift(stuff.getStoreId());
-
-        return  list;
+        ExtJsResult er  = new ExtJsResult();
+        er.setSuccess(true);
+        er.setMsgcode(StatusUtil.OK);
+        er.setData(list);
+        return  er;
     }
 
     /**

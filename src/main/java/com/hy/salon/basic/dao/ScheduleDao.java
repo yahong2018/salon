@@ -1,5 +1,6 @@
 package com.hy.salon.basic.dao;
 
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.entity.Schedule;
 import com.hy.salon.basic.vo.ShiftVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -14,6 +15,8 @@ import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
 import com.zhxh.core.web.PageListRequest;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.HashMap;
@@ -22,6 +25,9 @@ import java.util.Map;
 
 @Component("scheduleDao")
 public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
     public List<ShiftVo> getScheduleByTime(Long recordId, String timeStart, String timeEnd) {
         Map parameters = new HashMap();
         parameters.put("storeId", recordId);
@@ -93,6 +99,7 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
         JSONArray jsonArray  = new JSONArray();
         List<String> listKey = new ArrayList<>();
         listKey.add("name");
+        listKey.add("stuffId");
         int i = 0;
         for(Stuff stuff :listStuff){
             Map parameters = new HashMap();
@@ -135,6 +142,54 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
         }
         ejr.setData(jsonArray);
         ejr.setTotal(count);
+        ejr.setListKey(listKey);
+        return  ejr;
+    }
+
+    public ExtJsResult getAdminStuffScheduleByTime(Date[] dataList, Date timeStartDate, Date timeEndDate, Long recordId, String stuffId) {
+        ExtJsResult ejr = new ExtJsResult();
+       Stuff stuff = stuffDao.getById(stuffId);
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        parameters.put("timeStart", timeStartDate);
+        parameters.put("timeEnd", timeEndDate);
+        List<Map> mapList = this.getSqlHelper().getSqlSession().selectList(SQL_GET_SCHEDULE_BY_TIME_AND_STUFFID, parameters);
+        JSONObject json = new JSONObject();
+        json.put("name",stuff.getStuffName());
+        json.put("stuffId",stuffId);
+        List<String> listKey = new ArrayList<>();
+        listKey.add("name");
+        listKey.add("stuffId");
+        for(Date date:dataList){
+            String dateString = DateString.DateToString(date);
+            listKey.add(dateString);
+            json.put(dateString,"休");
+
+            for(Map map:mapList){
+                Date temp =  (Date)map.get("day");
+                String tempDateString = DateString.DateToString(temp);
+                if(dateString.equals(tempDateString)){
+                    Integer type = (Integer)map.get("shiftType");
+                    String typeString = "";
+                    if(type==0){
+                        typeString = "全班";
+                    }else if(type==1){
+                        typeString = "早班";
+                    }else if(type==2){
+                        typeString = "中班";
+                    }else{
+                        typeString = "晚班";
+                    }
+                    json.put(dateString,typeString);
+                }
+            }
+
+        }
+
+        ejr.setData(json);
+        ejr.setSuccess(true);
+        ejr.setMsgcode(StatusUtil.OK);
+        ejr.setMsg("查询成功");
         ejr.setListKey(listKey);
         return  ejr;
     }

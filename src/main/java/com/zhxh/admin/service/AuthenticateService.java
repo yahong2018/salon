@@ -39,8 +39,8 @@ public class AuthenticateService {
         user.setUserCode(userCode);
         user.setPassword(password);
         SystemUser dbUser = systemUserDAO.getUserByCode(user.getUserCode());
-        String md5 = StringUtilsExt.getMd5(user.getPassword());
-        if (dbUser == null || !md5.equals(dbUser.getPassword())) {
+        //String md5 = StringUtilsExt.getMd5(user.getPassword());
+        if (dbUser == null || !password.equals(dbUser.getPassword())) {
             throwException(ERROR_LOGIN_ACCOUNT);
         }
         if (dbUser.isDisabled()) {

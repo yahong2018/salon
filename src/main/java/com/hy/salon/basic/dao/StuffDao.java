@@ -34,28 +34,26 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
     }
 
 
-    public List<Map<String,String>>  fuzzyQueryStuff(String  stuffName,Long salonId,String jobLevel) {
+    public Map fuzzyQueryStuff(String  stuffName,Long salonId) {
         Map parameters = new HashMap();
-        stuffName="%"+stuffName+"%";
         parameters.put("stuffName", stuffName);
         parameters.put("salonId", salonId);
-        if("0".equals(jobLevel)){
-            return this.getSqlHelper().getSqlSession().selectList(SQL_FUZZY_QUERY_STUFF, parameters);
-        }else{
-            return this.getSqlHelper().getSqlSession().selectList(SQL_FUZZY_QUERY_STUFF2, parameters);
-        }
-
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_FUZZY_QUERY_STUFF, parameters);
     }
 
-
+    public List<Map> getJobLevelByStuffId(Long recordId) {
+        Map parameters = new HashMap();
+        parameters.put("stuffId", recordId);
+        List<Map> mapList = this.getSqlHelper().getSqlSession().selectList(GET_STUFF_JOB_BY_STUFF_ID, parameters);
+        return mapList;
+    }
 
     protected final static String SQL_GET_STUFF_BY_USER = "com.hy.salon.basic.dao.GET_STUFF_BY_USER";
 
     protected final static String SQL_FUZZY_QUERY_STUFF="com.hy.salon.basic.dao.FUZZY_QUERY_STUFF";
 
-    protected final static String SQL_FUZZY_QUERY_STUFF2="com.hy.salon.basic.dao.FUZZY_QUERY_STUFF2";
 
 
-
+    protected final static String GET_STUFF_JOB_BY_STUFF_ID="com.hy.salon.basic.dao.GET_STUFF_JOB_BY_STUFF_ID";
 
 }

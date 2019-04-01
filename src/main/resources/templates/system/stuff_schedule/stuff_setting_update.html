@@ -108,6 +108,7 @@
             type:'GET',
             url:'/hy/basic/shift/getSalonShift',
             success: function(data){
+                var data = data.data;
                 for( var i = 0; i < data.length; i++ )
                 {
                     if(data[i].shiftType=='0'){
@@ -210,8 +211,13 @@ layui.use(['layer', 'form', 'jquery', 'laydate'], function () {
 
         $(".dayList").val(JSON.stringify(dayList));
         var insertDay = {};
+        if(radioClass==""){
+            insertDay.shiftId ="-1";
+        }else{
+            insertDay.shiftId = $("."+radioClass).attr("shiftid");
+        }
 
-        insertDay.shiftId = $("."+radioClass).attr("shiftid");
+
         insertDay.stuffId = $(".stuffId").val();
 
         var dayListInsert =  $(".dayListInsert").val();

@@ -70,6 +70,14 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getByWhere(where,parameters);
     }
 
+    public List<Salon> getAdminSalonForStore(Long storeId){
+        String where=" parent_id = #{storeId} or record_id = #{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        parameters.put("recordId", storeId);
+        return this.getByWhere(where,parameters);
+    }
+
     public ListRequest getListRequest(HttpServletRequest request) {
         ListRequest listRequest;
         if(StringUtils.isNotEmpty(request.getParameter("page"))){

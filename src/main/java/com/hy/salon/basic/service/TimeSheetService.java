@@ -31,7 +31,8 @@ public class TimeSheetService {
 
     @Resource(name = "scheduleDao")
     private ScheduleDao scheduleDao;
-
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
     @Resource(name = "shiftDao")
     private ShiftDao shiftDao;
 
@@ -81,12 +82,17 @@ public class TimeSheetService {
             map.put("stuffId",stuff.getRecordId());
             map.put("stuffName",stuff.getStuffName());
             map.put("tel",stuff.getTel());
-            List<StuffVo> name = reservationDao.getStuffName(stuff.getRecordId());
-            if(StringUtils.isEmpty(name)){
-                map.put("role",name.get(0).getRole());
+            map.put("picturesUrl","");
+            Pictures  pictures = picturesDao.getOnePicturesForCondition(stuff.getRecordId(), (byte) 1, (byte) 0);
+            if(pictures!=null){
+                map.put("picturesUrl",pictures.getPicUrl());
             }
-//            result1.getAttendanceNum();
-////            result.getAttendanceNum();
+            List<StuffVo> name = reservationDao.getStuffName(stuff.getRecordId());
+            if(name.size()>0){
+                map.put("roleName",name.get(0).getRole());
+            }else{
+                map.put("roleName","无");
+            }
             result.setAttendanceNum(result.getAttendanceNum()+result1.getAttendanceNum());
             result.setHasAttendanceNum(result.getHasAttendanceNum()+result1.getHasAttendanceNum());
             result.setYichangNum(result.getYichangNum()+result1.getYichangNum());

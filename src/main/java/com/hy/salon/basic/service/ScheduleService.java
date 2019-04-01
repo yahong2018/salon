@@ -38,6 +38,9 @@ public class ScheduleService {
             if(one!=null){
                 scheduleDao.deleteById(one.getRecordId());
             }
+            if(schedule.getShiftId()==-1){
+                scheduleDao.deleteById(one.getRecordId());
+            }
             scheduleDao.insert(schedule);
         }
     }
@@ -45,5 +48,9 @@ public class ScheduleService {
     public ExtJsResult getScheduleForStoreIdSystem(Date[] dataList,Date timeStartDate, Date timeEndDate,HttpServletRequest request, Long recordId, ListRequestBaseHandler listRequestBaseHandler) {
         return scheduleDao.getScheduleForStoreIdSystem(dataList,timeStartDate,timeEndDate,request,recordId,listRequestBaseHandler);
 
+    }
+
+    public ExtJsResult getAdminStuffScheduleByTime(Date[] dataList, Date timeStartDate, Date timeEndDate, Long recordId, String stuffId) {
+        return scheduleDao.getAdminStuffScheduleByTime(dataList,timeStartDate,timeEndDate,recordId,stuffId);
     }
 }
