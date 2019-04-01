@@ -39,7 +39,8 @@ public class LoginFilter implements Filter {
                 String url = httpServletRequest.getRequestURI();
                 if (!url.contains(SysEnv.getUrlLoginPage())) {
                     SystemUser currentLogin = authenticateService.getCurrentLogin();
-                    if(currentLogin==null) {
+                    if(currentLogin==null /* 没有登录 */
+                            || !systemUserService.canRun(currentLogin.getRecordId(), url)/* 当前用户没有权限 */) {
                         redirectUrl = SysEnv.getAppRoot() + SysEnv.getUrlLoginPage();
                     }
                 }
