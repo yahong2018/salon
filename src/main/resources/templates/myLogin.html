@@ -50,7 +50,8 @@
 </head>
 <body >
 <div class="window">
-    <form  class="layui-form"  id="login-form" >
+    <!--<form  class="layui-form"  id="login-form" >-->
+    <form id="loginForm" th:action="@{/login/doLogin}" method="post" onsubmit="return onLogin();">
         <div class="row">
             <h2 class="title">合一美容院信息管理平台</h2>
         </div>
@@ -76,7 +77,7 @@
           <!--  <input type="checkbox" name="" title="写作" lay-skin="primary" checked>-->
            <!-- <div style="margin-left: 50px;margin-bottom: 10px;" class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>保持登录7天</span><i class="layui-icon"></i></div>-->
             <div >
-                <input type="submit" class="layui-btn denglu" onclick="login(this)" value="登       录"/>
+                <input type="submit" class="layui-btn denglu"  value="登       录"/> <!--onclick="login(this)"-->
             </div>
         </div>
     </form>
@@ -112,7 +113,7 @@
                         });*/
         });
     });
-    function login(obj) {
+    /*function login(obj) {
         var $ = layui.$;
         $(obj).attr("disabled", true);
 
@@ -140,7 +141,7 @@
             });
 
         }
-    }
+    }*/
 
 </script>
 </html>
