@@ -514,6 +514,22 @@ create table member_tag
   index idx_member_tag_02(tag_id)
 )comment '会员标签';
 
+create table member_salon_tag
+(
+  record_id                        bigint     auto_increment       not null,
+  salon_id                         bigint                          not null,
+  tag_id                           bigint                          not null,
+
+  create_date                      datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
+
+  primary key (record_id),
+  index idx_member_salon_tag_01(salon_id),
+  index idx_member_salon_tag_02(tag_id)
+)comment '会员标签-按美容院分';
 
 create table shift
 (
