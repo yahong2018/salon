@@ -17,4 +17,11 @@ public class SalonInviteCodeDAO extends BaseDAOWithEntity<SalonInviteCode> {
         return this.getOne(where,parameters);
     }
 
+    public SalonInviteCode getSalonForSalonId(Long salonId){
+        String where="salon_id=#{salonId}";
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        return this.getOne(where,parameters);
+    }
+
 }

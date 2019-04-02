@@ -281,8 +281,11 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             for(Map<String,Object> m:dataList){
                 for(Map<String,Object> mm:binServiceList){
                     if(m.get("recordId") == mm.get("recordId")){
-//                        ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,m.get("recordId"));
-//                        m.put("times",serviceSuiteItem.getTimes().toString());
+                        String str=mm.get("recordId").toString();
+                        if(str!=null){
+                            ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,str);
+                            m.put("times",serviceSuiteItem.getTimes().toString());
+                        }
                         m.put("isBin","1");
                     }
 
@@ -291,6 +294,8 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
 
             Map dataMap =new HashMap<String, Object>();
+            dataMap.put("dataList",dataList);
+
             dataMap.put("serviceSuite",suite);
             dataMap.put("piclist",piclist);
 
@@ -456,8 +461,11 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             for(Map<String,Object> m:dataList){
                 for(Map<String,Object> mm:binServiceList){
                     if(m.get("recordId") == mm.get("recordId")){
-//                        ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,m.get("recordId"));
-//                        m.put("times",serviceSuiteItem.getTimes().toString());
+                        String str=mm.get("recordId").toString();
+                        if(str!=null){
+                            ServiceSuiteItem serviceSuiteItem =serviceSuiteItemDao.querySuitItemForId(recordId,str);
+                            m.put("times",serviceSuiteItem.getTimes().toString());
+                        }
                         m.put("isBin","1");
                     }
 
