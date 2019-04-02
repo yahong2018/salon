@@ -1,5 +1,6 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Schedule;
@@ -160,5 +161,30 @@ public class ScheduleController  {
         }
         return result;
     }
+    /**
+     * 修改或保存员工的排班信息APP
+     */
+    @ResponseBody
+    @RequestMapping(value = "updateStuffScheduleApp",method = RequestMethod.POST)
+    @ApiOperation(value="修改或保存员工的排班信息", notes="修改或保存员工的排班信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据", required = true, dataType = "List<Schedule>")
+    })
+    public Result updateStuffScheduleApp(HttpServletRequest request){
+       String listString =  request.getParameter("list");
+        List<Schedule> list = JSON.parseArray(listString, Schedule.class);
+        Result result=new Result();
+        try {
+            scheduleService.updateStuffSchedule(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
 
 }

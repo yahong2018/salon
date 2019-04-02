@@ -8,7 +8,7 @@
     <link  href="../layui/css/layui.css"  type="text/css" rel="stylesheet"/>
 <!--    <script type="text/javascript" src="../static/js/jquery/jquery-3.3.1.min.js"></script>-->
     <script src="../layui/layui.js"></script>
-
+    <script type="text/javascript" src="../js/md5.js"></script>
     <style>
         .window{
             /*width: 400px;
@@ -50,8 +50,7 @@
 </head>
 <body >
 <div class="window">
-    <!--<form  class="layui-form"  id="login-form" >-->
-    <form id="loginForm" th:action="@{/login/doLogin}" method="post" onsubmit="return onLogin();">
+    <form  class="layui-form"  id="login-form" >
         <div class="row">
             <h2 class="title">合一美容院信息管理平台</h2>
         </div>
@@ -77,7 +76,7 @@
           <!--  <input type="checkbox" name="" title="写作" lay-skin="primary" checked>-->
            <!-- <div style="margin-left: 50px;margin-bottom: 10px;" class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>保持登录7天</span><i class="layui-icon"></i></div>-->
             <div >
-                <input type="submit" class="layui-btn denglu"  value="登       录"/> <!--onclick="login(this)"-->
+                <input type="submit" class="layui-btn denglu" onclick="login(this)" value="登       录"/>
             </div>
         </div>
     </form>
@@ -93,6 +92,13 @@
         var $ = layui.$;
 
         $(document).ready(function(){
+            var password= hex_md5("123456");
+           /* $("#password").on("input",function(e){
+                //获取input输入的值
+                console.log(hex_md5(e.delegateTarget.value));
+                $("#password").
+            });*/
+            //alert(password);
             /*            $("#account").blur(function(){
                             $.ajax({
                                 url:'/user/checkAccount.action',
@@ -113,12 +119,13 @@
                         });*/
         });
     });
-    /*function login(obj) {
+    function login(obj) {
         var $ = layui.$;
         $(obj).attr("disabled", true);
 
         var userCode = $.trim($('#userCode').val());
         var password = $.trim($('#password').val());
+        password =  hex_md5(password);
         if (userCode == "" || password == "") {
             $("#info").html('用户名或者密码不能为空');
             $(obj).attr("disabled", false);
@@ -126,7 +133,7 @@
             $.ajax({
                 type : 'POST',
                 url : '/login/doLogin',
-                data : $("#login-form").serialize(),
+                data : {userCode:userCode,password:password},
                 contentType: "application/x-www-form-urlencoded",
                 success : function(data) {
                     localStorage.setItem("token", data.token);
@@ -141,7 +148,7 @@
             });
 
         }
-    }*/
+    }
 
 </script>
 </html>

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yahong on 14-4-15.
@@ -22,6 +23,8 @@ public class ExtJsResult implements Serializable {
     private Boolean success;
 
     private List<String> listKey;
+
+    private List<Map>  listMap;
 
 /*    public List<String> getListKey() {
 		return listKey;

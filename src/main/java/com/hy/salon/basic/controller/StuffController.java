@@ -15,6 +15,9 @@ import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.utils.StringUtilsExt;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequest;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/hy/basic/stuff")
@@ -86,93 +90,71 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping("getStuffAdmin")
     @ApiOperation(value="获取员工按美容院分类", notes="获取员工按美容院分类")
-    public Result getStuffAdmin(String jobLevel){
+    public ExtJsResult getStuffAdmin(String jobLevel, HttpServletRequest request) {
         SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
-        if(jobLevel==null){
+        Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+        if (jobLevel == null) {
             List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
-            for(Map map:listMap){
-                jobLevel =  (String) map.get("jobLevel");
+            for (Map map : listMap) {
+                int jobLevel1 = (Integer) map.get("jobLevel");
+                jobLevel =jobLevel1+"";
             }
         }
-        List<Map> listMap  = new ArrayList<>();
-        Result r= new Result();
-        if(jobLevel.equals("0")){
-            List<Salon> stuffList=salonDao.getAdminSalonForStore(stuff2.getStoreId());
-            JSONArray jsonArr=new JSONArray();
-            JSONObject jsonObj=new JSONObject();
-            if(!stuffList.isEmpty()){
-                for(Salon s :stuffList){
+        List<Map> listMap = new ArrayList<>();
+        Result r = new Result();
+        if (jobLevel.equals("0")) {
+            List<Salon> stuffList = salonDao.getAdminSalonForStore(stuff2.getStoreId());
+            if (!stuffList.isEmpty()) {
+                for (Salon s : stuffList) {
                     Map map = new HashMap();
-                    map.put("recordId",s.getRecordId());
-                    map.put("salonName",s.getSalonName());
+                    map.put("recordId", s.getRecordId());
+                    map.put("salonName", s.getSalonName());
                     listMap.add(map);
                 }
 
                 Salon s = stuffList.get(0);
                 long recordId = s.getRecordId();
-                List<Stuff> stuff= stuffService.getStuffForStoreId(recordId);
-                for(Stuff ss:stuff){
-                    Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
-                    if(null!=pic){
-                        ss.setPicUrl(pic.getPicUrl());
-                    }
-                    List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
-                    if(stuffJobList.size() != 1 ){
-                        for(StuffJob sj:stuffJobList){
-                            Job job=jobDao.getJobForId(sj.getJobId());
-                            String str=ss.getJobName()+","+job.getJobName();
-                            ss.setJobName(str);
-                        }
-
+                ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, recordId, new ListRequestBaseHandler() {
+                    @Override
+                    public List getByRequest(ListRequest listRequest) {
+                        return stuffDao.getPageList(listRequest.toMap(), null);
                     }
 
-                }
-
-                jsonObj.put("stuff",stuff);
-                jsonObj.put("salonName",s.getSalonName());
-                //jsonArr.add(jsonObj);
-                jsonObj.put("listSalon",listMap);
+                    @Override
+                    public int getRequestListCount(ListRequest listRequest) {
+                        return stuffDao.getPageListCount(listRequest.toMap(), null);
+                    }
+                });
+                StoreList.setListMap(listMap);
+                return StoreList;
             }
-            r.setData(jsonObj);
-        }else{
-            JSONArray jsonArr=new JSONArray();
+
+        }else {
             Salon salon = salonDao.getSalonForId(stuff2.getStoreId());
-            List<Stuff> stuff= stuffService.getStuffForStoreId(stuff2.getStoreId());
-            for(Stuff ss:stuff){
-                Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
-                if(null!=pic){
-                    ss.setPicUrl(pic.getPicUrl());
-                }
-                List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
-                if(stuffJobList.size() != 1 ){
-                    for(StuffJob sj:stuffJobList){
-                        Job job=jobDao.getJobForId(sj.getJobId());
-                        String str=ss.getJobName()+","+job.getJobName();
-                        ss.setJobName(str);
-                    }
-
+            ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, salon.getRecordId(), new ListRequestBaseHandler() {
+                @Override
+                public List getByRequest(ListRequest listRequest) {
+                    return stuffDao.getPageList(listRequest.toMap(), null);
                 }
 
-            }
+                @Override
+                public int getRequestListCount(ListRequest listRequest) {
+                    return stuffDao.getPageListCount(listRequest.toMap(), null);
+                }
+            });
+            List<Map> listMap2 = new ArrayList<>();
             Map map = new HashMap();
-            map.put("recordId",salon.getRecordId());
-            map.put("salonName",salon.getSalonName());
-            listMap.add(map);
-            JSONObject jsonObj=new JSONObject();
-            jsonObj.put("stuff",stuff);
-            jsonObj.put("listSalon",listMap);
-            r.setData(jsonObj);
+            map.put("recordId", salon.getRecordId());
+            map.put("salonName", salon.getSalonName());
+            listMap2.add(map);
+            StoreList.setListMap(listMap2);
+            StoreList.setMsg("获取成功");
+            StoreList.setMsgcode(StatusUtil.OK);
+            StoreList.setSuccess(true);
+            return StoreList;
         }
-
-
-
-        r.setMsg("获取成功");
-        r.setMsgcode(StatusUtil.OK);
-        r.setSuccess(true);
-        return r;
+        return null;
     }
-
 
 
     /**
