@@ -37,15 +37,17 @@ public class LoginFilter implements Filter {
 
                 String redirectUrl = "";
                 String url = httpServletRequest.getRequestURI();
+                /*
                 if(!"/".equalsIgnoreCase(url)&& !url.endsWith(".handler")){
                     chain.doFilter(request, response);
                     return;
                 }
+                */
 
                 if (!url.contains(SysEnv.getUrlLoginPage())) {
                     SystemUser currentLogin = authenticateService.getCurrentLogin();
                     if(currentLogin==null /* 没有登录 */
-                            || !systemUserService.canRun(currentLogin.getRecordId(), url)/* 当前用户没有权限 */) {
+                        /* || !systemUserService.canRun(currentLogin.getRecordId(), url) 当前用户没有权限 */) {
                         redirectUrl = SysEnv.getAppRoot() + SysEnv.getUrlLoginPage();
                     }
                 }
