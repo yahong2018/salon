@@ -1,10 +1,13 @@
 package com.zhxh.admin.controller;
 
+import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.RoleUserService;
 import com.zhxh.admin.service.SystemUserService;
+import com.zhxh.core.utils.StringUtilsExt;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -24,6 +27,9 @@ import java.util.List;
 public class SystemUserController {
     @Resource(name = "systemUserService")
     private SystemUserService systemUserService;
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDao;
 
     @Resource(name = "roleUserService")
     private RoleUserService roleUserService;
@@ -108,4 +114,18 @@ public class SystemUserController {
     public int removeRole(Long userId, Long roleId) {
         return systemUserService.removeRole(userId, roleId);
     }
+
+    @RequestMapping("updatePwd")
+    @ResponseBody
+    public Result updatePwd(SystemUser condition) {
+        Result r = new Result();
+        String passwordMd5 = StringUtilsExt.getMd5(condition.getPassword());
+        condition.setPassword(passwordMd5);
+        systemUserDao.update(condition);
+        r.setMsg("请求成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        return r;
+    }
+
 }
