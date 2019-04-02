@@ -60,7 +60,7 @@ public class SystemUserService {
         //1.新建本身的数据
         //2.授予权限:这一步在权限授予里面完成
         //3.通知用户
-        String passwordMd5 = StringUtilsExt.getMd5(item.getPassword());
+        String passwordMd5 = StringUtilsExt.getMd5(item.getPassword()==""?"123456":item.getPassword());
         item.setPassword(passwordMd5);
         int result = systemUserDAO.insert(item);
         if (result == 1) {
