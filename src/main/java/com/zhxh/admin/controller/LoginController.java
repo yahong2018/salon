@@ -12,6 +12,7 @@ import com.hy.salon.basic.entity.StuffJob;
 import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.StuffJobService;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,14 +145,21 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
+    @ResponseBody
     public String doLogin(Model model, String userCode, String password) {
         try {
-            authenticateService.authenticate(userCode,password);
-            String url = SysEnv.getAppRoot() + SysEnv.getUrlAppIndex();
-            if (StringUtils.isEmpty(url)) {
-                url = "/";
-            }
-            return "redirect:" + url;
+
+          boolean flag =   authenticateService.adminAuthenticate(userCode,password);
+          if(flag){
+              String url = SysEnv.getAppRoot() + SysEnv.getUrlAppIndex();
+              if (StringUtils.isEmpty(url)) {
+                  url = "/";
+              }
+              return "redirect:" + url;
+          }else{
+              return  "error";
+          }
+
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             model.addAttribute("errorMessage", errorMessage);

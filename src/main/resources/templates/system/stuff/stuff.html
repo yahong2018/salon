@@ -32,11 +32,11 @@
     <div class="layui-inline">
       <label class="layui-form-label">搜索选择框</label>
       <div class="layui-input-inline">
-        <select name="modules"  lay-search="" class="userKey">
-          <option value="">直接选择或搜索选择</option>
+        <select name="modules"  lay-search="" class="storeList">
+         <!-- <option value="">直接选择或搜索选择</option>
           <option value="user_code">用户账号</option>
           <option value="user_name">用户名称</option>
-          <option value="email">email</option>
+          <option value="email">email</option>-->
         </select>
       </div>
     </div>
@@ -120,6 +120,11 @@
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);
+          console.log(res.listMap);
+          var listMap = res.listMap;
+          for(index in listMap){
+
+          }
           return {
             "count": res.total,
             "data": res.data,
@@ -177,76 +182,9 @@
       }
 
     })
-    $(".tingzhi").on("click",function(){
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1||data.length<1){
-        alert("请选中一条数据");
-        return false;
-      }
-      $.ajax({
-        type:'POST',
-        url:'/admin/systemUsers/disableUser.handler',
-        data: {userId:data[0].recordId},
-        success: function(data){
-          alert("操作成功！");
-          productsearch(1);
-        },
-        error:function(data){
-          alert("操作失败");
-          console.log(data);
-        }
-      })
-    })
 
 
-    $(".qidong").on("click",function(){
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1||data.length<1){
-        alert("请选中一条数据");
-        return false;
-      }
-      $.ajax({
-        type:'POST',
-        url:'/admin/systemUsers/enableUser.handler',
-        data: {userId:data[0].recordId},
-        success: function(data){
-          alert("操作成功！");
-          productsearch(1);
-        },
-        error:function(data){
-          alert("操作失败");
-          console.log(data);
-        }
-      })
-    })
-    $(".shouquan").on("click",function(){
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length<1){
-        alert("请选中一条数据");
-        return false;
-      }
-      layer.open({
-        type:2,
-        area:[482+'px',315+'px'],
-        fix:false,
-        offset: '80px',
-        maxmin:true,
-        shadeClose:true,
-        scrollbar: false,
-        shade:0.4,
-        title:'授权',
-        content:['authorize.html'],
-        success:function(layero,index){
-          var iframe = window['layui-layer-iframe' + index];
-          // 向子页面的全局函数child传参
-          iframe.child(data[0]);
-          console.log("成功");
-        },
-        fail:function(data){
-          console.log(data);
-        }
-      })
-    })
+
 
 
     $(".deleteUser").on("click",function(){
@@ -310,15 +248,15 @@
     $(".addUser").on("click",function(){
       layer.open({
         type:2,
-        area:[888+'px',666+'px'],
+        area:[888+'px',388+'px'],
         fix:false,
         offset: '80px',
         maxmin:true,
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'新增充值卡',
-        content:['add_suite.html'],
+        title:'添加员工',
+        content:['add_stuff.html'],
         success:function(layero,index){
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参

@@ -136,8 +136,12 @@
                 data : {userCode:userCode,password:password},
                 contentType: "application/x-www-form-urlencoded",
                 success : function(data) {
-                    localStorage.setItem("token", data.token);
-                    location.href = '/index.html';
+                    if(data=="error"){
+                        alert("登陆失败");
+                    }else {
+                        localStorage.setItem("token", data.token);
+                        location.href = '/index.html';
+                    }
                 },
                 error : function(xhr, textStatus, errorThrown) {
                     var msg = xhr.responseText;
