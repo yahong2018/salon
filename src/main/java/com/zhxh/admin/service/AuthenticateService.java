@@ -1,6 +1,10 @@
 package com.zhxh.admin.service;
 
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
+import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.core.utils.StringUtilsExt;
@@ -9,8 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 import static com.zhxh.admin.misc.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
@@ -19,7 +22,10 @@ import static com.zhxh.core.exception.ExceptionHelper.throwException;
 public class AuthenticateService {
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;
-
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
+    @Resource(name = "systemRoleDAO")
+    private SystemRoleDAO systemRoleDAO;
     public SystemUser getSessionLogin(HttpSession session) {
         return (SystemUser) session.getAttribute(CURRENT_LOGIN_STORED_ID);
     }
@@ -39,6 +45,9 @@ public class AuthenticateService {
         user.setUserCode(userCode);
         user.setPassword(password);
         SystemUser dbUser = systemUserDAO.getUserByCode(user.getUserCode());
+        String where="user_id=#{userId}";
+        Map parameters = new HashMap();
+        parameters.put("userId", dbUser.getRecordId());
         //String md5 = StringUtilsExt.getMd5(user.getPassword());
         if (dbUser == null || !password.equals(dbUser.getPassword())) {
             throwException(ERROR_LOGIN_ACCOUNT);
@@ -53,6 +62,53 @@ public class AuthenticateService {
         dbUser.setOnline(true);
 
         systemUserDAO.update(dbUser);
+/*        List<RoleUser> list =roleUserDAO.getByWhere(where,parameters);
+        if(list.size()>0){
+            for(RoleUser ru:list){
+                SystemRole sr =  systemRoleDAO.getById(ru.getRoleId());
+                if(sr.getRoleCode().equals("dianzhanag")||sr.getRoleCode().equals("admin")){
+
+                }
+
+            }
+        }*/
+
+    }
+
+    public Boolean  adminAuthenticate(String userCode, String password) {
+        //1.验证账号和密码
+        SystemUser user = new SystemUser();
+        user.setUserCode(userCode);
+        user.setPassword(password);
+        SystemUser dbUser = systemUserDAO.getUserByCode(user.getUserCode());
+        String where="user_id=#{userId}";
+        Map parameters = new HashMap();
+        parameters.put("userId", dbUser.getRecordId());
+        List<RoleUser> list =roleUserDAO.getByWhere(where,parameters);
+        if(list.size()>0){
+            for(RoleUser ru:list){
+                SystemRole sr =  systemRoleDAO.getById(ru.getRoleId());
+                if(sr.getRoleCode().equals("dianzhanag")||sr.getRoleCode().equals("admin")){
+                    //String md5 = StringUtilsExt.getMd5(user.getPassword());
+                    if (dbUser == null || !password.equals(dbUser.getPassword())) {
+                        throwException(ERROR_LOGIN_ACCOUNT);
+                    }
+                    if (dbUser.isDisabled()) {
+                        throwException(ERROR_LOGIN_ACCOUNT_DISABLED);
+                    }
+                    //2.更新Session
+                    setCurrentLogin(dbUser);
+                    //3.更新数据库
+                    dbUser.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
+                    dbUser.setOnline(true);
+
+                    systemUserDAO.update(dbUser);
+                    return  true;
+                }
+
+            }
+        }
+        return  false;
     }
 
     public synchronized void setCurrentLogin(SystemUser currentLogin) {
