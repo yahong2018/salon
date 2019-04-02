@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 30/03/2019 11:04:25
+ Date: 02/04/2019 11:35:53
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `attendance_sheet` (
   KEY `idx_attendance_sheet_01` (`stuff_id`),
   KEY `idx_attendance_sheet_02` (`address`),
   KEY `idx_attendance_sheet_03` (`attendance_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COMMENT='签到表';
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COMMENT='签到表';
 
 -- ----------------------------
 -- Records of attendance_sheet
@@ -48,6 +48,10 @@ INSERT INTO `attendance_sheet` VALUES (4, 1, '2019-03-04 07:53:31', '常平店',
 INSERT INTO `attendance_sheet` VALUES (39, 1, '2019-03-28 12:44:18', '在广东省泗安医院东城门诊部附近', '2019-03-28 12:44:23', 1, NULL, NULL, 0);
 INSERT INTO `attendance_sheet` VALUES (47, 1, '2019-03-29 16:47:18', '', '2019-03-29 16:47:19', 1, NULL, NULL, 0);
 INSERT INTO `attendance_sheet` VALUES (48, 1, '2019-03-29 17:02:22', '在广东省泗安医院东城门诊部附近', '2019-03-29 17:02:51', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (49, 5, '2019-04-01 14:41:31', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 14:41:31', 4, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (50, 5, '2019-04-01 14:45:08', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 14:45:09', 4, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (51, 5, '2019-04-01 15:02:28', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 15:02:29', 4, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (52, 5, '2019-04-01 15:02:34', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 15:02:34', 4, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -3796,6 +3800,31 @@ CREATE TABLE `member_grade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员级别';
 
 -- ----------------------------
+-- Table structure for member_salon_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `member_salon_tag`;
+CREATE TABLE `member_salon_tag` (
+  `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `salon_id` bigint(20) NOT NULL,
+  `tag_id` bigint(20) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `create_by` bigint(20) NOT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `opt_lock` int(11) DEFAULT NULL,
+  PRIMARY KEY (`record_id`),
+  KEY `idx_member_salon_tag_01` (`salon_id`),
+  KEY `idx_member_salon_tag_02` (`tag_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签-按美容院分';
+
+-- ----------------------------
+-- Records of member_salon_tag
+-- ----------------------------
+BEGIN;
+INSERT INTO `member_salon_tag` VALUES (1, 2, 1, '2019-03-12 14:53:46', 1, NULL, NULL, 0);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for member_tag
 -- ----------------------------
 DROP TABLE IF EXISTS `member_tag`;
@@ -3973,7 +4002,7 @@ CREATE TABLE `pictures` (
   KEY `idx_pictures_01` (`master_data_id`),
   KEY `idx_pictures_02` (`record_type`),
   KEY `idx_pictures_03` (`pic_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=444 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
+) ENGINE=InnoDB AUTO_INCREMENT=458 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
 
 -- ----------------------------
 -- Records of pictures
@@ -4035,12 +4064,12 @@ INSERT INTO `pictures` VALUES (65, NULL, 0, 2, '/20190320/de60a5cd-533b-43b7-bbe
 INSERT INTO `pictures` VALUES (66, NULL, 0, 2, '/20190320/c72132f5-41c0-4c0e-8439-49fa9817ec64.jpg', '2019-03-20 08:15:49', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (67, NULL, 0, 2, '/20190320/c8fda5d6-330a-450b-b4dd-79afbd998419.jpg', '2019-03-20 08:16:20', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (68, NULL, 0, 2, '/20190320/dcc78966-a367-4aa5-b0bb-57115caf45cd.jpg', '2019-03-20 08:21:13', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (69, 2, 0, 3, '/20190327/2b5ac043-120b-431e-a6ed-8f90f119207a.jpg', '2019-03-20 08:21:34', 1, '2019-03-28 09:19:57', 1, 0);
+INSERT INTO `pictures` VALUES (69, 2, 0, 3, '/20190327/2b5ac043-120b-431e-a6ed-8f90f119207a.jpg', '2019-03-20 08:21:34', 1, '2019-03-31 15:17:26', 1, 0);
 INSERT INTO `pictures` VALUES (70, NULL, 2, 0, '/20190320/67ae4f94-14e4-4a80-8e7c-8619141d60bd.jpg', '2019-03-20 09:38:18', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (72, 14, 2, 0, '/20190320/ebc18d67-8648-4442-a74f-84dc06beda89.jpg', '2019-03-20 09:44:12', 1, '2019-03-20 09:44:24', 1, 0);
-INSERT INTO `pictures` VALUES (73, 2, 0, 4, '/20190322/dcf15bbc-3cad-4f27-918a-88ceee12faf5.jpg', '2019-03-20 09:57:10', 1, '2019-03-28 09:19:57', 1, 0);
-INSERT INTO `pictures` VALUES (74, 2, 0, 2, '/20190322/62ceadd0-93a1-491a-8ee9-fa5609fe416d.jpg', '2019-03-20 09:57:10', 1, '2019-03-28 09:19:57', 1, 0);
-INSERT INTO `pictures` VALUES (75, 2, 0, 1, '/20190322/6af484ed-a55e-4c05-a002-c951afc5bc2d.jpg', '2019-03-20 09:57:10', 1, '2019-03-28 09:19:57', 1, 0);
+INSERT INTO `pictures` VALUES (73, 2, 0, 4, '/20190322/dcf15bbc-3cad-4f27-918a-88ceee12faf5.jpg', '2019-03-20 09:57:10', 1, '2019-03-31 15:17:26', 1, 0);
+INSERT INTO `pictures` VALUES (74, 2, 0, 2, '/20190322/62ceadd0-93a1-491a-8ee9-fa5609fe416d.jpg', '2019-03-20 09:57:10', 1, '2019-03-31 15:17:26', 1, 0);
+INSERT INTO `pictures` VALUES (75, 2, 0, 1, '/20190322/6af484ed-a55e-4c05-a002-c951afc5bc2d.jpg', '2019-03-20 09:57:10', 1, '2019-03-31 15:17:26', 1, 0);
 INSERT INTO `pictures` VALUES (78, 2, 0, 0, '/20190320/effcd5a3-52bf-413c-a045-af2fb5ef566e.jpg', '2019-03-20 09:57:10', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (79, 12, 0, 0, '/20190321/a0048ba0-b629-4a92-b4bf-6f609e34a39f.jpg', '2019-03-21 03:27:24', 32, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (80, 12, 0, 0, '/20190321/0f3f73e1-35e3-44d6-9ba4-2aaa20496fbc.jpg', '2019-03-21 03:28:49', 1, NULL, NULL, 0);
@@ -4346,6 +4375,20 @@ INSERT INTO `pictures` VALUES (440, NULL, 3, 0, '/20190329/7b967af7-0846-4301-aa
 INSERT INTO `pictures` VALUES (441, NULL, 3, 0, '/20190329/47d0baca-df12-4ec2-be8d-b8bd9b3b3157.jpg', '2019-03-29 11:40:27', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (442, 41, 3, 0, '/20190329/267ee4de-9080-48ee-bda9-a0d436d0aa7d.jpg', '2019-03-29 11:42:59', 1, '2019-03-29 11:43:24', 1, 0);
 INSERT INTO `pictures` VALUES (443, 41, 3, 0, '/20190329/ad0c1d10-edaf-487d-a987-994cab8ab72b.jpg', '2019-03-29 11:42:59', 1, '2019-03-29 11:43:25', 1, 0);
+INSERT INTO `pictures` VALUES (444, NULL, 0, 4, '/20190331/ce934133-53c4-4194-bf84-43b1d6f3039c.jpg', '2019-03-31 11:33:22', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (445, 5, 1, 0, '/20190321/6e702fff-e2b7-4d79-aba2-a462f0f856d5.jpg', '2019-04-01 11:58:00', 1, '2019-04-01 11:58:05', 1, 0);
+INSERT INTO `pictures` VALUES (446, NULL, 0, 2, '/20190401/ac5c353c-6837-4a36-bdc4-7b586b4a2175.jpg', '2019-04-01 14:27:46', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (447, NULL, 0, 1, '/20190401/bb029a7d-e9b4-412a-b484-06a8d09e8671.jpg', '2019-04-01 14:30:23', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (448, NULL, 0, 2, '/20190401/a84a04e9-202d-4835-bb82-75b318353997.jpg', '2019-04-01 14:32:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (449, NULL, 0, 2, '/20190401/da6f026b-5ac6-4191-8d01-f922198b03ef.jpg', '2019-04-01 14:33:18', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (450, NULL, 0, 2, '/20190401/1db9d402-f6aa-4988-a8cf-c1ac27a2ab07.jpg', '2019-04-01 14:34:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (451, NULL, 0, 2, '/20190401/612f0526-b5f7-4a82-813b-c0a567977515.jpg', '2019-04-01 15:42:39', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (452, 5, 3, 0, '/20190401/612f0526-b5f7-4a82-813b-c0a567977515.jpg', '2019-04-01 15:42:39', 1, '2019-04-01 11:58:05', NULL, 0);
+INSERT INTO `pictures` VALUES (453, 2, 3, 0, '/20190401/612f0526-b5f7-4a82-813b-c0a567977515.jpg', '2019-04-01 15:42:39', 1, '2019-04-01 11:58:05', NULL, 0);
+INSERT INTO `pictures` VALUES (454, NULL, 3, 0, '/20190402/2abe8a4f-935a-4488-895b-4319ffef7a5f.jpg', '2019-04-02 11:12:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (455, NULL, 3, 0, '/20190402/3044de9c-6bd8-4448-ae43-d182dabe9742.jpg', '2019-04-02 11:25:07', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (456, NULL, 3, 0, '/20190402/bd7a7f75-78b3-4eef-8942-7cee01e05404.jpg', '2019-04-02 11:31:26', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (457, NULL, 3, 0, '/20190402/c1fc2539-932a-4b50-982a-22e6367707e8.jpg', '2019-04-02 11:32:29', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4444,7 +4487,7 @@ CREATE TABLE `product_series` (
   PRIMARY KEY (`record_id`),
   KEY `idx_product_series_01` (`series_name`),
   KEY `idx_product_series_02` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='产品品牌/系列';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='产品品牌/系列';
 
 -- ----------------------------
 -- Records of product_series
@@ -4453,11 +4496,10 @@ BEGIN;
 INSERT INTO `product_series` VALUES (1, 2, '品牌2', 0, 0, '2019-03-08 06:33:40', 1, '2019-03-08 07:09:13', 1, 0);
 INSERT INTO `product_series` VALUES (14, 2, '系列11', 1, 0, '2019-03-08 07:02:05', 1, NULL, NULL, 0);
 INSERT INTO `product_series` VALUES (15, 2, '品牌1', 0, 0, '2019-03-11 01:43:22', 1, NULL, NULL, 0);
-INSERT INTO `product_series` VALUES (16, NULL, '品牌3', 0, 0, '2019-03-12 08:25:31', 2, NULL, NULL, 0);
-INSERT INTO `product_series` VALUES (17, NULL, '品牌4', 0, 0, '2019-03-12 08:26:13', 1, NULL, NULL, 0);
-INSERT INTO `product_series` VALUES (18, 2, '品牌3', 0, 0, '2019-03-22 08:18:56', 1, NULL, NULL, 0);
-INSERT INTO `product_series` VALUES (19, 2, '品牌4', 0, 0, '2019-03-22 08:28:55', 1, NULL, NULL, 0);
-INSERT INTO `product_series` VALUES (20, 2, '品牌5', 0, 0, '2019-03-22 08:29:57', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (16, 2, '品牌3', 0, 0, '2019-03-12 08:25:31', 2, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (17, 2, '品牌4', 0, 0, '2019-03-12 08:26:13', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (22, 2, '系列10', 1, 0, '2019-04-01 16:01:16', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (23, 2, '系列101', 15, 0, '2019-04-01 19:39:40', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4541,7 +4583,7 @@ CREATE TABLE `program_privilege` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_PROGRAM_PRIVILEGE_0` (`program_id`),
   KEY `IDX_PROGRAM_PRIVILEGE_1` (`privilege_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of program_privilege
@@ -4623,6 +4665,7 @@ INSERT INTO `program_privilege` VALUES (75, 'SYS02_09_03', 'RUN', '系统运行'
 INSERT INTO `program_privilege` VALUES (76, 'SYS02_09_04', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (77, 'SYS02_09_05', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (78, 'SYS02_09_06', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (79, 'SYS02_03_04', 'RUN', '系统运行');
 COMMIT;
 
 -- ----------------------------
@@ -4708,7 +4751,7 @@ CREATE TABLE `role_action` (
   PRIMARY KEY (`record_id`),
   KEY `idx_role_action_01` (`stuff_id`),
   KEY `idx_role_action_02` (`system_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
 
 -- ----------------------------
 -- Records of role_action
@@ -4737,6 +4780,8 @@ INSERT INTO `role_action` VALUES (20, 42, 55);
 INSERT INTO `role_action` VALUES (21, 43, 56);
 INSERT INTO `role_action` VALUES (22, 44, 57);
 INSERT INTO `role_action` VALUES (23, 45, 58);
+INSERT INTO `role_action` VALUES (24, 46, 60);
+INSERT INTO `role_action` VALUES (25, 5, 4);
 COMMIT;
 
 -- ----------------------------
@@ -4752,7 +4797,7 @@ CREATE TABLE `role_privilege` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_ROLE_PRIVILEGE_0` (`role_id`),
   KEY `IDX_ROLE_PRIVILEGE_1` (`program_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=328 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_privilege
@@ -4771,8 +4816,6 @@ INSERT INTO `role_privilege` VALUES (45, 11, 1, 'SYS01_02', 'INSERT');
 INSERT INTO `role_privilege` VALUES (46, 12, 1, 'SYS01_02', 'UPDATE');
 INSERT INTO `role_privilege` VALUES (47, 13, 1, 'SYS01_02', 'DELETE');
 INSERT INTO `role_privilege` VALUES (48, 14, 1, 'SYS01_02', 'ASSIGN_ROLE');
-INSERT INTO `role_privilege` VALUES (52, 2, 2, 'SYS01_01', 'RUN');
-INSERT INTO `role_privilege` VALUES (53, 1, 2, 'SYS01', 'RUN');
 INSERT INTO `role_privilege` VALUES (59, 6, 9, 'SYS01_01', 'STOP_USER');
 INSERT INTO `role_privilege` VALUES (60, 2, 9, 'SYS01_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (61, 1, 9, 'SYS01', 'RUN');
@@ -4791,9 +4834,6 @@ INSERT INTO `role_privilege` VALUES (73, 15, 9, 'SYS01_03', 'RUN');
 INSERT INTO `role_privilege` VALUES (74, 16, 9, 'SYS01_03', 'INSERT');
 INSERT INTO `role_privilege` VALUES (75, 17, 9, 'SYS01_03', 'UPDATE');
 INSERT INTO `role_privilege` VALUES (76, 18, 9, 'SYS01_03', 'DELETE');
-INSERT INTO `role_privilege` VALUES (85, 21, 2, 'SYS02_01_01', 'RUN');
-INSERT INTO `role_privilege` VALUES (86, 20, 2, 'SYS02_01', 'RUN');
-INSERT INTO `role_privilege` VALUES (87, 19, 2, 'SYS02', 'RUN');
 INSERT INTO `role_privilege` VALUES (88, 21, 1, 'SYS02_01_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (89, 20, 1, 'SYS02_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (90, 19, 1, 'SYS02', 'RUN');
@@ -4810,7 +4850,6 @@ INSERT INTO `role_privilege` VALUES (102, 29, 1, 'SYS02_03_02', 'RUN');
 INSERT INTO `role_privilege` VALUES (107, 35, 1, 'SYS02_06_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (108, 34, 1, 'SYS02_06', 'RUN');
 INSERT INTO `role_privilege` VALUES (109, 36, 1, 'SYS02_06_02', 'RUN');
-INSERT INTO `role_privilege` VALUES (110, 3, 2, 'SYS01_01', 'INSERT');
 INSERT INTO `role_privilege` VALUES (111, 68, 0, 'SYS01_05', 'RUN');
 INSERT INTO `role_privilege` VALUES (112, 1, 0, 'SYS01', 'RUN');
 INSERT INTO `role_privilege` VALUES (113, 21, 0, 'SYS02_01_01', 'RUN');
@@ -4921,6 +4960,111 @@ INSERT INTO `role_privilege` VALUES (217, 76, 1, 'SYS02_09_04', 'RUN');
 INSERT INTO `role_privilege` VALUES (218, 77, 1, 'SYS02_09_05', 'RUN');
 INSERT INTO `role_privilege` VALUES (219, 78, 1, 'SYS02_09_06', 'RUN');
 INSERT INTO `role_privilege` VALUES (220, 71, 1, 'SYS01_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (221, 79, 1, 'SYS02_03_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (222, 69, 10, 'SYS02_01_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (223, 20, 10, 'SYS02_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (224, 19, 10, 'SYS02', 'RUN');
+INSERT INTO `role_privilege` VALUES (225, 21, 10, 'SYS02_01_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (226, 25, 10, 'SYS02_02_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (227, 24, 10, 'SYS02_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (228, 26, 10, 'SYS02_02_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (229, 29, 10, 'SYS02_03_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (230, 27, 10, 'SYS02_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (231, 79, 10, 'SYS02_03_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (232, 31, 10, 'SYS02_04_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (233, 30, 10, 'SYS02_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (234, 32, 10, 'SYS02_04_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (235, 33, 10, 'SYS02_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (236, 35, 10, 'SYS02_06_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (237, 34, 10, 'SYS02_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (238, 36, 10, 'SYS02_06_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (239, 38, 10, 'SYS02_07_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (240, 37, 10, 'SYS02_07', 'RUN');
+INSERT INTO `role_privilege` VALUES (241, 39, 10, 'SYS02_07_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (242, 40, 10, 'SYS02_07_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (243, 73, 10, 'SYS02_09_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (244, 74, 10, 'SYS02_09_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (245, 75, 10, 'SYS02_09_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (246, 76, 10, 'SYS02_09_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (247, 77, 10, 'SYS02_09_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (248, 78, 10, 'SYS02_09_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (249, 42, 10, 'SYS02_08_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (250, 41, 10, 'SYS02_08', 'RUN');
+INSERT INTO `role_privilege` VALUES (251, 43, 10, 'SYS02_08_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (252, 44, 10, 'SYS02_08_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (253, 45, 10, 'SYS02_08_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (254, 46, 10, 'SYS02_08_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (255, 47, 10, 'SYS02_08_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (256, 49, 10, 'SYS03_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (257, 48, 10, 'SYS03', 'RUN');
+INSERT INTO `role_privilege` VALUES (258, 50, 10, 'SYS03_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (259, 51, 10, 'SYS03_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (260, 52, 10, 'SYS03_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (261, 59, 10, 'SYS05_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (262, 58, 10, 'SYS05', 'RUN');
+INSERT INTO `role_privilege` VALUES (263, 60, 10, 'SYS05_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (264, 61, 10, 'SYS05_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (265, 28, 10, 'SYS02_03_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (266, 1, 10, 'SYS01', 'RUN');
+INSERT INTO `role_privilege` VALUES (267, 15, 10, 'SYS01_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (268, 16, 10, 'SYS01_03', 'INSERT');
+INSERT INTO `role_privilege` VALUES (269, 17, 10, 'SYS01_03', 'UPDATE');
+INSERT INTO `role_privilege` VALUES (270, 18, 10, 'SYS01_03', 'DELETE');
+INSERT INTO `role_privilege` VALUES (271, 72, 10, 'SYS07_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (272, 70, 10, 'SYS07', 'RUN');
+INSERT INTO `role_privilege` VALUES (273, 69, 10, 'SYS02_01_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (274, 20, 10, 'SYS02_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (275, 19, 10, 'SYS02', 'RUN');
+INSERT INTO `role_privilege` VALUES (276, 21, 10, 'SYS02_01_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (277, 25, 10, 'SYS02_02_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (278, 24, 10, 'SYS02_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (279, 26, 10, 'SYS02_02_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (280, 29, 10, 'SYS02_03_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (281, 27, 10, 'SYS02_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (282, 79, 10, 'SYS02_03_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (283, 31, 10, 'SYS02_04_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (284, 30, 10, 'SYS02_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (285, 32, 10, 'SYS02_04_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (286, 33, 10, 'SYS02_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (287, 35, 10, 'SYS02_06_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (288, 34, 10, 'SYS02_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (289, 36, 10, 'SYS02_06_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (290, 38, 10, 'SYS02_07_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (291, 37, 10, 'SYS02_07', 'RUN');
+INSERT INTO `role_privilege` VALUES (292, 39, 10, 'SYS02_07_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (293, 40, 10, 'SYS02_07_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (294, 73, 10, 'SYS02_09_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (295, 74, 10, 'SYS02_09_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (296, 75, 10, 'SYS02_09_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (297, 76, 10, 'SYS02_09_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (298, 77, 10, 'SYS02_09_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (299, 78, 10, 'SYS02_09_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (300, 42, 10, 'SYS02_08_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (301, 41, 10, 'SYS02_08', 'RUN');
+INSERT INTO `role_privilege` VALUES (302, 43, 10, 'SYS02_08_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (303, 44, 10, 'SYS02_08_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (304, 45, 10, 'SYS02_08_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (305, 46, 10, 'SYS02_08_05', 'RUN');
+INSERT INTO `role_privilege` VALUES (306, 47, 10, 'SYS02_08_06', 'RUN');
+INSERT INTO `role_privilege` VALUES (307, 49, 10, 'SYS03_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (308, 48, 10, 'SYS03', 'RUN');
+INSERT INTO `role_privilege` VALUES (309, 50, 10, 'SYS03_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (310, 51, 10, 'SYS03_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (311, 52, 10, 'SYS03_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (312, 59, 10, 'SYS05_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (313, 58, 10, 'SYS05', 'RUN');
+INSERT INTO `role_privilege` VALUES (314, 60, 10, 'SYS05_02', 'RUN');
+INSERT INTO `role_privilege` VALUES (315, 61, 10, 'SYS05_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (316, 28, 10, 'SYS02_03_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (317, 1, 10, 'SYS01', 'RUN');
+INSERT INTO `role_privilege` VALUES (318, 15, 10, 'SYS01_03', 'RUN');
+INSERT INTO `role_privilege` VALUES (319, 16, 10, 'SYS01_03', 'INSERT');
+INSERT INTO `role_privilege` VALUES (320, 17, 10, 'SYS01_03', 'UPDATE');
+INSERT INTO `role_privilege` VALUES (321, 18, 10, 'SYS01_03', 'DELETE');
+INSERT INTO `role_privilege` VALUES (322, 72, 10, 'SYS07_01', 'RUN');
+INSERT INTO `role_privilege` VALUES (323, 70, 10, 'SYS07', 'RUN');
+INSERT INTO `role_privilege` VALUES (326, 71, 2, 'SYS01_04', 'RUN');
+INSERT INTO `role_privilege` VALUES (327, 1, 2, 'SYS01', 'RUN');
 COMMIT;
 
 -- ----------------------------
@@ -4934,43 +5078,18 @@ CREATE TABLE `role_user` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_ROLE_USER_0` (`role_id`),
   KEY `IDX_ROLE_USER_1` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_user
 -- ----------------------------
 BEGIN;
 INSERT INTO `role_user` VALUES (2, 2, 2);
-INSERT INTO `role_user` VALUES (4, 1, 18);
-INSERT INTO `role_user` VALUES (5, 1, 14);
-INSERT INTO `role_user` VALUES (6, 2, 14);
-INSERT INTO `role_user` VALUES (7, 3, 14);
-INSERT INTO `role_user` VALUES (8, 1, 4);
-INSERT INTO `role_user` VALUES (9, 2, 4);
-INSERT INTO `role_user` VALUES (13, 2, 38);
 INSERT INTO `role_user` VALUES (15, 2, 34);
-INSERT INTO `role_user` VALUES (16, 1, 32);
-INSERT INTO `role_user` VALUES (18, 2, 39);
-INSERT INTO `role_user` VALUES (19, 2, 40);
-INSERT INTO `role_user` VALUES (20, 2, 41);
-INSERT INTO `role_user` VALUES (21, 2, 42);
-INSERT INTO `role_user` VALUES (22, 2, 43);
-INSERT INTO `role_user` VALUES (23, 2, 44);
-INSERT INTO `role_user` VALUES (24, 2, 45);
-INSERT INTO `role_user` VALUES (25, 2, 46);
-INSERT INTO `role_user` VALUES (26, 2, 47);
-INSERT INTO `role_user` VALUES (27, 2, 48);
 INSERT INTO `role_user` VALUES (28, 1, 1);
-INSERT INTO `role_user` VALUES (29, 2, 51);
-INSERT INTO `role_user` VALUES (30, 2, 50);
-INSERT INTO `role_user` VALUES (31, 2, 53);
-INSERT INTO `role_user` VALUES (32, 2, 54);
-INSERT INTO `role_user` VALUES (33, 2, 52);
-INSERT INTO `role_user` VALUES (34, 2, 55);
-INSERT INTO `role_user` VALUES (35, 2, 56);
-INSERT INTO `role_user` VALUES (36, 2, 57);
-INSERT INTO `role_user` VALUES (37, 2, 58);
-INSERT INTO `role_user` VALUES (38, 1, 59);
+INSERT INTO `role_user` VALUES (41, 1, 63);
+INSERT INTO `role_user` VALUES (42, 10, 64);
+INSERT INTO `role_user` VALUES (43, 2, 32);
 COMMIT;
 
 -- ----------------------------
@@ -5009,7 +5128,7 @@ CREATE TABLE `salon` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `salon` VALUES (1, '鸿发美容院', -1, '18664151832', 0, '广东东莞', b'0', 0, 0.00, NULL, NULL, 0.0000000, 0.0000000, NULL, '2019-02-28 01:44:56', 1, NULL, NULL, 0, 1);
-INSERT INTO `salon` VALUES (2, '大岭山分店好', 1, '189999999966666666', 1, '广东东莞大岭山', b'0', 0, 0.00, '', '', 113.7838360, 23.0338060, '鸿发美容院大岭山分店在哪里呢', '2019-02-28 01:44:56', 1, '2019-03-28 09:19:57', 1, 0, 1);
+INSERT INTO `salon` VALUES (2, '大岭山分店好', 1, '189999999966666666', 1, '广东东莞大岭山', b'0', 0, 0.00, '11:19', '23:19', 113.7838360, 23.0338060, '鸿发美容院大岭山分店在哪里呢', '2019-02-28 01:44:56', 1, '2019-03-31 15:17:26', 1, 0, 1);
 INSERT INTO `salon` VALUES (3, '常平分店1', 1, '18664151832', 1, '广东东莞常平', b'0', 1, 200.00, '16:00:00', '16:00:00', 0.0000000, 0.0000000, 'asd', '2019-02-28 01:44:56', 1, '2019-03-27 08:58:40', 32, 0, 1);
 INSERT INTO `salon` VALUES (5, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
 INSERT INTO `salon` VALUES (6, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
@@ -5066,7 +5185,7 @@ CREATE TABLE `schedule` (
   PRIMARY KEY (`record_id`),
   KEY `idx_schedule_01` (`stuff_id`),
   KEY `idx_schedule_02` (`day`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COMMENT='排班信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COMMENT='排班信息表';
 
 -- ----------------------------
 -- Records of schedule
@@ -5079,12 +5198,33 @@ INSERT INTO `schedule` VALUES (6, 1, 11, '2019-03-02', '2019-03-21 10:33:53', 32
 INSERT INTO `schedule` VALUES (7, 1, 13, '2019-03-06', '2019-03-21 10:35:02', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (13, 1, 13, '2019-03-01', '2019-03-21 10:46:57', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (14, 3, 10, '2019-03-08', '2019-03-22 00:54:33', 32, NULL, NULL, 0);
-INSERT INTO `schedule` VALUES (15, 3, 13, '2019-03-01', '2019-03-22 00:54:33', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (16, 3, 10, '2019-03-22', '2019-03-22 00:58:37', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (17, 1, 10, '2019-03-08', '2019-03-22 02:27:44', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (18, 1, 11, '2019-03-13', '2019-03-25 08:37:20', 32, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (24, 1, 64, '2019-03-28', '2019-03-28 12:03:10', 1, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (26, 1, 65, '2019-03-29', '2019-03-29 15:09:58', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (28, 5, 65, '2019-04-03', '2019-04-01 11:36:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (30, 5, 65, '2019-04-02', '2019-04-01 11:36:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (34, 5, 64, '2019-04-04', '2019-04-01 11:36:08', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (42, 5, 65, '2019-04-05', '2019-04-01 11:36:08', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (43, 5, 64, '2019-04-06', '2019-04-01 16:19:26', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (44, 5, 66, '2019-04-30', '2019-04-01 16:43:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (47, 5, 65, '2019-04-01', '2019-04-01 20:04:45', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (48, 5, 65, '2019-04-12', '2019-04-01 20:12:41', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (49, 5, 65, '2019-04-12', '2019-04-01 20:12:41', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (50, 5, 66, '2019-04-17', '2019-04-01 20:12:41', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (51, 1, 66, '2019-04-02', '2019-04-01 20:13:00', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (52, 1, 66, '2019-04-02', '2019-04-01 20:13:00', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (53, 1, 64, '2019-04-05', '2019-04-01 20:13:00', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (54, 6, 66, '2019-04-09', '2019-04-02 09:15:03', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (55, 6, 66, '2019-04-09', '2019-04-02 09:15:03', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (56, 6, 63, '2019-04-11', '2019-04-02 09:15:04', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (57, 7, 63, '2019-04-01', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (58, 7, 63, '2019-04-01', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (59, 7, 63, '2019-04-01', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (60, 7, 65, '2019-04-02', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (61, 7, 65, '2019-04-02', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (62, 7, 64, '2019-04-03', '2019-04-02 09:16:33', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5219,7 +5359,7 @@ CREATE TABLE `service_suite` (
 -- Records of service_suite
 -- ----------------------------
 BEGIN;
-INSERT INTO `service_suite` VALUES (2, 2, '套卡12', 100.00, 80.00, '2019-03-04 18:47:08', '2019-03-04 18:47:08', 0, '简介1', '2019-03-07 02:06:26', 1, '2019-03-07 02:37:28', 1, 0);
+INSERT INTO `service_suite` VALUES (2, 2, '套卡12', 100.00, 80.00, '2019-03-04 00:00:00', '2019-03-04 00:00:00', 0, '简介1', '2019-03-07 02:06:26', 1, '2019-03-30 11:21:34', 32, 0);
 INSERT INTO `service_suite` VALUES (5, 2, '哈哈大保健', 420.00, 420.00, '2019-03-23 02:25:49', '2019-03-22 16:00:00', 0, '明明哦', '2019-03-23 02:25:49', 1, NULL, NULL, 0);
 INSERT INTO `service_suite` VALUES (6, 2, '哈哈大保健', 420.00, 420.00, '2019-03-23 02:25:50', '2019-03-22 16:00:00', 0, '明明哦', '2019-03-23 02:25:50', 1, NULL, NULL, 0);
 INSERT INTO `service_suite` VALUES (7, 2, '哈哈大保健', 420.00, 420.00, '2019-03-23 02:25:51', '2019-03-22 16:00:00', 0, '明明哦', '2019-03-23 02:25:51', 1, NULL, NULL, 0);
@@ -5255,7 +5395,7 @@ INSERT INTO `service_suite` VALUES (38, 2, '论坛', 700.00, 700.00, '2019-03-23
 INSERT INTO `service_suite` VALUES (39, 2, '套卡007号', 10.00, 20.00, '2019-03-29 11:29:22', '1970-01-01 08:00:00', 0, '', '2019-03-29 11:29:22', 1, NULL, NULL, 0);
 INSERT INTO `service_suite` VALUES (40, 2, '套卡008', 10.00, 20.00, '2019-03-29 11:30:30', '1970-01-01 08:00:00', 0, '', '2019-03-29 11:30:30', 1, NULL, NULL, 0);
 INSERT INTO `service_suite` VALUES (41, 2, '套卡100', 10.00, 20.00, '2019-03-29 11:43:24', '1970-01-01 08:00:00', 0, '', '2019-03-29 11:43:24', 1, NULL, NULL, 0);
-INSERT INTO `service_suite` VALUES (42, 2, '套卡10', 20.00, 100.00, '2019-03-29 11:59:00', '2019-03-31 00:00:00', 0, '', '2019-03-29 11:59:00', 1, NULL, NULL, 0);
+INSERT INTO `service_suite` VALUES (42, 2, '套卡10', 40.00, 100.00, '2019-03-29 00:00:00', '2019-03-30 00:00:00', 0, '', '2019-03-29 11:59:00', 1, '2019-03-30 11:56:26', 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5274,15 +5414,12 @@ CREATE TABLE `service_suite_item` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_service_suite_item_01` (`service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 COMMENT='套卡明细';
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8mb4 COMMENT='套卡明细';
 
 -- ----------------------------
 -- Records of service_suite_item
 -- ----------------------------
 BEGIN;
-INSERT INTO `service_suite_item` VALUES (7, 2, 1, 1, '2019-03-07 02:37:28', 1, NULL, NULL, 0);
-INSERT INTO `service_suite_item` VALUES (8, 2, 4, 1, '2019-03-07 02:37:28', 1, NULL, NULL, 0);
-INSERT INTO `service_suite_item` VALUES (9, 2, 5, 1, '2019-03-07 02:37:28', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (19, 5, 1, 10, '2019-03-23 02:25:49', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (20, 5, 5, 10, '2019-03-23 02:25:49', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (21, 5, 8, 10, '2019-03-23 02:25:49', 1, NULL, NULL, 0);
@@ -5379,8 +5516,12 @@ INSERT INTO `service_suite_item` VALUES (117, 40, 1, 10, '2019-03-29 11:30:30', 
 INSERT INTO `service_suite_item` VALUES (118, 40, 2, 20, '2019-03-29 11:30:30', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (119, 41, 1, 10, '2019-03-29 11:43:24', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (120, 41, 2, 20, '2019-03-29 11:43:24', 1, NULL, NULL, 0);
-INSERT INTO `service_suite_item` VALUES (121, 42, 1, 10, '2019-03-29 11:59:00', 1, NULL, NULL, 0);
-INSERT INTO `service_suite_item` VALUES (122, 42, 2, 10, '2019-03-29 11:59:00', 1, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (126, 2, 1, 10, '2019-03-30 11:21:34', 32, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (127, 2, 4, 20, '2019-03-30 11:21:34', 32, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (128, 2, 5, 30, '2019-03-30 11:21:35', 32, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (129, 42, 1, 10, '2019-03-30 11:56:26', 1, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (130, 42, 2, 20, '2019-03-30 11:56:26', 1, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (131, 42, 3, 30, '2019-03-30 11:56:26', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5409,7 +5550,6 @@ BEGIN;
 INSERT INTO `shift` VALUES (10, 1, 0, '17:04 ', ' 21:04', '2019-03-20 01:23:16', 32, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (11, 1, 3, '13:03 ', '21:04', '2019-03-20 01:23:16', 32, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (12, 1, 2, '06:04 ', ' 10:03', '2019-03-20 01:23:17', 32, NULL, NULL, 0);
-INSERT INTO `shift` VALUES (13, 1, 1, '01:03 ', ' 04:06', '2019-03-20 01:23:17', 32, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (14, 3, 0, '20:03 ', ' 23:05', '2019-03-20 01:23:53', 32, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (15, 3, 3, '14:04 ', ' 15:04', '2019-03-20 01:23:53', 32, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (16, 3, 2, '08:04 ', ' 10:04', '2019-03-20 01:23:53', 32, NULL, NULL, 0);
@@ -5559,7 +5699,7 @@ CREATE TABLE `stuff` (
   KEY `idx_stuff_02` (`stuff_name`),
   KEY `idx_stuff_03` (`tel`),
   KEY `idx_stuff_04` (`gender`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
 
 -- ----------------------------
 -- Records of stuff
@@ -5584,7 +5724,7 @@ INSERT INTO `stuff` VALUES (19, 16, '13929433191', '13929433191', 2, NULL, NULL,
 INSERT INTO `stuff` VALUES (20, 17, '18664151832', '18664151832', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-26 09:00:51', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (21, 18, '1688888888', '1688888888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-26 09:10:16', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (22, 19, '13929433196', '13929433196', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 02:45:44', 1, NULL, NULL, 0);
-INSERT INTO `stuff` VALUES (23, 15, '丽丽', '13929466193', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 02:56:26', 32, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (23, 2, '丽丽', '13929466193', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 02:56:26', 32, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (24, 20, '1378888888', '1378888888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 03:20:49', 32, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (25, 21, '13929433197', '13929433197', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 07:59:40', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (26, 22, '13929477194', '13929477194', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-27 08:27:06', 1, NULL, NULL, 0);
@@ -5607,6 +5747,7 @@ INSERT INTO `stuff` VALUES (42, 2, '李四', '66365558', 2, NULL, NULL, NULL, NU
 INSERT INTO `stuff` VALUES (43, 2, '李留', '1369582455', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-28 06:43:19', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (44, 2, '刘大姐', '13985412333', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-28 15:12:19', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (45, 2, '刘德和', '456666555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-28 15:13:07', 1, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (46, 15, '波兰', '156988999888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-03-31 10:56:02', 32, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5625,7 +5766,7 @@ CREATE TABLE `stuff_job` (
   PRIMARY KEY (`record_id`),
   KEY `idx_stuff_job_01` (`stuff_id`),
   KEY `idx_stuff_job_02` (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
 
 -- ----------------------------
 -- Records of stuff_job
@@ -5643,7 +5784,6 @@ INSERT INTO `stuff_job` VALUES (9, 19, 2, '2019-03-22 09:22:56', 32, NULL, NULL,
 INSERT INTO `stuff_job` VALUES (10, 20, 2, '2019-03-26 09:00:52', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (11, 21, 2, '2019-03-26 09:10:16', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (12, 22, 2, '2019-03-27 02:45:44', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (13, 23, 2, '2019-03-27 02:56:26', 32, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (14, 23, 5, '2019-03-27 02:56:26', 32, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (15, 24, 2, '2019-03-27 03:20:49', 32, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (16, 25, 2, '2019-03-27 07:59:40', 1, NULL, NULL, 0);
@@ -5671,6 +5811,10 @@ INSERT INTO `stuff_job` VALUES (37, 44, 7, '2019-03-28 15:12:19', 1, NULL, NULL,
 INSERT INTO `stuff_job` VALUES (38, 45, 2, '2019-03-28 15:13:07', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (39, 45, 5, '2019-03-28 15:13:07', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (40, 45, 7, '2019-03-28 15:13:07', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (41, 46, 2, '2019-03-31 10:56:02', 32, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (42, 46, 5, '2019-03-31 10:56:02', 32, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (43, 46, 7, '2019-03-31 10:56:02', 32, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (44, 5, 5, '2019-04-01 11:33:48', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5742,8 +5886,9 @@ INSERT INTO `system_program` VALUES ('SYS02_02_01', 'SYS02_02_01', '顾客标签
 INSERT INTO `system_program` VALUES ('SYS02_02_02', 'SYS02_02_02', '顾客档案', 'system/member/member_archives.html', ' ', 1, ' ', 'SYS02_02');
 INSERT INTO `system_program` VALUES ('SYS02_03', 'SYS02_03', '员工管理', '', ' ', 2, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_03_01', 'SYS02_03_01', '职务管理', 'system/stuff/job.html', ' ', 0, ' ', 'SYS01');
-INSERT INTO `system_program` VALUES ('SYS02_03_02', 'SYS02_03_02', '考勤管理', 'system/stuff/stuff_timeSheet.html', ' ', 1, ' ', 'SYS02_03');
+INSERT INTO `system_program` VALUES ('SYS02_03_02', 'SYS02_03_02', '考勤管理', 'system/stuff_time/stuff_timeSheet.html', ' ', 1, ' ', 'SYS02_03');
 INSERT INTO `system_program` VALUES ('SYS02_03_03', 'SYS02_03_03', '补卡申请', ' ', ' ', 2, ' ', 'SYS02_03');
+INSERT INTO `system_program` VALUES ('SYS02_03_04', 'SYS02_03_04', '员工管理', 'system/stuff/stuff.html', NULL, 3, 'test', 'SYS02_03');
 INSERT INTO `system_program` VALUES ('SYS02_04', 'SYS02_04', '排班管理', '', ' ', 3, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_04_01', 'SYS02_04_01', '排班设置', ' system/shift_schedule/settings.html', ' ', 0, ' ', 'SYS02_04');
 INSERT INTO `system_program` VALUES ('SYS02_04_02', 'SYS02_04_02', '排班情况', ' system/stuff_schedule/stuff_settings.html', ' ', 1, ' ', 'SYS02_04');
@@ -5752,8 +5897,8 @@ INSERT INTO `system_program` VALUES ('SYS02_06', 'SYS02_06', '服务项目管理
 INSERT INTO `system_program` VALUES ('SYS02_06_01', 'SYS02_06_01', '次卡管理', 'system/salon/service.html', ' ', 0, ' ', 'SYS02_06');
 INSERT INTO `system_program` VALUES ('SYS02_06_02', 'SYS02_06_02', '套卡管理', 'system/salon/service_suite.html', ' ', 1, ' ', 'SYS02_06');
 INSERT INTO `system_program` VALUES ('SYS02_07', 'SYS02_07', '产品管理', ' ', ' ', 6, ' ', 'SYS02');
-INSERT INTO `system_program` VALUES ('SYS02_07_01', 'SYS02_07_01', '品牌管理', ' ', ' ', 0, ' ', 'SYS02_07');
-INSERT INTO `system_program` VALUES ('SYS02_07_02', 'SYS02_07_02', '系列管理', ' ', ' ', 1, ' ', 'SYS02_07');
+INSERT INTO `system_program` VALUES ('SYS02_07_01', 'SYS02_07_01', '品牌管理', 'system/product/product_series.html', ' ', 0, ' ', 'SYS02_07');
+INSERT INTO `system_program` VALUES ('SYS02_07_02', 'SYS02_07_02', '系列管理', 'system/product/series.html', ' ', 1, ' ', 'SYS02_07');
 INSERT INTO `system_program` VALUES ('SYS02_07_03', 'SYS02_07_03', '产品设置', '  ', ' ', 2, ' ', 'SYS02_07');
 INSERT INTO `system_program` VALUES ('SYS02_08', 'SYS02_08', '消息管理', ' ', ' ', 8, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_08_01', 'SYS02_08_01', '店务消息', ' ', ' ', 0, ' ', 'SYS02_08');
@@ -5802,7 +5947,7 @@ CREATE TABLE `system_role` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_SYSTEM_ROLE_0` (`role_code`),
   KEY `IDX_SYSTEM_ROLE_1` (`role_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of system_role
@@ -5812,6 +5957,7 @@ INSERT INTO `system_role` VALUES (1, 'admin', '系统管理员');
 INSERT INTO `system_role` VALUES (2, 'stuff', '员工');
 INSERT INTO `system_role` VALUES (3, 'member', '顾客');
 INSERT INTO `system_role` VALUES (9, 'test', 'zhgan');
+INSERT INTO `system_role` VALUES (10, 'dianzhang', '店长');
 COMMIT;
 
 -- ----------------------------
@@ -5832,55 +5978,19 @@ CREATE TABLE `system_user` (
   KEY `IDX_SYSTEM_USER_1` (`user_name`),
   KEY `IDX_SYSTEM_USER_2` (`user_status`),
   KEY `IDX_SYSTEM_USER_3` (`online`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-03-30 10:54:15');
+INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-04-02 11:36:03');
 INSERT INTO `system_user` VALUES (2, 'C00002', '吴鸿建54321', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'0', '2019-03-30 10:40:19');
-INSERT INTO `system_user` VALUES (4, '321', '321', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-03-21 08:06:20');
-INSERT INTO `system_user` VALUES (14, '115', '15', '15', 0, '15', b'0', '2019-03-12 14:49:58');
-INSERT INTO `system_user` VALUES (15, '16', '7', '7', 0, '7', b'0', '2019-03-12 14:50:07');
-INSERT INTO `system_user` VALUES (16, '17', '6', '6', 1, '6', b'0', '2019-03-12 14:50:18');
-INSERT INTO `system_user` VALUES (17, '889', '89', '89', 89, '89', b'0', '2019-03-12 14:50:28');
-INSERT INTO `system_user` VALUES (18, '99', '99', '9', 9, '9', b'0', '2019-03-12 14:50:35');
-INSERT INTO `system_user` VALUES (19, '89', '78', '78', 78, '78', b'0', '2019-03-12 14:50:47');
-INSERT INTO `system_user` VALUES (22, '655', '5', '5', 0, '5', b'0', '2019-03-12 14:51:07');
-INSERT INTO `system_user` VALUES (23, '2', '2', '12', 0, '12', b'0', '2019-03-12 14:53:33');
-INSERT INTO `system_user` VALUES (24, '121', '12', '12', 0, '12', b'0', '2019-03-12 14:53:46');
-INSERT INTO `system_user` VALUES (25, '323', '232', '2', 23, '2', b'0', '2019-03-12 14:53:53');
-INSERT INTO `system_user` VALUES (26, '12323', '32', '322', 23, '23', b'0', '2019-03-12 14:54:00');
-INSERT INTO `system_user` VALUES (27, '232', '2', '2', 2, '2', b'0', '2019-03-12 14:54:07');
-INSERT INTO `system_user` VALUES (28, '1231', '23123', '2', 123, '123', b'0', '2019-03-12 14:54:14');
-INSERT INTO `system_user` VALUES (29, '23123', '123', '23', 32, '2', b'0', '2019-03-12 14:54:21');
-INSERT INTO `system_user` VALUES (30, '222', '2', '22', 2, '2', b'0', '2019-03-12 14:54:34');
-INSERT INTO `system_user` VALUES (31, '121', '23', '12312', 123, '23', b'0', '2019-03-12 14:54:49');
-INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-03-30 10:59:03');
+INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'0', '2019-04-02 11:21:05');
 INSERT INTO `system_user` VALUES (33, 'c00004', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
 INSERT INTO `system_user` VALUES (34, 'c00005', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
-INSERT INTO `system_user` VALUES (38, '13916888888', '小二', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (39, '16455545444', '16455545444', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (40, '13929433191', '13929433191', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (41, '18664151832', '18664151832', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (42, '1688888888', '1688888888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (43, '13929433196', '13929433196', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (44, '13929466193', '丽丽', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (45, '1378888888', '1378888888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (46, '13929433197', '13929433197', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (47, '13929477194', '13929477194', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (48, '156699445666', '156699445666', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (50, '556622589', '立即解决', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (51, '556622589', '立即解决', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (52, '669823366', '退居第三', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (53, '669823366', '退居第三', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (54, '669823366', '退居第三', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (55, '66365558', '李四', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (56, '1369582455', '李留', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (57, '13985412333', '刘大姐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (58, '456666555', '刘德和', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (59, 'admin', 'admin', 'd41d8cd98f00b204e9800998ecf8427e', 0, '', b'0', NULL);
+INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-02 10:55:02');
+INSERT INTO `system_user` VALUES (64, 'C00011', '店长测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-02 10:55:35');
 COMMIT;
 
 -- ----------------------------
@@ -5899,7 +6009,14 @@ CREATE TABLE `tag` (
   PRIMARY KEY (`record_id`),
   KEY `idx_tag_01` (`record_type`),
   KEY `idx_tag_02` (`tag_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='标签';
+
+-- ----------------------------
+-- Records of tag
+-- ----------------------------
+BEGIN;
+INSERT INTO `tag` VALUES (1, 1, '标签1', '2019-03-12 14:53:46', 1, NULL, NULL, 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for time_sheet
@@ -5921,7 +6038,7 @@ CREATE TABLE `time_sheet` (
   KEY `idx_clocking_in_01` (`stuff_id`),
   KEY `idx_clocking_in_02` (`day`),
   KEY `idx_clocking_in_03` (`time_sheet_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='考勤表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='考勤表';
 
 -- ----------------------------
 -- Records of time_sheet
@@ -5933,6 +6050,7 @@ INSERT INTO `time_sheet` VALUES (4, 1, '2019-03-06', '2019-03-06 15:09:43', '201
 INSERT INTO `time_sheet` VALUES (5, 1, '2019-03-15', NULL, '2019-03-15 15:10:16', 1, '2019-03-27 15:10:22', 1, '2019-03-27 15:10:26', 1, 1);
 INSERT INTO `time_sheet` VALUES (7, 1, '2019-03-28', NULL, '2019-03-28 12:44:18', 2, '2019-03-28 12:44:24', 1, NULL, NULL, 0);
 INSERT INTO `time_sheet` VALUES (9, 1, '2019-03-29', '2019-03-29 16:47:18', '2019-03-29 17:02:22', 2, '2019-03-29 16:47:19', 1, '2019-03-29 17:02:51', 1, 0);
+INSERT INTO `time_sheet` VALUES (10, 5, '2019-04-01', '2019-04-01 14:41:31', '2019-04-01 15:02:34', 2, '2019-04-01 14:41:31', 4, '2019-04-01 15:02:35', 4, 0);
 COMMIT;
 
 -- ----------------------------

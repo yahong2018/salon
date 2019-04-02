@@ -122,10 +122,17 @@ public class AuthenticateService {
 
     public synchronized void kickOffUser(SystemUser login) {
         HttpSession session = this.getUserSession(login);
+        if(session==null){
+            return;
+        }
         //1.移除Session
         session.removeAttribute(CURRENT_LOGIN_STORED_ID);
         //2.更新数据库
         SystemUser dbItem = this.systemUserDAO.getById(login.getRecordId());
+        if(dbItem==null){
+            return;
+        }
+
         dbItem.setOnline(false);
         dbItem.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
         systemUserDAO.update(dbItem);
