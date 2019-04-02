@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>美容院列表</title>
+  <title>产品系列</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -23,7 +23,7 @@
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 638px;">
-      <button class="layui-btn layui-btn-primary addUser">新增美容院</button>
+      <button class="layui-btn layui-btn-primary addUser">新增系列</button>
       <!--<button class="layui-btn updateUser">修改用户</button>-->
       <!--<button class="layui-btn layui-btn-normal deleteUser">删除用户</button>-->
       <!--<button class="layui-btn layui-btn-normal qidong">启用账户</button>-->
@@ -37,21 +37,35 @@
       <!--<div class="layui-input-inline">-->
         <!--<select name="modules"  lay-search="" class="userKey">-->
           <!--<option value="">直接选择或搜索选择</option>-->
-          <!--<option value="user_code">用户账号</option>-->
-          <!--<option value="user_name">用户名称</option>-->
-          <!--<option value="email">email</option>-->
+          <!--<option value="parent_id">用户账号</option>-->
+          <!--&lt;!&ndash;<option value="user_name">用户名称</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="email">email</option>&ndash;&gt;-->
         <!--</select>-->
+
       <!--</div>-->
     <!--</div>-->
-    <!--<div class="layui-inline">-->
+
+
+    <div class="layui-inline">
+      <label class="layui-form-label">品牌</label>
+      <div class="layui-input-inline">
+        <select name="parentSeries"  lay-search="" id="parentSeries">
+          <option value="">直接选择或搜索选择</option>
+        </select>
+      </div>
+    </div>
+
+
+
+    <div class="layui-inline">
       <!--<div class="layui-input-inline">-->
         <!--<input type="text" name="userKey" class="layui-input userKeyValue ">-->
       <!--</div>-->
-      <!--<div class="layui-input-inline">-->
-        <!--<button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">-->
-          <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
-        <!--</button></div>-->
-    <!--</div>-->
+      <div class="layui-input-inline">
+        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+        </button></div>
+    </div>
   </div>
 </div>
 
@@ -69,11 +83,56 @@
 </html>
 
 <script type="text/javascript">
+  //重新渲染表单
+
+  function renderForm(){
+
+    layui.use('form', function(){
+
+      var form = layui.form;
+      form.render();
+
+    });
+
+  }
+
+
+
+
+
   layui.use(['form','laydate','layer','table','laypage','util'],function(){
     var form = layui.form;
     var laydate=layui.laydate;
     var $ = layui.$;
     productsearch(1);
+
+
+
+    $.ajax({
+      url:"/hy/basic/product/queryProductSeries",
+      type:"get",
+      dataType:"json",
+      success:function(dataJson){
+        console.log('返回类别'+dataJson.data);
+        var selDom = $("#parentSeries");//根据id获取select的jquery对象
+
+        $.each(dataJson.data, function (i, n) {
+          // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+          selDom.append("<option value="+n.recordId+">"+n.seriesName+"</option>");//添加option
+          console.log(n.seriesName);
+        });
+
+        renderForm();
+      },
+      error:function(){
+        alert("驳回异常")
+      }
+    });
+
+
+
+
+
 
     function productsearch(page,filterExpr) {
 
@@ -83,7 +142,7 @@
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/salon/getStoreList',
+        url : '/hy/basic/product/querySonProductSeriesPC',
         cols : [ [
               {checkbox: true,
                 filter:'test'
@@ -96,30 +155,17 @@
                 align : 'center'
               }
               , {
-                field : 'salonName',
-                title : '美容院名称',
+                field : 'seriesName',
+                title : '系列名称',
                 align : 'center'
               }
               , {
-                field : 'inviteCode',
-                title : '邀请码',
-                align : 'center'
+                field : 'recordStatus',
+                title : '状态',
+                align : 'center',
+                templet: '#recordStatus'
              }
-             , {
-                field : 'tel',
-                title : '手机',
-                align : 'center'
-              }
-              , {
-                field : 'address',
-                title : '地址',
-                align : 'center'
-              }
-              , {
-                field : 'door2Door',
-                title : '是否上门服务',
-                align : 'center'
-              }
+
 
 
 
@@ -177,10 +223,10 @@
 
     $(".check").on("click", function() {
 
-      var userKey=$('.userKey option:selected').val();
+       var userKey=$('#parentSeries option:selected').val();
       if(userKey!=""){
-        var userKeyValue = $('.userKeyValue').val();
-        var temp = userKey+"='"+userKeyValue+"'";
+        var userKeyValue = $('#parentSeries').val();
+        var temp = userKeyValue;
         productsearch(1, temp);
       }else{
         productsearch(1);
@@ -305,7 +351,7 @@
         scrollbar: false,
         shade:0.4,
         title:'新增美容院',
-        content:['add_salon.html'],
+        content:['add_series.html'],
         success:function(layero,index){
           console.log("成功");
         },
@@ -346,7 +392,7 @@
     })
 
   });
-  function userStatus(t){
+  function recordStatus(t){
      if(t==0){
        return '启用';
      }else{
@@ -357,8 +403,8 @@
 </script>
 
 
-<script type="text/html" id="userStatus">
+<script type="text/html" id="recordStatus">
 
 
-        {{ userStatus(d.userStatus) }}
+        {{ recordStatus(d.recordStatus) }}
 </script>

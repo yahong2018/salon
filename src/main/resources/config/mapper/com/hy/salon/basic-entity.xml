@@ -345,4 +345,12 @@
         <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
     </resultMap>
 
+
+    <resultMap id="verificationCodeTemporary" type="com.hy.salon.basic.entity.VerificationCodeTemporary" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+        <result column="verification_code" property="verificationCode" jdbcType="VARCHAR" />
+        <result column="valid_time" property="validTime" jdbcType="TINYINT" />
+        <result column="effectiveness" property="effectiveness" jdbcType="TINYINT" />
+    </resultMap>
+
 </mapper>

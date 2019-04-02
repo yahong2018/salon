@@ -31,6 +31,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+
 import java.util.List;
 
 @Controller
@@ -80,6 +85,10 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
     @Resource(name = "shiftDao")
     private ShiftDao shiftDao;
+
+    @Resource(name= "verificationCodeTemporaryDao")
+    private  VerificationCodeTemporaryDAO verificationCodeTemporaryDAO;
+
 
 
     @RequestMapping(value="getSalonData",method = RequestMethod.GET)
@@ -135,27 +144,35 @@ public class SalonController extends SimpleCRUDController<Salon> {
     })
     public Result getStoreList(Long recordId,int page) {
         Result r= new Result();
-
+        List<Salon> StoreList=new ArrayList<>();
         if(recordId == null ||  recordId == 0){
             r.setTotal(salonDao.getSalonForStoreId2(new Long(-1)).size());
             PageHelper.startPage(page, 10);
-            List<Salon> StoreList=salonDao.getSalonForStoreId2(new Long(-1));
-            r.setData(StoreList);
+            StoreList=salonDao.getSalonForStoreId2(new Long(-1));
         }else{
             r.setTotal(salonService.getSalonForStoreId2(recordId).size());
             PageHelper.startPage(page, 10);
-            List<Salon> StoreList=salonService.getSalonForStoreId2(recordId);
-            r.setData(StoreList);
+            StoreList=salonService.getSalonForStoreId2(recordId);
+        }
+        if(StoreList.size()!=0){
+            for(Salon s:StoreList){
+                SalonInviteCode salonCode=salonInviteCodeDAO.getSalonForSalonId(s.getRecordId());
+                if(salonCode!=null){
+                    s.setInviteCode(salonCode.getInviteCode());
+                }
+
+            }
+
         }
 
-
+        r.setData(StoreList);
 
         r.setMsg("请求成功");
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
 
 
-       return r;
+        return r;
     }
     /**
      * 获取门店信息
@@ -582,10 +599,10 @@ public class SalonController extends SimpleCRUDController<Salon> {
      * 获取省市区
      */
     @ResponseBody
-    @RequestMapping("getCity")
+    @RequestMapping("writeIn")
     @ApiOperation(value="获取省市区", notes="获取省市区")
 
-    public Result getCity() {
+    public Result writeIn(HttpServletRequest request) {
         Result r= new Result();
         JSONArray jsonArr=new JSONArray();
 
@@ -624,11 +641,68 @@ public class SalonController extends SimpleCRUDController<Salon> {
         }
 
 
+        try {
+            String dir = request.getServletContext().getRealPath("/city");
+//            java.io.File folder = new java.io.File(dir);
+//            if (!folder.exists()) {
+//                folder.mkdirs();     ///如果不存在，创建目录
+//            }
+            File writeName = new File(dir+"/output.txt");
+            writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
+            try (FileWriter writer = new FileWriter(writeName);
+                 BufferedWriter out = new BufferedWriter(writer)
+            ) {
+                out.write(jsonArr.toJSONString());
+                out.flush(); // 把缓存区内容压入文件
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(jsonArr.toJSONString());
 
         r.setMsg("请求成功");
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         r.setData(jsonArr);
+        return r;
+
+
+    }
+
+
+    /**
+     * 获取省市区
+     */
+    @ResponseBody
+    @RequestMapping("getCity")
+    @ApiOperation(value="获取省市区", notes="获取省市区")
+
+    public Result getCity(HttpServletRequest request) {
+        Result r= new Result();
+
+
+        String pathname = request.getServletContext().getRealPath("/city")+"/output.txt"; //
+        String line;
+        try (FileReader reader = new FileReader(pathname);
+             BufferedReader br = new BufferedReader(reader) // 建立一个对象，它把文件内容转成计算机能读懂的语言
+        ) {
+
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                JSONArray jsonArr=JSONArray.parseArray(line);
+                r.setData(jsonArr);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+
         return r;
 
 
@@ -683,8 +757,17 @@ public class SalonController extends SimpleCRUDController<Salon> {
     public Result sendMessage(String tel){
         Result r= new Result();
         int  num=(int)(Math.random()*9000)+1000;
+
+        VerificationCodeTemporary  verificationCodeTemporary= new VerificationCodeTemporary();
+        verificationCodeTemporary.setPhoneNo(tel);
+        verificationCodeTemporary.setVerificationCode(String.valueOf(num));
+        verificationCodeTemporary.setEffectiveness(0);
+        verificationCodeTemporary.setValidTime(3);
+        verificationCodeTemporaryDAO.insert(verificationCodeTemporary);
+
         String typeCode=messageUtil.sendMessage(tel,"【EMK】您的验证码是"+num+",５分钟内有效。若非本人操作请忽略此消息。");
         System.out.println("typeCode========================"+typeCode);
+
         if(!"0".equals(typeCode)){
             r.setMsg("请求失败");
             r.setMsgcode(StatusUtil.ERROR);
@@ -697,6 +780,10 @@ public class SalonController extends SimpleCRUDController<Salon> {
         r.setSuccess(true);
         return r;
     }
+
+
+
+
 
 
 
