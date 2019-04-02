@@ -88,7 +88,7 @@ public class AuthenticateService {
         if(list.size()>0){
             for(RoleUser ru:list){
                 SystemRole sr =  systemRoleDAO.getById(ru.getRoleId());
-                if(sr.getRoleCode().equals("dianzhanag")||sr.getRoleCode().equals("admin")){
+                if(sr.getRoleCode().equals("dianzhang")||sr.getRoleCode().equals("admin")){
                     //String md5 = StringUtilsExt.getMd5(user.getPassword());
                     if (dbUser == null || !password.equals(dbUser.getPassword())) {
                         throwException(ERROR_LOGIN_ACCOUNT);
