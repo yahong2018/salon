@@ -23,31 +23,31 @@
 <div class="layui-fluid layui-form">
     <div class="layui-form-item">
         <div class="layui-input-inline " style=" width: 638px;">
-            <button class="layui-btn layui-btn-primary addMember">新增顾客</button>
-            <button class="layui-btn updateMember">修改顾客</button>
-            <button class="layui-btn layui-btn-normal deleteMember">删除顾客</button>
+            <button class="layui-btn layui-btn-normal addMember">新增标签</button>
+            <!--<button class="layui-btn updateMember">修改顾客</button>-->
+            <button class="layui-btn layui-btn-danger deleteMember">删除标签</button>
             <!--      <button class="layui-btn">默认按钮</button>
                   <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">搜索选择框</label>
-            <div class="layui-input-inline">
-                <select name="modules"  lay-search="" class="userKey">
-                    <option value="">直接选择或搜索选择</option>
-                    <option value="member_name">顾客姓名</option>
-                    <option value="tel">顾客电话</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-inline">
-            <div class="layui-input-inline">
-                <input type="text" name="userKey" class="layui-input userKeyValue ">
-            </div>
-            <div class="layui-input-inline">
-                <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
-                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                </button></div>
-        </div>
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-form-label">搜索选择框</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="modules"  lay-search="" class="userKey">-->
+                    <!--<option value="">直接选择或搜索选择</option>-->
+                    <!--<option value="member_name">顾客姓名</option>-->
+                    <!--<option value="tel">顾客电话</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-inline">-->
+            <!--<div class="layui-input-inline">-->
+                <!--<input type="text" name="userKey" class="layui-input userKeyValue ">-->
+            <!--</div>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">-->
+                    <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+                <!--</button></div>-->
+        <!--</div>-->
     </div>
 </div>
 
@@ -79,7 +79,7 @@
             var form = layui.form;
             table.render({
                 elem : '#layui_table_id',
-                url : '/hy/basic/member/getMemberTag',
+                url : '/hy/basic/member/getTag',
                 cols : [ [
                     {checkbox: true,
                         filter:'test'
@@ -91,42 +91,7 @@
                         sort : true,
                         align : 'center'
                     }
-                    , {
-                        field : 'memberName',
-                        title : '姓名',
-                        align : 'center'
-                    }
-                    , {
-                        field : 'tel',
-                        title : '电话',
-                        align : 'center'
-                    }, {
-                        field : 'gender',
-                        title : '性别',
-                        align : 'center',
-                        templet: '#gender'
-                    }
-                    , {
-                        field : 'weixin',
-                        title : '微信',
-                        align : 'center'
-                    }
-                    , {
-                        field : 'birthday',
-                        title : '生日',
-                        align : 'center'
-                    }
-                    , {
-                        field : 'zodiac',
-                        title : '星座',
-                        align : 'center'
-                    }
-                    , {
-                        field : 'memberGradeId',
-                        title : '分类',
-                        align : 'center',
-                        templet: '#memberGradeId'
-                    },{
+                    ,  {
                         field : 'tagName',
                         title : '标签名字',
                         align : 'center'
@@ -285,7 +250,7 @@
             console.log(deleteList);
             $.ajax({
                 type:'POST',
-                url:'/hy/basic/member/deleteMember',
+                url:'/hy/basic/member/batchDelete',
                 data: JSON.stringify(deleteList),
                 contentType: "application/json",
                 success: function(data){
@@ -315,8 +280,8 @@
                 shadeClose:true,
                 scrollbar: false,
                 shade:0.4,
-                title:'新增顾客',
-                content:['add_member.html'],
+                title:'新增标签',
+                content:['add_tag.html'],
                 success:function(layero,index){
                     console.log("成功");
                 },

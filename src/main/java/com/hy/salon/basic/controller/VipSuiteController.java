@@ -176,6 +176,85 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
 
     @ResponseBody
+    @RequestMapping( "/addVipSuiteForApp")
+    @ApiOperation(value="添加充值卡", notes="添加充值卡")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "suiteName", value = "充值卡名称", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "price", value = "面额", required = true, dataType = "double"),
+            @ApiImplicitParam(paramType="query", name = "vipSuiteStatus", value = "记录状态：0.启用   1.停用", required = true, dataType = "Byte"),
+            @ApiImplicitParam(paramType="query", name = "description", value = "介绍", required = true, dataType = "Date"),
+            @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
+
+    })
+    @Transactional(rollbackFor = Exception.class)
+    public Result addVipSuiteForApp(HttpServletRequest request, VipSuite condition, String bindingJson, String picIdList){
+        Result r= new Result();
+        //先写死，后面改
+//        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            condition.setStoreId(stuff.getStoreId());
+            int ii =vipSuiteDao.insert(condition);
+            if(ii != 0){
+                //解析绑定json，绑定关系
+                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
+                if(!jsonArr.isEmpty()){
+                    for(int i=0;i<jsonArr.size();i++){
+                        JSONObject jsonObj=jsonArr.getJSONObject(i);
+                        String recordType=jsonObj.getString("recordType");
+                        String itemId=jsonObj.getString("serviceId");
+                        String discount=jsonObj.getString("discount");
+
+                        //绑定父类
+                        VipSuiteItem vipSuitItem=new VipSuiteItem();
+                        vipSuitItem.setRecordType(Byte.parseByte(recordType));
+                        vipSuitItem.setVipSuiteId(condition.getRecordId());
+                        vipSuitItem.setDiscount(Byte.parseByte(discount));
+                        vipSuiteItemDao.insert(vipSuitItem);
+
+
+
+                        String[] str = itemId.split(",");
+                        for(String s :str){
+
+                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
+                            vipRangeCondition.setServiceId(Long.parseLong(s));
+                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
+                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
+                        }
+                    }
+
+                }
+
+            }
+            if(null != picIdList && !"".equals(picIdList)){
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for(String s:str){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
+                }
+            }
+
+            r.setMsg("插入成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+
+        return r;
+    }
+
+
+    @ResponseBody
     @RequestMapping("/updateVipSuite")
     @ApiOperation(value="编辑充值卡", notes="编辑充值卡")
     @ApiImplicitParams({

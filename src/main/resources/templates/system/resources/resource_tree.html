@@ -39,6 +39,7 @@
                     <button class="layui-btn layui-btn-primary updateRolePower">菜单资源配置</button>
                     <!--      <button class="layui-btn">默认按钮</button>
                           <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
+                    <button class="layui-btn layui-btn-primary writeIn">生成省市区文件</button>
                 </div>
 
             </div>
@@ -57,10 +58,45 @@
 
 </body>
 <script type="text/javascript">
+
+    layui.use(['form','laydate','layer','table','laypage','util'],function() {
+
+        var $ = layui.$;
+
+
+        $(".writeIn").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/hy/basic/salon/writeIn',
+                contentType: "application/json",
+                success: function (data) {
+                    layer.alert('操作成功,省市区文件已更至最新');
+
+                    // window.parent.location.reload(); //刷新父页面
+                    // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    //parent.layer.close(index);  // 关闭layer
+
+                },
+                error: function (data) {
+                    layer.alert("操作失败");
+                    console.log(data);
+                }
+            })
+
+        })
+
+    })
+
     $(function(){
     
    /*  $(".controls :radio").click(function(){
 	 }); */
+
+
+
+
+
+
     //新增菜单按钮
     $(".addNewResource").click(function() {
     	$('.menuName2').addClass("hidden");

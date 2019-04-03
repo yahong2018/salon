@@ -1,12 +1,10 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.MemberDao;
-import com.hy.salon.basic.dao.SalonDao;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.dao.TagDao;
-import com.hy.salon.basic.entity.Member;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.MemberService;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,6 +45,9 @@ public class MemberController extends SimpleCRUDController<Member> {
 
     @Resource(name="tagDao")
     private TagDao TagDao;
+
+    @Resource(name="memberSalonTagDAO")
+    private MemberSalonTagDAO memberSalonTagDAO;
 
     @Override
     protected BaseDAOWithEntity<Member> getCrudDao() {
@@ -202,27 +204,115 @@ public class MemberController extends SimpleCRUDController<Member> {
     }
 
 
-//    /**
-//     * 顾客标签
-//     */
-//    @ResponseBody
-//    @RequestMapping("getTag")
-//    public Result getTag() {
-//        SystemUser user = authenticateService.getCurrentLogin();
-//        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-//        Result result = new Result();
-//        try {
-//
-//            List<Member> list = TagDao.
-//            result.setData(list);
-//            result.setMsgcode(StatusUtil.OK);
-//            result.setSuccess(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            result.setMsgcode(StatusUtil.ERROR);
-//            result.setSuccess(false);
-//        }
-//        return result;
-//    }
+    /**
+     * 顾客标签列表
+     */
+    @ResponseBody
+    @RequestMapping("getTag")
+    public Result getTag(int page) {
+        Result result = new Result();
+
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            result.setTotal(memberSalonTagDAO.getTag(stuff.getStoreId()).size());
+            PageHelper.startPage(page, 10);
+            List<Tag> tagList=memberSalonTagDAO.getTag(stuff.getStoreId());
+            result.setData(tagList);
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
+
+    /**
+     * 添加顾客标签
+     */
+    @RequestMapping("addTag")
+    @ResponseBody
+    public Result addTag(Tag condition) {
+        Result r= new Result();
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        TagDao.insert(condition);
+
+        MemberSalonTag menberTag=new MemberSalonTag();
+        menberTag.setSalonId(stuff.getStoreId());
+        menberTag.setTagId(condition.getRecordId());
+        memberSalonTagDAO.insert(menberTag);
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setSuccess(false);
+        }
+        return r;
+
+
+    }
+
+
+    /**
+     * 顾客标签删除
+     */
+    @RequestMapping("batchDelete")
+    @ResponseBody
+    public Result batchDelete(@RequestBody Long[] recordIdList) {
+        Result r= new Result();
+        for(Long recordId:recordIdList){
+            TagDao.deleteById(recordId);
+
+            List<MemberSalonTag> tagList= memberSalonTagDAO.getMemberTag(recordId);
+            if(!tagList.isEmpty()){
+                for(MemberSalonTag m:tagList){
+                    memberSalonTagDAO.delete(m);
+                }
+            }
+        }
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
+    /**
+     * 档案列表
+     */
+    @ResponseBody
+    @RequestMapping("getMember")
+    public Result getMember(int page, HttpServletRequest request) {
+        Result result = new Result();
+
+        try {
+
+            String filterExpr   = request.getParameter("filterExpr");
+
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+            result.setTotal(memberDao.getMember(stuff.getStoreId(),filterExpr).size());
+            PageHelper.startPage(page, 10);
+            List<Member> memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
+            result.setData(memberList);
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+    }
 
 }
