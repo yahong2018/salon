@@ -2,6 +2,7 @@ package com.hy.salon.basic.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateString {
@@ -35,6 +36,22 @@ public class DateString {
         }
         return null;
     }
+    public static Date StringToDateAddNum(String string,int num ){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            System.out.println(sdf.parse(string));
+            Calendar ca=Calendar.getInstance();
+            Date date = sdf.parse(string);
+            ca.setTime(date);
+            ca.add(Calendar.HOUR_OF_DAY, num);
+            return ca.getTime() ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public static Date getZhongJianTime(String eTimeEnd ,String sTimeStart) throws ParseException {
 
 

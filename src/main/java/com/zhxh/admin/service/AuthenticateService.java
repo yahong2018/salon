@@ -1,11 +1,16 @@
 package com.zhxh.admin.service;
 
+import com.hy.salon.basic.dao.SalonDao;
+import com.hy.salon.basic.dao.StuffDao;
+import com.hy.salon.basic.entity.Salon;
+import com.hy.salon.basic.entity.Stuff;
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.LoginResult;
 import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.springframework.stereotype.Component;
@@ -26,6 +31,10 @@ public class AuthenticateService {
     private RoleUserDAO roleUserDAO;
     @Resource(name = "systemRoleDAO")
     private SystemRoleDAO systemRoleDAO;
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+    @Resource(name = "salonDao")
+    private SalonDao salonDao;
     public SystemUser getSessionLogin(HttpSession session) {
         return (SystemUser) session.getAttribute(CURRENT_LOGIN_STORED_ID);
     }
@@ -81,6 +90,12 @@ public class AuthenticateService {
         user.setUserCode(userCode);
         user.setPassword(password);
         SystemUser dbUser = systemUserDAO.getUserByCode(user.getUserCode());
+
+        Stuff stuff=stuffDao.getStuffForUser(dbUser.getRecordId());
+        Salon salon=salonDao.getSalonForId(stuff.getStoreId());
+        if(salon.getAudit() == 0){
+            return  false;
+        }
         String where="user_id=#{userId}";
         Map parameters = new HashMap();
         parameters.put("userId", dbUser.getRecordId());

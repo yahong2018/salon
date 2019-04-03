@@ -116,21 +116,22 @@ public class AttendanceController {
     @ApiOperation(value="补卡", notes="补卡")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "auditOpinion", value = "审核意见", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "userId", value = "审核人", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "userId", value = "审核人", required = false, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "recordId", value = "补卡id", required = true, dataType = "Long"),
     })
     public Result examinePatchCard(String auditOpinion,long userId,long recordId ){
-        if(StringUtils.isEmpty(userId+"")){
+        if(userId==0){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
             userId= stuff2.getRecordId();
         }
         Retroactive retroactive  = retroactiveDao.getById(recordId);
-        retroactive.setReson(auditOpinion);
-        retroactive.setAuditPerson(userId);
+        retroactive.setAuditStatu((byte) 1);
+        retroactive.setAuditOpinion(auditOpinion);
+        retroactive.setUserId(userId);
         Result result  = new Result();
         retroactiveDao.update(retroactive);
-        result.setMsg("签到成功");
+        result.setMsg("审核成功");
         result.setMsgcode("0");
         result.setSuccess(true);
         return  result;

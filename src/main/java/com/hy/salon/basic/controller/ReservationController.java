@@ -85,11 +85,11 @@ public class ReservationController {
     }
 
     /**
-     * 查询当天有预约员工列表
+     * 查询当天一门店有预约员工列表
      */
     @ResponseBody
     @RequestMapping(value = "getStuff",method = RequestMethod.GET)
-    @ApiOperation(value="查询当天有预约员工列表", notes="查询当天有预约员工列表")
+    @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),

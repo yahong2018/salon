@@ -81,7 +81,7 @@
 	    $.ajax({
 	    	type:'POST',
             url:'/hy/basic/attendance/examinePatchCard',
-	    	data:{auditOpinion:auditOpinion,recordId:recordId},
+	    	data:{auditOpinion:auditOpinion,recordId:recordId,userId:0},
 	    	success: function(data){
                 alert("操作成功！");
     			window.parent.location.reload(); //刷新父页面
