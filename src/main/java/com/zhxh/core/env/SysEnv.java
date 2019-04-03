@@ -2,11 +2,15 @@ package com.zhxh.core.env;
 
 import com.zhxh.core.backservice.ServiceManager;
 import com.zhxh.core.utils.PropertyLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -24,6 +28,7 @@ public class SysEnv implements ApplicationContextAware {
 
     private static Map<String, String> errorsMessageHolder;
     private static Map<String, String> entityFieldLabelHolder;
+    private static List<String> securedUrlPatterns;
 
     private static final String configLocation = "classpath:config/settings/env.properties";
 
@@ -46,6 +51,11 @@ public class SysEnv implements ApplicationContextAware {
         errorsMessageHolder = PropertyLoader.getPropertyMap(messageErrorLocation);
         String fieldLabelLocation = propertyMap.get("sysenv.fieldLabelLocation");
         entityFieldLabelHolder = PropertyLoader.getPropertyMap(fieldLabelLocation);
+
+        String securedUrlPatternStrings = propertyMap.get("sysenv.securedUrlPatterns");
+        String[] patterns = StringUtils.split(securedUrlPatternStrings,";");
+        securedUrlPatterns = new ArrayList<>();
+        securedUrlPatterns.addAll(Arrays.asList(patterns));
     }
 
     public static ApplicationContext getApplicationContext() {
@@ -83,6 +93,8 @@ public class SysEnv implements ApplicationContextAware {
     public static String getSystemTitle() {
         return systemTitle;
     }
+
+    public static List<String> GetSecuredUrlPatterns(){return securedUrlPatterns;}
 
 
     public static String getErrorMessage(String errorCode){
