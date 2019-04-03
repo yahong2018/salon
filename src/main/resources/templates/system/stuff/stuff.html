@@ -24,7 +24,7 @@
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 438px;">
       <button class="layui-btn layui-btn-primary addUser">新增用户</button>
-      <button class="layui-btn updateSuite">修改用户</button>
+      <button class="layui-btn updateStuff">修改用户</button>
       <button class="layui-btn layui-btn-normal deleteUser">删除用户</button>
       <!--      <button class="layui-btn">默认按钮</button>
             <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
@@ -32,11 +32,11 @@
     <div class="layui-inline">
       <label class="layui-form-label">搜索选择框</label>
       <div class="layui-input-inline">
-        <select name="modules"  lay-search="" class="storeList">
-         <!-- <option value="">直接选择或搜索选择</option>
-          <option value="user_code">用户账号</option>
-          <option value="user_name">用户名称</option>
-          <option value="email">email</option>-->
+        <select name="modules"  lay-search="" class="storeList"  lay-filter="storeid">
+          <!-- <option value="">直接选择或搜索选择</option>
+           <option value="user_code">用户账号</option>
+           <option value="user_name">用户名称</option>
+           <option value="email">email</option>-->
         </select>
       </div>
     </div>
@@ -62,6 +62,7 @@
     </script>-->
   <div id="laypage"></div>
 </div>
+<input type="hidden" id="storeId" name="storeId " vlaue="" class="layui-input userKeyValue ">
 </body>
 </html>
 
@@ -71,8 +72,13 @@
     var laydate=layui.laydate;
     var $ = layui.$;
     productsearch(1);
-
-    function productsearch(page,filterExpr) {
+    form.on('select(storeid)', function(data){
+      console.log(data.value)
+      alert(data);
+      $("#storeId").val(data.value);
+      productsearch(1,"",data.value);
+    })
+    function productsearch(page,filterExpr,storeId) {
 
       var table = layui.table,
               laydate = layui.laydate,
@@ -117,14 +123,31 @@
         page : true,
         where : {
           filterExpr:filterExpr,
+          storeId:storeId
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);
           console.log(res.listMap);
           var listMap = res.listMap;
-          for(index in listMap){
+          var chechId  = res.chechId;
+          if(listMap.length>0){
+            for(index in listMap){
+              if(index==0){
+                var temp = listMap[index].recordId;
+                $("#storeId").val(temp);
+              }
+              var temp = "";
+              if(chechId==listMap[index].recordId){
+                temp = "<option selected='selected' value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
+              }else{
+                temp = "<option value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
+              }
 
+              $(".storeList").append(temp);
+              form.render();//表单重新渲染，要不然添加完显示不出来新的option
+            }
           }
+
           return {
             "count": res.total,
             "data": res.data,
@@ -201,12 +224,18 @@
       }
       console.log(deleteList);
       $.ajax({
-        url:'/hy/basic/vipSuite/deleteVipSuite',
+        type:'POST',
+        url:'/hy/basic/stuff/deleteStuff',
         data: JSON.stringify(deleteList),
         contentType: "application/json",
         success: function(data){
-          alert("操作成功！");
-          productsearch(1);
+          if(data.msgcode="200"){
+            alert("操作失败！");
+          }else{
+            alert("操作成功！");
+            productsearch(1);
+          }
+
         },
         error:function(data){
           alert("操作失败");
@@ -216,39 +245,10 @@
 
     })
 
-    $(".updateSuite").on("click",function(){
-      console.log(layui.table.checkStatus('layui_table_id'));
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1){
-        alert("请选中一条数据");
-        return false;
-      }
-      layer.open({
-        type:2,
-        area:[888+'px',666+'px'],
-        fix:false,
-        offset: '80px',
-        maxmin:true,
-        shadeClose:true,
-        scrollbar: false,
-        shade:0.4,
-        title:'新增充值卡',
-        content:['add_suite.html'],
-        success:function(layero,index){
-          var iframe = window['layui-layer-iframe' + index];
-          // 向子页面的全局函数child传参
-          iframe.child(data[0].recordId);
-          console.log("成功");
-        },
-        fail:function(data){
-          console.log(data);
-        }
-      })
-    })
     $(".addUser").on("click",function(){
       layer.open({
         type:2,
-        area:[888+'px',388+'px'],
+        area:[600+'px',600+'px'],
         fix:false,
         offset: '80px',
         maxmin:true,
@@ -260,7 +260,10 @@
         success:function(layero,index){
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          iframe.child();
+          var stuff = {};
+          stuff.storeId =  $("#storeId").val();
+
+          iframe.child(stuff);
           console.log("成功");
         },
         fail:function(data){
@@ -268,7 +271,7 @@
         }
       })
     })
-    $(".updateUser").on("click",function(){
+    $(".updateStuff").on("click",function(){
       console.log(layui.table.checkStatus('layui_table_id'));
       var data = layui.table.checkStatus('layui_table_id').data;
       if(data.length>1){
@@ -285,12 +288,14 @@
         scrollbar: false,
         shade:0.4,
         title:'修改用户',
-        content:['add_user.html'],
+        content:['add_stuff.html'],
         success:function(layero,index){
           // 获取子页面的iframe
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          iframe.child(data[0].recordId);
+          var stuff = data[0];
+          console.log(stuff);
+          iframe.child(stuff);
           console.log("成功");
         },
         fail:function(data){

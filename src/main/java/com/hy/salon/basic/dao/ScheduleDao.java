@@ -170,24 +170,27 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
             listKey.add(dateString);
             json.put(dateString,"休");
 
-            for(Map map:mapList){
-                Date temp =  (Date)map.get("day");
-                String tempDateString = DateString.DateToString(temp);
-                if(dateString.equals(tempDateString)){
-                    Integer type = (Integer)map.get("shiftType");
-                    String typeString = "";
-                    if(type==0){
-                        typeString = "全班";
-                    }else if(type==1){
-                        typeString = "早班";
-                    }else if(type==2){
-                        typeString = "中班";
-                    }else{
-                        typeString = "晚班";
+            if(mapList.size()>0){
+                for(Map map:mapList){
+                    Date temp =  (Date)map.get("day");
+                    String tempDateString = DateString.DateToString(temp);
+                    if(dateString.equals(tempDateString)){
+                        Integer type = (Integer)map.get("shiftType");
+                        String typeString = "";
+                        if(type==0){
+                            typeString = "全班";
+                        }else if(type==1){
+                            typeString = "早班";
+                        }else if(type==2){
+                            typeString = "中班";
+                        }else{
+                            typeString = "晚班";
+                        }
+                        json.put(dateString,typeString);
                     }
-                    json.put(dateString,typeString);
                 }
             }
+
 
         }
 

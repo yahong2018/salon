@@ -269,7 +269,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
             List<Map<String,Object>> binServiceList=serviceDao.queryBinServiceForSeries(recordId);
 
-            for(ServiceSeries s:serList){
+           for(ServiceSeries s:serList){
                 List<Map<String,Object>> serviceList=serviceDao.queryServiceForSeries(s.getRecordId());
                 for(Map<String,Object> m:serviceList){
                     dataList.add(m);
@@ -291,11 +291,16 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
                 }
             }
+            List<Map<String,Object> > dataList2=new ArrayList();
+            for(Map<String,Object> m:dataList){
+                if(m.get("isBin").equals("1")){
+                    dataList2.add(m);
+                }
+            }
 
 
             Map dataMap =new HashMap<String, Object>();
-            dataMap.put("dataList",dataList);
-
+            dataMap.put("dataList",dataList2);
             dataMap.put("serviceSuite",suite);
             dataMap.put("piclist",piclist);
 

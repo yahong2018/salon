@@ -58,11 +58,20 @@
           </div>
       </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">单选框</label>
+            <label class="layui-form-label">性别：</label>
             <div class="layui-input-block">
                 <input type="radio" name="gender" value="0" title="男" checked="">
                 <input type="radio" name="gender" value="1" title="女">
-                <input type="radio" name="gender" value="禁" title="禁用" disabled="">
+<!--                <input type="radio" name="gender" value="禁" title="禁用" disabled="">-->
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">职位</label>
+            <div class="layui-input-block">
+                <input type="radio" name="jobLevel" value="2" title="前台" checked="">
+                <input type="radio" name="jobLevel" value="3" title="顾问">
+                <input type="radio" name="jobLevel" value="4" title="美容师" >
             </div>
         </div>
         <div class="layui-form-item">
@@ -96,9 +105,9 @@
             </div>
         </div>
       <div class="layui-form-item">
-         <label class="layui-form-label">Email：</label>
+         <label class="layui-form-label">工作年限：</label>
          <div class="layui-input-inline">
-          <input name="email" id="email" placeholder="请输入"  value="" class="layui-input">
+          <input name="workAge" id="workAge" placeholder="请输入"  value="" class="layui-input">
           </div>
       </div>
         <div class="layui-form-item" style="margin-left: 140px;">
@@ -118,6 +127,65 @@
 <script type="text/javascript">
     function child(data){
         var $ = layui.jquery;
+        $("#storeId").val(data.storeId);
+
+        var recordId = data.recordId;
+        if(recordId!=undefined){
+            $("#recordId").val(recordId);
+            var stuffName = data.stuffName;
+            $("#stuffName").val(stuffName);
+
+            var tel = data.tel;
+            $("#tel").val(tel);
+
+            var gender = data.gender;
+            var radio = document.getElementsByName("gender");
+            var radioLength = radio.length;
+            for (var i = 0; i < radioLength; i++) {
+                if(gender == radio[i].value){
+                    $(radio[i]).next().click();
+                }
+
+            }
+
+
+            var jobLevel = data.jobLevel;
+            var temp = jobLevel.split(",");
+            console.log(temp[0]);
+            var radio = document.getElementsByName("jobLevel");
+            var radioLength = radio.length;
+            for (var i = 0; i < radioLength; i++) {
+                if(temp[0] == radio[i].value){
+                    $(radio[i]).next().click();
+                }
+
+            }
+
+            var special = data.special;
+            $("#special").val(special);
+
+            var dream = data.dream;
+            $("#dream").val(dream);
+
+            var qq = data.qq;
+            $("#qq").val(qq);
+
+            var weixin = data.weixin;
+            $("#weixin").val(weixin);
+
+            var address = data.address;
+            $("#address").val(address);
+
+            var email = data.email;
+            $("#email").val(email);
+
+            var workAge = data.workAge;
+            $("#workAge").val(workAge);
+
+        }
+
+
+/*        var $ = layui.jquery;
         var userCode = data.userCode;
         $('#userCode').val(userCode);
         var userName = data.userName;
@@ -133,7 +201,7 @@
         var email = data.email;
         $('#email').val(email);
 
-        console.log(data);
+        console.log(data);*/
     }
 
     layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
@@ -155,7 +223,7 @@
         }
 	    var url ='';
 	    if($('#recordId').val()!==""){
-            url = '/admin/systemUsers/update.handler';
+            url = '/hy/basic/stuff/updateStuffData';
 	    }else{
             url = '/hy/basic/stuff/addStuff';
 	    }
@@ -164,10 +232,15 @@
             url:url,
 	    	data: data.field,
 	    	success: function(data){
-                alert("操作成功！");
-    			window.parent.location.reload(); //刷新父页面
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);  // 关闭layer
+	    	    if(data.msgcode=="200"){
+                    alert("操作失败！");
+                }else{
+                    alert("操作成功！");
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                }
+
 	    		/* alert("操作成功");
 	    		if(type=="update"){
 		    		window.parent.location.reload(); //刷新父页面

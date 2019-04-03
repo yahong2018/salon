@@ -642,12 +642,12 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
 
         try {
-            String dir = request.getServletContext().getRealPath("/city");
+            String pathname = request.getServletContext().getRealPath("/city")+"/output.txt";
 //            java.io.File folder = new java.io.File(dir);
 //            if (!folder.exists()) {
 //                folder.mkdirs();     ///如果不存在，创建目录
 //            }
-            File writeName = new File(dir+"/output.txt");
+            File writeName = new File(pathname);
             writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
             try (FileWriter writer = new FileWriter(writeName);
                  BufferedWriter out = new BufferedWriter(writer)
