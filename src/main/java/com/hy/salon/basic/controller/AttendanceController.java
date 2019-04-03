@@ -85,15 +85,15 @@ public class AttendanceController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long")
     })
-    public Result getPatchCardList(HttpServletRequest request,Long storeId){
+    public ExtJsResult getPatchCardList(HttpServletRequest request,Long storeId){
         Result result  = new Result();
         if(storeId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-            storeId= stuff2.getRecordId();
+            storeId= stuff2.getStoreId();
         }
 
-        ExtJsResult StoreList = retroactiveService.getPatchCardListByStoreId(request, storeId, new ListRequestBaseHandler() {
+        ExtJsResult attendanceList = retroactiveService.getPatchCardListByStoreId(request, storeId, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
                 return retroactiveDao.getPageList(listRequest.toMap(), null);
@@ -104,10 +104,8 @@ public class AttendanceController {
                 return retroactiveDao.getPageListCount(listRequest.toMap(), null);
             }
         });
-        result.setMsg("签到成功");
-        result.setMsgcode("0");
-        result.setSuccess(true);
-        return  result;
+
+        return  attendanceList;
     }
 
     /**
@@ -122,6 +120,11 @@ public class AttendanceController {
             @ApiImplicitParam(paramType="query", name = "recordId", value = "补卡id", required = true, dataType = "Long"),
     })
     public Result examinePatchCard(String auditOpinion,long userId,long recordId ){
+        if(StringUtils.isEmpty(userId+"")){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            userId= stuff2.getRecordId();
+        }
         Retroactive retroactive  = retroactiveDao.getById(recordId);
         retroactive.setReson(auditOpinion);
         retroactive.setAuditPerson(userId);
@@ -150,6 +153,7 @@ public class AttendanceController {
     })
     public Result patchCard(Retroactive retroactive){
         Result result  = new Result();
+        retroactive.setDate(new Date());
         retroactiveDao.insert(retroactive);
         result.setMsg("签到成功");
         result.setMsgcode("0");

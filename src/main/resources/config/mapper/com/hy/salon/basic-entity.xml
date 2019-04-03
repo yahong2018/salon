@@ -362,6 +362,7 @@
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="audit_opinion" property="auditOpinion" jdbcType="VARCHAR" />
         <result column="retroactive_type" property="retroactiveType" jdbcType="INTEGER" />
+        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
 
     </resultMap>
 </mapper>

@@ -1,13 +1,14 @@
 package com.hy.salon.basic.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Data;
 
 import java.util.Date;
 @DataTableConfiguration("retroactive")
 @Data
-public class Retroactive extends EntityObject<Long> {
+public class Retroactive extends TraceableEntity<Long> {
     private Long recordId;
 
     private Long auditPerson;

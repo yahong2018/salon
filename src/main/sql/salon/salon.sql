@@ -637,8 +637,8 @@ create table retroactive
   date                             datetime                           not null, -- 补卡时间
   reson                            varchar(100)                       not null, -- 补卡原因
   audit_statu                      tinyint                            not null, -- 审核状态  0 通过  1 不通过
-  user_id                          bigint                             not null, -- 审核人
-  audit_opinion                    varchar(100)                       not null, -- 审核意见
+  user_id                          bigint                             null, -- 审核人
+  audit_opinion                    varchar(100)                       null, -- 审核意见
   salon_id                         bigint                             not null, -- 所属门店id
   retroactive_type                 int                                 not null, -- 补卡类型：1 上班    2 下班
 

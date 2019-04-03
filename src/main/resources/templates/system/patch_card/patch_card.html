@@ -23,7 +23,7 @@
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 438px;">
-      <button class="layui-btn layui-btn-primary addUser">审核</button>
+      <button class="layui-btn layui-btn-primary apply">审核</button>
       <!--      <button class="layui-btn">默认按钮</button>
             <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
     </div>
@@ -62,13 +62,13 @@
 
 <script type="text/javascript">
   layui.use(['form','laydate','layer','table','laypage','util'],function(){
+
     var form = layui.form;
     var laydate=layui.laydate;
     var $ = layui.$;
     productsearch(1);
     form.on('select(storeid)', function(data){
-      console.log(data.value)
-      alert(data);
+      console.log(data.value);
       $("#storeId").val(data.value);
       productsearch(1,"",data.value);
     })
@@ -127,26 +127,26 @@
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);
-/*          console.log(res.listMap);
-          var listMap = res.listMap;
-          var chechId  = res.chechId;
-          if(listMap.length>0){
-            for(index in listMap){
-              if(index==0){
-                var temp = listMap[index].recordId;
-                $("#storeId").val(temp);
-              }
-              var temp = "";
-              if(chechId==listMap[index].recordId){
-                temp = "<option selected='selected' value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
-              }else{
-                temp = "<option value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
-              }
+          /*          console.log(res.listMap);
+                    var listMap = res.listMap;
+                    var chechId  = res.chechId;
+                    if(listMap.length>0){
+                      for(index in listMap){
+                        if(index==0){
+                          var temp = listMap[index].recordId;
+                          $("#storeId").val(temp);
+                        }
+                        var temp = "";
+                        if(chechId==listMap[index].recordId){
+                          temp = "<option selected='selected' value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
+                        }else{
+                          temp = "<option value="+listMap[index].recordId+">"+listMap[index].salonName+"</option>";
+                        }
 
-              $(".storeList").append(temp);
-              form.render();//表单重新渲染，要不然添加完显示不出来新的option
-            }
-          }*/
+                        $(".storeList").append(temp);
+                        form.render();//表单重新渲染，要不然添加完显示不出来新的option
+                      }
+                    }*/
 
           return {
             "count": res.total,
@@ -206,64 +206,27 @@
 
     })
 
-
-
-
-
-    $(".deleteUser").on("click",function(){
+    $(".apply").on("click",function(){
       var data = layui.table.checkStatus('layui_table_id').data;
       if(data.length<1){
         alert("请选中一条数据");
         return false;
       }
-      var deleteList = [];
-      for(var i=0 ;i<data.length;i++){
-        var id = data[i].recordId;
-        var temp =id+"";
-        deleteList.push(temp);
-      }
-      console.log(deleteList);
-      $.ajax({
-        type:'POST',
-        url:'/hy/basic/stuff/deleteStuff',
-        data: JSON.stringify(deleteList),
-        contentType: "application/json",
-        success: function(data){
-          if(data.msgcode="200"){
-            alert("操作失败！");
-          }else{
-            alert("操作成功！");
-            productsearch(1);
-          }
-
-        },
-        error:function(data){
-          alert("操作失败");
-          console.log(data);
-        }
-      })
-
-    })
-
-    $(".addUser").on("click",function(){
       layer.open({
         type:2,
-        area:[600+'px',600+'px'],
+        area:[450+'px',239+'px'],
         fix:false,
         offset: '80px',
         maxmin:true,
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'添加员工',
-        content:['add_stuff.html'],
+        title:'审核意见',
+        content:['patch_card_apply.html'],
         success:function(layero,index){
           var iframe = window['layui-layer-iframe' + index];
           // 向子页面的全局函数child传参
-          var stuff = {};
-          stuff.storeId =  $("#storeId").val();
-
-          iframe.child(stuff);
+          iframe.child(data[0]);
           console.log("成功");
         },
         fail:function(data){
@@ -271,39 +234,6 @@
         }
       })
     })
-    $(".updateStuff").on("click",function(){
-      console.log(layui.table.checkStatus('layui_table_id'));
-      var data = layui.table.checkStatus('layui_table_id').data;
-      if(data.length>1){
-        alert("请选中一条数据");
-        return false;
-      }
-      layer.open({
-        type:2,
-        area:[482+'px',315+'px'],
-        fix:false,
-        offset: '80px',
-        maxmin:true,
-        shadeClose:true,
-        scrollbar: false,
-        shade:0.4,
-        title:'修改用户',
-        content:['add_stuff.html'],
-        success:function(layero,index){
-          // 获取子页面的iframe
-          var iframe = window['layui-layer-iframe' + index];
-          // 向子页面的全局函数child传参
-          var stuff = data[0];
-          console.log(stuff);
-          iframe.child(stuff);
-          console.log("成功");
-        },
-        fail:function(data){
-          console.log(data);
-        }
-      })
-    })
-
   });
   function userStatus(t){
     if(t==0){
