@@ -21,6 +21,7 @@ import com.zhxh.core.web.ListRequestBaseHandler;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,7 +91,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping("getStuffAdmin")
     @ApiOperation(value="获取员工按美容院分类", notes="获取员工按美容院分类")
-    public ExtJsResult getStuffAdmin(String jobLevel, HttpServletRequest request) {
+    public ExtJsResult getStuffAdmin(String jobLevel, HttpServletRequest request,String storeId) {
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
         if (jobLevel == null) {
@@ -102,18 +103,28 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         }
         List<Map> listMap = new ArrayList<>();
         Result r = new Result();
+
+        long sId= 0;
+
         if (jobLevel.equals("0")) {
-            List<Salon> stuffList = salonDao.getAdminSalonForStore(stuff2.getStoreId());
-            if (!stuffList.isEmpty()) {
-                for (Salon s : stuffList) {
-                    Map map = new HashMap();
-                    map.put("recordId", s.getRecordId());
-                    map.put("salonName", s.getSalonName());
-                    listMap.add(map);
+                long recordId = 0;
+                if(StringUtils.isNotEmpty(storeId)){
+                    recordId = Long.parseLong(storeId);
+                }else {
+                    List<Salon> stuffList = salonDao.getAdminSalonForStore(stuff2.getStoreId());
+                    if (!stuffList.isEmpty()) {
+                        for (Salon s : stuffList) {
+                            Map map = new HashMap();
+                            map.put("recordId", s.getRecordId());
+                            map.put("salonName", s.getSalonName());
+                            listMap.add(map);
+                        }
+
+                        Salon s = stuffList.get(0);
+                        recordId = s.getRecordId();
+                    }
                 }
 
-                Salon s = stuffList.get(0);
-                long recordId = s.getRecordId();
                 ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, recordId, new ListRequestBaseHandler() {
                     @Override
                     public List getByRequest(ListRequest listRequest) {
@@ -125,9 +136,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         return stuffDao.getPageListCount(listRequest.toMap(), null);
                     }
                 });
+                StoreList.setChechId(recordId);
                 StoreList.setListMap(listMap);
                 return StoreList;
-            }
 
         }else {
             Salon salon = salonDao.getSalonForId(stuff2.getStoreId());
@@ -153,7 +164,6 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             StoreList.setSuccess(true);
             return StoreList;
         }
-        return null;
     }
 
 
@@ -290,7 +300,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping(value="updateStuffData",method = RequestMethod.POST)
     @ApiOperation(value="修改个人资料", notes="修改个人资料")
-    public Result updateStuffData(@RequestBody Stuff condition) {
+    public Result updateStuffData( Stuff condition) {
         Result r= new Result();
         try {
 
@@ -308,7 +318,46 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         return r;
     }
 
+    /**
+     * 删除员工
+     */
+    @ResponseBody
+    @RequestMapping(value="deleteStuff")
+    @ApiOperation(value="删除员工", notes="删除员工")
+    @Transactional(rollbackFor = Exception.class)
+    public Result addStuff(@RequestBody Long[] userIdList) {
+        for(Long stuffId:userIdList) {
+            Stuff stuff = stuffDao.getById(stuffId);
+            SystemUser user=systemUserDAO.getUserByCode(stuff.getTel());
+            List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(stuff.getRecordId());
+            String where = "stuff_id=#{stuffId} and system_user_id=#{systemUserId}";
+            Map parameters = new HashMap();
+            parameters.put("stuffId", stuff.getRecordId());
+            parameters.put("systemUserId", user.getRecordId());
+            List<RoleAction> list = roleActionDao.getByWhere(where,parameters);
+            String where2 = "role_id=2 and user_id=#{userId}";
+            Map parameters2 = new HashMap();
+            parameters2.put("userId", user.getRecordId());
+            List<RoleUser> listUser =  roleUserDao.getByWhere(where2,parameters2);
+            stuffDao.deleteById(stuff.getRecordId());
+            systemUserDAO.deleteById(user.getRecordId());
+            for(StuffJob sj:stuffJobList){
+                stuffJobDao.delete(sj);
+            }
+            for(RoleAction ra:list){
+                roleActionDao.delete(ra);
+            }
+            for(RoleUser ru:listUser){
+                roleUserDao.delete(ru);
+            }
+        }
 
+        Result r= new Result();
+        r.setMsg("删除成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
     /**
      * 添加员工
      */

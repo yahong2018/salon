@@ -119,19 +119,19 @@
             <div style="border-bottom:1px dashed #C0C0C0;">
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block">
-                        <input type="checkbox" name="chanping" lay-skin="primary" title="产品" >
+                        <input type="checkbox" name="chanpin" lay-skin="primary" title="产品" >
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"><span class="text-error">*</span>设置折扣：</label>
                     <div class="layui-input-inline">
-                        <input name="chanpingZ"  placeholder="请输入"  value="" class="layui-input">
+                        <input name="chanpinZ"  placeholder="请输入"  value="" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"><span class="text-error">*</span>适用范围：</label>
                     <div class="layui-input-inline">
-                        <input name="chanpingFW"  placeholder="请输入" id="chanpin"  value="" class="layui-input">
+                        <input name="chanpinFW"  placeholder="请输入" id="chanpin"  value="" class="layui-input">
                         <input name="chanpinFWListId"  class="chanpin" type="hidden" placeholder="请输入" class="chanpin"
                                value="" class="layui-input">
                     </div>
@@ -230,7 +230,6 @@
                 var $ = layui.jquery;
                 var form = layui.form;
                 var recordId = data;
-                alert(recordId)
                 $('.recordId').val(recordId);
                 $.ajax({
                     type:'GET',
@@ -255,12 +254,12 @@
 
 
                         var liaocheng  ="";
-                        var chanping = "";
+                        var chanpin = "";
 
                         var zhekou = "";
 
                         var liaochengId  ="";
-                        var chanpingId = "";
+                        var chanpinId = "";
 
                         var zhekouId = "";
                         for(index in serviceData){
@@ -282,10 +281,10 @@
                                     $("input[name='liaocheng']").prop("checked", true);
                                     $("input[name='liaochengZ']").val(service.discount);
                                 }else if(recordType ==2){
-                                    chanping = chanping+service.seriesName+",";
-                                    chanpingId = chanpingId+service.seriesId+",";
-                                    $("input[name='chanping']").prop("checked", true)
-                                    $("input[name='chanpingZ']").val(service.discount);
+                                    chanpin = chanpin+service.seriesName+",";
+                                    chanpinId = chanpinId+service.seriesId+",";
+                                    $("input[name='chanpin']").prop("checked", true)
+                                    $("input[name='chanpinZ']").val(service.discount);
                                 }
                             }
 
@@ -293,8 +292,8 @@
                         $(".zhekou").val(zhekouId);
                         $("#zhekou").val(zhekou);
 
-                        $(".chanping").val(chanpingId);
-                        $("#chanping").val(chanping);
+                        $(".chanpin").val(chanpinId);
+                        $("#chanpin").val(chanpin);
 
                         $(".liaocheng").val(liaochengId);
                         $("#liaocheng").val(liaocheng);
@@ -496,7 +495,7 @@
             vip_suite.price = dataList.price;
             var danxuan  = dataList.danxuan;
             var liaocheng = dataList.liaocheng;
-            var chanping = dataList.chanping;
+            var chanpin = dataList.chanpin;
             var itemList = [];
             if(danxuan=='on'){
                 var   item = {};
@@ -512,10 +511,10 @@
                 item.serviceId = dataList.liaochengListFWId
                 itemList.push(item);
             }
-            if(chanping=='on'){
+            if(chanpin=='on'){
                 var item = {};
                 item.recordType = 2;
-                item.discount =dataList.chanpingZ;
+                item.discount =dataList.chanpinZ;
                 item.serviceId = dataList.chanpinFWListId;
                 itemList.push(item);
             }

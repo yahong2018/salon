@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>用户</title>
+  <title>补卡列表</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -23,9 +23,7 @@
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
     <div class="layui-input-inline " style=" width: 438px;">
-      <button class="layui-btn layui-btn-primary addUser">新增用户</button>
-      <button class="layui-btn updateStuff">修改用户</button>
-      <button class="layui-btn layui-btn-normal deleteUser">删除用户</button>
+      <button class="layui-btn layui-btn-primary addUser">审核</button>
       <!--      <button class="layui-btn">默认按钮</button>
             <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
     </div>
@@ -33,10 +31,6 @@
       <label class="layui-form-label">搜索选择框</label>
       <div class="layui-input-inline">
         <select name="modules"  lay-search="" class="storeList"  lay-filter="storeid">
-          <!-- <option value="">直接选择或搜索选择</option>
-           <option value="user_code">用户账号</option>
-           <option value="user_name">用户名称</option>
-           <option value="email">email</option>-->
         </select>
       </div>
     </div>
@@ -84,9 +78,10 @@
               laydate = layui.laydate,
               laypage = layui.laypage;
       var form = layui.form;
+
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/stuff/getStuffAdmin',
+        url : '/hy/basic/attendance/getPatchCardList',
         cols : [ [
           {checkbox: true,
             filter:'test'
@@ -99,23 +94,28 @@
             align : 'center'
           }
           , {
-            field : 'stuffName',
+            field : 'auditPerson',
             title : '员工名称',
             align : 'center'
           }
           , {
-            field : 'tel',
-            title : '电话号码',
+            field : 'reson',
+            title : '补卡原因',
             align : 'center',
           }
           , {
-            field : 'qq',
-            title : 'qq',
+            field : 'retroactiveType',
+            title : '补卡类型',
             align : 'center'
           }
           , {
-            field : 'address',
-            title : '地址',
+            field : 'auditStatu',
+            title : '补卡状态',
+            align : 'center'
+          }
+          , {
+            field : 'auditOpinion',
+            title : '审核意见',
             align : 'center'
           }
 
@@ -127,7 +127,7 @@
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);
-          console.log(res.listMap);
+/*          console.log(res.listMap);
           var listMap = res.listMap;
           var chechId  = res.chechId;
           if(listMap.length>0){
@@ -146,7 +146,7 @@
               $(".storeList").append(temp);
               form.render();//表单重新渲染，要不然添加完显示不出来新的option
             }
-          }
+          }*/
 
           return {
             "count": res.total,

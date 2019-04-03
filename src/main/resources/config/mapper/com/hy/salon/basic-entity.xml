@@ -353,4 +353,15 @@
         <result column="effectiveness" property="effectiveness" jdbcType="TINYINT" />
     </resultMap>
 
+    <resultMap id="Retroactive" type="com.hy.salon.basic.entity.Retroactive" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="audit_person" property="auditPerson" jdbcType="BIGINT" />
+        <result column="date" property="date" jdbcType="TIMESTAMP" />
+        <result column="reson" property="reson" jdbcType="VARCHAR" />
+        <result column="audit_statu" property="auditStatu" jdbcType="TINYINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="audit_opinion" property="auditOpinion" jdbcType="VARCHAR" />
+        <result column="retroactive_type" property="retroactiveType" jdbcType="INTEGER" />
+
+    </resultMap>
 </mapper>
