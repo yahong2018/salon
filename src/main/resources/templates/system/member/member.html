@@ -29,20 +29,64 @@
             <!--      <button class="layui-btn">默认按钮</button>
                   <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
         </div>
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-form-label">搜索选择框</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="modules"  lay-search="" class="userKey">-->
+                    <!--<option value="">直接选择或搜索选择</option>-->
+                    <!--<option value="member_name">顾客姓名</option>-->
+                    <!--<option value="tel">顾客电话</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+
         <div class="layui-inline">
-            <label class="layui-form-label">搜索选择框</label>
+        <label class="layui-form-label">是否本月生日</label>
+        <div class="layui-input-inline">
+        <select name="birthday"  lay-search="" class="birthday">
+        <option value="">请选择</option>
+        <option value="0">是</option>
+        <option value="1">否</option>
+        </select>
+        </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">预警档案</label>
             <div class="layui-input-inline">
-                <select name="modules"  lay-search="" class="userKey">
-                    <option value="">直接选择或搜索选择</option>
-                    <option value="member_name">顾客姓名</option>
-                    <option value="tel">顾客电话</option>
+                <select name="earlyWarning"  lay-search="" class="earlyWarning">
+                    <option value="">请选择</option>
+                    <option value="0">三个月未到店</option>
+                    <option value="1">六个月未到店</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">顾客类别</label>
+            <div class="layui-input-inline">
+                <select name="memberGradeId"  lay-search="" class="memberGradeId">
+                    <option value="">请选择</option>
+                    <option value="0">A类</option>
+                    <option value="1">B类</option>
+                    <option value="2">C类</option>
+                    <option value="3">D类</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">顾客标签</label>
+            <div class="layui-input-inline">
+                <select name="tag"  lay-search="" class="tag">
+                    <option value="">请选择</option>
                 </select>
             </div>
         </div>
         <div class="layui-inline">
-            <div class="layui-input-inline">
-                <input type="text" name="userKey" class="layui-input userKeyValue ">
-            </div>
+            <!--<div class="layui-input-inline">-->
+                <!--<input type="text" name="userKey" class="layui-input userKeyValue ">-->
+            <!--</div>-->
             <div class="layui-input-inline">
                 <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
                     <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
@@ -80,7 +124,7 @@
             var form = layui.form;
             table.render({
                 elem : '#layui_table_id',
-                url : '/hy/basic/member/getArchivespc',
+                url : '/hy/basic/member/getMember',
                 cols : [ [
                     {checkbox: true,
                         filter:'test'
@@ -184,15 +228,42 @@
 
         $(".check").on("click", function() {
 
-            var userKey=$('.userKey option:selected').val();
-            if(userKey!=""){
-                var userKeyValue = $('.userKeyValue').val();
-                var temp = userKey+"='"+userKeyValue+"'";
-                productsearch(1, temp);
+            var birthday=$('.birthday option:selected').val();
+            var tag=$('.tag option:selected').val();
+            var earlyWarning=$('.earlyWarning option:selected').val();
+            var memberGradeId=$('.memberGradeId option:selected').val();
+
+
+            var temp={};
+            if(birthday!=""){
+                temp.birthday=birthday;
+
             }else{
-                productsearch(1);
+                temp.birthday="";
             }
 
+            if(tag!=""){
+                temp.tag=tag;
+
+            }else{
+                temp.tag="";
+            }
+
+            if(earlyWarning!=""){
+                temp.earlyWarning=earlyWarning;
+
+            }else{
+                temp.earlyWarning="";
+            }
+
+            if(memberGradeId!=""){
+                temp.memberGradeId=memberGradeId;
+
+            }else{
+                temp.memberGradeId="";
+            }
+
+            productsearch(1, JSON.stringify(temp));
         })
         $(".tingzhi").on("click",function(){
             var data = layui.table.checkStatus('layui_table_id').data;

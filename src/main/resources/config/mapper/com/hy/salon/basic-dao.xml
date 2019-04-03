@@ -256,4 +256,11 @@ group by ss.record_id;
 
     </select>
 
+
+    <!--查询顾客标签按门店 -->
+    <select id="QUERY_TAG_FOR_SALON"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Tag">
+
+    select st.* from salon.tag as st left join salon.member_salon_tag as smst1 on st.record_id = smst1.tag_id where smst1.salon_id=#{salonId} and st.record_type=1
+
+    </select>
 </mapper>
