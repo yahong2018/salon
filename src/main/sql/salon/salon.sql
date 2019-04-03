@@ -435,7 +435,7 @@ create table member
   weixin                           varchar(50)                     not null,   -- 微信
   birthday                         datetime                        null,       -- 生日
   zodiac                           tinyint                         null,       -- 星座
-  member_grade_id                  bigint                          not null,   -- 分类 0 A类  1 B类 2 C类 3 D类
+  member_grade_id                  bigint                          not null default 3,   -- 分类 0 A类  1 B类 2 C类 3 D类
   -- member_tag                                                                -- 会员标签
 
   blood_type                       tinyint                         null,       -- 血型
@@ -639,6 +639,9 @@ create table retroactive
   audit_statu                      tinyint                            not null, -- 审核状态  0 通过  1 不通过
   user_id                          bigint                             not null, -- 审核人
   audit_opinion                    varchar(100)                       not null, -- 审核意见
+  salon_id                         bigint                             not null, -- 所属门店id
+  retroactive_type                 int                                 not null, -- 补卡类型：1 上班    2 下班
+
 
   create_date                      datetime                           not null,
   create_by                        bigint                             not null,

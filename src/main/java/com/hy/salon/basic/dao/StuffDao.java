@@ -82,11 +82,23 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
                 ss.setPicUrl(pic.getPicUrl());
             }
             List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
-            if(stuffJobList.size() != 1 ){
+            if(stuffJobList.size() >0 ){
                 for(StuffJob sj:stuffJobList){
                     Job job=jobDao.getJobForId(sj.getJobId());
-                    String str=ss.getJobName()+","+job.getJobName();
+                    String str="";
+                    String jobLevel = "";
+                    if(ss.getJobLevel()!=null){
+                        jobLevel =  ss.getJobLevel()+","+job.getJobLevel();
+                    }else{
+                        jobLevel =  job.getJobLevel()+"";
+                    }
+                    if(ss.getJobName()!=null){
+                        str =  ss.getJobName()+","+job.getJobName();
+                    }else{
+                        str =  job.getJobName();
+                    }
                     ss.setJobName(str);
+                    ss.setJobLevel(jobLevel);
                 }
 
             }

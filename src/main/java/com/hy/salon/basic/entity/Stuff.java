@@ -29,6 +29,6 @@ import java.sql.Timestamp;
     private String picUrl;
     private String jobName;
 
-
+    private String jobLevel;
 
 }

@@ -26,6 +26,8 @@ public class ExtJsResult implements Serializable {
 
     private List<Map>  listMap;
 
+    private long chechId;
+
 /*    public List<String> getListKey() {
 		return listKey;
 	}
