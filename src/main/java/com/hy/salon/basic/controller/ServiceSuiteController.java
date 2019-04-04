@@ -226,7 +226,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
         Result r= new Result();
         try {
 
-            if(null == storeId || storeId == null){
+            if(null == storeId ){
                 SystemUser user = authenticateService.getCurrentLogin();
                 Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
                 storeId=stuff.getStoreId();

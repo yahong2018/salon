@@ -105,7 +105,7 @@ public class MemberService {
 
     public void addMember(Member member) {
         //设置会员默认值
-        member.setMemberGradeId(3L);
+        member.setMemberGrade(3L);
         member.setBalance(0.0);
         member.setIntegral(0.0);
         member.setDebt(0.0);

@@ -32,6 +32,14 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
         return this.getOne(where, parameters);
     }
 
+    public List<VipSuite> getVipSuiteListForId(Long id){
+        String where = "store_id=#{id}";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getByWhere(where, parameters);
+    }
+
 
     public ExtJsResult getVipSuiteListIdSystem(long storeId,HttpServletRequest request, ListRequestBaseHandler listRequestBaseHandler) {
 

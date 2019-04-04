@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>添加档案</title>
+<title>修改档案</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
     <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
@@ -217,26 +217,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">简介：</label>
-            <div class="layui-input-inline">
-
-                <textarea name="description" id="description" placeholder="请输入内容" class="layui-textarea"></textarea>
-            </div>
-        </div>
-
-
         <div id="zyupload" class="zyupload"></div>
-
-
-
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否停用：</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="recordStatus"  id="recordStatus" lay-skin="switch"  lay-text="ON|OFF">
-            </div>
-        </div>
 
         <div class="layui-form-item" style="margin-left: 140px;">
             <!--<p id="btnGroup" class="pull-right">-->
@@ -272,8 +253,53 @@
 
 
 
-    function child(salonId){
+    function child(data){
         var $ = layui.jquery;
+
+        var recordId=data.recordId;
+        $('#recordId').val(recordId);
+
+
+        var memberName = data.memberName;
+        $('#memberName').val(memberName);
+        var tel = data.tel;
+        $('#tel').val(tel);
+        var gender = data.gender;
+        $('#gender').val(gender);
+        var weixin = data.weixin;
+        $('#weixin').val(weixin);
+        var birthday = data.birthday;
+        $('#birthday').val(birthday);
+        var zodiac = data.zodiac;
+        $('#zodiac').val(zodiac);
+        var memberGrade = data.memberGrade;
+        $('#memberGrade').val(memberGrade);
+        var bloodType = data.bloodType;
+        $('#bloodType').val(bloodType);
+        var height = data.height;
+        $('#height').val(height);
+        var weight = data.weight;
+        $('#weight').val(weight);
+        var lastDayOfMenses = data.lastDayOfMenses;
+        $('#lastDayOfMenses').val(lastDayOfMenses);
+        var cycleOfMenses = data.cycleOfMenses;
+        $('#cycleOfMenses').val(cycleOfMenses);
+        var periodOfMenses = data.periodOfMenses;
+        $('#periodOfMenses').val(periodOfMenses);
+        var remarkOfMenses = data.remarkOfMenses;
+        $('#remarkOfMenses').val(remarkOfMenses);
+        var profession = data.profession;
+        $('#profession').val(profession);
+        var address = data.address;
+        $('#address').val(address);
+        var email = data.email;
+        $('#email').val(email);
+        var memberCode = data.memberCode;
+        $('#memberCode').val(memberCode);
+        var introducer = data.introducer;
+        $('#introducer').val(introducer);
+        var primaryBeautician = data.primaryBeautician;
+        $('#primaryBeautician').val(primaryBeautician);
 
 
         $.ajax({

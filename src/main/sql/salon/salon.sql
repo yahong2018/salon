@@ -435,7 +435,7 @@ create table member
   weixin                           varchar(50)                     not null,   -- 微信
   birthday                         datetime                        null,       -- 生日
   zodiac                           tinyint                         null,       -- 星座
-  member_grade_id                  bigint                          not null default 3,   -- 分类 0 A类  1 B类 2 C类 3 D类
+  member_grade                     bigint                          not null default 3,   -- 分类 0 A类  1 B类 2 C类 3 D类
   -- member_tag                                                                -- 会员标签
 
   blood_type                       tinyint                         null,       -- 血型
@@ -477,25 +477,6 @@ create table member
   index idx_member_05(primary_beautician),
   index idx_member_06(introducer)
 ) comment '会员';
-
-
-create  table member_grade
-(
-  record_id                        bigint      auto_increment      not null,
-  grade_name                       varchar(10)                     not null,
-  grade_level                      tinyint                         not null,
-  salon_id                         bigint                          not null,  --  所属美容院
-
-  create_date                      datetime                        not null,
-  create_by                        bigint                          not null,
-  update_date                      datetime                        null,
-  update_by                        bigint                          null,
-  opt_lock                         int                             null,
-
-
-  primary key (record_id),
-  index idx_member_grade_01(grade_name)
-)comment '会员级别';
 
 create table member_tag
 (

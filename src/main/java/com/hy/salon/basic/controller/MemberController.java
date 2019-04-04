@@ -6,6 +6,7 @@ import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.MemberService;
+import com.hy.salon.basic.vo.MemberVo;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
@@ -22,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -48,6 +51,14 @@ public class MemberController extends SimpleCRUDController<Member> {
 
     @Resource(name="memberSalonTagDAO")
     private MemberSalonTagDAO memberSalonTagDAO;
+
+    @Resource(name = "memberTagDao")
+    private MemberTagDao memberTagDao;
+
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
+
+
 
     @Override
     protected BaseDAOWithEntity<Member> getCrudDao() {
@@ -128,11 +139,11 @@ public class MemberController extends SimpleCRUDController<Member> {
 
     /**
      * 添加/更新档案
-     * @param member
+     * @param
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "addMember",method = RequestMethod.POST)
+    @RequestMapping(value = "addMember")
     @ApiOperation(value="添加/更新档案", notes="添加/更新档案")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "Long"),
@@ -144,13 +155,45 @@ public class MemberController extends SimpleCRUDController<Member> {
             @ApiImplicitParam(paramType="query", name = "birthday", value = "生日", required = true, dataType = "Date"),
             @ApiImplicitParam(paramType="query", name = "remarkOfMenses", value = "备注", required = true, dataType = "String")
     })
-    public Result addMember(@RequestBody Member member) {
+    public Result addMember(Member condition,String comeFrom,HttpServletRequest request,Long tagId,String picIdList) {
+
+        if("PC".equals(comeFrom)){
+            String  vs =  request.getParameter("condition");
+            condition =  JSONObject.parseObject(vs, Member.class);
+        }
         Result result = new Result();
         try {
-            if(member.getRecordId()==null){
-                memberService.addMember(member);
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+            if(condition.getRecordId()==null){
+                condition.setMemberGrade(new Long(0));
+                condition.setInitialStoreId(stuff.getStoreId());
+                condition.setBalance(new Double(0));
+                condition.setIntegral(new Double(0));
+                condition.setDebt(new Double(0));
+                condition.setAmountCharge(new Double(0));
+                condition.setAmountConsumer(new Double(0));
+                memberDao.insert(condition);
+                MemberTag tag=new MemberTag();
+                tag.setMemberId(condition.getRecordId());
+                tag.setTagId(tagId);
+                memberTagDao.insert(tag);
+
+                //插入照片关联
+                if(null!=picIdList && !"".equals(picIdList)){
+                    String[] str = picIdList.split(",");
+                    for(String s:str){
+                        Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                        if(null != pic){
+                            pic.setMasterDataId(condition.getRecordId());
+                            picturesDao.update(pic);
+                        }
+                    }
+                }
+
             }else{
-                memberDao.update(member);
+                memberDao.update(condition);
             }
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -209,14 +252,19 @@ public class MemberController extends SimpleCRUDController<Member> {
      */
     @ResponseBody
     @RequestMapping("getTag")
-    public Result getTag(int page) {
+    public Result getTag(int page,String  limit) {
         Result result = new Result();
 
         try {
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             result.setTotal(memberSalonTagDAO.getTag(stuff.getStoreId()).size());
-            PageHelper.startPage(page, 10);
+            if(null==limit){
+                PageHelper.startPage(page, 50);
+            }else{
+                PageHelper.startPage(page, 10);
+            }
+
             List<Tag> tagList=memberSalonTagDAO.getTag(stuff.getStoreId());
             result.setData(tagList);
             result.setMsgcode(StatusUtil.OK);
@@ -287,11 +335,11 @@ public class MemberController extends SimpleCRUDController<Member> {
     }
 
     /**
-     * 档案列表
+     * 档案
      */
     @ResponseBody
     @RequestMapping("getMember")
-    public Result getMember(int page, HttpServletRequest request) {
+    public Result getMember(int page, HttpServletRequest request,int limit) {
         Result result = new Result();
 
         try {
@@ -302,8 +350,14 @@ public class MemberController extends SimpleCRUDController<Member> {
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
             result.setTotal(memberDao.getMember(stuff.getStoreId(),filterExpr).size());
-            PageHelper.startPage(page, 10);
-            List<Member> memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
+            List<MemberVo> memberList=new ArrayList<>();
+            if(limit==-1){
+                memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
+            }else{
+                PageHelper.startPage(page, 10);
+                memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
+            }
+
             result.setData(memberList);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -313,6 +367,33 @@ public class MemberController extends SimpleCRUDController<Member> {
             result.setSuccess(false);
         }
         return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/deleteMemberForPc")
+    @ApiOperation(value="删除档案以及其绑定的项目", notes="以id删除档案已经其绑定的项目")
+    public Result deleteMemberForPc(@RequestBody Long[] userIdList){
+        Result r= new Result();
+        for(Long recordId:userIdList) {
+            try {
+                memberDao.deleteById(recordId);
+
+                //删除绑定的项目
+                MemberTag m=memberTagDao.getMemberTag(recordId);
+                memberTagDao.deleteById(m);
+
+                r.setMsg("删除成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
+        }
+
+        return r;
     }
 
 }

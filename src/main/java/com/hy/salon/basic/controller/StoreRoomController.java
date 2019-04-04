@@ -40,6 +40,8 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
     private StoreRoomService storeRoomService;
 
 
+
+
     /**
      * 获取门店下房间信息
      */
