@@ -197,7 +197,7 @@
         <result column="weixin" property="weixin" jdbcType="VARCHAR" />
         <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
         <result column="zodiac" property="zodiac" jdbcType="TINYINT" />
-        <result column="member_grade_id" property="memberGradeId" jdbcType="BIGINT" />
+        <result column="member_grade" property="memberGrade" jdbcType="BIGINT" />
         <result column="blood_type" property="bloodType" jdbcType="TINYINT" />
         <result column="height" property="height" jdbcType="INTEGER" />
         <result column="weight" property="weight" jdbcType="INTEGER" />
@@ -380,7 +380,7 @@
     </resultMap>
 
 
-    <resultMap id="verificationCodeTemporary" type="com.hy.salon.basic.entity.VerificationCodeTemporary" extends="com.zhxh.core.data.TraceableEntity">
+    <resultMap id="VerificationCodeTemporary" type="com.hy.salon.basic.entity.VerificationCodeTemporary" extends="com.zhxh.core.data.TraceableEntity">
         <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
         <result column="verification_code" property="verificationCode" jdbcType="VARCHAR" />
         <result column="valid_time" property="validTime" jdbcType="TINYINT" />

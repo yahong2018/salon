@@ -292,11 +292,18 @@ public class ProductController {
     public Result addProduct(Product condition){
         Result result=new Result();
         try {
+
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            condition.setSalonId(stuff.getStoreId());
+            if(condition.getRecordId() == null){
+                condition.setSalonId(stuff.getStoreId());
 
-            productDao.insert(condition);
+                productDao.insert(condition);
+            }else{
+                productDao.update(condition);
+            }
+
+
 
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);

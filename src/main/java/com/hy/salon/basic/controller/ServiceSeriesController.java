@@ -62,9 +62,9 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
     public Result addServiceSeries(ServiceSeries condition){
 
         Result r= new Result();
-        SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-        condition.setStoreId(stuff.getStoreId());
+//        SystemUser user = authenticateService.getCurrentLogin();
+//        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+//        condition.setStoreId(stuff.getStoreId());
         int i=serviceSeriesDao.insert(condition);
         if (i == 0) {
             r.setMsg("插入失败");

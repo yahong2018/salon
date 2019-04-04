@@ -204,11 +204,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                             ss.setPicUrl(pic.getPicUrl());
                         }
                         List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
-                        if(stuffJobList.size() != 1 ){
+                        if(stuffJobList.size() != 0 ){
                             for(StuffJob sj:stuffJobList){
                                 Job job=jobDao.getJobForId(sj.getJobId());
-                                String str=ss.getJobName()+","+job.getJobName();
-                                ss.setJobName(str);
+                                if(ss.getJobName()==null) {
+                                    ss.setJobName("");
+                                    String str=ss.getJobName()+job.getJobName();
+                                    ss.setJobName(str);
+                                }else{
+                                    String str=ss.getJobName()+","+job.getJobName();
+                                    ss.setJobName(str);
+                                }
                             }
 
                         }
@@ -226,17 +232,28 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         }else{
             JSONArray jsonArr=new JSONArray();
             List<Stuff> stuff= stuffService.getStuffForStoreId(stuff2.getStoreId());
+            Salon salon=salonDao.getSalonForStoreId(stuff2.getStoreId());
             for(Stuff ss:stuff){
                 Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
                 if(null!=pic){
                     ss.setPicUrl(pic.getPicUrl());
                 }
                 List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
-                if(stuffJobList.size() != 1 ){
+                if(stuffJobList.size() != 0 ){
                     for(StuffJob sj:stuffJobList){
                         Job job=jobDao.getJobForId(sj.getJobId());
-                        String str=ss.getJobName()+","+job.getJobName();
-                        ss.setJobName(str);
+                        if(ss.getJobName()==null) {
+                            ss.setJobName("");
+                            String str=ss.getJobName()+job.getJobName();
+                            ss.setJobName(str);
+                        }else{
+                            String str=ss.getJobName()+","+job.getJobName();
+                            ss.setJobName(str);
+                        }
+
+
+
+
                     }
 
                 }
@@ -244,8 +261,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             }
             JSONObject jsonObj=new JSONObject();
             jsonObj.put("stuff",stuff);
+            jsonObj.put("salonName",salon.getSalonName());
             jsonArr.add(jsonObj);
-
+            r.setData(jsonArr);
         }
 
 
@@ -280,6 +298,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
 
             jsonObj.put("jobLevel",job.getJobLevel());
             jsonObj.put("salon",salon.getSalonName());
+            if(null == pic){
+                pic=new Pictures();
+            }
             jsonObj.put("pic",pic);
             jsonObj.put("stuff",stuff);
         r.setMsg("请求成功");

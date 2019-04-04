@@ -2,6 +2,7 @@ package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
@@ -92,6 +93,34 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 
         return VipSuiteList;
     }
+
+
+    @ResponseBody
+    @RequestMapping("/queryVipSuiteListForApp")
+    @ApiOperation(value="获取所有充值卡", notes="获取本美容院所有充值卡")
+    public Result queryVipSuite(Long storeId,int page,int limit){
+        Result r= new Result();
+
+        if(null == storeId || storeId == null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            storeId=stuff.getStoreId();
+        }
+        r.setTotal(vipSuiteDao.getVipSuiteListForId(storeId).size());
+        PageHelper.startPage(page, limit);
+        List<VipSuite> serviceList= vipSuiteDao.getVipSuiteListForId(storeId);
+
+
+        r.setMsg("请求成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        r.setData(serviceList);
+        return r;
+    }
+
+
+
+
 
 
     @ResponseBody
@@ -342,6 +371,94 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         return r;
     }
 
+
+
+    @ResponseBody
+    @RequestMapping("/updateVipSuiteForApp")
+    @ApiOperation(value="编辑充值卡", notes="编辑充值卡")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "suiteName", value = "充值卡名称", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "price", value = "面额", required = true, dataType = "double"),
+            @ApiImplicitParam(paramType="query", name = "vipSuiteStatus", value = "记录状态：0.启用   1.停用", required = true, dataType = "Byte"),
+            @ApiImplicitParam(paramType="query", name = "description", value = "介绍", required = true, dataType = "Date"),
+            @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
+
+    })
+    public Result updateVipSuiteForApp(VipSuite condition,String bindingJson,String picIdList,HttpServletRequest request){
+        Result r= new Result();
+        //先写死，后面改
+//        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"12,13,14\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"20,24,25\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"36,30,31\"}]";
+        try {
+
+            int ii =vipSuiteDao.update(condition);
+            if(ii != 0){
+                //删除绑定的项目
+                List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(condition.getRecordId());
+                if(!suiteItemList.isEmpty()){
+                    for(VipSuiteItem vsi:suiteItemList){
+                        long id =  vsi.getRecordId();
+                        String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+                        Map parameters = new HashMap();
+                        parameters.put("vipSuiteItemId",id);
+                        vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
+                        vipSuiteItemDao.delete(vsi);
+                    }}
+
+
+
+                //解析绑定json，绑定关系
+                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
+                if(!jsonArr.isEmpty()){
+                    for(int i=0;i<jsonArr.size();i++){
+                        JSONObject jsonObj=jsonArr.getJSONObject(i);
+                        String recordType=jsonObj.getString("recordType");
+                        String itemId=jsonObj.getString("serviceId");
+                        String discount=jsonObj.getString("discount");
+
+                        //绑定父类
+                        VipSuiteItem vipSuitItem=new VipSuiteItem();
+                        vipSuitItem.setRecordType(Byte.parseByte(recordType));
+                        vipSuitItem.setVipSuiteId(condition.getRecordId());
+                        vipSuitItem.setDiscount(Byte.parseByte(discount));
+                        vipSuiteItemDao.insert(vipSuitItem);
+
+                        String[] str = itemId.split(",");
+                        for(String s :str){
+                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
+                            vipRangeCondition.setServiceId(Long.parseLong(s));
+                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
+                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
+                        }
+                    }
+                }
+            }
+
+            if(null != picIdList && !"".equals(picIdList)){
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for(String s:str){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
+                }
+            }
+
+            r.setMsg("修改成功");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+
+        return r;
+    }
+
     @ResponseBody
     @RequestMapping("/queryVipSuiteData")
     @ApiOperation(value="查询充值卡详情", notes="查询充值卡详情")
@@ -475,6 +592,43 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                 r.setMsgcode(StatusUtil.ERROR);
             }
         }
+
+        return r;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/deleteVipSuiteForApp")
+    @ApiOperation(value="删除充值卡以及其绑定的项目", notes="以id删除充值卡已经其绑定的项目")
+    public Result deleteVipSuiteForApp(Long recordId){
+        Result r= new Result();
+
+            try {
+                //删除绑定的项目
+                List<VipSuiteItem> suiteItemList= vipSuiteItemDao.queryVipSuitForId(recordId);
+                if(!suiteItemList.isEmpty()){
+                    for(VipSuiteItem vsi:suiteItemList){
+                        long id =  vsi.getRecordId();
+                        String where = " where vip_suite_item_id=#{vipSuiteItemId} ";
+                        Map parameters = new HashMap();
+                        parameters.put("vipSuiteItemId",id);
+                        vipSuiteItemDiscountRangeDAO.deleteByWhere(where,parameters);
+                        vipSuiteItemDao.delete(vsi);
+                    }}
+                String where = " where master_data_id=#{masterDataId} ";
+                Map parameters = new HashMap();
+                parameters.put("masterDataId",recordId);
+                picturesDao.deleteByWhere(where,parameters);
+                vipSuiteDao.deleteById(recordId);
+                r.setMsg("删除成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
+
 
         return r;
     }

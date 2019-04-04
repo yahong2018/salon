@@ -63,7 +63,7 @@ public class Member extends TraceableEntity<Long> {
 
     private Byte zodiac;
 
-    private Long memberGradeId;
+    private Long memberGrade;
 
     private Byte bloodType;
 
@@ -92,7 +92,7 @@ public class Member extends TraceableEntity<Long> {
     private String introducer;
 
     private Long primaryBeautician;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date entryTime;
 
     private Double balance;

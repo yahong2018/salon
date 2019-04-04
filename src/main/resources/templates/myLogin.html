@@ -3,7 +3,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
     <title>后台系统</title>
     <!--<link  th:href="@{../static/layui/css/layui.css}"  type="text/css" rel="stylesheet"/>-->
     <link  href="../layui/css/layui.css"  type="text/css" rel="stylesheet"/>
@@ -137,7 +136,6 @@
                 data : {userCode:userCode,password:password},
                 contentType: "application/x-www-form-urlencoded",
                 success : function(data) {
-                    debugger;
                     if(data=="error"){
                         alert("登陆失败");
                     }else {

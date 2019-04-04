@@ -23,7 +23,13 @@ public class TraceableEntity<T> extends EntityObject<T> {
     }
 
     public static void fillUpdateInfo(TraceableEntity entity){
-        entity.setUpdateBy(AuthenticateService.getCurrentLogin().getRecordId());
+        if(AuthenticateService.getCurrentLogin()!=null){
+            entity.setUpdateBy(AuthenticateService.getCurrentLogin().getRecordId());
+
+        }else{
+            entity.setUpdateBy(new Long(1));
+        }
+
         entity.setUpdateDate(new Date());
     }
 

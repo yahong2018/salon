@@ -65,7 +65,7 @@ public class ServiceController extends SimpleCRUDController<Service> {
 
 
 
-        if(null == storeId || storeId == null){
+        if(null == storeId ){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             storeId=stuff.getStoreId();

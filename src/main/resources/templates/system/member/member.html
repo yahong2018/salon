@@ -23,9 +23,9 @@
 <div class="layui-fluid layui-form">
     <div class="layui-form-item">
         <div class="layui-input-inline " style=" width: 638px;">
-            <button class="layui-btn layui-btn-primary addMember">新增顾客</button>
-            <button class="layui-btn updateMember">修改顾客</button>
-            <button class="layui-btn layui-btn-normal deleteMember">删除顾客</button>
+            <button class="layui-btn layui-btn-primary addMember">新增会员档案</button>
+            <button class="layui-btn updateMember">修改会员档案</button>
+            <button class="layui-btn layui-btn-danger deleteMember">删除会员档案</button>
             <!--      <button class="layui-btn">默认按钮</button>
                   <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
         </div>
@@ -56,8 +56,8 @@
             <div class="layui-input-inline">
                 <select name="earlyWarning"  lay-search="" class="earlyWarning">
                     <option value="">请选择</option>
-                    <option value="0">三个月未到店</option>
-                    <option value="1">六个月未到店</option>
+                    <option value="0">一个月未到店</option>
+                    <option value="1">三个月未到店</option>
                 </select>
             </div>
         </div>
@@ -78,7 +78,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">顾客标签</label>
             <div class="layui-input-inline">
-                <select name="tag"  lay-search="" class="tag">
+                <select name="tag"  lay-search="" class="tag" id="tag">
                     <option value="">请选择</option>
                 </select>
             </div>
@@ -110,6 +110,19 @@
 </html>
 
 <script type="text/javascript">
+
+    //重新渲染表单
+
+    function renderForm(){
+
+        layui.use('form', function(){
+
+            var form = layui.form;
+            form.render();
+
+        });
+
+    }
     layui.use(['form','laydate','layer','table','laypage','util'],function(){
         var form = layui.form;
         var laydate=layui.laydate;
@@ -165,12 +178,16 @@
                         field : 'zodiac',
                         title : '星座',
                         align : 'center'
+                    }, {
+                        field : 'entryTime',
+                        title : '最后到店时间',
+                        align : 'center'
                     }
                     , {
-                        field : 'memberGradeId',
+                        field : 'memberGrade',
                         title : '分类',
                         align : 'center',
-                        templet: '#memberGradeId'
+                        templet: '#memberGrade'
                     }
 
 
@@ -223,6 +240,31 @@
             laydate.render({
                 elem : '#processingTime'
             });
+
+            //添加标签选项
+            $.ajax({
+                url:"/hy/basic/member/getTag",
+                type:"get",
+                data:{"limit":50,"page":1},
+                dataType:"json",
+                success:function(dataJson){
+                    console.log('返回类别'+dataJson.data);
+                    var tag = $("#tag");//根据id获取select的jquery对象
+
+                    $.each(dataJson.data, function (i, n) {
+                        // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+                        tag.append("<option value="+n.recordId+">"+n.tagName+"</option>");//添加option
+                        console.log(n.tagName);
+                    });
+
+                    renderForm();
+
+                },
+                error:function(){
+                    alert("驳回异常")
+                }
+            });
+
 
         }
 
@@ -352,7 +394,7 @@
             console.log(deleteList);
             $.ajax({
                 type:'POST',
-                url:'/hy/basic/member/deleteMember',
+                url:'/hy/basic/member/deleteMemberForPc',
                 data: JSON.stringify(deleteList),
                 contentType: "application/json",
                 success: function(data){
@@ -375,14 +417,14 @@
             layer.open({
                 type:2,
                 //area:[482+'px',355+'px'],
-                area:[600+'px',400+'px'],
+                area:["850px","650px"],
                 fix:false,
                 offset: '80px',
                 maxmin:true,
                 shadeClose:true,
                 scrollbar: false,
                 shade:0.4,
-                title:'新增顾客',
+                title:'新增会员档案',
                 content:['add_member.html'],
                 success:function(layero,index){
                     console.log("成功");
@@ -401,8 +443,7 @@
             }
             layer.open({
                 type:2,
-                //area:[482+'px',315+'px'],
-                area:[600+'px',400+'px'],
+                area:["850px","650px"],
                 fix:false,
                 offset: '80px',
                 maxmin:true,
@@ -410,7 +451,7 @@
                 scrollbar: false,
                 shade:0.4,
                 title:'修改用户',
-                content:['add_member.html'],
+                content:['update_member.html'],
                 success:function(layero,index){
                     // 获取子页面的iframe
                     var iframe = window['layui-layer-iframe' + index];
@@ -433,7 +474,7 @@
         }
         //return util.toDateString(t);
     };
-    function memberGradeId(t){
+    function memberGrade(t){
         if(t==0){
             return 'A类';
         }else if(t==1){
@@ -448,6 +489,6 @@
 <script type="text/html" id="gender">
     {{ gender(d.gender) }}
 </script>
-<script type="text/html" id="memberGradeId">
-    {{ memberGradeId(d.memberGradeId) }}
+<script type="text/html" id="memberGrade">
+    {{ memberGrade(d.memberGrade) }}
 </script>

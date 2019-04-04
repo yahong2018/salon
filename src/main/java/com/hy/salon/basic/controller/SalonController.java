@@ -142,28 +142,46 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "美容院Id", required = true, dataType = "Long"),
     })
-    public Result getStoreList(Long recordId,int page) {
+    public Result getStoreList(Long recordId,int page,String jobLevel) {
         Result r= new Result();
         List<Salon> StoreList=new ArrayList<>();
-        if(recordId == null ||  recordId == 0){
-            r.setTotal(salonDao.getSalonForStoreId2(new Long(-1)).size());
-            PageHelper.startPage(page, 10);
-            StoreList=salonDao.getSalonForStoreId2(new Long(-1));
-        }else{
+        if(null!=jobLevel){
+        if("0".equals(jobLevel)){
             r.setTotal(salonService.getSalonForStoreId2(recordId).size());
             PageHelper.startPage(page, 10);
             StoreList=salonService.getSalonForStoreId2(recordId);
+
+        }else{
+            Salon salon=salonService.getSalonForId(recordId);
+            StoreList.add(salon);
+
         }
-        if(StoreList.size()!=0){
-            for(Salon s:StoreList){
-                SalonInviteCode salonCode=salonInviteCodeDAO.getSalonForSalonId(s.getRecordId());
-                if(salonCode!=null){
-                    s.setInviteCode(salonCode.getInviteCode());
+
+
+        }else{
+            if(recordId == null ||  recordId == 0){
+                r.setTotal(salonDao.getSalonForStoreId2(new Long(-1)).size());
+                PageHelper.startPage(page, 10);
+                StoreList=salonDao.getSalonForStoreId2(new Long(-1));
+            }else{
+                r.setTotal(salonService.getSalonForStoreId2(recordId).size());
+                PageHelper.startPage(page, 10);
+                StoreList=salonService.getSalonForStoreId2(recordId);
+            }
+            if(StoreList.size()!=0){
+                for(Salon s:StoreList){
+                    SalonInviteCode salonCode=salonInviteCodeDAO.getSalonForSalonId(s.getRecordId());
+                    if(salonCode!=null){
+                        s.setInviteCode(salonCode.getInviteCode());
+                    }
+
                 }
 
             }
-
         }
+
+
+
 
         r.setData(StoreList);
 
@@ -392,8 +410,21 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @RequestMapping("createStore")
     @ApiOperation(value="添加门店", notes="添加门店")
     @Transactional(rollbackFor = Exception.class)
-    public Result createStore(Salon condition, String picIdList, String inviteCode, String idPic1Code, String idPic2Code, String businessPicCode, String permitPicCode) {
+    public Result createStore(Salon condition, String picIdList, String inviteCode, String idPic1Code, String idPic2Code, String businessPicCode, String permitPicCode,String verificationCode) {
         Result r= new Result();
+
+
+        List<VerificationCodeTemporary> verificationCodeTemporaryList=verificationCodeTemporaryDAO.getCode(condition.getTel());
+        if(verificationCodeTemporaryList.size()!=0){
+            VerificationCodeTemporary verificationCodeTemporary=verificationCodeTemporaryList.get(verificationCodeTemporaryList.size()-1);
+            if(!verificationCodeTemporary.getVerificationCode().equals(verificationCode)){
+                r.setMsg("验证码错误");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+
+        }
 
 
         SalonInviteCode salonInviteCode=salonInviteCodeDAO.getSalonForCode(inviteCode);
@@ -457,7 +488,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         roleActionDao.insert(roleAction);
 
         RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(new Long(2));
+        roleUser.setRoleId(new Long(10));
         roleUser.setUserId(userController.getRecordId());
         roleUserDao.insert(roleUser);
 
@@ -490,15 +521,19 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
         Pictures idPic1= picturesDao.getPicForRecordId(new Long(idPic1Code));
         idPic1.setMasterDataId(condition.getRecordId());
+        picturesDao.update(idPic1);
 
         Pictures idPic2= picturesDao.getPicForRecordId(new Long(idPic2Code));
         idPic2.setMasterDataId(condition.getRecordId());
+        picturesDao.update(idPic2);
 
         Pictures businessPic= picturesDao.getPicForRecordId(new Long(businessPicCode));
         businessPic.setMasterDataId(condition.getRecordId());
+        picturesDao.update(businessPic);
 
         Pictures permitPic= picturesDao.getPicForRecordId(new Long(permitPicCode));
         permitPic.setMasterDataId(condition.getRecordId());
+        picturesDao.update(permitPic);
 
 
 
@@ -552,7 +587,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
         StuffJob stuffJobCondition=new StuffJob();
         stuffJobCondition.setStuffId(stuffCondition.getRecordId());
-        Job j=jobDao.getJobForJobLevel(new Byte("1"));
+        Job j=jobDao.getJobForJobLevel(new Byte("0"));
         stuffJobCondition.setJobId(j.getRecordId());
         stuffJobDao.insert(stuffJobCondition);
 
@@ -571,7 +606,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         roleActionDao.insert(roleAction);
 
         RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(new Long(2));
+        roleUser.setRoleId(new Long(11));
         roleUser.setUserId(userController.getRecordId());
         roleUserDao.insert(roleUser);
 

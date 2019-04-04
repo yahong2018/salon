@@ -91,4 +91,38 @@
         <result column="reservation_count" property="reservationCount" jdbcType="VARCHAR" />
         <result column="is_holiday" property="isHoliday" jdbcType="VARCHAR" />
     </resultMap>
+
+    <resultMap id="MemberVo" type="com.hy.salon.basic.vo.MemberVo" >
+        <result column="initial_store_id" property="initialStoreId" jdbcType="BIGINT" />
+        <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="TINYINT" />
+        <result column="weixin" property="weixin" jdbcType="VARCHAR" />
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+        <result column="zodiac" property="zodiac" jdbcType="TINYINT" />
+        <result column="member_grade" property="memberGrade" jdbcType="BIGINT" />
+        <result column="blood_type" property="bloodType" jdbcType="TINYINT" />
+        <result column="height" property="height" jdbcType="INTEGER" />
+        <result column="weight" property="weight" jdbcType="INTEGER" />
+        <result column="last_day_of_menses" property="lastDayOfMenses" jdbcType="TIMESTAMP" />
+        <result column="cycle_of_menses" property="cycleOfMenses" jdbcType="TINYINT" />
+        <result column="period_of_menses" property="periodOfMenses" jdbcType="TINYINT" />
+        <result column="remark_of_menses" property="remarkOfMenses" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="city_id" property="cityId" jdbcType="BIGINT" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="member_code" property="memberCode" jdbcType="CHAR" />
+        <result column="introducer" property="introducer" jdbcType="VARCHAR" />
+        <result column="primary_beautician" property="primaryBeautician" jdbcType="BIGINT" />
+        <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="integral" property="integral" jdbcType="DOUBLE" />
+        <result column="debt" property="debt" jdbcType="DOUBLE" />
+        <result column="amount_consumer" property="amountConsumer" jdbcType="DOUBLE" />
+        <result column="amount_charge" property="amountCharge" jdbcType="DOUBLE" />
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+        <result column="stuff_name" property="stuffName" jdbcType="VARCHAR" />
+    </resultMap>
+
 </mapper>

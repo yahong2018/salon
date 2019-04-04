@@ -263,4 +263,42 @@ group by ss.record_id;
     select st.* from salon.tag as st left join salon.member_salon_tag as smst1 on st.record_id = smst1.tag_id where smst1.salon_id=#{salonId} and st.record_type=1
 
     </select>
+
+    <!--查询会员档案 -->
+    <select id="QUERY_MEMBER_FOR_SALON"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.vo.MemberVo">
+
+        SELECT sm.*,t.tag_name,ss.stuff_name FROM salon.member as sm
+        left join salon.member_tag as mt  on sm.record_id=mt.member_id
+        left join salon.tag as t  on t.record_id=mt.tag_id
+        left join salon.stuff as ss on ss.record_id=sm.primary_beautician
+        where sm.initial_store_id=#{salonId}
+
+
+        <if test="startTime != null">
+         and   sm.birthday &gt;= #{startTime} and birthday &lt;= #{endTime}
+
+        </if>
+
+        <if test="defaultStartDate != null">
+          and   sm.entry_time &lt;= #{defaultStartDate}
+
+        </if>
+
+        <if test="memberGradeId != null">
+            and   sm.member_grade = #{memberGradeId}
+
+        </if>
+
+        <if test="tag != null">
+            and   t.record_id = #{tag}
+
+        </if>
+
+
+
+
+    </select>
+
+
+
 </mapper>
