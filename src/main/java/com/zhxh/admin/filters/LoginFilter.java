@@ -57,7 +57,7 @@ public class LoginFilter implements Filter {
                 String url = httpServletRequest.getRequestURI();
 
                 String postFix = parseSuffix(url);
-                boolean isSecuredUrl = SysEnv.GetSecuredUrlPatterns().contains(postFix);
+                boolean isSecuredUrl = SysEnv.GetSecuredUrlPatterns().contains(postFix) || url.equalsIgnoreCase("/");
                 if (!isSecuredUrl) {
                     chain.doFilter(request, response);
                     return;
