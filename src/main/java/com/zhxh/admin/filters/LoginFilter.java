@@ -1,5 +1,6 @@
 package com.zhxh.admin.filters;
 
+import com.zhxh.admin.entity.SystemProgram;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.admin.service.SystemProgramService;
@@ -46,6 +47,7 @@ public class LoginFilter implements Filter {
         return url;
     }
 
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -57,13 +59,11 @@ public class LoginFilter implements Filter {
                 String url = httpServletRequest.getRequestURI();
 
                 String postFix = parseSuffix(url);
-                if("html".equalsIgnoreCase(postFix) || "htm".equalsIgnoreCase(postFix)||"/".equalsIgnoreCase(url)){
-                    HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                    httpServletResponse.setHeader("cache-control","max-age=1");
-                }
-
                 boolean isSecuredUrl = SysEnv.GetSecuredUrlPatterns().contains(postFix) || url.equalsIgnoreCase("/");
-                if (!isSecuredUrl) {
+                if (isSecuredUrl || systemProgramService.isProgramUrl(url)) {
+                    HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                    httpServletResponse.setHeader("cache-control","max-age=1,no-store,no-cache");
+                }else{
                     chain.doFilter(request, response);
                     return;
                 }
