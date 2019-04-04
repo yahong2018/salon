@@ -406,4 +406,17 @@
         <result column="salon_id" property="salonId" jdbcType="BIGINT" />
 
     </resultMap>
+
+    <resultMap id="OperateLog" type="com.hy.salon.basic.entity.OperateLog">
+        <id column="record_id" jdbcType="BIGINT" property="recordId" />
+        <result column="opt_user_id" jdbcType="BIGINT" property="optUserId" />
+        <result column="opt_role_id" jdbcType="BIGINT" property="optRoleId" />
+        <result column="opt_action" jdbcType="VARCHAR" property="optAction" />
+        <result column="opt_date" jdbcType="TIMESTAMP" property="optDate" />
+        <result column="opt_info" jdbcType="VARCHAR" property="optInfo" />
+        <result column="opt_terminal" jdbcType="TINYINT" property="optTerminal" />
+        <result column="opt_url" jdbcType="VARCHAR" property="optUrl" />
+        <result column="opt_statu" jdbcType="INTEGER" property="optStatu" />
+        <result column="opt_result" jdbcType="VARCHAR" property="optResult" />
+    </resultMap>
 </mapper>

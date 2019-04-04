@@ -88,6 +88,8 @@ public class ScheduleController  {
         Date timeStartDate = null;
         Date timeEndDate = null;
         Date[] dataList = null;
+
+
         if(StringUtils.isNotEmpty(time)){
             String[] temp = time.split("-");
              dataList = TimeBeginAndEndOFaMonth.getDates(temp[0],temp[1]);

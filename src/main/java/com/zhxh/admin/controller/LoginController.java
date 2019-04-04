@@ -3,6 +3,7 @@ package com.zhxh.admin.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.common.handler.Authorized;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Job;
@@ -143,9 +144,10 @@ public class LoginController {
         }
        */
     }
-
+    @Authorized
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation("测试登录")
     public String doLogin(Model model, String userCode, String password) {
         try {
 
