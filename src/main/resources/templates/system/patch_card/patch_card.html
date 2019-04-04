@@ -22,7 +22,7 @@
 <!-- 内容主体区域 -->
 <div class="layui-fluid layui-form">
   <div class="layui-form-item">
-    <div class="layui-input-inline " style=" width: 438px;">
+    <div class="layui-input-inline " style="/* width: 438px;*/">
       <button class="layui-btn layui-btn-primary apply">审核</button>
       <!--      <button class="layui-btn">默认按钮</button>
             <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
@@ -31,12 +31,14 @@
       <label class="layui-form-label">搜索选择框</label>
       <div class="layui-input-inline">
         <select name="modules"  lay-search="" class="storeList"  lay-filter="storeid">
+          <option value="stuff_name">员工名称</option>
+          <option value="audit_statu">补卡状态</option>
         </select>
       </div>
     </div>
     <div class="layui-inline">
       <div class="layui-input-inline">
-        <input type="text" name="userKey" class="layui-input userKeyValue ">
+        <input type="text" name="userKey" class="layui-input value ">
       </div>
       <div class="layui-input-inline">
         <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
@@ -67,12 +69,12 @@
     var laydate=layui.laydate;
     var $ = layui.$;
     productsearch(1);
-    form.on('select(storeid)', function(data){
+   /* form.on('select(storeid)', function(data){
       console.log(data.value);
       $("#storeId").val(data.value);
       productsearch(1,"",data.value);
-    })
-    function productsearch(page,filterExpr,storeId) {
+    })*/
+    function productsearch(page,filterExpr,stuffName,storeId) {
 
       var table = layui.table,
               laydate = layui.laydate,
@@ -123,7 +125,8 @@
         page : true,
         where : {
           filterExpr:filterExpr,
-          storeId:storeId
+          storeId:storeId,
+          stuffName:stuffName
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);
@@ -195,11 +198,28 @@
 
     $(".check").on("click", function() {
 
-      var userKey=$('.userKey option:selected').val();
-      if(userKey!=""){
-        var userKeyValue = $('.userKeyValue').val();
-        var temp = userKey+"='"+userKeyValue+"'";
-        productsearch(1, temp);
+      var key=$('.storeList option:selected').val();
+      if(key!=""){
+        var value = $('.value').val();
+        var stuffName = "";
+        var temp ="";
+        if(key=='stuff_name'){
+          stuffName = value;
+        }else{
+          temp =  key+"='"+value+"'";
+        }
+
+        if(key=="audit_statu"){
+          if(value=="通过"){
+            temp =  key+"="+0+"";
+          }else{
+            temp =  key+"="+1+"";
+          }
+
+        }
+
+
+        productsearch(1, temp ,stuffName);
       }else{
         productsearch(1);
       }

@@ -227,20 +227,26 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                 jsonX.put("time", "无");
                 jsonX.put("address", "无");
                 jsonX.put("type", 2);
-                jsonX.put("abnormalType", 0);
+                jsonX.put("abnormalType", 0);//正常打卡还是异常  1异常  2 补卡
                 jsonX.put("XBStartTime", endTime);
-                if (listA.size() > 0) {
+                if (listA.size() > 0) {//有打卡
                     if (listA.size() == 1) {
                         //早上的
                         String attendanceTime = dateFormat.format(listA.get(0).getAttendanceTime());
                         Date dt2 = df.parse(attendanceTime);//打卡时间
                         if (dt2.getTime() > startTimeD.getTime()) {//迟到
-                            jsonS.put("abnormalType", 1);
+                            jsonS.put("abnormalType", 1);//
                         }
                         jsonS.put("SBStartTime", startTime);
                         jsonS.put("time", listA.get(0).getAttendanceTime());
                         jsonS.put("address", listA.get(0).getAddress());
                         jsonS.put("type", 1);
+
+                        Date enTime = DateString.StringToDateAddNum(time.trim()+" "+endTime.trim()+":00",3);
+                        Date nTime = new Date();
+                        if(enTime.getTime()<nTime.getTime()){//当前时间大于需要下班的时间节点
+                            jsonX.put("abnormalType",2);
+                        }
                     } else {
                         if (listA.get(0).getAttendanceTime().getTime() < listA.get(1).getAttendanceTime().getTime()) {
                             //早上的
@@ -267,6 +273,14 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                         }
                         sxtype = 2;
                     }
+
+                }else{//无打卡
+                    Date sTime = DateString.StringToDate(time.trim()+" "+startTime.trim()+":00");//跟需要查询的时间拼接
+                    Date nTime = new Date();
+                    if(sTime.getTime()<nTime.getTime()){//当前时间大于需要上班的时间节点
+                        jsonS.put("abnormalType",2);
+                    }
+
 
                 }
 
