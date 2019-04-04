@@ -658,11 +658,15 @@ create table reservation
 (
   record_id                        bigint      auto_increment      not null,
   member_id                        bigint                          not null,   -- 会员
+  member_sourc                     tinyint                         not null,   -- 会员来源 0 散客 1 会员
   stuff_id                         bigint                          not null,   -- 预约美容师
   room_id                          bigint                          not null,   -- 预约的房间
+  date_                            datetime                        not null,   -- 预约日期
+  duration                         float                           not null,   -- 时长
   time_start                       datetime                        not null,   -- 开始时间
   time_end                         datetime                        not null,   -- 结束时间
   record_status                    tinyint                         not null,   -- 记录状态：0.未开始  1.已确认    2.服务中    3.已完成
+  remark                           varchar(500)                    null,       -- 备注
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,

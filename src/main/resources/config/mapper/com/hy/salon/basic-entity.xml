@@ -407,7 +407,7 @@
 
     </resultMap>
 
-    <resultMap id="OperateLog" type="com.hy.salon.basic.entity.OperateLog">
+    <resultMap id="OperateLog" type="com.hy.salon.basic.entity.OperateLog"  extends="com.zhxh.core.data.EntityObject">
         <id column="record_id" jdbcType="BIGINT" property="recordId" />
         <result column="opt_user_id" jdbcType="BIGINT" property="optUserId" />
         <result column="opt_role_id" jdbcType="BIGINT" property="optRoleId" />

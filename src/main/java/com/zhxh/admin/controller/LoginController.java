@@ -144,7 +144,7 @@ public class LoginController {
         }
        */
     }
-    @Authorized
+   // @Authorized
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("测试登录")

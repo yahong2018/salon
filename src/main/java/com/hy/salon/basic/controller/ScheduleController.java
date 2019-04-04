@@ -167,7 +167,7 @@ public class ScheduleController  {
      * 修改或保存员工的排班信息APP
      */
     @ResponseBody
-    @RequestMapping(value = "updateStuffScheduleApp",method = RequestMethod.POST)
+    @RequestMapping(value = "updateStuffScheduleApp")
     @ApiOperation(value="修改或保存员工的排班信息", notes="修改或保存员工的排班信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "list", value = "排班信息json数据", required = true, dataType = "List<Schedule>")
