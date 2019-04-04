@@ -57,6 +57,11 @@ public class LoginFilter implements Filter {
                 String url = httpServletRequest.getRequestURI();
 
                 String postFix = parseSuffix(url);
+                if("html".equalsIgnoreCase(postFix) || "htm".equalsIgnoreCase(postFix)||"/".equalsIgnoreCase(url)){
+                    HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                    httpServletResponse.setHeader("cache-control","max-age=1");
+                }
+
                 boolean isSecuredUrl = SysEnv.GetSecuredUrlPatterns().contains(postFix) || url.equalsIgnoreCase("/");
                 if (!isSecuredUrl) {
                     chain.doFilter(request, response);
