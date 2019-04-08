@@ -12,8 +12,10 @@ import com.hy.salon.basic.util.UuidUtils;
 import com.hy.salon.basic.util.messageUtil;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -88,6 +90,9 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
     @Resource(name= "verificationCodeTemporaryDao")
     private  VerificationCodeTemporaryDAO verificationCodeTemporaryDAO;
+
+    @Resource(name = "systemRoleDAO")
+    private SystemRoleDAO systemRoleDAO;
 
 
 
@@ -487,8 +492,10 @@ public class SalonController extends SimpleCRUDController<Salon> {
         roleAction.setSystemUserId(userController.getRecordId());
         roleActionDao.insert(roleAction);
 
+        SystemRole systemRole=systemRoleDAO.getRole("dianzhang");
+
         RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(new Long(10));
+        roleUser.setRoleId(systemRole.getRecordId());
         roleUser.setUserId(userController.getRecordId());
         roleUserDao.insert(roleUser);
 
@@ -531,9 +538,12 @@ public class SalonController extends SimpleCRUDController<Salon> {
         businessPic.setMasterDataId(condition.getRecordId());
         picturesDao.update(businessPic);
 
-        Pictures permitPic= picturesDao.getPicForRecordId(new Long(permitPicCode));
-        permitPic.setMasterDataId(condition.getRecordId());
-        picturesDao.update(permitPic);
+        if(null != permitPicCode && !"".equals(permitPicCode)){
+            Pictures permitPic= picturesDao.getPicForRecordId(new Long(permitPicCode));
+            permitPic.setMasterDataId(condition.getRecordId());
+            picturesDao.update(permitPic);
+        }
+
 
 
 
@@ -605,8 +615,11 @@ public class SalonController extends SimpleCRUDController<Salon> {
         roleAction.setSystemUserId(userController.getRecordId());
         roleActionDao.insert(roleAction);
 
+
+        SystemRole systemRole=systemRoleDAO.getRole("yuanzhang");
+
         RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(new Long(11));
+        roleUser.setRoleId(systemRole.getRecordId());
         roleUser.setUserId(userController.getRecordId());
         roleUserDao.insert(roleUser);
 
@@ -631,12 +644,11 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
 
     /**
-     * 获取省市区
+     * 获取最新省市区Data
      */
     @ResponseBody
     @RequestMapping("writeIn")
-    @ApiOperation(value="获取省市区", notes="获取省市区")
-
+    @ApiOperation(value="获取最新省市区Data", notes="获取最新省市区Data")
     public Result writeIn(HttpServletRequest request) {
         Result r= new Result();
         JSONArray jsonArr=new JSONArray();
@@ -800,7 +812,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         verificationCodeTemporary.setValidTime(3);
         verificationCodeTemporaryDAO.insert(verificationCodeTemporary);
 
-        String typeCode=messageUtil.sendMessage(tel,"【EMK】您的验证码是"+num+",５分钟内有效。若非本人操作请忽略此消息。");
+        String typeCode=messageUtil.sendMessage(tel,"【合一美容院】验证码为"+num+"，在5分钟内有效。");
         System.out.println("typeCode========================"+typeCode);
 
         if(!"0".equals(typeCode)){
