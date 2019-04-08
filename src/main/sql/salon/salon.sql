@@ -36,7 +36,7 @@ create table salon(
   tel                              varchar(50)                     not null,               -- 联系电话
   city_id                          bigint                          not null,               -- 所属城市（省市区）
   address                          varchar(255)                    not null,               -- 地址
-  door_2_door                      bit                             not null default 0,     -- 是否上门服务:美容院专用
+  door_2_door                      bit                             null,     -- 是否上门服务:美容院专用
   bed_num                          int                             not null default 0,     -- 床位数：门店专用
   area                             double(8,2)                     not null default 0.00,  -- 面积：门店专用
   time_open                        varchar(50)                            null,                   -- 营业开始时间：门店专用
