@@ -807,7 +807,7 @@ create table product_stock_movement
                     --       0.  采购入库  1.调拨入库  2.调整入库/盘盈
                     --       64. 内部员工  65.顾客   66. 赠送  67. 报废  68.院用  69.退回供应商  70.下发到店    71.调拨出库  72.调整出库/盘亏
 
-  movement_no                      char(12)                        not null,  -- 异动单号
+  movement_no                      char(20)                        not null,  -- 异动单号
   product_id                       bigint                          not null,  -- 产品
   movement_qty                     int                             not null,  -- 异动数量
 
