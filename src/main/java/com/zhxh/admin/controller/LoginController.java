@@ -189,7 +189,10 @@ public class LoginController {
         try {
             authenticateService.kickOffUser();
         } catch (Exception e) {
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setSuccess(false);
             e.printStackTrace();
+            return r;
         }
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
