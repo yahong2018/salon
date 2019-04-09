@@ -69,6 +69,9 @@
         <result column="member_id" property="memberId" jdbcType="BIGINT" />
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="room_id" property="roomId" jdbcType="BIGINT" />
+        <result column="date_" property="date" jdbcType="TIMESTAMP" />
+        <result column="duration" property="duration" jdbcType="REAL" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
         <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
         <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
@@ -414,6 +417,13 @@
         <result column="opt_url" jdbcType="VARCHAR" property="optUrl" />
         <result column="opt_statu" jdbcType="INTEGER" property="optStatu" />
         <result column="opt_result" jdbcType="VARCHAR" property="optResult" />
+    </resultMap>
+
+
+    <resultMap id="ReservationItem" type="com.hy.salon.basic.entity.ReservationItem" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" jdbcType="BIGINT" property="recordId" />
+        <result column="reservation_id" jdbcType="BIGINT" property="reservationId" />
+        <result column="service_id" jdbcType="BIGINT" property="serviceId" />
     </resultMap>
 
 

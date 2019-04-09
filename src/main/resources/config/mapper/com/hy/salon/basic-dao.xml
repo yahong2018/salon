@@ -107,6 +107,11 @@
         LEFT JOIN stuff_job b on a.record_id=b.job_id
         where b.stuff_id=#{stuffId};
     </select>
+    <select id="GET_SERVICE_BYRESERVATIONID"  parameterType="java.util.Map" resultType="java.util.Map">
+        select s.* from service s LEFT JOIN reservation_item i on s.record_id = i.service_id where i.reservation_id = #{reservationId}
+    </select>
+
+
 
     <select id="GET_SCHEDULE_BY_TIME"  parameterType="java.util.Map" resultType="com.hy.salon.basic.vo.ShiftVo">
         SELECT
@@ -304,6 +309,41 @@ group by ss.record_id;
 
     </select>
 
+
+    <!--查询会员档案 -->
+    <select id="GET_STUFF_RESERVATION"  parameterType="java.util.Map" resultMap="java.util.Map">
+
+        SELECT sm.*,t.tag_name,ss.stuff_name FROM salon.member as sm
+        left join salon.member_tag as mt  on sm.record_id=mt.member_id
+        left join salon.tag as t  on t.record_id=mt.tag_id
+        left join salon.stuff as ss on ss.record_id=sm.primary_beautician
+        where sm.initial_store_id=#{salonId}
+
+
+        <if test="startTime != null">
+            and   sm.birthday &gt;= #{startTime} and birthday &lt;= #{endTime}
+
+        </if>
+
+        <if test="defaultStartDate != null">
+            and   sm.entry_time &lt;= #{defaultStartDate}
+
+        </if>
+
+        <if test="memberGradeId != null">
+            and   sm.member_grade = #{memberGradeId}
+
+        </if>
+
+        <if test="tag != null">
+            and   t.record_id = #{tag}
+
+        </if>
+
+
+
+
+    </select>
 
 
 </mapper>

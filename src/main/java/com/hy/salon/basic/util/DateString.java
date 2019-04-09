@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class DateString {
 
+
+
     public static String DateToString(Date date) {
         if(date==null){
             return  "";
@@ -16,6 +18,63 @@ public class DateString {
         return sdf.format(date);
     }
 
+    public static  Date getDateAddTime(Date date,float duration){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        String durationS =duration+"";
+        String strings[] = durationS.split("\\.");
+
+
+        cal.add(Calendar.HOUR, Integer.parseInt(strings[0]));// 24小时制
+        cal.add(Calendar.MINUTE,Integer.parseInt(strings[1])*10);
+
+        return  cal.getTime();
+    }
+
+
+    public static  String getTime(Date time)  {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "HH:mm");
+        // String attendanceTime = dateFormat.format(condition.getAttendanceTime());
+        // System.out.println(attendanceTime);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");//创建日期转换对象HH:mm:ss为时分秒，年月日为yyyy-MM-dd
+        Date data = new Date();
+        int sxtype = 1;
+        String newDate = dateFormat.format(data);
+        return  newDate;
+    }
+
+    public static  String getTimeInfo(Date time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "HH:mm");
+        String newDate = dateFormat.format(time);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        String info = "";
+        Date newD = null;
+        try {
+            newD = df.parse(newDate);
+
+        String String12  = "12:00";
+        String zDate = dateFormat.format(String12);
+        Date znewD = df.parse(newDate);
+
+        String String18 = "18:00";
+        String wDate = dateFormat.format(String18);
+        Date wnewD = df.parse(newDate);
+
+
+        if(newD.before(znewD)){//上午
+            info = "上午";
+        }else if(newD.before(wnewD)&&newD.after(znewD)) {//下午
+            info = "下午";
+        }else{//晚上
+            info = "晚上";
+        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+       return info;
+    }
 
     public static String DateToString2(Date date) {
         if(date==null){

@@ -15,6 +15,7 @@ import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.admin.service.SystemRoleService;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -69,7 +70,7 @@ public class LoggerAspect {
     private static final String MAPPING_PATH = "映射路径：{}";
     private static final String METHOD_DESC = "方法描述：{}";
     private static final String MAPPING_ALLOW_METHOD = "请求可用：{}";
-    
+
     /**
      * 定义一个方法，用于声明切入点表达式，方法中一般不需要添加其他代码
      * 使用@Pointcut声明切入点表达式
@@ -79,7 +80,7 @@ public class LoggerAspect {
     public void declareJoinPointExpression() {
 
     }
-    
+
     /**
      * 前置通知
      * @param joinPoint
@@ -105,38 +106,50 @@ public class LoggerAspect {
         getMethodDescription(joinPoint).forEach(logger::info);
         logger.info("响应方法名：{}", joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName());
         Map reqParams = request.getParameterMap();
-        logger.info("请求URL参数集: {}",  JSON.toJSONString(reqParams, SerializerFeature.IgnoreErrorGetter));
-        logger.info("接受参数集：{}", helper.getJsonFromString(names, args));
-        OperateLog ol = new OperateLog();
-        SystemUser user = authenticateService.getCurrentLogin();
-        if(user!=null){
-        }else{
-           String[] userCode =  (String[])reqParams.get("userCode");
-           String code = "";
-           if(userCode==null){
-               if(args.length>0){
+
+
+        String tempName= joinPoint.getSignature().getName();
+        String temp[]= tempName.split("\\.");
+        String name = temp[temp.length-1];
+        if(name.equals("createStore")||name.equals("doLogin")){
+            logger.info("响应方法名：{}",joinPoint.getSignature().getName());
+            logger.info("请求URL参数集: {}",  JSON.toJSONString(reqParams, SerializerFeature.IgnoreErrorGetter));
+            logger.info("接受参数集：{}", helper.getJsonFromString(names, args));
+            OperateLog ol = new OperateLog();
+            SystemUser user = authenticateService.getCurrentLogin();
+            if(user!=null){
+            }else{
+                String[] userCode =  (String[])reqParams.get("userCode");
+                String code = "";
+                if(userCode==null){
+               /*if(args.length>0){
                    SystemUser su =  (SystemUser)args[0];
                    code =   su.getUserCode();
-               }
-           }else{
-               code =   userCode[0];
-           }
-            user = systemUserDAO.getUserByCode(code);
+               }*/
+                }else{
+                    code =   userCode[0];
+                }
+                user = systemUserDAO.getUserByCode(code);
+            }
+            if(user!=null) {
+                Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+                List<SystemRole> list = systemRoleService.getRoleListById(user.getRecordId());
+                logger.info("登陆用户名 {}", stuff2.getStuffName());
+                ol.setOptUserId(stuff2.getRecordId());
+                ol.setOptRoleId(list.get(0).getRecordId());
+                ol.setOptUrl(request.getRequestURI());
+                ol.setOptDate(new Date());
+                ol.setOptAction(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName());
+                ol.setOptInfo(helper.getJsonFromString(names, args));
+                ol.setOptStatu(200);
+                ol.setOptResult("成功");
+                operateLogDao.insert(ol);
+            }
+
+        }else {
+
         }
-        if(user!=null) {
-            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-            List<SystemRole> list = systemRoleService.getRoleListById(user.getRecordId());
-            logger.info("登陆用户名 {}", stuff2.getStuffName());
-            ol.setOptUserId(stuff2.getRecordId());
-            ol.setOptRoleId(list.get(0).getRecordId());
-            ol.setOptUrl(request.getRequestURI());
-            ol.setOptDate(new Date());
-            ol.setOptAction(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName());
-            ol.setOptInfo(helper.getJsonFromString(names, args));
-            ol.setOptStatu(200);
-            ol.setOptResult("成功");
-            operateLogDao.insert(ol);
-        }
+
     }
     /**
      * 后置通知（无论方法是否发生异常都会执行,所以访问不到方法的返回值）
@@ -177,8 +190,8 @@ public class LoggerAspect {
      */
     @Around(value="declareJoinPointExpression()")
     public Object aroundMethod(ProceedingJoinPoint point) throws Throwable {
-        
-        /*Object result = null;
+
+        Object result = null;
         String methodName = point.getSignature().getName();
         try {
             //前置通知
@@ -193,9 +206,9 @@ public class LoggerAspect {
             throw new RuntimeException(e);
         }
         //后置通知
-        System.out.println("The method "+ methodName+" end.");*/
+        System.out.println("The method "+ methodName+" end.");
         long startTime = System.currentTimeMillis();
-        Object result = point.proceed();
+         result = point.proceed();
         long endTime = System.currentTimeMillis();
         logger.info("方法 " + point.getTarget().getClass().getName() + "." + point.getSignature().getName() + " 执行了 {} ms", endTime - startTime);
         return result;

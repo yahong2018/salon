@@ -2,8 +2,10 @@ package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.ScheduleDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Schedule;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.ScheduleService;
 import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.util.TimeBeginAndEndOFaMonth;
@@ -25,8 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/hy/basic/schedule")
@@ -36,10 +37,47 @@ public class ScheduleController  {
     private ScheduleService scheduleService;
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
+    @Resource(name = "scheduleDao")
+    private ScheduleDao scheduleDao;
+    /**
+     * 获取一个店有排班信息的所有员工
+     * recordId ,门店id
+     */
+    @RequestMapping(value = "getDayStuffScheduleByTime",method = RequestMethod.GET)
+    @ApiOperation(value="获取一个店有排班信息的所有员工", notes="获取一个店有排班信息的所有员工")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "某年某月某日", required = true, dataType = "String"),
+    })
+    @ResponseBody
+    public ExtJsResult getDayStuffScheduleByTime(HttpServletRequest request, String timeString ,Long storeId){
+        ExtJsResult stuffList = new  ExtJsResult();
+        Map rMapS = new HashMap();
+        String whereS = " store_id=#{storeId} ";
+        rMapS.put("storeId",storeId);
+        List<Stuff> listStuff = stuffDao.getByWhere(whereS,rMapS);
+        List<Stuff> list = new ArrayList<>();
+        if(listStuff.size()>0){
+            for(Stuff stuff:listStuff){
+                Map rMap = new HashMap();
+                String where = "stuff_id=#{stuffId} and  day = #{day}";
+                rMap.put("stuffId",stuff.getRecordId());
+                rMap.put("day",timeString);
+                Schedule schedule =  scheduleDao.getOne(where,rMap);
+                if(schedule!=null){
+                    list.add(stuff);
+                }
+            }
+        }
+        stuffList.setMsgcode("0");
+        stuffList.setData(list);
+        stuffList.setMsg("可以预约员工");
+        return  stuffList;
+    }
 
 
     /**
-     * 后台管理系统按月获取一个员工当月的排班信息
+     * 后台管理系统按月获取=============一个员工当月的排班信息
      * recordId ,门店id
      */
     @RequestMapping(value = "getAdminStuffScheduleByTime",method = RequestMethod.GET)
@@ -72,7 +110,7 @@ public class ScheduleController  {
 
 
     /**
-     * 后台管理系统按月获取所有员工当月的排班信息
+     * 后台管理系统按月获取==============所有员工当月的排班信息
      * recordId ,门店id
      */
     @RequestMapping(value = "getAdminScheduleByTime",method = RequestMethod.GET)
@@ -185,6 +223,27 @@ public class ScheduleController  {
             result.setSuccess(false);
             result.setMsgcode(StatusUtil.ERROR);
         }
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "updateStuffScheduleApp2",method = RequestMethod.GET)
+    public Result updateStuffScheduleApp2(HttpServletRequest request){
+        Result result=new Result();
+        String listString =  request.getParameter("list");
+
+
+       /* try {
+            List<ShiftVo> list = scheduleService.getScheduleByTime(recordId, timeStart, timeEnd);
+            result.setData(list);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }*/
         return result;
     }
 

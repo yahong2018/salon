@@ -87,6 +87,29 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         return stuffDao;
     }
 
+
+
+    @ResponseBody
+    @RequestMapping("getStuffStoreId")
+    @ApiOperation(value="获取一个门店员工信息", notes="获取一个门店员工信息")
+    public ExtJsResult getStuffStoreId( HttpServletRequest request,String storeId){
+        Salon salon = salonDao.getSalonForId(Long.parseLong(storeId));
+        ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, salon.getRecordId(), new ListRequestBaseHandler() {
+            @Override
+            public List getByRequest(ListRequest listRequest) {
+                return stuffDao.getPageList(listRequest.toMap(), null);
+            }
+
+            @Override
+            public int getRequestListCount(ListRequest listRequest) {
+                return stuffDao.getPageListCount(listRequest.toMap(), null);
+            }
+        });
+        return StoreList ;
+    }
+
+
+
     /**
      * 后台管理系统获取员工按美容院分类
      *

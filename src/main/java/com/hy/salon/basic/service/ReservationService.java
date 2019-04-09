@@ -1,19 +1,18 @@
 package com.hy.salon.basic.service;
 
-import com.hy.salon.basic.dao.MemberDao;
-import com.hy.salon.basic.dao.ReservationDao;
-import com.hy.salon.basic.dao.SalonDao;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.Job;
-import com.hy.salon.basic.entity.Member;
-import com.hy.salon.basic.entity.Reservation;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.StuffVo;
 import com.hy.salon.basic.vo.StoreReservation;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashMap;
@@ -31,7 +30,8 @@ public class ReservationService {
 
     @Resource(name = "memberDao")
     private MemberDao memberDao;
-
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
     public List<ReservationVo> getReservationByTime(String timeStart, String timeEnd) {
         List<ReservationVo> listVo=new ArrayList<>();
         List<Salon> salonList = salonDao.getSalon();
@@ -99,15 +99,73 @@ public class ReservationService {
             if(reservationlist!=null){
                 vo.setReservation(reservationlist.size());
             }
+            Map parameterP = new HashMap();
+            parameterP.put("masterDataId", stuff.getRecordId());
+            parameterP.put("recordType",1);
+            parameterP.put("picType",0);
+            String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+            Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+
             List<StuffVo> list = reservationDao.getStuffName(stuff.getRecordId());
             if(list!=null){
                 for (StuffVo stuffVo : list) {
                     vo.setRole(stuffVo.getRole());
                 }
             }
+            vo.setPicUrl(pictures.getPicUrl());
             voList.add(vo);
         }
         return voList;
+    }
+    public JSONArray getStuffItem(Long recordId, String timeStart, String timeEnd) {
+        List<StuffVo> voList=new ArrayList<>();
+        //查询门店下所有的员工
+        Map parameters = new HashMap();
+        parameters.put("storeId", recordId);
+        Map listMap = new HashMap();
+        String where="store_id=#{storeId}";
+        listMap.put("where", where);
+        List<Stuff> stufflist = stuffDao.getList(listMap, parameters);
+
+        JSONArray jsonArray = new JSONArray();
+        for (Stuff stuff : stufflist) {
+            StuffVo vo=new StuffVo();
+            vo.setRecordId(stuff.getRecordId());
+            vo.setStuffName(stuff.getStuffName());
+            //查询员工当天所有预约
+            Map parameter = new HashMap();
+            parameter.put("stuffId", stuff.getRecordId());
+            parameter.put("timeStart",timeStart);
+            parameter.put("timeEnd", timeEnd);
+            Map rMap = new HashMap();
+            String rwhere="stuff_id=#{stuffId} and time_start between #{timeStart} and #{timeEnd}";
+            rMap.put("where", rwhere);
+            List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);
+
+            Map parameterP = new HashMap();
+            parameterP.put("masterDataId", stuff.getRecordId());
+            parameterP.put("recordType",1);
+            parameterP.put("picType",0);
+            String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+            Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+            for(Reservation reservation:reservationlist){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("stuffName",stuff.getStuffName());
+                jsonObject.put("picturesUrl",pictures.getPicUrl());
+                jsonObject.put("timeStart",DateString.getTime(reservation.getTimeStart()));
+                jsonObject.put("timeInfo", DateString.getTimeInfo(reservation.getTimeStart()));
+               List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
+               String serviceNames = "";
+               for(Map map:mapService){
+                  String serviceName =  (String) map.get("serviceName");
+                   serviceNames=serviceNames+serviceName+",";
+               }
+                jsonObject.put("serviceNames",serviceNames);
+                jsonArray.add(jsonObject);
+            }
+            //voList.add(vo);
+        }
+        return jsonArray;
     }
 
     public List<ReservationVo> getReservationList(Long stuffId, String timeStart, String timeEnd) {
@@ -138,5 +196,9 @@ public class ReservationService {
             }
         }
         return voList;
+    }
+
+    public  List<Map> getReservationVoList(HttpServletRequest request, Long recordId, String timeStart, String timeEnd, ListRequestBaseHandler listRequestBaseHandler) {
+       return reservationDao.getReservationVoList(request,recordId,timeStart,timeEnd,listRequestBaseHandler);
     }
 }
