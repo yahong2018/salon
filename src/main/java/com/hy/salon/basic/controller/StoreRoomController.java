@@ -4,9 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.StoreRoomDao;
+import com.hy.salon.basic.dao.StuffDao;
+import com.hy.salon.basic.entity.MemberTag;
 import com.hy.salon.basic.entity.StoreRoom;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.StoreRoomService;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
@@ -14,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,7 +45,11 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
     @Resource(name = "storeRoomService")
     private StoreRoomService storeRoomService;
 
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
 
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
 
 
     /**
@@ -54,9 +64,11 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
     })
     public Result getStoreRoom(String recordId,int page){
         Result r= new Result();
-
-
-
+        if(null == recordId || "".equals(recordId)){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            recordId=String.valueOf(stuff.getStoreId());
+        }
         r.setTotal(storeRoomService.getRoomForStoreId(recordId).size());
         PageHelper.startPage(page, 10);
         List<StoreRoom> roomList=storeRoomService.getRoomForStoreId(recordId);
@@ -81,16 +93,13 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店Id", required = true, dataType = "Long"),
 
     })
-    public Result addStoreRoom( StoreRoom storeRoom){
+    public Result addStoreRoom(StoreRoom storeRoom){
         Result r= new Result();
 
-        if(null == storeRoom.getStoreId() || null == storeRoom.getRoomName() || "".equals(storeRoom.getRoomName()) || null == storeRoom.getRecordStatus()
-
-        ){
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
-            r.setMsg("非空字段不能为空");
-            return r;
+        if(null==storeRoom.getStoreId() || "".equals(storeRoom.getStoreId())){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            storeRoom.setStoreId(stuff.getStoreId());
         }
         //判断该门店该房间是否重名
         StoreRoom condition=storeRoomService.getRoomForName(storeRoom.getRoomName(),storeRoom.getStoreId());
@@ -165,6 +174,30 @@ public class StoreRoomController extends SimpleCRUDController<StoreRoom> {
 
 
     }
+
+
+    @ResponseBody
+    @RequestMapping("/deleteRoomForPc")
+    @ApiOperation(value="删除档案以及其绑定的项目", notes="以id删除档案已经其绑定的项目")
+    public Result deleteMemberForPc(@RequestBody Long[] userIdList){
+        Result r= new Result();
+        for(Long recordId:userIdList) {
+            try {
+                storeRoomDao.deleteById(recordId);
+
+                r.setMsg("删除成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
+        }
+
+        return r;
+    }
+
 
 
 }

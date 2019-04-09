@@ -53,6 +53,9 @@ public class ProductController {
 
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
+
+    @Resource(name = "productPropertyMapDAO")
+    private ProductPropertyMapDAO productPropertyMapDAO;
     /**
      * 获取产品列表
      * @return
@@ -79,6 +82,40 @@ public class ProductController {
         }
         return result;
     }
+
+
+    /**
+     * 获取产品列表
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getProductListForPc",method = RequestMethod.GET)
+    @ApiOperation(value="获取产品列表", notes="获取产品列表")
+    public Result getProductListForPc(String salonId,int page){
+        Result result=new Result();
+        try {
+            if(null == salonId || "".equals(salonId)){
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+                salonId=String.valueOf(stuff.getStoreId());
+            }
+
+            result.setTotal(productDao.getProdectForCondition(Long.parseLong(salonId)).size());
+            PageHelper.startPage(page, 10);
+            List<Product> list=productDao.getProdectForCondition(Long.parseLong(salonId));
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("查询成功");
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("查询失败");
+        }
+        return result;
+    }
+
 
 
 
@@ -289,17 +326,45 @@ public class ProductController {
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "记录状态：0.启用   1. 停用", required = true, dataType = "byte"),
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String")
     })
-    public Result addProduct(Product condition){
+    public Result addProduct(Product condition,String Specifications,String Company,String applicableParts,String effect){
         Result result=new Result();
         try {
 
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+//            SystemUser user = authenticateService.getCurrentLogin();
+//            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             if(condition.getRecordId() == null){
-                condition.setSalonId(stuff.getStoreId());
+//                condition.setStoreId(stuff.getStoreId());
 
                 productDao.insert(condition);
+                if(null != Specifications && !"".equals(Specifications)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(Specifications));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != Company && !"".equals(Company)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(Company));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != applicableParts && !"".equals(applicableParts)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != effect && !"".equals(effect)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(effect));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+
+
+
             }else{
+
                 productDao.update(condition);
             }
 
