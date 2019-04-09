@@ -41,6 +41,9 @@
                     <!--      <button class="layui-btn">默认按钮</button>
                           <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
                     <button class="layui-btn layui-btn-primary writeIn">生成省市区文件</button>
+
+                    <input  id="tel" placeholder="请输入手机"  value="" class="layui-input">
+                    <button class="layui-btn layui-btn-primary sendMessage">发送短信验证码</button>
                 </div>
 
             </div>
@@ -63,6 +66,27 @@
     layui.use(['form','laydate','layer','table','laypage','util'],function() {
 
         var $ = layui.$;
+
+
+        $(".sendMessage").click(function () {
+
+           var tel= $("#tel").val();
+            $.ajax({
+                type: 'GET',
+                url: '/hy/basic/salon/testSendMessage',
+                data:{"tel":tel},
+                contentType: "application/json",
+                success: function (data) {
+                    layer.alert('发送成功');
+
+                },
+                error: function (data) {
+                    layer.alert("操作失败");
+                    console.log(data);
+                }
+            })
+
+        })
 
 
         $(".writeIn").click(function () {

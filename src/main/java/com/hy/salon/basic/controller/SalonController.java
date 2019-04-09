@@ -19,6 +19,7 @@ import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.utils.Logger;
 import com.zhxh.core.utils.StringUtilsExt;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
@@ -828,6 +829,38 @@ public class SalonController extends SimpleCRUDController<Salon> {
         return r;
     }
 
+    /**
+     * 发送短信验证码
+     */
+    @RequestMapping("testSendMessage")
+    @ResponseBody
+    public Result testSendMessage(String tel){
+        Result r= new Result();
+        int  num=(int)(Math.random()*9000)+1000;
+
+        VerificationCodeTemporary  verificationCodeTemporary= new VerificationCodeTemporary();
+        verificationCodeTemporary.setPhoneNo(tel);
+        verificationCodeTemporary.setVerificationCode(String.valueOf(num));
+        verificationCodeTemporary.setEffectiveness(0);
+        verificationCodeTemporary.setValidTime(3);
+        verificationCodeTemporaryDAO.insert(verificationCodeTemporary);
+
+        String typeCode=messageUtil.sendMessage(tel,"【合一美容院】验证码为"+num+"，在5分钟内有效。");
+        System.out.println("返回typeCode==="+typeCode);
+        Logger.debug("返回typeCode==="+typeCode);
+
+        if(!"0".equals(typeCode)){
+            r.setMsg("请求失败");
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setSuccess(false);
+            return r;
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
 
 
 
