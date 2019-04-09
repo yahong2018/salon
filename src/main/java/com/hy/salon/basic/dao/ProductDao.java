@@ -25,6 +25,10 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return this.getOne(where, parameters);
     }
 
+
+
+
+
     public List<Product> getProdectForCondition(Long salonId,Long productClass,Long productSeriesId){
 
         String where = "store_id=#{salonId} ";
@@ -40,6 +44,19 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         parameters.put("salonId", salonId);
         parameters.put("productClass", productClass);
         parameters.put("productSeriesId", productSeriesId);
+
+        return this.getByWhere(where, parameters);
+    }
+
+
+
+    public List<Product> getProdectForCondition(Long salonId){
+
+        String where = "store_id=#{salonId} ";
+
+
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
 
         return this.getByWhere(where, parameters);
     }

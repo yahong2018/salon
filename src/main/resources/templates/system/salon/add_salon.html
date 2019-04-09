@@ -126,33 +126,36 @@
 
 
 
-	    $.ajax({
-	    	type:'POST',
-            url:url,
-	    	data: data.field,
-	    	success: function(data){
-                alert("操作成功！");
-    			window.parent.location.reload(); //刷新父页面
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);  // 关闭layer
-	    		/* alert("操作成功");
-	    		if(type=="update"){
-		    		window.parent.location.reload(); //刷新父页面
-					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-					parent.layer.close(index);  // 关闭layer
-	    		}else{
-	    			window.location.reload();
-	    			//window.location.href="${basePath}ryOrderConfig/queryList";
-	    		} */
-		    	
-	    	//window.location.href="${basePath}ryOrderConfig/queryList";
-	    	},
-	    	error:function(data){
-	    		alert("操作失败");
-	    		console.log(data);
-	    	}
-	    })
-	    return false;
+          $.ajax({
+              type:'POST',
+              url:url,
+              data: data.field,
+              dataType:"json",
+              success: function(data){
+                  var dataJson=JSON.stringify(data)
+
+                  console.log("+++"+JSON.stringify(data));
+                  console.log(data.data);
+                  if(data.data.msgcode == '200'){
+
+                      alert(data.data.msg);
+                  }else{
+                      alert("操作成功！");
+                      window.parent.location.reload(); //刷新父页面
+                      var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                      parent.layer.close(index);  // 关闭layer
+                  }
+
+
+              },
+              error:function(data){
+                  alert("操作失败");
+                  console.log(data);
+              }
+          })
+
+
+          return false;
 	  });
 
 })

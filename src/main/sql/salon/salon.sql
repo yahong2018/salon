@@ -36,7 +36,7 @@ create table salon(
   tel                              varchar(50)                     not null,               -- 联系电话
   city_id                          bigint                          not null,               -- 所属城市（省市区）
   address                          varchar(255)                    not null,               -- 地址
-  door_2_door                      bit                             not null default 0,     -- 是否上门服务:美容院专用
+  door_2_door                      bit                             null,     -- 是否上门服务:美容院专用
   bed_num                          int                             not null default 0,     -- 床位数：门店专用
   area                             double(8,2)                     not null default 0.00,  -- 面积：门店专用
   time_open                        varchar(50)                            null,                   -- 营业开始时间：门店专用
@@ -807,7 +807,7 @@ create table product_stock_movement
                     --       0.  采购入库  1.调拨入库  2.调整入库/盘盈
                     --       64. 内部员工  65.顾客   66. 赠送  67. 报废  68.院用  69.退回供应商  70.下发到店    71.调拨出库  72.调整出库/盘亏
 
-  movement_no                      char(12)                        not null,  -- 异动单号
+  movement_no                      char(20)                        not null,  -- 异动单号
   product_id                       bigint                          not null,  -- 产品
   movement_qty                     int                             not null,  -- 异动数量
 

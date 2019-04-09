@@ -9,8 +9,10 @@ import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -73,6 +75,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @Resource(name = "roleUserDAO")
     private RoleUserDAO roleUserDao;
 
+    @Resource(name = "systemRoleDAO")
+    private SystemRoleDAO systemRoleDAO;
 
 
 
@@ -455,12 +459,18 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping(value="fuzzyQueryStuff",method = RequestMethod.GET)
     @ApiOperation(value="搜索家人模糊查询(仅院长角色可调)", notes="搜索家人模糊查询(仅院长角色可调)")
-    public Result fuzzyQueryStuff(String stuffName) {
+    public Result fuzzyQueryStuff(String stuffName,String jobLevel,Long recordId) {
         Result r= new Result();
         try {
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
-            Map<String,String> stuff=stuffDao.fuzzyQueryStuff(stuffName,stuffCondition.getStoreId());
+//            SystemUser user = authenticateService.getCurrentLogin();
+//            Stuff stuffCondition=stuffDao.getStuffForUser(user.getRecordId());
+            List<Stuff> stuff=new ArrayList<>();
+            if("0".equals(jobLevel)){
+                stuff=stuffDao.fuzzyQueryStuff(stuffName,recordId);
+            }else{
+                stuff=stuffDao.fuzzyQueryStuffForStoreId(stuffName,recordId);
+            }
+
 
             r.setData(stuff);
             r.setMsg("查询成功");
@@ -476,4 +486,35 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         return r;
     }
 
+    /**
+     * 判断是否院长
+     */
+    @ResponseBody
+    @RequestMapping("checkYuanZhang")
+    public Result checkYuanZhang() {
+        Result r= new Result();
+        try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            RoleUser roleUser=roleUserDao.getByUserIdAndRoleId(stuff.getRecordId());
+            SystemRole systemRole=systemRoleDAO.getRoleForId(String.valueOf(roleUser.getRoleId()));
+            if(systemRole.getRoleCode().equals("yuanzhang")){
+                r.setMsgcode("0");
+                r.setSuccess(true);
+                List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
+                r.setData(salonList);
+            }else{
+                r.setData(stuff);
+                r.setMsgcode("1");
+                r.setSuccess(true);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
 }

@@ -9,19 +9,18 @@
 
 
     <resultMap id="Stuff" type="com.hy.salon.basic.entity.Stuff"  extends="com.zhxh.core.data.TraceableEntity">
-        <result property="recordId" column="record_id"/>
-        <result property="storeId" column="store_id"/>
-        <result property="stuffName" column="stuff_name"/>
-        <result property="tel" column="tel"/>
-        <result property="gender" column="gender"/>
-        <result property="entryTime" column="entry_time"/>
-        <result property="workAge" column="work_age"/>
-        <result property="birthDay" column="birth_day"/>
-        <result property="special" column="special"/>
-        <result property="dream" column="dream"/>
-        <result property="weixin" column="weixin"/>
-        <result property="qq" column="qq"/>
-        <result property="address" column="address"/>
+        <result column="store_id" jdbcType="BIGINT" property="storeId" />
+        <result column="stuff_name" jdbcType="VARCHAR" property="stuffName" />
+        <result column="tel" jdbcType="VARCHAR" property="tel" />
+        <result column="gender" jdbcType="TINYINT" property="gender" />
+        <result column="entry_time" jdbcType="TIMESTAMP" property="entryTime" />
+        <result column="work_age" jdbcType="DOUBLE" property="workAge" />
+        <result column="birth_day" jdbcType="TIMESTAMP" property="birthDay" />
+        <result column="special" jdbcType="VARCHAR" property="special" />
+        <result column="dream" jdbcType="VARCHAR" property="dream" />
+        <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
     </resultMap>
 
 
@@ -76,16 +75,13 @@
     </resultMap>
     <!--产品-->
     <resultMap id="Product" type="com.hy.salon.basic.entity.Product" extends="com.zhxh.core.data.TraceableEntity">
-        <result column="salon_id" property="salonId" jdbcType="BIGINT" />
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
         <result column="product_name" property="productName" jdbcType="VARCHAR" />
         <result column="product_class" property="productClass" jdbcType="TINYINT" />
         <result column="product_series_id" property="productSeriesId" jdbcType="BIGINT" />
         <result column="price_market" property="priceMarket" jdbcType="DOUBLE" />
         <result column="price" property="price" jdbcType="DOUBLE" />
         <result column="product_code" property="productCode" jdbcType="VARCHAR" />
-        <result column="specification" property="specification" jdbcType="INTEGER" />
-        <result column="specification_unit" property="specificationUnit" jdbcType="TINYINT" />
-        <result column="product_unit_id" property="productUnitId" jdbcType="BIGINT" />
         <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
         <result column="shelf_life" property="shelfLife" jdbcType="TINYINT" />
         <result column="day_of_pre_warning" property="dayOfPreWarning" jdbcType="INTEGER" />
@@ -418,5 +414,17 @@
         <result column="opt_url" jdbcType="VARCHAR" property="optUrl" />
         <result column="opt_statu" jdbcType="INTEGER" property="optStatu" />
         <result column="opt_result" jdbcType="VARCHAR" property="optResult" />
+    </resultMap>
+
+
+    <resultMap id="ProductPropertyMap" type="com.hy.salon.basic.entity.ProductPropertyMap" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="product_property_id" property="productPropertyId" jdbcType="BIGINT" />
+    </resultMap>
+
+
+    <resultMap id="ProductProperty" type="com.hy.salon.basic.entity.ProductProperty" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+        <result column="property_type" property="propertyType" jdbcType="TINYINT" />
     </resultMap>
 </mapper>

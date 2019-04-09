@@ -41,7 +41,7 @@ public class MemberVo  {
     private Integer height;
 
     private Integer weight;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date lastDayOfMenses;
 
     private Byte cycleOfMenses;

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class Product extends TraceableEntity<Long> {
     private  Long recordId;
-    private  Long salonId;             // 美容院
+    private  Long storeId;             // 美容院
     private  String productName;           //-- 产品名称
     private  Long productClass ;        // 产品类型: 0.客装   1.院装   2.易耗品
     private  Long productSeriesId;     // 产品品牌/系列
