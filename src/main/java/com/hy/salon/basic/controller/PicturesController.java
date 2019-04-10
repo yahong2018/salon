@@ -58,13 +58,14 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                         System.out.println(df.format(new Date()));
 
-                        String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                        String dir="C:/picture/pic/"+df.format(new Date());
+//                        String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                         java.io.File folder = new java.io.File(dir);
                         if (!folder.exists()) {
                             folder.mkdirs();     ///如果不存在，创建目录
                         }
                         path = dir+"/"+uuid+"."+type;
-                        condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                        condition.setPicUrl("/pic/"+df.format(new Date())+"/"+uuid+"."+type);
                         condition.setRecordType(record_type);
                         condition.setPicType((byte)0);
                         try {
@@ -126,8 +127,8 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                     System.out.println(df.format(new Date()));
 
-
-                    String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                    String dir="C:/picture/pic/"+df.format(new Date());
+//                    String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                     java.io.File folder = new java.io.File(dir);
                     if (!folder.exists()) {
                         folder.mkdirs();     ///如果不存在，创建目录
@@ -144,7 +145,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
 //                    condition.setPicUrl(path);
 //                    System.out.println("存放图片文件的路径:"+path);
 //                    // 转存文件到指定的路径
-                    condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                    condition.setPicUrl("/pic/"+df.format(new Date())+"/"+uuid+"."+type);
                     file.transferTo(new File(path));
                     System.out.println("文件成功上传到指定目录下");
                 } else {
@@ -209,7 +210,8 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                     UUID uuid = UUID.randomUUID();
                     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                     System.out.println(df.format(new Date()));
-                    String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                    String dir="C:/picture/pic/"+df.format(new Date());
+//                    String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                     java.io.File folder = new java.io.File(dir);
                     if (!folder.exists()) {
                         folder.mkdirs();     ///如果不存在，创建目录
@@ -225,7 +227,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
 //                    path=dir+"\\"+uuid+"."+type;
 //                    condition.setPicUrl(path);
 //                    System.out.println("存放图片文件的路径:"+path);
-                    newPicUrl="/"+df.format(new Date())+"/"+uuid+"."+type;
+                    newPicUrl="/pic/"+df.format(new Date())+"/"+uuid+"."+type;
                     // 转存文件到指定的路径
                     file.transferTo(new File(path));
                     System.out.println("文件成功上传到指定目录下");
@@ -319,14 +321,15 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                         UUID uuid = UUID.randomUUID();
                         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                         System.out.println(df.format(new Date()));
-                        String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                        String dir="C:/picture/pic/"+df.format(new Date());
+//                        String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                         java.io.File folder = new java.io.File(dir);
                         if (!folder.exists()) {
                             folder.mkdirs();     ///如果不存在，创建目录
                         }
                         path = dir+"/"+uuid+"."+type;
                         System.out.println("地址"+path);
-                        newPicUrl="/"+df.format(new Date())+"/"+uuid+"."+type;
+                        newPicUrl="/pic/"+df.format(new Date())+"/"+uuid+"."+type;
 //                    condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
                         file.transferTo(new File(path));
                         System.out.println("文件成功上传到指定目录下");
@@ -403,8 +406,8 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                     System.out.println(df.format(new Date()));
 
-
-                    String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                    String dir="C:/picture/pic/"+df.format(new Date());
+//                    String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                     java.io.File folder = new java.io.File(dir);
                     if (!folder.exists()) {
                         folder.mkdirs();     ///如果不存在，创建目录
@@ -412,7 +415,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                     path = dir+"/"+uuid+"."+type;
                     System.out.println("地址"+path);
 
-                    condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                    condition.setPicUrl("/pic/"+df.format(new Date())+"/"+uuid+"."+type);
                     file.transferTo(new File(path));
                     System.out.println("文件成功上传到指定目录下");
                 } else {
@@ -480,8 +483,8 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                     System.out.println(df.format(new Date()));
 
-
-                    String dir = request.getServletContext().getRealPath("/"+df.format(new Date()));
+                    String dir="C:/picture/pic/"+df.format(new Date());
+//                    String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
                     java.io.File folder = new java.io.File(dir);
                     if (!folder.exists()) {
                         folder.mkdirs();     ///如果不存在，创建目录
@@ -498,7 +501,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
 //                    condition.setPicUrl(path);
 //                    System.out.println("存放图片文件的路径:"+path);
 //                    // 转存文件到指定的路径
-                    condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                    condition.setPicUrl("/pic/"+df.format(new Date())+"/"+uuid+"."+type);
                     file.transferTo(new File(path));
                     System.out.println("文件成功上传到指定目录下");
                 } else {
