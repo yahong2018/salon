@@ -84,6 +84,7 @@ create table stuff
   weixin                           varchar(50)                     null,      -- 微信
   qq                               varchar(50)                     null,      -- QQ
   address                          varchar(120)                    null,      -- 联系地址
+  in_office                        tinyint                         not null default 0; -- 0 在职 1 离职
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
