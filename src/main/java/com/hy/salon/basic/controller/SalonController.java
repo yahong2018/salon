@@ -730,6 +730,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
     public Result getCity(HttpServletRequest request) {
         Result r= new Result();
         String pathname=ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/city/output.txt";
+        Logger.debug("返回路径==="+pathname);
         ;
 //        String pathname = request.getServletContext().getRealPath("/city")+"/output.txt";
         String line;
