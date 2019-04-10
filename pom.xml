@@ -387,9 +387,6 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
-            <resource>
-                <directory>src/main/webapp</directory>
-            </resource>
         </resources>
     </build>
 
