@@ -121,24 +121,47 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     public ExtJsResult getStuffAdmin(String jobLevel, HttpServletRequest request,String storeId) {
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-        if (jobLevel == null) {
+/*        if (jobLevel == null) {
             List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
             for (Map map : listMap) {
                 int jobLevel1 = (Integer) map.get("jobLevel");
                 jobLevel =jobLevel1+"";
             }
+        }*/
+        long recordId = 0;
+        if(StringUtils.isNotEmpty(storeId)){
+            recordId = Long.parseLong(storeId);
+        }else{
+            recordId = stuff2.getStoreId();
         }
-        List<Map> listMap = new ArrayList<>();
-        Result r = new Result();
+        ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, recordId, new ListRequestBaseHandler() {
+            @Override
+            public List getByRequest(ListRequest listRequest) {
+                return stuffDao.getPageList(listRequest.toMap(), null);
+            }
 
-        long sId= 0;
+            @Override
+            public int getRequestListCount(ListRequest listRequest) {
+                return stuffDao.getPageListCount(listRequest.toMap(), null);
+            }
+        });
+        List<Map> listMap2 = new ArrayList<>();
+        Map map = new HashMap();
+        map.put("recordId", recordId);
+        map.put("salonName", "");//不需要了
+        listMap2.add(map);
+        StoreList.setListMap(listMap2);
+        StoreList.setMsg("获取成功");
+        StoreList.setMsgcode(StatusUtil.OK);
+        StoreList.setSuccess(true);
+        return StoreList;
 
-        if (jobLevel.equals("0")) {
+/*        if (jobLevel.equals("0")) {
                 long recordId = 0;
                 if(StringUtils.isNotEmpty(storeId)){
                     recordId = Long.parseLong(storeId);
                 }else {
-                    List<Salon> stuffList = salonDao.getAdminSalonForStore(stuff2.getStoreId());
+                  *//*  List<Salon> stuffList = salonDao.getAdminSalonForStore(stuff2.getStoreId());
                     if (!stuffList.isEmpty()) {
                         for (Salon s : stuffList) {
                             Map map = new HashMap();
@@ -148,8 +171,9 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         }
 
                         Salon s = stuffList.get(0);
-                        recordId = s.getRecordId();
-                    }
+
+                    }*//*
+                    recordId = stuff2.getStoreId();
                 }
 
                 ExtJsResult StoreList = stuffService.getStuffListStoreIdSystem(request, recordId, new ListRequestBaseHandler() {
@@ -163,6 +187,10 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         return stuffDao.getPageListCount(listRequest.toMap(), null);
                     }
                 });
+                Map map = new HashMap();
+                map.put("recordId", recordId);
+                map.put("salonName","");
+                listMap.add(map);
                 StoreList.setChechId(recordId);
                 StoreList.setListMap(listMap);
                 return StoreList;
@@ -190,7 +218,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             StoreList.setMsgcode(StatusUtil.OK);
             StoreList.setSuccess(true);
             return StoreList;
-        }
+        }*/
     }
 
 

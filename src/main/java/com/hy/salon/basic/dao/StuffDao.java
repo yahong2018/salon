@@ -85,7 +85,7 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
 
     public ExtJsResult getStuffListStoreIdSystem(HttpServletRequest request, long storeId, ListRequestBaseHandler listRequestBaseHandler) {
         ListRequest listRequest = getListRequest(request);
-        listRequest.setWhere(listRequest.getWhere()==""?" store_id="+storeId:listRequest.getWhere()+" store_id="+storeId);
+        listRequest.setWhere(listRequest.getWhere()==""?" store_id="+storeId:listRequest.getWhere()+" and store_id="+storeId);
         ExtJsResult ejr  = new ExtJsResult();
         List list2 = listRequestBaseHandler.getByRequest(listRequest);
 

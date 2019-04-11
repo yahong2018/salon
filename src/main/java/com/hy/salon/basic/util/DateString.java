@@ -8,6 +8,16 @@ import java.util.Date;
 public class DateString {
 
 
+    public  static Boolean contrastTime(Date date1,Date date2,int duration){
+        long  miao=(date2.getTime()-date1.getTime())/1000;//除以1000是为了转换成秒
+        long fen= miao/60  ; // 多少分
+        if(fen>duration){//超过
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     public static String DateToString(Date date) {
         if(date==null){

@@ -8,4 +8,7 @@ public class MyResult extends Result {
    private int attendanceNum;//应出勤数
     private int hasAttendanceNum ;//出勤数
     private int yichangNum;//异常数
+
+    private  long salonId;
+    private String salonName;
 }

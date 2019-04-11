@@ -117,5 +117,12 @@
          where  program_id = #{programId}
     </select>
 
+    <select id="GET_SYSTEM_USER_BY_TEL" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemUser">
+        select *
+          from system_user u
+        left join  role_action ra on u.record_id = ra.system_user_id left join stuff s on ra.stuff_id = s.record_id
+        where s.tel = #{tel}
+    </select>
+
 
 </mapper>

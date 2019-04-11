@@ -387,18 +387,24 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         String salonIdS = request.getParameter("salonId");
         String time = request.getParameter("time");
         String filterExpr   = request.getParameter("filterExpr");
-        long salonId = Long.parseLong(salonIdS);
-        if(StringUtils.isEmpty(salonId)){
+        long salonId  = 0;
+        if(salonIdS!=""){
+            salonId =  Long.parseLong(salonIdS);
+        }
+        if(salonId==0){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             salonId=stuff.getStoreId();
         }
         MyResult result = new MyResult();
+        Salon salon = salonDao.getSalonForId(salonId);
         try {
             List<Map> list = timeSheetService.getTimeSheetBySalonId(result,salonId, time);
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
+            result.setSalonId(salonId);
+            result.setSalonName(salon.getSalonName());
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);

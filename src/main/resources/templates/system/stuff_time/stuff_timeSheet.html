@@ -38,7 +38,7 @@
                 </select>
             </div>
             <div class="layui-input-inline" id="date">
-                <select id="time" name="salon">
+                <select id="time" name="time">
                     <option value="01">一月</option>
                     <option value="02">二月</option>
                     <option value="03">三月</option>
@@ -60,9 +60,9 @@
 -->
         </div>
         <div class="layui-inline">
-            <div class="layui-input-inline">
+          <!--  <div class="layui-input-inline">
                 <input type="text" name="userKey" class="layui-input userKeyValue ">
-            </div>
+            </div>-->
             <div class="layui-input-inline">
                 <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
                     <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
@@ -126,8 +126,36 @@
         var form = layui.form;
         var laydate=layui.laydate;
         var $ = layui.$;
-        productsearch(1,"123",2,"2019-03");
-
+        var myDate = new Date();
+        var year =  myDate.getFullYear();    //获取完整的年份(4位,1970-????)
+        var month = myDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)
+        var date =  myDate.getDate();        //获取当前日(1-31)
+        var time = year+"-"+month;
+        if(month<10){
+            month = "0"+month;
+        }
+        productsearch(1,"","",time);
+        init();
+        function init() {
+            $.ajax({
+                type:'get',
+                url:'/hy/basic/timeSheet/getSalon',
+                success: function(data){
+                    var dataList =data.data;
+                    var html="<option value=''>请选择门店</option>";
+                    for(var i=0;i<dataList.length;i++){
+                        html+="<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>";
+                    }
+                    $("#salon").append(html);
+                    form.render('select');
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+        }
+        $("#time").find("option[value = '"+month+"']").attr("selected","selected");
         function productsearch(page,filterExpr,salonId,time) {
 
             var table = layui.table,
@@ -204,6 +232,15 @@
                     $(".attendanceNum").val(res.attendanceNum);
                     $(".hasAttendanceNum").val(res.hasAttendanceNum);
                     $(".yichangNum").val(res.yichangNum);
+                   var salonId= res.salonId;
+                    /*       var salonName = res.salonName;
+                          var temp = "";
+                          temp = "<option selected='selected' value="+salonId+">"+salonName+"</option>";
+                          $("#salon").append(temp);*/
+
+
+                    $("#salon").find("option[value = '"+salonId+"']").attr("selected","selected");
+                    form.render();//表单重新渲染，要不然添加完显示不出来新的option
                     return {
                         "count": res.total,
                         "data": res.data,
@@ -217,26 +254,8 @@
 
                 }
             })
-            init();
-            function init() {
-                $.ajax({
-                    type:'get',
-                    url:'/hy/basic/timeSheet/getSalon',
-                    success: function(data){
-                      var dataList =data.data;
-                        var html="<option value=''>请选择门店</option>";
-                        for(var i=0;i<dataList.length;i++){
-                            html+="<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>";
-                        }
-                        $("#salon").append(html);
-                        form.render('select');
-                    },
-                    error:function(data){
-                        alert("操作失败");
-                        console.log(data);
-                    }
-                })
-            }
+
+
             // table.on('checkbox(test)', function(obj){
             //   console.log(layui.table.checkStatus('layui_table_id'));
             // });
@@ -268,16 +287,22 @@
         }
         //搜索
         $(".check").on("click", function() {
-            productsearch(1,"123",2,"2019-03");
+           // productsearch(1,"123",2,"2019-03");
             var myDate=new Date();
-            var userKey=$('#time option:selected').val();
-            if(userKey!=""){
+            var time=$('#time option:selected').val();
+            var year = myDate.getFullYear();
+            var temp  = year+"-"+time;
+            var salonId = $('#salon option:selected').val();
+            if(salonId!=""){
+                productsearch(1,"",salonId,temp);
+            }
+            /*if(userKey!=""){
                 var userKeyValue = $('.userKeyValue').val();
                 var temp = userKey+"='"+userKeyValue+"'";
                 productsearch(1, temp);
             }else{
                 productsearch(1);
-            }
+            }*/
 
         })
         $(".tingzhi").on("click",function(){

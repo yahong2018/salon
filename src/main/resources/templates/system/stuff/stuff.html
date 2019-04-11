@@ -39,10 +39,18 @@
            <option value="email">email</option>-->
         </select>
       </div>
+
+      <div class="layui-input-inline">
+        <select name="modules"  lay-search="" class="stuff"  lay-filter="stuff">
+           <option value="">直接选择或搜索选择</option>
+           <option value="tel">电话号码</option>
+           <option value="stuff_name">用户名称</option>
+        </select>
+      </div>
     </div>
     <div class="layui-inline">
       <div class="layui-input-inline">
-        <input type="text" name="userKey" class="layui-input userKeyValue ">
+        <input type="text" name="userKey" class="layui-input stuffKeyValue ">
       </div>
       <div class="layui-input-inline">
         <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
@@ -62,7 +70,7 @@
     </script>-->
   <div id="laypage"></div>
 </div>
-<input type="hidden" id="storeId" name="storeId " vlaue="" class="layui-input userKeyValue ">
+<input type="hidden" id="storeId" name="storeId " vlaue="" class="layui-input ">
 </body>
 </html>
 
@@ -72,11 +80,28 @@
     var laydate=layui.laydate;
     var $ = layui.$;
     productsearch(1);
+    init();
+    function init() {
+      $.ajax({
+        type:'get',
+        url:'/hy/basic/timeSheet/getSalon',
+        success: function(data){
+          var dataList =data.data;
+          var html="<option value=''>请选择门店</option>";
+          for(var i=0;i<dataList.length;i++){
+            html+="<option value='"+dataList[i].recordId+"'>"+dataList[i].salonName+"</option>";
+          }
+          $(".storeList").append(html);
+          form.render('select');
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+    }
     form.on('select(storeid)', function(data){
-      console.log(data.value)
-      alert(data);
       $("#storeId").val(data.value);
-      productsearch(1,"",data.value);
     })
     function productsearch(page,filterExpr,storeId) {
 
@@ -131,8 +156,12 @@
           var listMap = res.listMap;
           var chechId  = res.chechId;
           if(listMap.length>0){
+            var recordId = listMap[0].recordId;
+            $(".storeList").find("option[value = '"+recordId+"']").attr("selected","selected");
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
             for(index in listMap){
-              if(index==0){
+
+             /* if(index==0){
                 var temp = listMap[index].recordId;
                 $("#storeId").val(temp);
               }
@@ -144,7 +173,7 @@
               }
 
               $(".storeList").append(temp);
-              form.render();//表单重新渲染，要不然添加完显示不出来新的option
+              form.render();//表单重新渲染，要不然添加完显示不出来新的option*/
             }
           }
 
@@ -195,14 +224,14 @@
 
     $(".check").on("click", function() {
 
-      var userKey=$('.userKey option:selected').val();
-      if(userKey!=""){
-        var userKeyValue = $('.userKeyValue').val();
-        var temp = userKey+"='"+userKeyValue+"'";
-        productsearch(1, temp);
-      }else{
-        productsearch(1);
+      var stuffKey=$('.stuff option:selected').val();
+      var storeId = $("#storeId").val();
+      var temp ="";
+      if(stuffKey!=""){
+        var stuffKeyValue = $('.stuffKeyValue').val();
+        temp = stuffKey+"='"+stuffKeyValue+"'";
       }
+      productsearch(1, temp,storeId);
 
     })
 

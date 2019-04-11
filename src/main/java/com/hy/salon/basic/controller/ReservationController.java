@@ -1,17 +1,13 @@
 package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.ReservationDao;
-import com.hy.salon.basic.dao.ReservationItemDao;
-import com.hy.salon.basic.dao.ScheduleDao;
-import com.hy.salon.basic.dao.ShiftDao;
-import com.hy.salon.basic.entity.Reservation;
-import com.hy.salon.basic.entity.ReservationItem;
-import com.hy.salon.basic.entity.Schedule;
-import com.hy.salon.basic.entity.Shift;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.service.ShiftService;
+import com.hy.salon.basic.service.StoreRoomService;
 import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
@@ -53,6 +49,17 @@ public class ReservationController {
 
     @Resource(name = "shiftDao")
     private ShiftDao shiftDao;
+
+    @Resource(name="stuffDao")
+    private StuffDao stuffDao;
+
+    @Resource(name = "storeRoomService")
+    private StoreRoomService storeRoomService;
+
+
+
+    @Resource(name = "serviceDao")
+    private ServiceDAO serviceDao;
 /*    @ResponseBody
     @RequestMapping(value = "getReservationById",method = RequestMethod.POST)
     public Map getReservationById(){
@@ -84,29 +91,51 @@ public class ReservationController {
         return list;
     }*/
 
+    /**
+     * 后管获取预约列表查询条件
+     * @param request
+     * @param recordId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getReservationOtherInfo",method = RequestMethod.GET)
+    @ApiOperation(value="后管获取预约列表查询条件", notes="后管获取预约列表查询条件")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
+    })
+    public JSONObject getReservationOtherInfo(HttpServletRequest request, Long recordId){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            String where="store_id=#{storeId}";
+            Map parameters = new HashMap();
+            parameters.put("storeId", recordId);
+
+            List<Stuff> list =  stuffDao.getByWhere(where,parameters);
+            jsonObject.put("listStuff",list);
+
+            List<StoreRoom> roomList=storeRoomService.getRoomForStoreId(recordId+"");
+            jsonObject.put("roomList",roomList);
+            List<Service> serviceList= serviceDao.queryServiceForId(recordId);
+            jsonObject.put("serviceList",serviceList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
     @ResponseBody
     @RequestMapping(value = "getReservationVoList",method = RequestMethod.GET)
     @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "oneDay", value = "一天", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "toDays", value = "多天", required = true, dataType = "String")
     })
-    public Result getReservationVoList(HttpServletRequest request,Long recordId,String timeStart ,String timeEnd){
-        Result result=new Result();
+    public Result getReservationVoList(HttpServletRequest request,Long recordId,String oneDay ,String toDays){
+        Result result = new Result();
         try {
-            JSONArray list = reservationService.getStuffItem(recordId, timeStart, timeEnd);
-            List<Map> stuffList = reservationService.getReservationVoList(request, recordId, timeStart , timeEnd, new ListRequestBaseHandler() {
-                @Override
-                public List getByRequest(ListRequest listRequest) {
-                    return reservationDao.getPageList(listRequest.toMap(), null);
-                }
-
-                @Override
-                public int getRequestListCount(ListRequest listRequest) {
-                    return reservationDao.getPageListCount(listRequest.toMap(), null);
-                }
-            });
+            //JSONArray list = reservationService.getStuffItem(recordId, timeStart, timeEnd);
+            result = reservationService.getReservationVoList(request, recordId, oneDay , toDays);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
@@ -143,7 +172,7 @@ public class ReservationController {
     }
 
     /**
-     * 查询当天一门店有预约员工列表--店长
+     * 查询当天一门店有预约员工列表--店长（统计员工有几个预约）
      */
     @ResponseBody
     @RequestMapping(value = "getStuff",method = RequestMethod.GET)
@@ -168,9 +197,10 @@ public class ReservationController {
         return result;
     }
 
-    /**
+/**
      * 查询员工下所有会员预约情况列表
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "getReservationList",method = RequestMethod.GET)
     @ApiOperation(value="查询员工下所有会员预约情况列表", notes="查询员工下所有会员预约情况列表")
@@ -193,16 +223,44 @@ public class ReservationController {
         }
         return result;
     }
+*/
 
 
     /**
-     * 查询当天一门店有预约员工列表--员工
+     * 查询当天一门店有预约员工列表--员工（具体到几点，什么项目）
+     */
+    @ResponseBody
+    @RequestMapping(value = "getStoreStuffItem",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+    })
+    public Result getStoreStuffItem(Long recordId,String timeStart ,String timeEnd){
+        Result result=new Result();
+        try {
+            JSONArray list = reservationService.getStuffItem(recordId, timeStart, timeEnd);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
+    }
+
+
+    /**
+     * 查询当天个人有预约--员工（具体到几点，什么项目）
      */
     @ResponseBody
     @RequestMapping(value = "getStuffItem",method = RequestMethod.GET)
     @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
     })
@@ -220,14 +278,58 @@ public class ReservationController {
         }
         return result;
     }
-
+    /**
+     * 查询当天个人一个预约具体详情--员工（具体到几点，什么项目）
+     */
+    @ResponseBody
+    @RequestMapping(value = "getOneStuffItem",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）", notes="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long"),
+    })
+    public Result getOneStuffItem(Long recordId){
+        Result result=new Result();
+        try {
+            Map rMap = new HashMap();
+            String rwhere="record_id=#{record_id} ";
+            rMap.put("record_id", recordId);
+            Reservation reservation = reservationDao.getOne(rwhere, rMap);
+            List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
+            JSONObject jsonObject  = new JSONObject();
+            String serviceIds = "";
+            for(Map map :mapService){
+                String serviceId =  (String) map.get("recordId");
+                serviceIds=serviceIds+serviceId+",";
+            }
+            jsonObject.put("memberId",reservation.getMemberId());
+            jsonObject.put("stuffId",reservation.getStuffId());
+            jsonObject.put("roomId",reservation.getRoomId());
+            jsonObject.put("timeStart",reservation.getTimeStart());
+            jsonObject.put("timeEnd",reservation.getTimeEnd());
+            jsonObject.put("recordStatus",reservation.getRecordStatus());
+            jsonObject.put("remark",reservation.getRemark());
+            jsonObject.put("date_",reservation.getDate_());
+            jsonObject.put("duration",reservation.getDuration());
+            jsonObject.put("memberSourc",reservation.getMemberSourc());
+            jsonObject.put("serviceId",serviceIds);
+            jsonObject.put("serviceNum",mapService.size());
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(jsonObject);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
+    }
 
     /**
-     * 添加预约
+     * 添加、修改预约
      */
     @ResponseBody
     @RequestMapping(value = "addReservation",method = RequestMethod.POST)
-    @ApiOperation(value="添加预约", notes="添加预约")
+    @ApiOperation(value="添加、修改预约", notes="添加、修改预约")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "memberId", value = "会员id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "stuffId", value = "预约美容师Id", required = true, dataType = "Long"),
@@ -245,14 +347,38 @@ public class ReservationController {
         float duration =   reservation.getDuration();
         Date  endTime =    DateString.getDateAddTime(reservation.getTimeStart(),duration);
         reservation.setTimeEnd(endTime);
-        reservationDao.insert(reservation);
-        String[] idList = serviceIdS.split(",");
-        for (String string:idList){
-            ReservationItem reservationItem  = new ReservationItem();
-            reservationItem.setReservationId(reservation.getRecordId());
-            reservationItem.setServiceId(Long.parseLong(string));
-            reservationItemDao.insert(reservationItem);
+
+        if(reservation.getRecordId()!=null){
+            //修改
+            reservationDao.update(reservation);
+            String where="reservation_id=#{reservation_id}";
+            Map parameters = new HashMap();
+            parameters.put("reservation_id", reservation.getRecordId());
+            List<ReservationItem> reservationItemList  =  reservationItemDao.getByWhere(where,parameters);
+            if(reservationItemList.size()>0){
+                for(ReservationItem reservationItem1:reservationItemList){
+                    reservationItemDao.delete(reservationItem1);
+                }
+            }
+            String[] idList = serviceIdS.split(",");
+            for (String string:idList){
+                ReservationItem reservationItem  = new ReservationItem();
+                reservationItem.setReservationId(reservation.getRecordId());
+                reservationItem.setServiceId(Long.parseLong(string));
+                reservationItemDao.insert(reservationItem);
+            }
+        }else{
+            //新增
+            reservationDao.insert(reservation);
+            String[] idList = serviceIdS.split(",");
+            for (String string:idList){
+                ReservationItem reservationItem  = new ReservationItem();
+                reservationItem.setReservationId(reservation.getRecordId());
+                reservationItem.setServiceId(Long.parseLong(string));
+                reservationItemDao.insert(reservationItem);
+            }
         }
+
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -265,23 +391,34 @@ public class ReservationController {
     }
 
 
-/*    *//**
-     * 查询当天是否有休假或请假--根据时间段查询
-     *//*
+    /**
+     * 取消预约
+     */
     @ResponseBody
     @RequestMapping(value = "getIsTrueReservationByDay",method = RequestMethod.GET)
-    @ApiOperation(value="查询当天是否有休假或请假", notes="查询当天是否有休假或请假")
+    @ApiOperation(value="取消预约", notes="取消预约")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "Date"),
-            @ApiImplicitParam(paramType="query", name = "duration", value = "时长", required = true, dataType = "Float")
+            @ApiImplicitParam(paramType="query", name = "reservationId", value = "预约Id", required = true, dataType = "Long"),
+
     })
-    public Result getIsTrueReservationByDay(Long stuffId,Date timeStart ,float duration){
+    public Result getIsTrueReservationByDay(Long reservationId){
+        Reservation reservation = reservationDao.getById(reservationId);
+        String where="reservation_id=#{reservation_id}";
+        Map parameters = new HashMap();
+        parameters.put("reservation_id", reservation.getRecordId());
+        List<ReservationItem> reservationItem  =  reservationItemDao.getByWhere(where,parameters);
+        if(reservationItem.size()>0){
+            for(ReservationItem reservationItem1:reservationItem){
+                reservationItemDao.delete(reservationItem1);
+            }
+        }
+        reservationDao.delete(reservation);
+        Result result  = new Result();
+        result.setMsg("取消成功");
+        result.setSuccess(true);
+        return result;
 
-
-        return null;
-
-    }*/
+    }
 
 
     /**

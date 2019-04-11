@@ -198,4 +198,8 @@ public class SystemUserService {
         }
         return false;
     }
+
+    public SystemUser getUserByTel(String tel) {
+       return systemUserDAO.getUserByTel(tel);
+    }
 }

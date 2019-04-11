@@ -308,4 +308,55 @@ group by ss.record_id;
 
 
     </select>
+
+
+    <select id="GET_STUFF_RESERVATION"  parameterType="java.util.Map" resultType="java.util.Map">
+        select r.record_id as recordId,sss.stuff_name as stuffName ,m.room_name as roomName,ser.service_name as serviceName
+        ,r.time_start as timeStart
+        ,r.time_end as timeEnd
+        from reservation r
+        left join stuff sss on r.stuff_id = sss.record_id
+        left join  reservation_item item  on r.record_id = item.reservation_id left join
+        service ser on item.service_id = ser.record_id left join store_room m on r.room_id = m.record_id
+        where  1=1  and sss.store_id=#{storeId}
+        <if test="stuffId != null">
+          and   r.stuff_id=#{stuffId}
+        </if>
+        <if test="roomId != null">
+            and r.room_id=#{roomId}
+        </if>
+        <if test="serviceId != null">
+            and item.service_id = #{serviceId}
+        </if>
+
+        <if test="timeStart != null">
+            and r.date_ between #{timeStart} and #{timeEnd}
+        </if>
+    </select>
+
+    <select id="GET_STUFF_RESERVATIONCOUNT"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from reservation r
+        left join stuff sss on r.stuff_id = sss.record_id
+        left join  reservation_item item  on r.record_id = item.reservation_id left join
+        service ser on item.service_id = ser.record_id left join store_room m on r.room_id = m.record_id
+        where 1=1 and
+        sss.store_id =#{storeId}
+        <if test="stuffId != null ">
+          and   r.stuff_id=#{stuffId}
+        </if>
+        <if test="roomId != null">
+            and r.room_id=#{roomId}
+        </if>
+        <if test="serviceId != null">
+            and item.service_id = #{serviceId}
+        </if>
+
+        <if test="timeStart != null">
+            and r.date_ between #{timeStart} and #{timeEnd}
+        </if>
+
+    </select>
+
+
 </mapper>

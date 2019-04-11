@@ -1,0 +1,318 @@
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>预约情况</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+</head>
+<style type="text/css">
+  body{
+    height: 100%;
+    width: 100%;
+    margin-top: 11px;
+  }
+  .xiugai {
+    margin-left: -0.5px;
+    margin-top: 10px;
+  }
+
+  .layui-form-item .layui-input-inline{
+      width: 174px;
+  }
+
+</style>
+
+<body >
+<!-- 内容主体区域 -->
+<div class="layui-fluid layui-form">
+  <div class="layui-form-item">
+<!--    <div class="layui-input-inline " style=" width: 638px;">
+      <button class="layui-btn layui-btn-primary addUser">新增用户</button>
+&lt;!&ndash;      <button class="layui-btn">默认按钮</button>
+      <button class="layui-btn layui-btn-normal">百搭按钮</button>&ndash;&gt;
+     </div>-->
+    <div class="layui-inline">
+      <div class="layui-input-inline">
+        <select name="modules"  lay-search="" class="stuffList">
+            <option value="">选择员工</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <div class="layui-input-inline">
+        <select name="modules"  lay-search="" class="roomList">
+            <option value="">选择房间</option>
+        </select>
+      </div>
+    </div>
+      <div class="layui-inline">
+          <div class="layui-input-inline">
+              <select name="modules"  lay-search="" class="serviceList">
+                  <option value="">选择服务</option>
+              </select>
+          </div>
+      </div>
+      <div class="layui-inline">
+          <label class="layui-form-label">一天</label>
+          <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="oneDay" placeholder="yyyy-MM-dd">
+          </div>
+      </div>
+      <div class="layui-inline">
+          <label class="layui-form-label">日期范围</label>
+          <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="toDays" placeholder=".">
+          </div>
+      </div>
+
+    <div class="layui-inline">
+      <div class="layui-input-inline">
+        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+        </button></div>
+    </div>
+  </div>
+</div>
+
+<div id="pTable" >
+  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
+
+  </table>
+<!--  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>-->
+  <div id="laypage"></div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+  layui.use(['form','laydate','layer','table','laypage','util'],function(){
+    var form = layui.form;
+    var laydate=layui.laydate;
+    var $ = layui.$;
+      //日期范围
+      laydate.render({
+          elem: '#toDays'
+          ,type: 'datetime',
+          range: '~'
+      });
+      //常规用法
+      laydate.render({
+          elem: '#oneDay'
+      });
+    productsearch(1,1);
+    getOtherInfo(1);
+    function getOtherInfo(storeId) {
+      $.ajax({
+        type:'GET',
+        url:'/hy/basic/reservation/getReservationOtherInfo',
+        data: {recordId:storeId},
+        success: function(data){
+          var listStuff = data.listStuff;
+          var roomList = data.roomList;
+          var serviceList = data.serviceList;
+          for(index in listStuff){
+           /* if(index==0){
+              var temp = listStuff[index].recordId;
+              $("#storeId").val(temp);
+            }*/
+            var temp = "";
+            temp = "<option value="+listStuff[index].recordId+">"+listStuff[index].stuffName+"</option>";
+           /* if(chechId==listStuff[index].recordId){
+              temp = "<option selected='selected' value="+listStuff[index].recordId+">"+listStuff[index].stuffName+"</option>";
+            }else{
+              temp = "<option value="+listStuff[index].recordId+">"+listStuff[index].stuffName+"</option>";
+            }*/
+
+            $(".stuffList").append(temp);
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
+          }
+
+          for(index in roomList){
+           /* if(index==0){
+              var temp = roomList[index].recordId;
+              $("#storeId").val(temp);
+            }*/
+            var temp = "";
+            temp = "<option value="+roomList[index].recordId+">"+roomList[index].roomName+"</option>";
+           /* if(chechId==roomList[index].recordId){
+              temp = "<option selected='selected' value="+roomList[index].recordId+">"+roomList[index].roomName+"</option>";
+            }else{
+              temp = "<option value="+roomList[index].recordId+">"+roomList[index].roomName+"</option>";
+            }*/
+
+            $(".roomList").append(temp);
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
+          }
+
+
+          for(index in serviceList){
+           /* if(index==0){
+              var temp = serviceList[index].recordId;
+              $("#storeId").val(temp);
+            }*/
+            var temp = "";
+            temp = "<option value="+serviceList[index].recordId+">"+serviceList[index].serviceName+"</option>";
+           /* if(chechId==roomList[index].recordId){
+              temp = "<option selected='selected' value="+serviceList[index].recordId+">"+serviceList[index].serviceName+"</option>";
+            }else{
+              temp = "<option value="+serviceList[index].recordId+">"+serviceList[index].serviceName+"</option>";
+            }
+*/
+            $(".serviceList").append(temp);
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
+          }
+
+
+          /*if(data.msgcode=="200"){
+            alert("操作失败！");
+          }else{
+            alert("操作成功！");
+            window.parent.location.reload(); //刷新父页面
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);  // 关闭layer
+          }*/
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+    }
+    function productsearch(page,recordId,stuffId,roomId,serviceId,oneDay,toDays) {
+
+      var table = layui.table,
+      laydate = layui.laydate,
+      laypage = layui.laypage;
+      var form = layui.form;
+      table.render({
+        elem : '#layui_table_id',
+        url : '/hy/basic/reservation/getReservationVoList',
+        cols : [ [
+              {checkbox: true,
+                filter:'test'
+              }
+              ,
+              {
+                field : 'recordId',
+                title : 'recordId',
+                sort : true,
+                align : 'center'
+              },
+              {
+                field : 'stuffName',
+                title : '员工名称',
+                sort : true,
+                align : 'center'
+              }
+              , {
+                field : 'roomName',
+                title : '房间名称',
+                align : 'center'
+              }
+              , {
+                field : 'serviceName',
+                title : '服务名称',
+                align : 'center',
+              },
+            {
+                field : 'timeStart',
+                title : '开始时间',
+                align : 'center',
+            },
+            {
+                field : 'timeEnd',
+                title : '结束时间',
+                align : 'center',
+            },
+
+        ] ],
+        page : true,
+        where : {
+            recordId:recordId,
+            stuffId:stuffId,
+            roomId:roomId,
+            serviceId:serviceId,
+            oneDay:oneDay,
+            toDays:toDays
+        },
+        responseHandler: function (res, curr,count) {
+          $('#pageNum').val(curr);
+          return {
+            "count": res.total,
+            "data": res.data,
+            "code": 0,//code值为200表示成功
+            "msg": ""
+          }
+        },
+        done : function(res, curr, count) {
+          console.log(res)
+          $('#pageNum').val(curr);
+
+        }
+      })
+      // table.on('checkbox(test)', function(obj){
+      //   console.log(layui.table.checkStatus('layui_table_id'));
+      // });
+     // 监听工具条
+      table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        var data = obj.data, //获得当前行数据
+                layEvent = obj.event; //获得 lay-event 对应的值
+        if (layEvent == 'detail') {
+          queryById(data.id);
+        } else if (layEvent == 'del') {
+          //alert(data.id)
+          var pageNum = $('#pageNum').val();
+          layer.confirm('真的删除行么', function(index){
+            deleteById(data.id);
+            layer.close(index);
+            //向服务端发送删除指令
+          });
+        } else if (layEvent === 'edit') {
+          layer.msg('编辑操作');
+        }
+      });
+      //常规用法
+      laydate.render({
+        elem : '#createDate'
+      });
+      //常规用法
+      laydate.render({
+        elem : '#processingTime'
+      });
+
+    }
+
+    $(".check").on("click", function() {
+      var stuffListId=$('.stuffList option:selected').val();
+      var roomListId=$('.roomList option:selected').val();
+      var serviceListId=$('.serviceList option:selected').val();
+
+      var oneDay = $('#oneDay').val();
+      var toDays = $('#toDays').val();
+      productsearch(1, 1,stuffListId,roomListId,serviceListId,oneDay,toDays);
+    })
+
+
+  });
+  function userStatus(t){
+     if(t==0){
+       return '启用';
+     }else{
+       return '禁用';
+     }
+    return util.toDateString(t1);
+  }
+</script>
+
+
+<script type="text/html" id="userStatus">
+
+
+        {{ userStatus(d.userStatus) }}
+</script>

@@ -1,5 +1,11 @@
 package com.zhxh.admin.controller;
 
+import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.StuffDao;
+import com.hy.salon.basic.dao.StuffJobDao;
+import com.hy.salon.basic.dao.VerificationCodeTemporaryDAO;
+import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.entity.VerificationCodeTemporary;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
@@ -20,7 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/systemUsers")
@@ -33,6 +42,13 @@ public class SystemUserController {
 
     @Resource(name = "roleUserService")
     private RoleUserService roleUserService;
+
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
+    @Resource(name= "verificationCodeTemporaryDao")
+    private VerificationCodeTemporaryDAO verificationCodeTemporaryDAO;
 
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
 
@@ -65,6 +81,36 @@ public class SystemUserController {
     public SystemUser update(SystemUser user) {
         systemUserService.update(user);
         return user;
+    }
+    @RequestMapping("updatePassword")
+    @ResponseBody
+    public Result updatePassword(String password,String tel,String verificationCode){
+        Result r= new Result();
+        String where = "tel = #{tel}";
+        Map map = new HashMap<>();
+        map.put("tel",tel);
+        //Stuff stuff = stuffDao.getOne(where,map);
+        SystemUser user = systemUserService.getUserByTel(tel);
+        user.setPassword(password);
+        List<VerificationCodeTemporary> verificationCodeTemporaryList=verificationCodeTemporaryDAO.getCode(tel);
+        if(verificationCodeTemporaryList.size()!=0){
+            VerificationCodeTemporary verificationCodeTemporary=verificationCodeTemporaryList.get(verificationCodeTemporaryList.size()-1);
+            if(!verificationCodeTemporary.getVerificationCode().equals(verificationCode)){
+                r.setMsg("验证码错误");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }else{
+                systemUserService.update(user);
+                r.setMsg("验证成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+                return r;
+            }
+
+        }
+
+        return  r;
     }
 
     @RequestMapping("delete.handler")

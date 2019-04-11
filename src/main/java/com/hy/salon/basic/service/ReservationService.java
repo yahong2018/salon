@@ -6,6 +6,7 @@ import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.ReservationVo;
+import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.StuffVo;
 import com.hy.salon.basic.vo.StoreReservation;
 import com.zhxh.core.web.ExtJsResult;
@@ -198,7 +199,7 @@ public class ReservationService {
         return voList;
     }
 
-    public  List<Map> getReservationVoList(HttpServletRequest request, Long recordId, String timeStart, String timeEnd, ListRequestBaseHandler listRequestBaseHandler) {
-       return reservationDao.getReservationVoList(request,recordId,timeStart,timeEnd,listRequestBaseHandler);
+    public Result getReservationVoList(HttpServletRequest request, Long recordId, String oneDay, String toDays  ) {
+       return reservationDao.getReservationVoList(request,recordId, oneDay , toDays);
     }
 }

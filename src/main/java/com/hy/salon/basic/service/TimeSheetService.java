@@ -431,8 +431,9 @@ public class TimeSheetService {
 
     public List<Salon> getSalon(Long storeId) {
         Map parameters = new HashMap();
-        String where = "parent_id=#{parentId}";
+        String where = "parent_id=#{parentId} or record_id=#{record_id}";
         parameters.put("parentId", storeId);
+        parameters.put("record_id",storeId);
         Map listMap = new HashMap();
         listMap.put("where", where);
         List<Salon> list = salonDao.getList(listMap, parameters);
