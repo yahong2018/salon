@@ -133,17 +133,20 @@ public class LoggerAspect {
             }
             if(user!=null) {
                 Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-                List<SystemRole> list = systemRoleService.getRoleListById(user.getRecordId());
-                logger.info("登陆用户名 {}", stuff2.getStuffName());
-                ol.setOptUserId(stuff2.getRecordId());
-                ol.setOptRoleId(list.get(0).getRecordId());
-                ol.setOptUrl(request.getRequestURI());
-                ol.setOptDate(new Date());
-                ol.setOptAction(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName());
-                ol.setOptInfo(helper.getJsonFromString(names, args));
-                ol.setOptStatu(200);
-                ol.setOptResult("成功");
-                operateLogDao.insert(ol);
+                if(stuff2!=null){
+                    List<SystemRole> list = systemRoleService.getRoleListById(user.getRecordId());
+                    logger.info("登陆用户名 {}", stuff2.getStuffName());
+                    ol.setOptUserId(stuff2.getRecordId());
+                    ol.setOptRoleId(list.get(0).getRecordId());
+                    ol.setOptUrl(request.getRequestURI());
+                    ol.setOptDate(new Date());
+                    ol.setOptAction(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName());
+                    ol.setOptInfo(helper.getJsonFromString(names, args));
+                    ol.setOptStatu(200);
+                    ol.setOptResult("成功");
+                    operateLogDao.insert(ol);
+                }
+
             }
 
         }else {
