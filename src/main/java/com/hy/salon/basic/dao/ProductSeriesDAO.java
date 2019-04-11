@@ -20,6 +20,14 @@ public class ProductSeriesDAO extends BaseDAOWithEntity<ProductSeries> {
         return this.getOne(where, parameters);
     }
 
+    public ProductSeries getSeriesForId(Long recordId){
+        String where = "record_id=#{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+
+        return this.getOne(where, parameters);
+    }
+
 
     public List<Map> getSeriesForName(String name,Long salonId){
         Map parameters = new HashMap();

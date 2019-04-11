@@ -56,20 +56,47 @@ public class ProductController {
 
     @Resource(name = "productPropertyMapDAO")
     private ProductPropertyMapDAO productPropertyMapDAO;
+
+    @Resource(name = "productPropertyDAO")
+    private ProductPropertyDAO productPropertyDAO;
+
+
+
     /**
      * 获取产品列表
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getProductList",method = RequestMethod.GET)
+    @RequestMapping("getProductList")
     @ApiOperation(value="获取产品列表", notes="获取产品列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "salonId", value = "美容院ID", required = true, dataType = "Long")
     })
-    public Result getProductList(Long salonId,Long productClass,Long productSeriesId){
+    public Result getProductList(Long salonId,String productClass,Long productSeriesId,int page,int limit){
         Result result=new Result();
         try {
+            result.setTotal(productDao.getProdectForCondition(salonId,productClass,productSeriesId).size());
+            PageHelper.startPage(page, limit);
             List<Product> list=productDao.getProdectForCondition(salonId,productClass,productSeriesId);
+            if(list.size()!=0){
+                for(Product p:list){
+                    List<Map<String,Object>> Property1= productPropertyDAO.getPropertyName(p.getRecordId(),new Byte("0"));
+                    List<Map<String,Object>> Property2= productPropertyDAO.getPropertyName(p.getRecordId(),new Byte("1"));
+                    if(null!=Property1 && Property1.size()!=0){
+                        p.setSpecificationsName(Property1.get(0).get("propertyName").toString());
+                    }
+
+                    if(null!=Property2 && Property2.size()!=0){
+                        p.setCompanyName(Property2.get(0).get("propertyName").toString());
+                    }
+                    List<Pictures> pic=picturesDao.getPicturesForCondition(p.getRecordId(),new Byte("5"),new Byte("0"));
+                    if(null!=pic && pic.size()!=0){
+                        p.setPicUrl(pic.get(0).getPicUrl());
+                    }
+                }
+            }
+
+
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setMsg("查询成功");
@@ -159,6 +186,32 @@ public class ProductController {
         return result;
     }
 
+
+    /**
+     * 删除品牌
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("deleteProductSeries")
+    @ApiOperation(value="删除品牌", notes="删除品牌")
+    public Result deleteProductSeries(Long recordId){
+        Result result=new Result();
+        try {
+
+            productSeriesDao.deleteById(recordId);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("删除成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("删除失败");
+        }
+        return result;
+    }
+
+
     /**
      * 品牌名设置
      * @return
@@ -195,12 +248,12 @@ public class ProductController {
     @ResponseBody
     @RequestMapping(value = "queryProductSeries", method = RequestMethod.GET)
     @ApiOperation(value = "获取品牌", notes = "获取品牌")
-    public Result queryProductSeries(){
+    public Result queryProductSeries(Long recordId){
         Result result=new Result();
         try {
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            List<ProductSeries> seriesList= productSeriesDao.getSeriesForUser(stuff.getStoreId());
+//            SystemUser user = authenticateService.getCurrentLogin();
+//            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            List<ProductSeries> seriesList= productSeriesDao.getSeriesForUser(recordId);
             result.setData(seriesList);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -213,6 +266,8 @@ public class ProductController {
         }
         return result;
     }
+
+
 
     /**
      * 获取品牌
@@ -301,12 +356,14 @@ public class ProductController {
 
 
 
+
+
     /**
      * 添加产品
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "addProduct",method = RequestMethod.GET)
+    @RequestMapping("addProduct")
     @ApiOperation(value="品牌名设置", notes="品牌名设置")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "salonId", value = "美容院Id", required = true, dataType = "Long"),
@@ -326,26 +383,40 @@ public class ProductController {
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "记录状态：0.启用   1. 停用", required = true, dataType = "byte"),
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String")
     })
-    public Result addProduct(Product condition,String Specifications,String Company,String applicableParts,String effect){
+    public Result addProduct(Product condition,String specifications,String sompany,String applicableParts,String effect,String picIdList,String deletePicList){
         Result result=new Result();
         try {
 
 //            SystemUser user = authenticateService.getCurrentLogin();
 //            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+
+
+
             if(condition.getRecordId() == null){
 //                condition.setStoreId(stuff.getStoreId());
 
+                Product product=productDao.checkName(condition.getStoreId(),condition.getProductName());
+                if(null != product){
+                    result.setSuccess(false);
+                    result.setMsgcode(StatusUtil.ERROR);
+                    result.setMsg("产品名称不能重复");
+                    return result;
+                }
+
+
+                condition.setRecordId(null);
                 productDao.insert(condition);
-                if(null != Specifications && !"".equals(Specifications)){
+                if(null != specifications && !"".equals(specifications)){
                     ProductPropertyMap productMapCondition=new ProductPropertyMap();
                     productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(Specifications));
+                    productMapCondition.setProductPropertyId(Long.parseLong(specifications));
                     productPropertyMapDAO.insert(productMapCondition);
                 }
-                if(null != Company && !"".equals(Company)){
+                if(null != sompany && !"".equals(sompany)){
                     ProductPropertyMap productMapCondition=new ProductPropertyMap();
                     productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(Company));
+                    productMapCondition.setProductPropertyId(Long.parseLong(sompany));
                     productPropertyMapDAO.insert(productMapCondition);
                 }
                 if(null != applicableParts && !"".equals(applicableParts)){
@@ -365,7 +436,75 @@ public class ProductController {
 
             }else{
 
+                Product product=productDao.checkName(condition.getStoreId(),condition.getProductName());
+                if(null != product){
+                    if(product.getRecordId() != condition.getRecordId()){
+                        result.setSuccess(false);
+                        result.setMsgcode(StatusUtil.ERROR);
+                        result.setMsg("产品名称不能重复");
+                        return result;
+                    }
+                }
                 productDao.update(condition);
+
+                List<ProductPropertyMap> ppmList =productPropertyMapDAO.getProForId(condition.getRecordId());
+                if(null!=ppmList && ppmList.size()!=0 ){
+                    for(ProductPropertyMap p :ppmList){
+                        productPropertyMapDAO.delete(p);
+                    }
+                }
+
+
+                if(null != specifications && !"".equals(specifications)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(specifications));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != sompany && !"".equals(sompany)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(sompany));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != applicableParts && !"".equals(applicableParts)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+                if(null != effect && !"".equals(effect)){
+                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
+                    productMapCondition.setProductId(condition.getRecordId());
+                    productMapCondition.setProductPropertyId(Long.parseLong(effect));
+                    productPropertyMapDAO.insert(productMapCondition);
+                }
+
+            }
+
+
+
+            if(null != picIdList && !"".equals(picIdList)){
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for(String s:str){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
+                }
+            }
+
+            if(null != deletePicList && !"".equals(deletePicList)){
+                //删除照片关联
+                String[] str2=deletePicList.split(",");
+                for(String s:str2){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        picturesDao.delete(pic);
+                    }
+                }
             }
 
 
@@ -428,16 +567,23 @@ public class ProductController {
  * 删除产品
  */
     @ResponseBody
-    @RequestMapping(value = "deleteProduct", method = RequestMethod.GET)
+    @RequestMapping("deleteProduct")
     @ApiOperation(value = "删除产品", notes = "删除产品")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "recordId", value = "产品Id", required = true, dataType = "Long")
     })
-    public Result deleteProduct(Product condition){
+    public Result deleteProduct(Long recordId){
         Result result=new Result();
         try {
+            productDao.deleteById(recordId);
 
-            productDao.delete(condition);
+            List<ProductPropertyMap> ppmList =productPropertyMapDAO.getProForId(recordId);
+            if(null!=ppmList && ppmList.size()!=0 ){
+                for(ProductPropertyMap p :ppmList){
+                    productPropertyMapDAO.delete(p);
+                }
+            }
+
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setMsg("删除成功");
@@ -454,7 +600,7 @@ public class ProductController {
      * 获取产品详情
      */
     @ResponseBody
-    @RequestMapping(value = "queryProductData", method = RequestMethod.GET)
+    @RequestMapping("queryProductData")
     @ApiOperation(value = "获取产品详情", notes = "通过id获取产品详情")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "recordId", value = "产品Id", required = true, dataType = "Long")
@@ -465,8 +611,42 @@ public class ProductController {
 
             Product p=productDao.getOneProdectForId(recordId);
             JSONObject jsonObj=new JSONObject();
-            List<Pictures> picList=picturesDao.getPicturesForId(p.getRecordId());
+            List<Pictures> picList=picturesDao.getPicturesForCondition(recordId,new Byte("5"),new Byte("0"));
+            List<Map<String,Object>> Property1= productPropertyDAO.getPropertyName(recordId,new Byte("0"));
+            List<Map<String,Object>> Property2= productPropertyDAO.getPropertyName(recordId,new Byte("1"));
+            List<Map<String,Object>> Property3= productPropertyDAO.getPropertyName(recordId,new Byte("2"));
+            List<Map<String,Object>> Property4= productPropertyDAO.getPropertyName(recordId,new Byte("3"));
 
+            ProductSeries proSeries= productSeriesDao.getSeriesForId(p.getProductSeriesId());
+
+            ProductSeries parentSeries= productSeriesDao.getSeriesForId(proSeries.getParentId());
+
+            if(null!=Property1 && Property1.size()!=0){
+                jsonObj.put("specifications",Property1.get(0));
+            }else{
+                jsonObj.put("specifications","");
+            }
+            if(null!=Property2 && Property2.size()!=0){
+                jsonObj.put("sompany",Property2.get(0));
+            }else{
+                jsonObj.put("sompany","");
+            }
+
+            if(null!=Property3 && Property3.size()!=0){
+                jsonObj.put("applicableParts",Property3.get(0));
+            }else{
+                jsonObj.put("applicableParts","");
+            }
+
+            if(null!=Property4 && Property4.size()!=0){
+                jsonObj.put("effect",Property4.get(0));
+            }else{
+                jsonObj.put("effect","");
+            }
+
+
+            jsonObj.put("proSeries",proSeries);
+            jsonObj.put("parentSeries",parentSeries);
             jsonObj.put("product",p);
             jsonObj.put("picList",picList);
             result.setData(jsonObj);
@@ -514,6 +694,74 @@ public class ProductController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "queryAllProductSeriesTotal", method = RequestMethod.GET)
+    @ApiOperation(value="获取品牌统计", notes="以一级类别分组获取二级类别")
+    public Result queryAllProductSeriesTotal(Long salonId,String productClass){
+        Result r= new Result();
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        List<ProductSeries> serList=productSeriesDao.getSeriesForUser(stuff.getStoreId());
+
+        JSONArray jsonArr2=new JSONArray();
+
+        for(ProductSeries s:serList){
+            List<ProductSeries> sonSerList=productSeriesDao.getSonSeriesForId(s.getRecordId());
+            JSONObject jsonObj2=new JSONObject();
+            JSONArray jsonArr=new JSONArray();
+            for(ProductSeries p:sonSerList){
+                JSONObject jsonObj3=new JSONObject();
+                jsonObj3.put("productCount",productDao.getProdectForCondition(salonId,productClass,p.getRecordId()).size());
+                jsonObj3.put("ServiceRecordId",p.getRecordId());
+                jsonObj3.put("ServiceName",p.getSeriesName());
+                jsonObj3.put("ServiceName",p.getSeriesName());
+                jsonArr.add(jsonObj3);
+            }
+
+            jsonObj2.put("productCount",productDao.getCountForProduct(s.getStoreId()).size());
+            jsonObj2.put("ServiceRecordId",s.getRecordId());
+            jsonObj2.put("ServiceName",s.getSeriesName());
+            jsonObj2.put("ServiceList",jsonArr);
+            jsonArr2.add(jsonObj2);
+        }
+
+        r.setMsg("获取成功");
+        r.setMsgcode("0");
+        r.setSuccess(true);
+        r.setData(jsonArr2);
+        return r;
+
+
+    }
+
+
+
+
+
+
+    @ResponseBody
+    @RequestMapping("queryAllProductProperty")
+    @ApiOperation(value="获取单位相关", notes="获取单位相关")
+    public Result queryAllProductProperty(Long propertyType){
+        Result r= new Result();
+
+        try {
+            List<ProductProperty> productProperty=productPropertyDAO.getProductProperty(propertyType);
+            r.setMsg("获取成功");
+            r.setMsgcode("0");
+            r.setSuccess(true);
+            r.setData(productProperty);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setMsg("获取失败");
+        }
+        return r;
+
+
+    }
 
 
 

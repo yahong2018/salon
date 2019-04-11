@@ -310,6 +310,24 @@ group by ss.record_id;
     </select>
 
 
+    <!--获取该品牌下的产品数量 -->
+    <select id="QUERY_COUNT_FOR_PRODUCT"  parameterType="java.util.Map" resultType="java.util.Map">
+
+    SELECT * FROM salon.product where product_series_id in (select sps.record_id from salon.product_series as sps where sps.parent_id = #{parentId});
+
+    </select>
+
+    <!--获取该产品的详细参数 -->
+    <select id="QUERY_PROPERTYNAME"  parameterType="java.util.Map" resultType="java.util.Map">
+
+    select spp.property_name as propertyName ,spp.record_id as recordId from salon.product_property as spp
+    left join salon.product_property_map as sppm on spp.record_id=sppm.product_property_id where sppm.product_id=#{productId} and spp.property_type=#{propertyType}
+
+    </select>
+
+
+
+
     <select id="GET_STUFF_RESERVATION"  parameterType="java.util.Map" resultType="java.util.Map">
         select r.record_id as recordId,sss.stuff_name as stuffName ,m.room_name as roomName,ser.service_name as serviceName
         ,r.time_start as timeStart

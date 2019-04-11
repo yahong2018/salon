@@ -183,7 +183,7 @@ public class ServiceController extends SimpleCRUDController<Service> {
             }
         }
 
-        if(null != picIdList && !"".equals(deletePicList)){
+        if(null != deletePicList && !"".equals(deletePicList)){
             //删除照片关联
             String[] str2=deletePicList.split(",");
             for(String s:str2){

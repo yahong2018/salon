@@ -26,6 +26,7 @@
       <!--<button class="layui-btn layui-btn-primary addService">新增项目</button>-->
       <!--<button class="layui-btn updateUser">修改项目</button>-->
       <button class="layui-btn layui-btn-normal deleteUser">通过审核</button>
+      <button class="layui-btn layui-btn-normal updateUser">查看审核资料</button>
       <!--<button class="layui-btn layui-btn-normal qidong">启用账户</button>-->
       <!--<button class="layui-btn layui-btn-normal tingzhi">停止账户</button>-->
       <!--<button class="layui-btn layui-btn-normal shouquan">授权</button>-->
@@ -300,13 +301,12 @@
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'新增用户',
+        title:'查看审核资料',
         content:['add_service.html'],
         success:function(layero,index){
           console.log("成功");
           var iframe = window['layui-layer-iframe' + index];
-          var salonId=2;
-          iframe.child(salonId);
+          iframe.child(data[0]);
 
         },
         fail:function(data){
@@ -331,8 +331,8 @@
         shadeClose:true,
         scrollbar: false,
         shade:0.4,
-        title:'修改项目',
-        content:['update_service.html'],
+        title:'查看审核资料',
+        content:['auditPicData.html'],
         success:function(layero,index){
           // 获取子页面的iframe
           var iframe = window['layui-layer-iframe' + index];

@@ -733,13 +733,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         Result r= new Result();
         String pathname="C:/city/output.txt";
 
-//        String pathname=ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/city/output.txt";
 
-        InputStream resource = this.getClass().getResourceAsStream("/");
-//        String s2 = FileLoader.class.getResource("/").getPath();
-        Logger.debug("返回路径==="+pathname);
-        ;
-//        String pathname = request.getServletContext().getRealPath("/city")+"/output.txt";
         String line;
         try (FileReader reader = new FileReader(pathname);
              BufferedReader br = new BufferedReader(reader) // 建立一个对象，它把文件内容转成计算机能读懂的语言
@@ -753,7 +747,6 @@ public class SalonController extends SimpleCRUDController<Salon> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         r.setMsg("请求成功");
@@ -798,6 +791,23 @@ public class SalonController extends SimpleCRUDController<Salon> {
                 salon.setAudit(1);
                 salonDao.update(salon);
             }
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
+    @RequestMapping("auditPassForPc")
+    @ResponseBody
+    public Result auditPassForPc(Long recordId) {
+        Result r= new Result();
+
+            Salon salon=salonDao.getSalonForStoreId(recordId);
+            salon.setAudit(1);
+            salonDao.update(salon);
+
         r.setMsg("请求成功");
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
