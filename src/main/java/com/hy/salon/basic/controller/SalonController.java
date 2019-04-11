@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -690,11 +691,13 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
 
         try {
-            String pathname = request.getServletContext().getRealPath("/city")+"/output.txt";
-//            java.io.File folder = new java.io.File(dir);
-//            if (!folder.exists()) {
-//                folder.mkdirs();     ///如果不存在，创建目录
-//            }
+            String pathname = "C:/city/output.txt";
+//            String pathname = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/city/output.txt";
+            String pathname2 = "C:/city";
+            java.io.File folder = new java.io.File("C:/city");
+            if (!folder.exists()) {
+                folder.mkdirs();     ///如果不存在，创建目录
+            }
             File writeName = new File(pathname);
             writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
             try (FileWriter writer = new FileWriter(writeName);
@@ -728,9 +731,15 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
     public Result getCity(HttpServletRequest request) {
         Result r= new Result();
+        String pathname="C:/city/output.txt";
 
+//        String pathname=ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/city/output.txt";
 
-        String pathname = request.getServletContext().getRealPath("/city")+"/output.txt"; //
+        InputStream resource = this.getClass().getResourceAsStream("/");
+//        String s2 = FileLoader.class.getResource("/").getPath();
+        Logger.debug("返回路径==="+pathname);
+        ;
+//        String pathname = request.getServletContext().getRealPath("/city")+"/output.txt";
         String line;
         try (FileReader reader = new FileReader(pathname);
              BufferedReader br = new BufferedReader(reader) // 建立一个对象，它把文件内容转成计算机能读懂的语言

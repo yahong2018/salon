@@ -21,6 +21,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         interceptorRegistration.excludePathPatterns("/hy/basic/salon/createStore");
         interceptorRegistration.excludePathPatterns("/hy/basic/pictures/uploadServicePic");
         interceptorRegistration.excludePathPatterns("/hy/basic/salon/sendMessage");
+        interceptorRegistration.excludePathPatterns("/hy/basic/salon/getCity");
+        interceptorRegistration.excludePathPatterns("/api/login/logout");
         interceptorRegistration.excludePathPatterns("/static/**");
         interceptorRegistration.addPathPatterns("/hy/basic/attendance/**");
         interceptorRegistration.addPathPatterns("/hy/basic/job/**");
