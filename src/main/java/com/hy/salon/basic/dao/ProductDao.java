@@ -25,14 +25,31 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return this.getOne(where, parameters);
     }
 
+    public Product getOneProdectForProductId(Long id){
+        String where = "product_id=#{id} ";
+        Map parameters = new HashMap();
+        parameters.put("id", id);
+
+        return this.getOne(where, parameters);
+    }
+
+    public Product checkName(Long salonId,String productName){
+        String where = "store_id=#{salonId} and product_name=#{productName}";
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        parameters.put("productName", productName);
+
+        return this.getOne(where, parameters);
+    }
 
 
 
 
-    public List<Product> getProdectForCondition(Long salonId,Long productClass,Long productSeriesId){
+
+    public List<Product> getProdectForCondition(Long salonId,String productClass,Long productSeriesId){
 
         String where = "store_id=#{salonId} ";
-        if(null != productClass && productClass!=0){
+        if(null != productClass && !"".equals(productClass)){
             where=where+" and product_class=#{productClass}";
         }
 
@@ -60,6 +77,16 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
 
         return this.getByWhere(where, parameters);
     }
+
+    public List<Map<String,Object>> getCountForProduct(Long parentId) {
+        Map parameters = new HashMap();
+        parameters.put("parentId", parentId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_COUNT_FOR_PRODUCT, parameters);
+    }
+
+
+
+    protected final static String SQL_QUERY_COUNT_FOR_PRODUCT = "com.hy.salon.basic.dao.QUERY_COUNT_FOR_PRODUCT";
 
     protected final static String SQL_GET_PRODUCT_LIST = "com.hy.salon.basic.dao.GET_PRODUCT_LIST";
 }

@@ -25,7 +25,7 @@ public class LogCostInterceptor implements HandlerInterceptor {
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/html;charset=utf-8");
             JSONObject jsonObj = new JSONObject();
-            jsonObj.put("msgcode", StatusUtil.ERROR);
+            jsonObj.put("msgcode", "70010");
             jsonObj.put("msg", "登录超时");
             jsonObj.put("data", "请重新登录");
             response.getWriter().write(jsonObj.toJSONString());

@@ -17,7 +17,7 @@ public class LoginResult {
 
     private int code;
     private String message;
-
+    private boolean success;
     private Long salonId;
     private List<SystemRole> listRole;
     private List<Job> listJob;

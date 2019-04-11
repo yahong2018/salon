@@ -1,6 +1,5 @@
 package com.hy.salon.basic.dao;
 
-import com.hy.salon.basic.entity.Pictures;
 import com.hy.salon.basic.entity.ProductProperty;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
@@ -19,4 +18,14 @@ public class ProductPropertyDAO extends BaseDAOWithEntity<ProductProperty> {
 
         return this.getByWhere(where, parameters);
     }
+
+    public List<Map<String,Object>> getPropertyName(Long productId,Byte propertyType ) {
+        Map parameters = new HashMap();
+        parameters.put("productId", productId);
+        parameters.put("propertyType", propertyType);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_PROPERTYNAME, parameters);
+    }
+
+    protected final static String SQL_QUERY_PROPERTYNAME = "com.hy.salon.basic.dao.QUERY_PROPERTYNAME";
+
 }

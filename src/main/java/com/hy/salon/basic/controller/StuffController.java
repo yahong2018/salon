@@ -346,12 +346,11 @@ public class StuffController extends SimpleCRUDController<Stuff> {
      * 修改个人资料
      */
     @ResponseBody
-    @RequestMapping(value="updateStuffData",method = RequestMethod.POST)
+    @RequestMapping("updateStuffData")
     @ApiOperation(value="修改个人资料", notes="修改个人资料")
     public Result updateStuffData( Stuff condition) {
         Result r= new Result();
         try {
-
             stuffDao.update(condition);
             r.setMsg("修改成功");
             r.setMsgcode(StatusUtil.OK);
@@ -538,6 +537,54 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             r.setMsgcode(StatusUtil.ERROR);
         }
 
+        return r;
+    }
+
+
+    /**
+     * PC获取审核资料照片
+     */
+    @ResponseBody
+    @RequestMapping(value="getStuffDataPidForPc",method = RequestMethod.GET)
+    @ApiOperation(value="PC获取审核资料照片", notes="PC获取审核资料照片")
+    public Result getStuffDataPidForPc(Long recordId) {
+        Result r= new Result();
+        try {
+            JSONObject jsonObj=new JSONObject();
+            Pictures pic1=picturesDao.getOnePicturesForCondition(recordId,new Byte("0"),new Byte("1"));
+            Pictures pic2=picturesDao.getOnePicturesForCondition(recordId,new Byte("0"),new Byte("2"));
+            Pictures pic3=picturesDao.getOnePicturesForCondition(recordId,new Byte("0"),new Byte("3"));
+            Pictures pic4=picturesDao.getOnePicturesForCondition(recordId,new Byte("0"),new Byte("4"));
+            if(pic1!=null){
+                jsonObj.put("pic1",pic1.getPicUrl());
+            }else{
+                jsonObj.put("pic1","");
+            }
+            if(pic2!=null){
+                jsonObj.put("pic2",pic2.getPicUrl());
+            }else{
+                jsonObj.put("pic2","");
+            }
+            if(pic3!=null){
+                jsonObj.put("pic3",pic3.getPicUrl());
+            }else{
+                jsonObj.put("pic3","");
+            }
+            if(pic4!=null){
+                jsonObj.put("pic4",pic4.getPicUrl());
+            }else{
+                jsonObj.put("pic4","");
+            }
+
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+            r.setData(jsonObj);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
         return r;
     }
 }

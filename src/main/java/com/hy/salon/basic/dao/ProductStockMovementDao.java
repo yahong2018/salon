@@ -1,5 +1,6 @@
 package com.hy.salon.basic.dao;
 
+import com.hy.salon.basic.entity.City;
 import com.hy.salon.basic.entity.ProductStockMovement;
 import com.hy.salon.basic.vo.ProductStockMovementVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -18,6 +19,25 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
         Map listMap = new HashMap();
         listMap.put("where", where);
         return this.getList(listMap, parameters);
+    }
+
+
+    public List<ProductStockMovement> getProductForSalonId(Long salonId,Byte movementType) {
+        String where = "warehouse_id=#{salonId} and movement_type=#{movementType}";
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        parameters.put("movementType", movementType);
+        return this.getByWhere(where, parameters);
+    }
+
+
+
+    public ProductStockMovement getOneProductForSalonId(Long salonId){
+        String where = "record_id=#{salonId}";
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+
+        return this.getOne(where, parameters);
     }
 
     public List<ProductStockMovementVo> findProductStock(Integer movementType,String createTime,String endTime) {
