@@ -844,15 +844,21 @@ create table stock_transfer_application
 (
   record_id                        bigint              auto_increment    not null,
   application_no                   char(12)                              not null,
+  product_stock_movement_id        bigint                                not null,  -- 出库单号
   out_warehouse_id                 bigint                                not null,  -- 调出仓库/门店
+  in_warehouse_id                  bigint                                not null,  -- 调入仓库/门店
   remark_application               varchar(500)                          null,      -- 申请原因
   remark_audit                     varchar(500)                          null,      -- 审批原因
   record_status                    tinyint                               not null,  -- 记录状态： 4.已完成   3.已批准   2.已驳回   1.已撤销  0.已提交(注意，一旦提交，就不可以修改，只能撤销以后重新提交)
+  time_of_application              datetime                              not null,  -- 创建/申请时间
+  creator                          bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
+  approval_time                    datetime                              not null,  -- 修改/审批时间
+  approver                         bigint                                not null,  -- 审批人/修改人：调拨必须是调出门店的店长
 
-  create_date                      datetime                              not null,  -- 创建/申请时间
-  create_by                        bigint                                not null,  -- 创建人/申请人：调拨必须是调入门店的店长
-  update_date                      datetime                              null,  -- 修改/审批时间
-  update_by                        bigint                                null,  -- 审批人/修改人：调拨必须是调出门店的店长
+  create_date                      datetime                              not null,
+  create_by                        bigint                                not null,
+  update_date                      datetime                              null,
+  update_by                        bigint                                null,
   opt_lock                         int                                   null,
 
   primary key (record_id),
