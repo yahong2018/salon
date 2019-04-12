@@ -42,5 +42,9 @@ public class ServiceSuite extends TraceableEntity<Long> {
 
     private int optLock;
 
+    private String isExpired;
+
+    private String picUrl;
+
 
 }

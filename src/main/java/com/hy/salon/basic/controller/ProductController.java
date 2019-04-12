@@ -719,7 +719,7 @@ public class ProductController {
                 jsonArr.add(jsonObj3);
             }
 
-            jsonObj2.put("productCount",productDao.getCountForProduct(s.getStoreId()).size());
+            jsonObj2.put("productCount",productDao.getCountForProduct(s.getParentId()).size());
             jsonObj2.put("ServiceRecordId",s.getRecordId());
             jsonObj2.put("ServiceName",s.getSeriesName());
             jsonObj2.put("ServiceList",jsonArr);

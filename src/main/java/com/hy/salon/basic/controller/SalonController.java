@@ -335,11 +335,19 @@ public class SalonController extends SimpleCRUDController<Salon> {
             Pictures businessPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("1"));
             businessPic.setPicUrl(newBusinessPic.getPicUrl());
             picturesDao.update(businessPic);
+            if(null!= permitPicCode && !"".equals(permitPicCode)){
+                Pictures newPermitPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(permitPicCode),new Byte("0"),new Byte("4"));
+                Pictures permitPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("4"));
+                if(null == permitPic){
+                    newPermitPic.setMasterDataId(condition.getRecordId());
+                    picturesDao.update(newPermitPic);
+                }else{
+                    permitPic.setPicUrl(newPermitPic.getPicUrl());
+                    picturesDao.update(permitPic);
+                }
 
-            Pictures newPermitPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(permitPicCode),new Byte("0"),new Byte("4"));
-            Pictures permitPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("4"));
-            permitPic.setPicUrl(newPermitPic.getPicUrl());
-            picturesDao.update(permitPic);
+            }
+
 
 
             if(null != picIdList && !"".equals(picIdList)){

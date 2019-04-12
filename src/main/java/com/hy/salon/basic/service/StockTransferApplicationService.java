@@ -26,7 +26,7 @@ public class StockTransferApplicationService {
         stockTransferApplication.setApplicationNo(stockTransferApplicationVo.getApplicationNo());
         stockTransferApplication.setOutWarehouseId(stockTransferApplicationVo.getOutWarehouseId());
         //stockTransferApplication.setRecordId(stockTransferApplicationVo.getRecordId());
-        stockTransferApplication.setRecordStatus(StatusUtil.TIJ);
+//        stockTransferApplication.setRecordStatus(StatusUtil.TIJ);
         stockTransferApplication.setRemarkApplication(stockTransferApplicationVo.getRemarkApplication());
         stockTransferApplication.setRemarkAudit(stockTransferApplicationVo.getRemarkAudit());
         stockTransferApplicationDao.insert(stockTransferApplication);

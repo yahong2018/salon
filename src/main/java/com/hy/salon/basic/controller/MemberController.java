@@ -229,7 +229,8 @@ public class MemberController extends SimpleCRUDController<Member> {
      */
     @ResponseBody
     @RequestMapping(value = "getMemberTag",method = RequestMethod.GET)
-    public Result getMemberTag() {
+    public Result getMemberTag(Long recordId) {
+
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
         Result result = new Result();
@@ -252,20 +253,28 @@ public class MemberController extends SimpleCRUDController<Member> {
      */
     @ResponseBody
     @RequestMapping("getTag")
-    public Result getTag(int page,String  limit) {
+    public Result getTag(int page,String  limit,Long recordId) {
         Result result = new Result();
 
         try {
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            result.setTotal(memberSalonTagDAO.getTag(stuff.getStoreId()).size());
+            if(null == recordId || 0== recordId){
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+                recordId=stuff.getStoreId();
+            }
+
+            result.setTotal(memberSalonTagDAO.getTag(recordId).size());
             if(null==limit){
                 PageHelper.startPage(page, 50);
             }else{
                 PageHelper.startPage(page, 10);
             }
 
-            List<Tag> tagList=memberSalonTagDAO.getTag(stuff.getStoreId());
+            List<Tag> tagList=memberSalonTagDAO.getTag(recordId);
+            for(Tag t:tagList){
+                List<MemberTag> memberTagList=memberTagDao.getMemberTagList(t.getRecordId());
+                t.setMemberSize(memberTagList.size());
+            }
             result.setData(tagList);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);

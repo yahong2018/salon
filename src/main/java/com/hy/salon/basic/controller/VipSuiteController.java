@@ -109,6 +109,33 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         r.setTotal(vipSuiteDao.getVipSuiteListForId(storeId).size());
         PageHelper.startPage(page, limit);
         List<VipSuite> serviceList= vipSuiteDao.getVipSuiteListForId(storeId);
+        if(null!=serviceList && serviceList.size()!=0){
+            for(VipSuite v:serviceList){
+                List<Pictures> pic=picturesDao.getPicturesForCondition(v.getRecordId(),new Byte("4"),new Byte("0"));
+                if(null!=pic && pic.size()!=0){
+                    v.setPicUrl(pic.get(0).getPicUrl());
+                    VipSuiteItem v1=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("0"));
+                    VipSuiteItem v2=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("1"));
+                    VipSuiteItem v3=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("2"));
+                    String str="";
+                    if(null!=v1){
+                        str=str+"单次"+v1.getDiscount()+"折   ";
+                    }
+                    if(null!=v2){
+                        str=str+"疗程"+v2.getDiscount()+"折   ";
+                    }
+                    if(null!=v3){
+                        str=str+"产品"+v3.getDiscount()+"折   ";
+                    }
+
+                v.setDiscountData(str);
+                }
+
+
+
+            }
+        }
+
 
 
         r.setMsg("请求成功");
