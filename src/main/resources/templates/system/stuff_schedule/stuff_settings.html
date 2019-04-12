@@ -178,14 +178,17 @@
     }
 
     $(".check").on("click", function() {
-
+      var myDate = new Date();
+      var year =  myDate.getFullYear();    //获取完整的年份(4位,1970-????)
+      var month = myDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)
+      var time = year+"-"+month;
       var userKey=$('.userKey option:selected').val();
       if(userKey!=""){
         var userKeyValue = $('.userKeyValue').val();
         var temp = userKey+"='"+userKeyValue+"'";
-        productsearch(1, temp);
+        productsearch(1, temp,time);
       }else{
-        productsearch(1);
+        productsearch(1,'',time);
       }
 
     })
