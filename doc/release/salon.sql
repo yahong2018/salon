@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 08/04/2019 17:37:51
+ Date: 12/04/2019 14:49:43
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `attendance_sheet` (
   KEY `idx_attendance_sheet_01` (`stuff_id`),
   KEY `idx_attendance_sheet_02` (`address`),
   KEY `idx_attendance_sheet_03` (`attendance_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='签到表';
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COMMENT='签到表';
 
 -- ----------------------------
 -- Records of attendance_sheet
@@ -52,8 +52,19 @@ INSERT INTO `attendance_sheet` VALUES (49, 5, '2019-04-01 14:41:31', '广东省�
 INSERT INTO `attendance_sheet` VALUES (50, 5, '2019-04-01 14:45:08', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 14:45:09', 4, NULL, NULL, 0);
 INSERT INTO `attendance_sheet` VALUES (51, 5, '2019-04-01 15:02:28', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 15:02:29', 4, NULL, NULL, 0);
 INSERT INTO `attendance_sheet` VALUES (52, 5, '2019-04-01 15:02:34', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-01 15:02:34', 4, NULL, NULL, 0);
-INSERT INTO `attendance_sheet` VALUES (55, 1, '2019-04-07 10:06:17', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-07 10:06:17', 1, NULL, NULL, 0);
-INSERT INTO `attendance_sheet` VALUES (57, 1, '2019-04-07 10:08:35', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-07 10:08:35', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (95, 1, '2019-04-09 15:48:11', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:48:11', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (96, 1, '2019-04-09 15:52:43', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:52:43', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (97, 1, '2019-04-09 15:53:36', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:53:36', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (98, 1, '2019-04-09 15:53:56', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:53:56', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (99, 1, '2019-04-09 15:54:04', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:04', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (100, 1, '2019-04-09 15:54:07', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:07', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (101, 1, '2019-04-09 15:54:08', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:08', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (102, 1, '2019-04-09 15:54:11', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:11', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (103, 1, '2019-04-09 15:54:12', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:12', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (104, 1, '2019-04-09 15:54:14', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-09 15:54:14', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (105, 1, '2019-04-10 15:04:45', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-10 15:04:46', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (106, 1, '2019-04-10 15:04:49', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-10 15:04:49', 1, NULL, NULL, 0);
+INSERT INTO `attendance_sheet` VALUES (107, 1, '2019-04-10 15:04:51', '广东省东莞市莞樟路靠近嘉润大厦(莞樟路辅路)', '2019-04-10 15:04:51', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -1687,7 +1698,7 @@ INSERT INTO `city` VALUES (1594, '371083', '乳山市', '371000', '山东省威�
 INSERT INTO `city` VALUES (1595, '371100', '日照市', '370000', '山东省日照市');
 INSERT INTO `city` VALUES (1596, '371101', '市辖区', '371100', '山东省日照市市辖区');
 INSERT INTO `city` VALUES (1597, '371102', '东港区', '371101', NULL);
-INSERT INTO `city` VALUES (1598, '371103', '岚山区', '371101', NULL);
+INSERT INTO `city` VALUES (1598, '371103', '岚山区', '371101', NULL);f
 INSERT INTO `city` VALUES (1599, '371121', '五莲县', '371100', '山东省日照市五莲县');
 INSERT INTO `city` VALUES (1600, '371122', '莒县', '371100', '山东省日照市莒县');
 INSERT INTO `city` VALUES (1601, '371200', '莱芜市', '370000', '山东省莱芜市');
@@ -3764,7 +3775,7 @@ CREATE TABLE `member` (
   KEY `idx_member_04` (`tel`),
   KEY `idx_member_05` (`primary_beautician`),
   KEY `idx_member_06` (`introducer`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='会员';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='会员';
 
 -- ----------------------------
 -- Records of member
@@ -3792,6 +3803,9 @@ INSERT INTO `member` VALUES (22, 2, 'bdhdn', '13929464514', 1, 'hdhdjsj', '2050-
 INSERT INTO `member` VALUES (23, 2, 'hdhdh', '13929433196', 0, 'hsjsb', '2028-10-14 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'bdjxbbdbd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-04 18:15:04', 1, NULL, NULL, 0);
 INSERT INTO `member` VALUES (24, 2, 'ghvg', '13929433195', 1, 'ghjb', '2050-10-14 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'fgh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-04 18:17:51', 1, NULL, NULL, 0);
 INSERT INTO `member` VALUES (25, 2, '你一直', '13929433194', 0, '无事献殷勤', '2050-10-14 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '哦上YY破', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-04 18:21:33', 1, NULL, NULL, 0);
+INSERT INTO `member` VALUES (26, 36, '顾客1', '18666474112', 1, '图JOJO', '2019-03-11 00:00:00', 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, '哦哟哟', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-11 19:25:54', 85, NULL, NULL, 0);
+INSERT INTO `member` VALUES (27, 36, '顾客2', '13929433195', 1, '344394154', '2019-03-12 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '逆袭我会', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-12 09:44:15', 85, NULL, NULL, 0);
+INSERT INTO `member` VALUES (28, 36, '猪猪', '13692649494', 1, 'jd5464364', '2019-03-12 00:00:00', 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'jdbxb', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-04-12 10:01:58', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -3810,7 +3824,7 @@ CREATE TABLE `member_salon_tag` (
   PRIMARY KEY (`record_id`),
   KEY `idx_member_salon_tag_01` (`salon_id`),
   KEY `idx_member_salon_tag_02` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签-按美容院分';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签-按美容院分';
 
 -- ----------------------------
 -- Records of member_salon_tag
@@ -3824,9 +3838,9 @@ INSERT INTO `member_salon_tag` VALUES (7, 2, 7, '2019-04-02 15:16:20', 1, NULL, 
 INSERT INTO `member_salon_tag` VALUES (8, 2, 8, '2019-04-02 15:16:30', 1, NULL, NULL, 0);
 INSERT INTO `member_salon_tag` VALUES (9, 2, 9, '2019-04-02 15:16:37', 1, NULL, NULL, 0);
 INSERT INTO `member_salon_tag` VALUES (10, 2, 10, '2019-04-02 15:16:43', 1, NULL, NULL, 0);
-INSERT INTO `member_salon_tag` VALUES (11, 2, 11, '2019-04-02 15:16:51', 1, NULL, NULL, 0);
-INSERT INTO `member_salon_tag` VALUES (12, 2, 12, '2019-04-02 15:16:55', 1, NULL, NULL, 0);
-INSERT INTO `member_salon_tag` VALUES (13, 2, 13, '2019-04-02 15:17:00', 1, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (16, 36, 11, '2019-04-02 15:17:00', 1, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (17, 36, 12, '2019-04-02 15:17:00', 1, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (18, 36, 13, '2019-04-02 15:17:00', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -3845,7 +3859,7 @@ CREATE TABLE `member_tag` (
   PRIMARY KEY (`record_id`),
   KEY `idx_member_tag_01` (`member_id`),
   KEY `idx_member_tag_02` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签';
 
 -- ----------------------------
 -- Records of member_tag
@@ -3855,6 +3869,9 @@ INSERT INTO `member_tag` VALUES (2, 2, 2, '2019-03-20 14:34:04', 2, '2019-03-20 
 INSERT INTO `member_tag` VALUES (3, 5, 1, '2019-03-20 14:34:04', 2, '2019-03-20 14:34:07', 2, 2);
 INSERT INTO `member_tag` VALUES (4, 24, 1, '2019-04-04 18:17:51', 1, NULL, NULL, 0);
 INSERT INTO `member_tag` VALUES (5, 25, 0, '2019-04-04 18:21:33', 1, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (6, 26, 11, '2019-04-11 19:25:54', 85, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (7, 27, 0, '2019-04-12 09:44:15', 85, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (8, 28, 13, '2019-04-12 10:01:58', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -3982,442 +3999,126 @@ CREATE TABLE `operate_log` (
   `opt_role_id` bigint(20) NOT NULL,
   `opt_action` varchar(200) NOT NULL,
   `opt_date` datetime NOT NULL,
-  `opt_info` varchar(500) NOT NULL,
+  `opt_info` mediumtext NOT NULL,
   `opt_terminal` tinyint(4) DEFAULT NULL,
   `opt_url` varchar(500) DEFAULT NULL,
   `opt_statu` int(11) DEFAULT NULL,
   `opt_result` varchar(10) NOT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_operate_log_01` (`opt_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=424 DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1303 DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志';
 
 -- ----------------------------
 -- Records of operate_log
 -- ----------------------------
 BEGIN;
-INSERT INTO `operate_log` VALUES (1, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 16:25:05', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (2, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:05:08', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (3, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:06:56', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (4, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:09:22', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (5, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:24:38', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (6, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:24:39', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (7, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:24:47', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (8, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:26:19', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (9, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:21', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (10, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:21', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (11, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:21', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (12, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:21', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (13, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:25', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (14, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:25', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (15, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:22', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (16, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:27:21', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (17, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:28:02', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (18, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:28:02', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (19, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:28:13', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (20, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:28:29', '{\"stuffId\":\"49\",\"request\":{\"stuffId\":[\"49\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (21, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:28:31', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (22, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:28:42', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"49\",\"49\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (23, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:29:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (24, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:29:01', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (25, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:29:03', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (26, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:29:38', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"49\",\"49\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (27, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:30:00', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"49\",\"49\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (28, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:31:38', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (29, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:31:39', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (30, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:31:49', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (31, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:31:50', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (32, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:31:54', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (33, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:31:59', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (34, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:02', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (35, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (36, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (37, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (38, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (39, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (40, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (41, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:32:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (42, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:33:05', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (43, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:33:55', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (44, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:33:57', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (45, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:33:57', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (46, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:33:57', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (47, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:34:23', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"5\",\"5\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (48, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:37:44', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (49, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 17:37:47', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (50, 1, 1, 'com.hy.salon.basic.controller.ShiftController.saveShiftAPP', '2019-04-04 17:38:53', '{\"request\":{\"(null)[][storeId]\":[\"2\"],\"(null)[][timeEnd]\":[\"20:15\"],\"(null)[][shiftType]\":[\"1\"],\"(null)[][timeStart]\":[\"05:15\"]}}', NULL, '/hy/basic/shift/saveShiftAPP', 200, '成功');
-INSERT INTO `operate_log` VALUES (51, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:39:50', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (52, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:39:50', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (53, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 17:40:49', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (54, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:42:03', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (55, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:42:03', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (56, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 17:42:06', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (57, 1, 1, 'com.hy.salon.basic.controller.ShiftController.saveShift', '2019-04-04 17:42:54', '{\"list\":[{\"optLock\":0,\"shiftType\":1,\"storeId\":2,\"timeEnd\":\"20:15\",\"timeStart\":\"04:15\"}]}', NULL, '/hy/basic/shift/saveShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (58, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:44:53', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (59, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:44:56', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (60, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:44:58', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (61, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:44:58', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (62, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:45:03', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (63, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:45:03', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (64, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:45:06', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"1\",\"1\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (65, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:45:06', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (66, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:45:12', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"1\",\"1\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (67, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:45:20', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (68, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:45:20', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (69, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:45:22', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (70, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:46:40', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (71, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:46:42', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (72, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:46:43', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (73, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:46:44', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (74, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:46:51', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"1\",\"1\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (75, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:46:56', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (76, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:46:56', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (77, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:46:57', '{\"request\":{\"(null)[][shiftId]\":[\"64\",\"64\"],\"(null)[][stuffId]\":[\"1\",\"1\"],\"(null)[][day]\":[\"2019-04-07\",\"2019-04-09\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (78, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:47:11', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (79, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 17:47:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (80, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 17:47:28', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (81, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 17:47:30', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (82, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:50:54', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (83, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 17:50:57', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (84, 1, 1, 'com.hy.salon.basic.controller.SalonController.getStoreList', '2019-04-04 17:50:57', '{\"recordId\":2,\"page\":1}', NULL, '/hy/basic/salon/getStoreList', 200, '成功');
-INSERT INTO `operate_log` VALUES (85, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:50:57', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-4\"]},\"time\":\"2019-4\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (86, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:51:03', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (87, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:51:03', '{\"stuffId\":\"8\",\"request\":{\"stuffId\":[\"8\"],\"time\":[\"2019-4\"]},\"time\":\"2019-4\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (88, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 17:51:56', '{\"request\":{\"list\":[\"[{\\\"shiftId\\\":66,\\\"stuffId\\\":\\\"8\\\",\\\"day\\\":\\\"2019-4-2\\\"},{\\\"shiftId\\\":64,\\\"stuffId\\\":\\\"8\\\",\\\"day\\\":\\\"2019-4-6\\\"}]\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (89, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 17:56:02', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (90, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 17:56:07', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (91, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 17:56:11', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (92, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 17:56:13', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (93, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:03:29', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (94, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:03:29', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (95, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:03:29', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (96, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:03:34', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (97, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:03:38', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (98, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:03:59', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (99, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:03:59', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (100, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:03:59', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (101, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:03:59', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (102, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:03:59', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (103, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:03:59', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (104, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:05', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (105, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:05', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (106, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:06', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (107, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:05', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (108, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:07', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (109, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:06', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (110, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:06', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (111, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:05', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (112, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:04:06', '{\"request\":{\"list[]\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\",\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-09\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (113, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:07:41', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (114, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 18:07:43', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (115, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:07:46', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-4\"]},\"time\":\"2019-4\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (116, 1, 1, 'com.hy.salon.basic.controller.SalonController.getStoreList', '2019-04-04 18:07:46', '{\"recordId\":2,\"page\":1}', NULL, '/hy/basic/salon/getStoreList', 200, '成功');
-INSERT INTO `operate_log` VALUES (117, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:07:49', '{\"stuffId\":\"9\",\"request\":{\"stuffId\":[\"9\"],\"time\":[\"2019-4\"]},\"time\":\"2019-4\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (118, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:07:49', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (119, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:08:05', '{\"request\":{\"list\":[\"[{\\\"shiftId\\\":66,\\\"stuffId\\\":\\\"9\\\",\\\"day\\\":\\\"2019-4-2\\\"},{\\\"shiftId\\\":64,\\\"stuffId\\\":\\\"9\\\",\\\"day\\\":\\\"2019-4-5\\\"},{\\\"shiftId\\\":65,\\\"stuffId\\\":\\\"9\\\",\\\"day\\\":\\\"2019-4-11\\\"}]\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (120, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:15:36', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (121, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:15:36', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (122, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:15:37', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (123, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:15:39', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (124, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:15:47', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (125, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:15:47', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (126, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:16:30', '{\"request\":{\"list\":[\"hahaha\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (127, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 18:18:07', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (128, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 18:18:07', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (129, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:10', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (130, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:31', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"13\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (131, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:32', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"12\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (132, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:35', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"11\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (133, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:38', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"10\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (134, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:41', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"9\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (135, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:18:50', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"8\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (136, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:19:43', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (137, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:19:55', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (138, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:21:12', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (139, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:21:14', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (140, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:21:25', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (141, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 18:21:32', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (142, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 18:21:36', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (143, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:21:37', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (144, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:21:40', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (145, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-04 18:25:43', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (146, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-04 18:25:51', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (147, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:25:55', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (148, 51, 11, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-04 18:26:52', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
-INSERT INTO `operate_log` VALUES (149, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:32:50', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (150, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:32:51', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (151, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:33:02', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (152, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:33:03', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (153, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-04 18:33:39', '{\"request\":{\"list\":[\"{\\n  \\\"shiftId\\\" : \\\"64\\\",\\n  \\\"stuffId\\\" : \\\"1\\\",\\n  \\\"day\\\" : \\\"2019-04-07\\\"\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (154, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:35:09', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (155, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:35:10', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (156, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:35:17', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (157, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:35:17', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (158, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:36:25', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (159, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:36:27', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (160, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:36:29', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (161, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:36:30', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (162, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:37:47', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (163, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:37:48', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (164, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:37:51', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (165, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:37:51', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (166, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:38:43', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (167, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:38:44', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (168, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:38:46', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (169, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:38:46', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (170, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:39:53', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (171, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:39:54', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (172, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:39:56', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (173, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:39:56', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (174, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:41:27', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (175, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:41:28', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (176, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:41:33', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (177, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:41:34', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (178, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:45:42', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (179, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 18:45:44', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (180, 1, 1, 'com.hy.salon.basic.controller.ShiftController.saveShift', '2019-04-04 18:45:58', '{\"list\":[{\"optLock\":0,\"shiftType\":1,\"storeId\":2,\"timeEnd\":\"19:15\",\"timeStart\":\"00:15\"}]}', NULL, '/hy/basic/shift/saveShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (181, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-04 18:46:43', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (182, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:46:45', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (183, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:46:53', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (184, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:46:53', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (185, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:48:16', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (186, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:48:17', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (187, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:48:22', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (188, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:48:23', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (189, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-04 18:49:10', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (190, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-04 18:49:11', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (191, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-04 18:49:16', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (192, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-04 18:49:17', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (193, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 09:03:07', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (194, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-08 09:03:09', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (195, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-08 09:03:10', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (196, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:16:59', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (197, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:17:01', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (198, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:17:08', '{\"stuffId\":\"8\",\"request\":{\"stuffId\":[\"8\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (199, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:17:08', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (200, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:20:34', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (201, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:20:36', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (202, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:20:40', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (203, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:20:43', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (204, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:25:40', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (205, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:25:43', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (206, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:25:47', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (207, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:25:47', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (208, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:28:05', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (209, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:28:06', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (210, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:28:08', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (211, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:28:08', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (212, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:30:29', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (213, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:30:31', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (214, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:30:36', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (215, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:30:36', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (216, 51, 11, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 09:33:08', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (217, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:33:13', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (218, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 09:37:49', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (219, 51, 11, 'com.zhxh.admin.controller.LoginController.logout', '2019-04-08 09:41:36', '{}', NULL, '/login/logout', 200, '成功');
-INSERT INTO `operate_log` VALUES (220, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 09:41:46', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (221, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-08 09:41:49', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (222, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-08 09:41:49', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (223, 51, 11, 'com.zhxh.admin.controller.LoginController.logout', '2019-04-08 09:41:59', '{}', NULL, '/login/logout', 200, '成功');
-INSERT INTO `operate_log` VALUES (224, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 09:42:01', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (225, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-08 09:42:27', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (226, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-08 09:42:27', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (227, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-08 09:42:42', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (228, 1, 1, 'com.zhxh.admin.controller.LoginController.apiLogout', '2019-04-08 09:42:44', '{}', NULL, '/api/login/logout', 200, '成功');
-INSERT INTO `operate_log` VALUES (229, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:43:11', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (230, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:43:41', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (231, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:43:46', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (232, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:43:48', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (233, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:48:57', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (234, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:49:00', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (235, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:49:05', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (236, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:49:05', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (237, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 09:52:01', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (238, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 09:52:05', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (239, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 09:52:10', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (240, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 09:52:11', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (241, 51, 11, 'com.zhxh.admin.controller.LoginController.logout', '2019-04-08 10:00:28', '{}', NULL, '/login/logout', 200, '成功');
-INSERT INTO `operate_log` VALUES (242, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 10:00:40', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (243, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 10:33:25', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (244, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 10:33:30', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (245, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 10:33:41', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (246, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 10:33:49', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (247, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 10:40:35', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (248, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 10:40:43', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (249, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 10:40:47', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (250, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 10:40:51', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (251, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 10:50:46', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (252, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 10:50:49', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (253, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 10:50:56', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (254, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 10:50:57', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (255, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 10:59:56', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (256, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-08 11:00:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (257, 51, 11, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-08 11:00:02', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (258, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 11:01:08', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (259, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-08 11:01:10', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (260, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-08 11:01:20', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (261, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-08 11:01:29', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (262, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 11:01:31', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (263, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 11:01:41', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (264, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 11:01:42', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (265, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:05:32', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (266, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:05:51', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (267, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:06:14', '{\"stuffId\":\"10\",\"request\":{\"stuffId\":[\"10\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (268, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:06:28', '{\"request\":{\"list\":[\"123\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (269, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:07:35', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (270, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:07:36', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (271, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:07:38', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (272, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:07:42', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (273, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:16', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (274, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (275, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (276, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (277, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (278, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (279, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (280, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (281, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (282, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:08:57', '{\"request\":{}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (283, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:10:08', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (284, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:10:09', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (285, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:10:13', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (286, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:10:23', '{\"request\":{\"list\":[\"123\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (287, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:17:26', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (288, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:17:28', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (289, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:17:32', '{\"stuffId\":\"8\",\"request\":{\"stuffId\":[\"8\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (290, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:17:40', '{\"request\":{\"list\":[\"{\\n  \\\"list\\\" : [\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"64\\\",\\n      \\\"day\\\" : \\\"2019-06-03\\\"\\n    },\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"68\\\",\\n      \\\"day\\\" : \\\"2019-06-08\\\"\\n    }\\n  ]\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (291, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:27:11', '{\"request\":{\"list\":[\"{\\n  \\\"list\\\" : [\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"64\\\",\\n      \\\"day\\\" : \\\"2019-06-03\\\"\\n    },\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"68\\\",\\n      \\\"day\\\" : \\\"2019-06-08\\\"\\n    }\\n  ]\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (292, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:27:11', '{\"request\":{\"list\":[\"{\\n  \\\"list\\\" : [\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"64\\\",\\n      \\\"day\\\" : \\\"2019-06-03\\\"\\n    },\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"68\\\",\\n      \\\"day\\\" : \\\"2019-06-08\\\"\\n    }\\n  ]\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (293, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffScheduleApp', '2019-04-08 14:28:51', '{\"request\":{\"list\":[\"{\\n  \\\"list\\\" : [\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"64\\\",\\n      \\\"day\\\" : \\\"2019-06-03\\\"\\n    },\\n    {\\n      \\\"stuffId\\\" : 9,\\n      \\\"shiftId\\\" : \\\"68\\\",\\n      \\\"day\\\" : \\\"2019-06-08\\\"\\n    }\\n  ]\\n}\"]}}', NULL, '/hy/basic/schedule/updateStuffScheduleApp', 200, '成功');
-INSERT INTO `operate_log` VALUES (294, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (295, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (296, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (297, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (298, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (299, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (300, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (301, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (302, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (303, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:28:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (304, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:28:53', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (305, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:28:55', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (306, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:30:14', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (307, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:30:16', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (308, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:30:19', '{\"stuffId\":\"8\",\"request\":{\"stuffId\":[\"8\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (309, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 14:30:23', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":9},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":9}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (310, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:35:27', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (311, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:35:29', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (312, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:35:32', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (313, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 14:35:41', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":9},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":9}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (314, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:37:51', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (315, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:37:53', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (316, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:38:00', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (317, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 14:38:06', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":9},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":9}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (318, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:43:06', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (319, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:43:09', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (320, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:44:15', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (321, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:44:17', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (322, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:44:19', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (323, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:44:43', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (324, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:44:46', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (325, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:47:20', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (326, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:48:59', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (327, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 14:53:39', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (328, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 14:53:42', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (329, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 14:53:50', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (330, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 14:53:59', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (331, 65, 2, 'com.zhxh.admin.controller.LoginController.login', '2019-04-08 14:54:06', '{}', NULL, '/login', 200, '成功');
-INSERT INTO `operate_log` VALUES (332, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-08 14:54:13', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (333, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-08 14:54:14', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
-INSERT INTO `operate_log` VALUES (334, 1, 1, 'com.hy.salon.basic.controller.ServiceController.queryService', '2019-04-08 14:54:20', '{\"page\":1}', NULL, '/hy/basic/service/queryService', 200, '成功');
-INSERT INTO `operate_log` VALUES (335, 1, 1, 'com.hy.salon.basic.controller.ServiceSeriesController.queryServiceSeries', '2019-04-08 14:54:21', '{\"SalonId\":2}', NULL, '/hy/basic/serviceSeries/queryServiceSeries', 200, '成功');
-INSERT INTO `operate_log` VALUES (336, 1, 1, 'com.hy.salon.basic.controller.ServiceSeriesController.querySonServiceSeries', '2019-04-08 14:54:26', '{\"recordId\":2}', NULL, '/hy/basic/serviceSeries/querySonServiceSeries', 200, '成功');
-INSERT INTO `operate_log` VALUES (337, 1, 1, 'com.hy.salon.basic.controller.ServiceSuiteController.queryServiceSuite', '2019-04-08 14:55:50', '{\"page\":1}', NULL, '/hy/basic/serviceSuite/queryServiceSuite', 200, '成功');
-INSERT INTO `operate_log` VALUES (338, 1, 1, 'com.hy.salon.basic.controller.ServiceSuiteController.queryServicePC', '2019-04-08 14:55:54', '{\"salonId\":2}', NULL, '/hy/basic/serviceSuite/queryServicePC', 200, '成功');
-INSERT INTO `operate_log` VALUES (339, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 14:57:30', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (340, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:57:31', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (341, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:57:36', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (342, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 14:57:51', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (343, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 14:57:53', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (344, 1, 1, 'com.hy.salon.basic.controller.ServiceSuiteController.queryServicePC', '2019-04-08 14:58:11', '{\"salonId\":2}', NULL, '/hy/basic/serviceSuite/queryServicePC', 200, '成功');
-INSERT INTO `operate_log` VALUES (345, 1, 1, 'com.hy.salon.basic.controller.ServiceSuiteController.queryServicePC', '2019-04-08 14:59:59', '{\"salonId\":2}', NULL, '/hy/basic/serviceSuite/queryServicePC', 200, '成功');
-INSERT INTO `operate_log` VALUES (346, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 15:00:00', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (347, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:00:06', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (348, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:00:08', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (349, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:00:38', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (350, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:00:40', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (351, 1, 1, 'com.hy.salon.basic.controller.ServiceSuiteController.queryServicePC', '2019-04-08 15:00:41', '{\"salonId\":2}', NULL, '/hy/basic/serviceSuite/queryServicePC', 200, '成功');
-INSERT INTO `operate_log` VALUES (352, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 15:05:36', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":9},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":9}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (353, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:06:39', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-06\"]},\"time\":\"2019-06\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (354, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:06:41', '{\"stuffId\":\"6\",\"request\":{\"stuffId\":[\"6\"],\"time\":[\"2019-06\"]},\"time\":\"2019-06\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (355, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 15:09:16', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (356, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:09:18', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (357, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:09:22', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (358, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 15:09:40', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (359, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 15:38:02', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (360, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:38:03', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (361, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:38:08', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (362, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 15:38:08', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (363, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:38:37', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (364, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 15:38:38', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (365, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 15:49:30', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (366, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:49:32', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (367, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:49:49', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (368, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 15:49:49', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (369, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 15:50:09', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-06\"]},\"time\":\"2019-06\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (370, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 15:50:12', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-06\"]},\"time\":\"2019-06\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (371, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 15:50:12', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (372, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:09:48', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (373, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:09:49', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (374, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:09:54', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (375, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:09:54', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (376, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:12:09', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (377, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:12:12', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (378, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:13:22', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (379, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:13:23', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (380, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:13:32', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (381, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:13:32', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (382, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:14:06', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (383, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:14:06', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (384, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:15:45', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (385, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:15:47', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (386, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:15:50', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (387, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:15:50', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (388, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:18:58', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (389, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:18:59', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (390, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:19:26', '{\"stuffId\":\"5\",\"request\":{\"stuffId\":[\"5\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (391, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:19:28', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (392, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:21:18', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":5},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":5}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (393, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:29:01', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (394, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:29:02', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (395, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:29:08', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (396, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:29:09', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (397, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:29:25', '{\"list\":[{\"day\":1559520000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1559952000000,\"optLock\":0,\"shiftId\":68,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (398, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:36:29', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (399, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:36:31', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (400, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:36:36', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (401, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:36:36', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (402, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:36:45', '{\"list\":[{\"day\":1556496000000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7},{\"day\":1556582400000,\"optLock\":0,\"shiftId\":64,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (403, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:37:08', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (404, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:39:08', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (405, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:39:08', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (406, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:39:28', '{\"list\":[{\"day\":1556064000000,\"optLock\":0,\"shiftId\":65,\"stuffId\":7}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (407, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:39:37', '{\"stuffId\":\"7\",\"request\":{\"stuffId\":[\"7\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (408, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:39:37', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (409, 1, 1, 'com.zhxh.admin.controller.LoginController.doLoginByApi', '2019-04-08 16:42:24', '{\"user\":{\"disabled\":false,\"online\":false,\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"userCode\":\"c00001\",\"userStatus\":0}}', NULL, '/api/login/doLogin', 200, '成功');
-INSERT INTO `operate_log` VALUES (410, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:42:25', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (411, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:42:28', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (412, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:42:29', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (413, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:42:41', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (414, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:42:45', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (415, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:42:45', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (416, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.updateStuffSchedule', '2019-04-08 16:43:01', '{\"list\":[{\"day\":1556668800000,\"optLock\":0,\"shiftId\":65,\"stuffId\":1},{\"day\":1556755200000,\"optLock\":0,\"shiftId\":65,\"stuffId\":1},{\"day\":1556841600000,\"optLock\":0,\"shiftId\":65,\"stuffId\":1},{\"day\":1556928000000,\"optLock\":0,\"shiftId\":65,\"stuffId\":1}]}', NULL, '/hy/basic/schedule/updateStuffSchedule', 200, '成功');
-INSERT INTO `operate_log` VALUES (417, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:43:11', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-05\"]},\"time\":\"2019-05\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (418, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:43:12', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (419, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminScheduleByTime', '2019-04-08 16:44:32', '{\"recordId\":2,\"request\":{\"recordId\":[\"2\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (420, 1, 1, 'com.hy.salon.basic.controller.ScheduleController.getAdminStuffScheduleByTime', '2019-04-08 16:44:35', '{\"stuffId\":\"1\",\"request\":{\"stuffId\":[\"1\"],\"time\":[\"2019-04\"]},\"time\":\"2019-04\"}', NULL, '/hy/basic/schedule/getAdminStuffScheduleByTime', 200, '成功');
-INSERT INTO `operate_log` VALUES (421, 1, 1, 'com.hy.salon.basic.controller.ShiftController.getSalonShift', '2019-04-08 16:44:35', '{\"request\":{}}', NULL, '/hy/basic/shift/getSalonShift', 200, '成功');
-INSERT INTO `operate_log` VALUES (422, 1, 1, 'com.hy.salon.basic.controller.StuffController.getStoreDetails', '2019-04-08 16:44:59', '{}', NULL, '/hy/basic/stuff/getStuffData', 200, '成功');
-INSERT INTO `operate_log` VALUES (423, 1, 1, 'com.zhxh.admin.controller.LoginController.apiLogout', '2019-04-08 16:45:03', '{}', NULL, '/api/login/logout', 200, '成功');
+INSERT INTO `operate_log` VALUES (1196, 1, 1, 'com.zhxh.admin.controller.LoginController.logout', '2019-04-09 17:23:45', '{}', NULL, '/login/logout', 200, '成功');
+INSERT INTO `operate_log` VALUES (1197, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 17:23:53', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"C00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1198, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-09 17:23:55', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1199, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-09 17:24:01', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
+INSERT INTO `operate_log` VALUES (1200, 1, 1, 'com.zhxh.admin.controller.SystemRoleController.getAllMenuWithPrivilege', '2019-04-09 17:24:39', '{}', NULL, '/admin/systemRoles/getAllMenuWithPrivilege.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1201, 1, 1, 'com.zhxh.admin.controller.SystemRoleController.getAll', '2019-04-09 17:24:39', '{}', NULL, '/admin/systemRoles/getAll.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1202, 1, 1, 'com.zhxh.admin.controller.SystemUserController.getAllUsers', '2019-04-09 17:24:41', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]},\"response\":\"org.apache.catalina.connector.ResponseFacade@7fa0811e\"}', NULL, '/admin/systemUsers/getAllUsers.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1203, 1, 1, 'com.zhxh.admin.controller.SystemUserController.getAllUsers', '2019-04-09 17:24:53', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"2\"]},\"response\":\"org.apache.catalina.connector.ResponseFacade@6c0e5a62\"}', NULL, '/admin/systemUsers/getAllUsers.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1204, 1, 1, 'com.zhxh.admin.controller.SystemUserController.getAllUsers', '2019-04-09 17:24:57', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]},\"response\":\"org.apache.catalina.connector.ResponseFacade@6c0e5a62\"}', NULL, '/admin/systemUsers/getAllUsers.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1205, 1, 1, 'com.hy.salon.basic.controller.SalonController.getStoreList', '2019-04-09 17:26:15', '{\"page\":1}', NULL, '/hy/basic/salon/getStoreList', 200, '成功');
+INSERT INTO `operate_log` VALUES (1206, 1, 1, 'com.zhxh.admin.controller.MainPageController.getUserMenu', '2019-04-09 17:26:22', '{}', NULL, '/mainPage/getUserMenu.handler', 200, '成功');
+INSERT INTO `operate_log` VALUES (1207, 1, 1, 'com.hy.salon.basic.controller.OperateController.getAdminScheduleByTime', '2019-04-09 17:26:26', '{\"request\":{\"limit\":[\"10\"],\"page\":[\"1\"]}}', NULL, '/hy/basic/operateLog/getOperateLog', 200, '成功');
+INSERT INTO `operate_log` VALUES (1208, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:27:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1209, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:32:23', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"C00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1210, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:35:58', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1211, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:36:18', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1212, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:38:41', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1213, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:44:37', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1214, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:57:24', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1215, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:58:18', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1216, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 19:59:21', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1217, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 20:00:21', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1218, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 20:01:14', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1219, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 20:02:34', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1220, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-09 20:05:38', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1221, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 09:06:18', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1222, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 10:51:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1223, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 10:57:08', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1224, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 11:01:45', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1225, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 11:05:30', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1226, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 11:10:09', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1227, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 11:16:42', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1228, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 11:33:57', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1229, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 14:00:40', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1230, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 14:11:17', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1231, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 14:11:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1232, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 14:35:20', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1233, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 14:44:16', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1234, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 15:30:32', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1235, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 15:31:55', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1236, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 15:41:13', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1237, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:10:21', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1238, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:21:04', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1239, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:25:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1240, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:34:00', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1241, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:38:33', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1242, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:43:43', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1243, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:50:27', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1244, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 16:53:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1245, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 17:20:21', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1246, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 17:33:15', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1247, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 17:49:32', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1248, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 17:55:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1249, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 17:59:21', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1250, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 18:19:27', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1251, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-10 18:56:45', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1252, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 09:25:45', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1253, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 09:42:27', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1254, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:24:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1255, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:26:37', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1256, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:28:15', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1257, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:31:35', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1258, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:31:53', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1259, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:36:23', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1260, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:41:48', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1261, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:43:13', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00003\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1262, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:43:48', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00003\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1263, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:48:37', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1264, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:52:11', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1265, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 10:56:15', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1266, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:05:22', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1267, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:07:18', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1268, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:12:47', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1269, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:15:46', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1270, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:18:04', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1271, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:28:36', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1272, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:39:58', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1273, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:53:30', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1274, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:55:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1275, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:56:54', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1276, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 11:58:02', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1277, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 12:00:22', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1278, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 12:03:40', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1279, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 14:09:08', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1280, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 14:19:38', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1281, 1, 1, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-11 14:21:51', '{\"condition\":{\"address\":\"广东省东莞市南城区第一国际汇一城\",\"cityId\":441902,\"door2Door\":false,\"inviteCode\":\"gTAC7nJN\",\"optLock\":0,\"salonName\":\"柏林美容整形美容院\",\"tel\":\"13929433192\"},\"idPic1Code\":\"559\",\"inviteCode\":\"gTAC7nJN\",\"idPic2Code\":\"560\",\"businessPicCode\":\"561\",\"permitPicCode\":\"562\",\"verificationCode\":\"7155\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1282, 1, 1, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-11 14:31:39', '{\"condition\":{\"address\":\"广东省东莞市南城区第一国际汇一城\",\"cityId\":441902,\"door2Door\":false,\"inviteCode\":\"gTAC7nJN\",\"optLock\":0,\"salonName\":\"柏林美容整形美容院\",\"tel\":\"13929433192\"},\"idPic1Code\":\"559\",\"inviteCode\":\"gTAC7nJN\",\"idPic2Code\":\"560\",\"businessPicCode\":\"561\",\"permitPicCode\":\"562\",\"verificationCode\":\"7155\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1283, 1, 1, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-11 14:48:38', '{\"condition\":{\"address\":\"广东省东莞市南城区第一国际汇一城\",\"cityId\":441902,\"door2Door\":false,\"inviteCode\":\"gTAC7nJN\",\"optLock\":0,\"salonName\":\"柏林隆胸整形美容院\",\"tel\":\"13929433192\"},\"idPic1Code\":\"564\",\"inviteCode\":\"gTAC7nJN\",\"idPic2Code\":\"565\",\"businessPicCode\":\"566\",\"permitPicCode\":\"567\",\"verificationCode\":\"7560\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1284, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 14:52:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1285, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 15:15:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1286, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 16:40:39', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1287, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 16:43:14', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1288, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 17:48:57', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1289, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-11 17:59:08', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1290, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 09:36:20', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1291, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 10:20:11', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1292, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 10:31:35', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1293, 1112, 10, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-12 11:10:02', '{\"condition\":{\"address\":\"广东省东莞市东城区莞樟路133号\",\"cityId\":441903,\"door2Door\":false,\"inviteCode\":\"DMZjH8YD\",\"optLock\":0,\"salonName\":\"HongKong\",\"tel\":\"18664151832\"},\"idPic1Code\":\"603\",\"inviteCode\":\"DMZjH8YD\",\"idPic2Code\":\"604\",\"businessPicCode\":\"605\",\"permitPicCode\":\"-1\",\"verificationCode\":\"6750\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1294, 1112, 10, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-12 11:10:49', '{\"condition\":{\"address\":\"广东省东莞市东城区莞樟路133号\",\"cityId\":441903,\"door2Door\":false,\"inviteCode\":\"EvEmwig9\",\"optLock\":0,\"salonName\":\"HongKong\",\"tel\":\"18664151832\"},\"idPic1Code\":\"603\",\"inviteCode\":\"EvEmwig9\",\"idPic2Code\":\"604\",\"businessPicCode\":\"605\",\"permitPicCode\":\"-1\",\"verificationCode\":\"6750\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1295, 1112, 10, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-12 11:13:04', '{\"condition\":{\"address\":\"广东省东莞市东城区莞樟路133号\",\"cityId\":441903,\"door2Door\":false,\"inviteCode\":\"EvEmwig9\",\"optLock\":0,\"salonName\":\"HongKong\",\"tel\":\"18664151838\"},\"idPic1Code\":\"603\",\"inviteCode\":\"EvEmwig9\",\"idPic2Code\":\"604\",\"businessPicCode\":\"605\",\"permitPicCode\":\"-1\",\"verificationCode\":\"8888\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1296, 1112, 10, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-12 11:13:33', '{\"condition\":{\"address\":\"广东省东莞市东城区莞樟路133号\",\"cityId\":441903,\"door2Door\":false,\"inviteCode\":\"EvEmwig9\",\"optLock\":0,\"salonName\":\"HongKong\",\"tel\":\"18664151838\"},\"idPic1Code\":\"603\",\"inviteCode\":\"EvEmwig9\",\"idPic2Code\":\"604\",\"businessPicCode\":\"605\",\"permitPicCode\":\"-1\",\"verificationCode\":\"8888\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1297, 1112, 10, 'com.hy.salon.basic.controller.SalonController.createStore', '2019-04-12 11:19:46', '{\"condition\":{\"address\":\"广东省东莞市东城区莞樟133号\",\"cityId\":441903,\"door2Door\":false,\"inviteCode\":\"EvEmwig9\",\"optLock\":0,\"salonName\":\"HongKong\",\"tel\":\"18664151838\"},\"idPic1Code\":\"606\",\"inviteCode\":\"EvEmwig9\",\"idPic2Code\":\"607\",\"businessPicCode\":\"608\",\"verificationCode\":\"4599\"}', NULL, '/hy/basic/salon/createStore', 200, '成功');
+INSERT INTO `operate_log` VALUES (1298, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 11:58:44', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1299, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 11:59:42', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1300, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 14:07:55', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"C00010\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1301, 51, 11, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 14:08:09', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"18664151656\"}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1302, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-12 14:11:38', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"C00010\"}', NULL, '/login/doLogin', 200, '成功');
 COMMIT;
 
 -- ----------------------------
@@ -4439,13 +4140,13 @@ CREATE TABLE `pictures` (
   KEY `idx_pictures_01` (`master_data_id`),
   KEY `idx_pictures_02` (`record_type`),
   KEY `idx_pictures_03` (`pic_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=526 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
+) ENGINE=InnoDB AUTO_INCREMENT=609 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
 
 -- ----------------------------
 -- Records of pictures
 -- ----------------------------
 BEGIN;
-INSERT INTO `pictures` VALUES (10, 1, 1, 0, '/20190321/6e702fff-e2b7-4d79-aba2-a462f0f856d5.jpg', '2019-03-14 08:14:19', 1, '2019-03-21 08:15:21', 1, 0);
+INSERT INTO `pictures` VALUES (10, 1, 1, 0, '/20190409/6da2d0ec-460b-492f-adc9-e9bf2eeaed93.jpg', '2019-03-14 08:14:19', 1, '2019-04-09 15:19:24', 1, 0);
 INSERT INTO `pictures` VALUES (11, 0, 0, 0, '/20190314/28608a3f-9772-42c1-a249-c9e79fbbfa52.jpg', '2019-03-14 08:14:57', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (12, 2, 1, 0, '/20190321/7c995e3e-b014-498f-9598-178679df5fa3.jpg', '2019-03-14 08:15:04', 1, '2019-03-21 09:09:31', 32, 0);
 INSERT INTO `pictures` VALUES (13, 0, 0, 0, '/20190314/8c99b5c6-77a0-4cf8-a603-59183c82b729.jpg', '2019-03-14 08:15:04', 1, NULL, NULL, 0);
@@ -4478,8 +4179,6 @@ INSERT INTO `pictures` VALUES (40, 12, 2, 0, '/20190319/d6350fbb-a44f-4877-b800-
 INSERT INTO `pictures` VALUES (41, 13, 2, 0, '/20190319/0abce7e7-6093-4d32-a05b-2cbd52f4f9f3.jpg', '2019-03-19 03:54:23', 1, '2019-03-19 03:54:37', 1, 0);
 INSERT INTO `pictures` VALUES (42, NULL, 2, 0, '/20190319/b8073192-7f4d-4123-b267-ccf72ce60db0.jpg', '2019-03-19 03:54:25', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (44, 23, 2, 0, '/20190319/8445b866-de35-4d4d-9ad5-349816bd90e4.jpg', '2019-03-19 09:25:46', 1, '2019-03-19 09:25:48', 1, 0);
-INSERT INTO `pictures` VALUES (45, 24, 2, 0, '/20190320/a5c6f995-de0a-409c-a828-d758c78fd9aa.jpg', '2019-03-20 03:05:42', 1, '2019-03-20 03:06:21', 1, 0);
-INSERT INTO `pictures` VALUES (46, 24, 2, 0, '/20190320/65aac35f-1c37-4524-bf35-df150132ae03.jpg', '2019-03-20 03:05:56', 1, '2019-03-20 03:06:21', 1, 0);
 INSERT INTO `pictures` VALUES (47, NULL, 2, 0, '/20190320/13ab8fcd-fe57-451d-93a2-5fd341c0b37d.jpg', '2019-03-20 03:05:59', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (48, NULL, 2, 0, '/20190320/23e0c4d9-51fd-4860-a8d2-4c4bb2f7ed98.jpg', '2019-03-20 03:40:16', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (49, NULL, 2, 0, '/20190320/8cf359a2-3cc1-4a3e-adca-c1dc134199e4.jpg', '2019-03-20 03:40:21', 1, NULL, NULL, 0);
@@ -4892,8 +4591,90 @@ INSERT INTO `pictures` VALUES (520, NULL, 1, 0, '/20190404/cd679ce2-f87d-4293-b0
 INSERT INTO `pictures` VALUES (521, NULL, 1, 0, '/20190404/1daf87bf-d428-4e86-a744-3a09863a5e34.jpg', '2019-04-04 18:02:33', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (522, NULL, 1, 0, '/20190404/685d01d0-8119-4326-8717-c1431fc13779.jpg', '2019-04-04 18:05:46', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (523, NULL, 1, 0, '/20190404/d332af35-0ffe-4595-9c62-482459501d26.jpg', '2019-04-04 18:15:04', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (524, 24, 1, 0, '/20190404/da0ab474-fd34-41d1-b932-98168af57365.jpg', '2019-04-04 18:17:51', 1, '2019-04-04 18:17:51', 1, 0);
 INSERT INTO `pictures` VALUES (525, 25, 1, 0, '/20190404/ab703530-1ea3-4818-a91f-8797da0c86c7.jpg', '2019-04-04 18:21:33', 1, '2019-04-04 18:21:34', 1, 0);
+INSERT INTO `pictures` VALUES (526, NULL, 0, 4, '/20190409/f1290e8c-dbed-4039-a602-01312d754d7f.jpg', '2019-04-09 10:15:52', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (527, NULL, 2, 0, '/20190409/79af47e1-e0ad-47d9-9b20-50e3b4f0af65.jpg', '2019-04-09 14:07:03', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (528, NULL, 2, 0, '/20190409/7bc7dbe8-d696-41a8-95c8-4be4c00b0ab3.jpg', '2019-04-09 14:41:57', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (529, NULL, 2, 0, '/20190409/24eb1a1e-f8bd-4ded-9873-2bef43c9c098.jpg', '2019-04-09 14:52:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (530, NULL, 2, 0, '/20190409/a3e2dbc0-92bb-42dc-a9ee-0d034d89a621.jpg', '2019-04-09 14:55:42', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (531, NULL, 2, 0, '/20190409/6aca54d3-78df-4a9f-a4c1-4e689b81312f.jpg', '2019-04-09 15:02:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (532, NULL, 2, 0, '/20190409/1ee09730-6d87-4d7a-ba5e-85e3a7ea2116.jpg', '2019-04-09 15:07:54', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (533, NULL, 2, 0, '/20190409/8df4684f-b393-40f2-93b3-5b4acaefb041.jpg', '2019-04-09 15:45:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (534, NULL, 2, 0, '/20190409/88ccb64b-dcb8-456e-827a-82f5d59e415d.jpg', '2019-04-09 15:47:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (535, NULL, 2, 0, '/20190409/4b6903fc-142e-40e8-bfc3-3b58439f3aa0.jpg', '2019-04-09 15:52:53', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (536, NULL, 2, 0, '/20190409/5021b245-c29e-48a2-9eea-f08aa4b68762.jpg', '2019-04-09 16:03:06', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (537, NULL, 2, 0, '/20190409/5d0c365d-ad24-4c3b-97ab-1a2e043caf9e.jpg', '2019-04-09 16:07:43', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (538, NULL, 2, 0, '/20190409/c5a0986f-e359-4127-a956-c0f3e832dc8f.jpg', '2019-04-09 16:12:53', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (539, NULL, 2, 0, '/20190409/e70bc759-c776-4fb4-bd03-fe2455f732cf.jpg', '2019-04-09 16:15:28', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (540, NULL, 2, 0, '/20190409/acd5409f-b8f1-45d5-9798-12c583f3c3e0.jpg', '2019-04-09 16:18:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (541, NULL, 2, 0, '/pic/20190410/40fc5489-97bd-4d57-8ce3-85879b5273d9.jpg', '2019-04-10 16:04:33', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (542, NULL, 2, 0, '/pic/20190410/839224d3-3c98-42c9-a2ca-dc02d521c84d.jpg', '2019-04-10 16:04:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (543, 6, 0, 1, '/pic/20190411/713626b3-9b15-4caa-bc24-747500f165f9.jpg', '2019-04-11 09:56:42', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (544, 6, 0, 2, '/pic/20190411/024c8167-a36a-425a-9118-908480fb4ee2.jpg', '2019-04-11 09:56:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (545, 6, 0, 3, '/pic/20190411/51c47211-1956-4b8a-bb7b-12681462f2eb.jpg', '2019-04-11 10:00:54', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (546, 6, 0, 4, '/pic/20190411/e813c5c6-9b53-4057-9d73-882fc3ad5b3b.jpg', '2019-04-11 10:00:58', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (547, 8, 5, 0, '/pic/20190411/73a5a9f9-9aaa-4e11-b159-2a383b6d11a4.jpg', '2019-04-11 10:06:06', 1, '2019-04-11 10:06:59', 1, 0);
+INSERT INTO `pictures` VALUES (548, 9, 5, 0, '/pic/20190411/38a246c9-c249-4bf6-882d-a21c4bb3fe5e.jpg', '2019-04-11 10:09:09', 1, '2019-04-11 10:09:26', 1, 0);
+INSERT INTO `pictures` VALUES (549, 9, 5, 0, '/pic/20190411/8494de81-f93a-4f27-bfb4-6d3f3a46ee8c.jpg', '2019-04-11 10:09:12', 1, '2019-04-11 10:09:26', 1, 0);
+INSERT INTO `pictures` VALUES (550, 10, 5, 0, '/pic/20190411/eabd1eb4-6766-44ff-be24-35fa50cd8473.jpg', '2019-04-11 10:12:48', 1, '2019-04-11 10:13:27', 1, 0);
+INSERT INTO `pictures` VALUES (551, 11, 5, 0, '/pic/20190411/fbdd6f29-f87c-4cd0-b72f-6850bf6d4c49.jpg', '2019-04-11 10:27:36', 1, '2019-04-11 10:27:46', 1, 0);
+INSERT INTO `pictures` VALUES (552, NULL, 5, 0, '/pic/20190411/a23b3cc5-62b2-4f12-8bbe-b64fa808a706.jpg', '2019-04-11 10:34:52', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (553, 12, 5, 0, '/pic/20190411/8602ef8e-b25a-475e-a500-0d6d6742bc77.jpg', '2019-04-11 10:44:53', 1, '2019-04-11 10:46:14', 1, 0);
+INSERT INTO `pictures` VALUES (554, 12, 5, 0, '/pic/20190411/e3ddd5db-c414-452b-8f16-ddb9a24f44e0.jpg', '2019-04-11 11:22:32', 1, '2019-04-11 11:22:39', 1, 0);
+INSERT INTO `pictures` VALUES (555, NULL, 5, 0, '/pic/20190411/9e04b705-0592-42cd-836d-9ed9413f249d.jpg', '2019-04-11 11:34:53', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (556, NULL, 5, 0, '/pic/20190411/57c094a5-7b25-4817-afec-20cefa81fe16.jpg', '2019-04-11 11:34:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (557, 13, 5, 0, '/pic/20190411/f0399e80-9d1f-4dd6-8130-24bb702568a0.jpg', '2019-04-11 11:40:18', 1, '2019-04-11 11:40:23', 1, 0);
+INSERT INTO `pictures` VALUES (558, 13, 5, 0, '/pic/20190411/14f165d9-5693-4665-ba81-069da599df9a.jpg', '2019-04-11 11:40:21', 1, '2019-04-11 11:40:23', 1, 0);
+INSERT INTO `pictures` VALUES (559, NULL, 0, 2, '/pic/20190411/931deb01-71be-4993-8683-85b8164c2803.jpg', '2019-04-11 14:21:38', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (560, NULL, 0, 3, '/pic/20190411/4938f2d5-9b84-4092-af5d-6fe03c906a9d.jpg', '2019-04-11 14:21:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (561, NULL, 0, 1, '/pic/20190411/99c29872-3480-4492-9c92-8cc5c8323540.jpg', '2019-04-11 14:21:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (562, NULL, 0, 4, '/pic/20190411/e4ab4b74-33db-40ee-b3ef-2ca32fed4bab.jpg', '2019-04-11 14:21:49', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (563, NULL, 0, 4, '/pic/20190411/c24d5486-12ad-4089-9d5e-558a38e088c0.jpg', '2019-04-11 14:39:13', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (564, 36, 0, 2, '/pic/20190411/3dcd9ba8-802f-47d8-b977-e91f99b9db95.jpg', '2019-04-11 14:48:21', 1, '2019-04-11 15:20:42', 85, 0);
+INSERT INTO `pictures` VALUES (565, 36, 0, 3, '/pic/20190411/f6498144-49f3-4948-9622-b48aade14449.jpg', '2019-04-11 14:48:26', 1, '2019-04-11 15:20:42', 85, 0);
+INSERT INTO `pictures` VALUES (566, 36, 0, 1, '/pic/20190411/05e7e08b-4165-4231-a410-f1d57d6babc2.jpg', '2019-04-11 14:48:30', 1, '2019-04-11 15:20:42', 85, 0);
+INSERT INTO `pictures` VALUES (567, 36, 0, 4, '/pic/20190411/0d904622-3879-4c3b-be40-f8f3fce96a0a.jpg', '2019-04-11 14:48:35', 1, '2019-04-11 15:20:43', 85, 0);
+INSERT INTO `pictures` VALUES (568, 1112, 1, 0, '/pic/20190412/d8eb4686-6654-4230-aa19-9bd46733cf7d.jpg', '2019-04-11 14:56:40', 85, '2019-04-12 10:21:15', 85, 0);
+INSERT INTO `pictures` VALUES (569, NULL, 0, 2, '/pic/20190411/e2d8093b-25d6-452f-8354-5c70b72f8774.jpg', '2019-04-11 14:57:17', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (570, NULL, 0, 3, '/pic/20190411/21089ca0-4ae2-447e-b2d7-6de6a6f0b835.jpg', '2019-04-11 14:57:23', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (571, NULL, 0, 1, '/pic/20190411/857d76e8-984b-43de-b214-890986aa4acc.jpg', '2019-04-11 14:57:32', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (572, NULL, 0, 4, '/pic/20190411/6ca9f054-99d3-4e28-92f6-fdda15c1c132.jpg', '2019-04-11 14:57:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (573, NULL, 0, 2, '/pic/20190411/a5103e2d-e526-485b-84b6-80bfad2b1665.jpg', '2019-04-11 15:05:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (574, NULL, 0, 3, '/pic/20190411/874073b8-0758-4f27-9520-b0e836ff35f8.jpg', '2019-04-11 15:05:51', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (575, NULL, 0, 1, '/pic/20190411/2870d658-0a56-4175-b770-2ec9eb8fca1c.jpg', '2019-04-11 15:06:01', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (576, NULL, 0, 4, '/pic/20190411/5f361f2b-6867-4dbb-92d4-e01759b713d8.jpg', '2019-04-11 15:06:10', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (577, 36, 0, 0, '/pic/20190411/f0ecfb49-8d4f-4481-b5d3-a19b8490a74b.jpg', '2019-04-11 15:20:21', 85, '2019-04-11 15:20:43', 85, 0);
+INSERT INTO `pictures` VALUES (578, 36, 0, 0, '/pic/20190411/61ff2d23-6a89-4a1f-bae2-f7bbe0379261.jpg', '2019-04-11 15:20:28', 85, '2019-04-11 15:20:43', 85, 0);
+INSERT INTO `pictures` VALUES (579, 37, 0, 2, '/pic/20190411/4f196bbe-5a1c-416c-8dcc-7ac1c359e956.jpg', '2019-04-11 15:20:58', 1, '2019-04-11 17:54:19', 87, 0);
+INSERT INTO `pictures` VALUES (580, 37, 0, 3, '/pic/20190411/cadbc97f-c91c-4403-9b4c-d769def07e53.jpg', '2019-04-11 15:21:04', 1, '2019-04-11 17:54:19', 87, 0);
+INSERT INTO `pictures` VALUES (581, 37, 0, 1, '/pic/20190411/c9d75d1d-10d9-4cf4-966a-a3b1925dbed1.jpg', '2019-04-11 15:21:12', 1, '2019-04-11 17:54:20', 87, 0);
+INSERT INTO `pictures` VALUES (582, 53, 2, 0, '/pic/20190411/1e11ad35-e539-4c7e-a9f8-a8618ffcdc10.jpg', '2019-04-11 15:41:59', 85, '2019-04-11 15:42:57', 85, 0);
+INSERT INTO `pictures` VALUES (583, 54, 2, 0, '/pic/20190411/ebe3eabb-dd2d-4c9e-8d5f-e4a38582ce07.jpg', '2019-04-11 15:57:14', 85, '2019-04-11 15:57:16', 85, 0);
+INSERT INTO `pictures` VALUES (584, 55, 2, 0, '/pic/20190411/209aeacf-3460-4900-aa4d-01bc230d48ce.jpg', '2019-04-11 15:57:56', 85, '2019-04-11 15:57:58', 85, 0);
+INSERT INTO `pictures` VALUES (585, 52, 2, 0, '/pic/20190411/ccebd636-36d8-4b7e-971d-e19bee279138.jpg', '2019-04-11 15:58:20', 85, '2019-04-11 15:58:57', 85, 0);
+INSERT INTO `pictures` VALUES (586, 44, 3, 0, '/pic/20190411/c9aee9c9-b0dc-4d49-bc76-d9c3830ffec8.jpg', '2019-04-11 16:04:59', 85, '2019-04-11 16:05:27', 85, 0);
+INSERT INTO `pictures` VALUES (587, 45, 3, 0, '/pic/20190411/d093415b-e45c-4d89-80ba-bbff523b9e01.jpg', '2019-04-11 16:16:17', 85, '2019-04-11 16:16:20', 85, 0);
+INSERT INTO `pictures` VALUES (588, 23, 4, 0, '/pic/20190411/21bf9bad-176c-46c1-a13e-54fa7ec9be3a.jpg', '2019-04-11 17:01:04', 85, '2019-04-11 17:01:16', 85, 0);
+INSERT INTO `pictures` VALUES (589, 23, 4, 0, '/pic/20190411/1496c394-b1e9-4700-ad2e-d543b109e7bb.jpg', '2019-04-11 17:01:07', 85, '2019-04-11 17:01:16', 85, 0);
+INSERT INTO `pictures` VALUES (590, 1114, 1, 0, '/pic/20190411/73f63342-e26a-46d2-aa84-fe2cad3140ba.jpg', '2019-04-11 17:02:26', 87, '2019-04-11 17:30:37', 87, 0);
+INSERT INTO `pictures` VALUES (591, NULL, 0, 4, '/pic/20190411/9b7f1d56-6b5b-4cf2-ad7c-df9c46584b16.jpg', '2019-04-11 17:42:12', 87, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (592, NULL, 0, 4, '/pic/20190411/23b89440-5cc8-4f7f-83f3-087b52aa2b0a.jpg', '2019-04-11 17:42:57', 87, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (593, NULL, 4, 0, '/pic/20190411/38b91c66-7f9d-4cd2-8816-492096d4416a.jpg', '2019-04-11 17:44:46', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (594, NULL, 0, 4, '/pic/20190411/156192bc-0cfc-44e9-a44f-561a9680745d.jpg', '2019-04-11 17:49:19', 87, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (595, NULL, 2, 0, '/pic/20190411/123bf85a-cf59-48e7-acdf-04668bfd5c72.jpg', '2019-04-11 17:49:30', 87, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (596, 37, 0, 4, '/pic/20190411/6dc158b2-5626-448d-9db5-a4e147fb8f55.jpg', '2019-04-11 17:53:25', 87, '2019-04-11 17:54:20', 87, 0);
+INSERT INTO `pictures` VALUES (597, NULL, 0, 4, '/pic/20190411/6dc158b2-5626-448d-9db5-a4e147fb8f55.jpg', '2019-04-11 17:54:01', 87, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (598, 37, 2, 0, '/pic/20190411/5599e34a-6ec6-491c-9276-25d7cf3de806.jpg', '2019-04-11 17:54:06', 87, '2019-04-11 17:54:20', 87, 0);
+INSERT INTO `pictures` VALUES (599, 14, 5, 0, '/pic/20190411/51c74aaf-ab55-4247-aec3-3a241735ff6a.jpg', '2019-04-11 19:06:53', 85, '2019-04-11 19:06:55', 85, 0);
+INSERT INTO `pictures` VALUES (600, 26, 1, 0, '/pic/20190411/52b24509-cc56-4234-9894-78731f600873.jpg', '2019-04-11 19:25:54', 85, '2019-04-11 19:25:54', 85, 0);
+INSERT INTO `pictures` VALUES (601, 27, 1, 0, '/pic/20190412/1b973067-9ef7-41c0-ba01-e054e4a20e17.jpg', '2019-04-12 09:43:42', 85, '2019-04-12 09:44:15', 85, 0);
+INSERT INTO `pictures` VALUES (602, 28, 1, 0, '/pic/20190412/cee26095-d471-4040-aa7f-56ff95415c65.jpg', '2019-04-12 10:01:51', 85, '2019-04-12 10:01:58', 85, 0);
+INSERT INTO `pictures` VALUES (603, NULL, 0, 2, '/pic/20190412/4783fb00-8448-465c-86d3-58fe9626b678.jpg', '2019-04-12 11:09:48', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (604, NULL, 0, 3, '/pic/20190412/b189609d-f58a-41c9-b460-cc3fde782d0e.jpg', '2019-04-12 11:09:52', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (605, NULL, 0, 1, '/pic/20190412/fa7ffbce-3450-45c5-901c-a964796ab368.jpg', '2019-04-12 11:09:55', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (606, 40, 0, 2, '/pic/20190412/8802bef5-5f78-4ccd-a146-1141701b89ee.jpg', '2019-04-12 11:19:33', 85, '2019-04-12 11:19:55', 85, 0);
+INSERT INTO `pictures` VALUES (607, 40, 0, 3, '/pic/20190412/2fe28eaf-54d4-4d1d-bd70-06172600b297.jpg', '2019-04-12 11:19:36', 85, '2019-04-12 11:19:55', 85, 0);
+INSERT INTO `pictures` VALUES (608, 40, 0, 1, '/pic/20190412/5f3ee077-4771-43c6-a448-6563eb9318fc.jpg', '2019-04-12 11:19:39', 85, '2019-04-12 11:19:55', 85, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4928,14 +4709,15 @@ CREATE TABLE `product` (
   KEY `idx_product_05` (`shelf_life`),
   KEY `idx_product_06` (`day_of_pre_warning`),
   KEY `idx_product_07` (`stock_of_pre_warning`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='产品';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='产品';
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
 BEGIN;
-INSERT INTO `product` VALUES (1, 2, '1', 1, 1, 1.00, 1.00, '1', '1', 1, 1, 1, 1, '1', '2019-03-06 09:58:56', 1, '2019-03-06 09:59:00', 1, 1);
-INSERT INTO `product` VALUES (2, 2, '产品3', 0, 1, 100.00, 80.00, 'abcd', 'abcd', 12, 2, 2, 0, '简介', '2019-03-08 09:02:43', 1, '2019-03-08 09:14:24', 1, 0);
+INSERT INTO `product` VALUES (13, 2, '路路', 1, 23, 56.00, 39.00, '7855', '53566', 6, 1, 8, 0, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (15, 1, '路路', 1, 23, 56.00, 39.00, '7855', '53566', 6, 1, 8, 0, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (16, 3, '路路2', 1, 23, 56.00, 39.00, '7855', '53566', 6, 1, 8, 0, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4954,7 +4736,21 @@ CREATE TABLE `product_property` (
   PRIMARY KEY (`record_id`),
   KEY `idx_product_property_01` (`property_name`),
   KEY `idx_product_property_02` (`property_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品基础属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='产品基础属性表';
+
+-- ----------------------------
+-- Records of product_property
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_property` VALUES (15, '15g', 0, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (16, '10g', 0, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (17, '瓶', 1, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (18, '罐', 1, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (19, '腿', 2, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (20, '手', 2, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (21, '保湿', 3, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+INSERT INTO `product_property` VALUES (22, '祛痘', 3, '2019-03-08 09:14:24', 1, '2019-03-08 09:14:24', 1, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for product_property_map
@@ -4972,7 +4768,17 @@ CREATE TABLE `product_property_map` (
   PRIMARY KEY (`record_id`),
   KEY `idx_product_property_map_01` (`product_id`),
   KEY `idx_product_property_map_02` (`product_property_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品属性关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='产品属性关系表';
+
+-- ----------------------------
+-- Records of product_property_map
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_property_map` VALUES (39, 13, 15, '2019-04-11 11:40:23', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (40, 13, 18, '2019-04-11 11:40:23', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (41, 13, 20, '2019-04-11 11:40:23', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (42, 13, 21, '2019-04-11 11:40:23', 1, NULL, NULL, 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for product_series
@@ -4992,7 +4798,7 @@ CREATE TABLE `product_series` (
   PRIMARY KEY (`record_id`),
   KEY `idx_product_series_01` (`series_name`),
   KEY `idx_product_series_02` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COMMENT='产品品牌/系列';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COMMENT='产品品牌/系列';
 
 -- ----------------------------
 -- Records of product_series
@@ -5006,6 +4812,15 @@ INSERT INTO `product_series` VALUES (17, 2, '品牌4', 0, 0, '2019-03-12 08:26:1
 INSERT INTO `product_series` VALUES (22, 2, '系列10', 1, 0, '2019-04-01 16:01:16', 1, NULL, NULL, 0);
 INSERT INTO `product_series` VALUES (23, 2, '系列101', 15, 0, '2019-04-01 19:39:40', 1, NULL, NULL, 0);
 INSERT INTO `product_series` VALUES (24, 33, '欧莱雅', 0, 0, '2019-04-04 11:53:03', 77, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (25, 2, '系列12', 1, 0, '2019-04-11 12:01:33', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (26, 2, '系列12', 1, 0, '2019-04-11 12:01:34', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (27, 2, '系列101', 15, 0, '2019-04-11 12:05:27', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (28, 2, '系列1', 16, 0, '2019-04-11 12:06:47', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (29, 2, '牛波', 16, 0, '2019-04-11 12:07:29', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (30, 2, '牛', 16, 0, '2019-04-11 12:07:49', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (31, 2, '系列', 17, 0, '2019-04-11 14:00:43', 1, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (32, 36, '品牌1', 0, 0, '2019-04-11 18:57:30', 85, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (35, 36, '系列10', 32, 0, '2019-04-11 19:03:02', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5028,13 +4843,16 @@ CREATE TABLE `product_stock` (
   KEY `idx_product_stock_02` (`stock_qty`),
   KEY `idx_product_stock_03` (`cost`),
   KEY `idx_product_stock_04` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='产品库存表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='产品库存表';
 
 -- ----------------------------
 -- Records of product_stock
 -- ----------------------------
 BEGIN;
 INSERT INTO `product_stock` VALUES (1, 1, 1, 1, 1.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', 1, 1);
+INSERT INTO `product_stock` VALUES (2, 13, 1, 20, 200.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
+INSERT INTO `product_stock` VALUES (3, 15, 1, 30, 300.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
+INSERT INTO `product_stock` VALUES (4, 16, 1, 1, 1.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
 COMMIT;
 
 -- ----------------------------
@@ -5089,7 +4907,7 @@ CREATE TABLE `program_privilege` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_PROGRAM_PRIVILEGE_0` (`program_id`),
   KEY `IDX_PROGRAM_PRIVILEGE_1` (`privilege_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of program_privilege
@@ -5173,6 +4991,7 @@ INSERT INTO `program_privilege` VALUES (77, 'SYS02_09_05', 'RUN', '系统运行'
 INSERT INTO `program_privilege` VALUES (78, 'SYS02_09_06', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (79, 'SYS02_03_04', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (80, 'SYS02_03_05', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (81, 'SYS02_03_06', 'RUN', '系统运行');
 COMMIT;
 
 -- ----------------------------
@@ -5182,11 +5001,15 @@ DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `member_id` bigint(20) NOT NULL,
+  `member_sourc` tinyint(10) DEFAULT NULL,
   `stuff_id` bigint(20) NOT NULL,
   `room_id` bigint(20) NOT NULL,
+  `date_` datetime DEFAULT NULL,
+  `duration` float(10,0) DEFAULT NULL,
+  `record_status` tinyint(4) NOT NULL,
+  `remark` varchar(500) DEFAULT NULL,
   `time_start` datetime NOT NULL,
   `time_end` datetime NOT NULL,
-  `record_status` tinyint(4) NOT NULL,
   `create_date` datetime NOT NULL,
   `create_by` bigint(20) NOT NULL,
   `update_date` datetime DEFAULT NULL,
@@ -5202,9 +5025,8 @@ CREATE TABLE `reservation` (
 -- Records of reservation
 -- ----------------------------
 BEGIN;
-INSERT INTO `reservation` VALUES (1, 1, 1, 1, '2019-03-06 17:35:32', '2019-03-07 17:35:36', 1, '2019-03-05 17:35:40', 1, '2019-03-07 17:35:46', 123, 123);
-INSERT INTO `reservation` VALUES (2, 2, 2, 2, '2019-03-06 17:36:57', '2019-03-07 17:37:01', 1, '2019-03-07 17:37:04', 1, '2019-03-07 17:37:08', 123, 123);
-INSERT INTO `reservation` VALUES (3, 3, 3, 5, '2019-03-05 17:38:25', '2019-03-07 17:38:29', 1, '2019-03-07 17:38:33', 1, '2019-03-07 17:38:37', 123, 123);
+INSERT INTO `reservation` VALUES (1, 1, 1, 2, 5, '2019-04-10 11:31:56', 11, 1, 'sdfsaf ', '2019-04-10 11:32:05', '2019-04-10 17:32:09', '2019-04-10 11:32:14', 1, '2019-04-10 11:32:18', 1, 1);
+INSERT INTO `reservation` VALUES (2, 2, 1, 3, 10, '2019-04-10 11:43:22', 1, 1, '121313', '2019-04-10 11:43:32', '2019-04-10 14:43:34', '2019-04-10 11:43:43', 1, '2019-04-10 11:43:50', 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -5223,14 +5045,14 @@ CREATE TABLE `reservation_item` (
   PRIMARY KEY (`record_id`),
   KEY `idx_reservation_item_01` (`reservation_id`),
   KEY `idx_reservation_item_02` (`service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='预约项目';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='预约项目';
 
 -- ----------------------------
 -- Records of reservation_item
 -- ----------------------------
 BEGIN;
-INSERT INTO `reservation_item` VALUES (1, 1, 1, '2019-04-08 16:22:52', 123, '2019-04-08 16:22:55', 1, 0);
-INSERT INTO `reservation_item` VALUES (2, 1, 2, '2019-04-08 16:23:03', 12, '2019-04-08 16:23:06', 1, 0);
+INSERT INTO `reservation_item` VALUES (1, 1, 50, '2019-04-10 11:33:30', 1, '2019-04-10 11:33:33', 1, 0);
+INSERT INTO `reservation_item` VALUES (2, 2, 51, '2019-04-10 11:44:13', 1, '2019-04-10 11:44:17', 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5262,7 +5084,7 @@ CREATE TABLE `retroactive` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `retroactive` VALUES (1, 1, '2019-04-03 00:00:00', '虽然噶尔给 ', 1, 1, '审核水里放家里就飞拉萨是', '2019-04-03 09:26:59', 1, '2019-04-03 11:45:13', 1, 0, 2, 1);
-INSERT INTO `retroactive` VALUES (2, 1, '2019-04-03 00:00:00', '测试', 0, NULL, NULL, '2019-04-03 09:30:45', 1, NULL, NULL, 0, 2, 2);
+INSERT INTO `retroactive` VALUES (2, 1, '2019-04-03 00:00:00', '测试', 1, 1, '49864', '2019-04-03 09:30:45', 1, '2019-04-11 14:16:08', 1, 0, 2, 2);
 INSERT INTO `retroactive` VALUES (3, 49, '2019-04-03 11:41:51', '忘记打卡了', 1, NULL, NULL, '2019-04-03 11:41:51', 67, NULL, NULL, 0, 2, 1);
 INSERT INTO `retroactive` VALUES (4, 49, '2019-04-03 11:45:39', '理解', 1, NULL, NULL, '2019-04-03 11:45:39', 67, NULL, NULL, 0, 2, 1);
 COMMIT;
@@ -5278,7 +5100,7 @@ CREATE TABLE `role_action` (
   PRIMARY KEY (`record_id`),
   KEY `idx_role_action_01` (`stuff_id`),
   KEY `idx_role_action_02` (`system_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
 
 -- ----------------------------
 -- Records of role_action
@@ -5322,6 +5144,13 @@ INSERT INTO `role_action` VALUES (42, 63, 81);
 INSERT INTO `role_action` VALUES (43, 64, 82);
 INSERT INTO `role_action` VALUES (44, 65, 83);
 INSERT INTO `role_action` VALUES (45, 66, 84);
+INSERT INTO `role_action` VALUES (46, 1112, 85);
+INSERT INTO `role_action` VALUES (47, 1113, 86);
+INSERT INTO `role_action` VALUES (48, 1114, 87);
+INSERT INTO `role_action` VALUES (49, 1115, 88);
+INSERT INTO `role_action` VALUES (50, 1116, 89);
+INSERT INTO `role_action` VALUES (51, 1117, 90);
+INSERT INTO `role_action` VALUES (54, 1120, 93);
 COMMIT;
 
 -- ----------------------------
@@ -5337,7 +5166,7 @@ CREATE TABLE `role_privilege` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_ROLE_PRIVILEGE_0` (`role_id`),
   KEY `IDX_ROLE_PRIVILEGE_1` (`program_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=391 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_privilege
@@ -5548,8 +5377,6 @@ INSERT INTO `role_privilege` VALUES (267, 15, 10, 'SYS01_03', 'RUN');
 INSERT INTO `role_privilege` VALUES (268, 16, 10, 'SYS01_03', 'INSERT');
 INSERT INTO `role_privilege` VALUES (269, 17, 10, 'SYS01_03', 'UPDATE');
 INSERT INTO `role_privilege` VALUES (270, 18, 10, 'SYS01_03', 'DELETE');
-INSERT INTO `role_privilege` VALUES (271, 72, 10, 'SYS07_01', 'RUN');
-INSERT INTO `role_privilege` VALUES (272, 70, 10, 'SYS07', 'RUN');
 INSERT INTO `role_privilege` VALUES (275, 19, 10, 'SYS02', 'RUN');
 INSERT INTO `role_privilege` VALUES (276, 21, 10, 'SYS02_01_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (277, 25, 10, 'SYS02_02_01', 'RUN');
@@ -5597,8 +5424,6 @@ INSERT INTO `role_privilege` VALUES (318, 15, 10, 'SYS01_03', 'RUN');
 INSERT INTO `role_privilege` VALUES (319, 16, 10, 'SYS01_03', 'INSERT');
 INSERT INTO `role_privilege` VALUES (320, 17, 10, 'SYS01_03', 'UPDATE');
 INSERT INTO `role_privilege` VALUES (321, 18, 10, 'SYS01_03', 'DELETE');
-INSERT INTO `role_privilege` VALUES (322, 72, 10, 'SYS07_01', 'RUN');
-INSERT INTO `role_privilege` VALUES (323, 70, 10, 'SYS07', 'RUN');
 INSERT INTO `role_privilege` VALUES (326, 71, 2, 'SYS01_04', 'RUN');
 INSERT INTO `role_privilege` VALUES (327, 1, 2, 'SYS01', 'RUN');
 INSERT INTO `role_privilege` VALUES (328, 80, 1, 'SYS02_03_05', 'RUN');
@@ -5664,6 +5489,7 @@ INSERT INTO `role_privilege` VALUES (387, 18, 11, 'SYS01_03', 'DELETE');
 INSERT INTO `role_privilege` VALUES (388, 71, 11, 'SYS01_04', 'RUN');
 INSERT INTO `role_privilege` VALUES (389, 72, 11, 'SYS07_01', 'RUN');
 INSERT INTO `role_privilege` VALUES (390, 70, 11, 'SYS07', 'RUN');
+INSERT INTO `role_privilege` VALUES (391, 81, 1, 'SYS02_03_06', 'RUN');
 COMMIT;
 
 -- ----------------------------
@@ -5677,7 +5503,7 @@ CREATE TABLE `role_user` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_ROLE_USER_0` (`role_id`),
   KEY `IDX_ROLE_USER_1` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_user
@@ -5701,6 +5527,13 @@ INSERT INTO `role_user` VALUES (61, 2, 81);
 INSERT INTO `role_user` VALUES (62, 2, 82);
 INSERT INTO `role_user` VALUES (63, 2, 83);
 INSERT INTO `role_user` VALUES (64, 11, 84);
+INSERT INTO `role_user` VALUES (65, 10, 85);
+INSERT INTO `role_user` VALUES (66, 2, 86);
+INSERT INTO `role_user` VALUES (67, 10, 87);
+INSERT INTO `role_user` VALUES (68, 2, 88);
+INSERT INTO `role_user` VALUES (69, 2, 89);
+INSERT INTO `role_user` VALUES (70, 2, 90);
+INSERT INTO `role_user` VALUES (73, 10, 93);
 COMMIT;
 
 -- ----------------------------
@@ -5732,7 +5565,7 @@ CREATE TABLE `salon` (
   KEY `idx_beauty_salon_01` (`salon_name`),
   KEY `idx_beauty_salon_02` (`tel`),
   KEY `idx_beauty_salon_03` (`city_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COMMENT='美容院/门店';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='美容院/门店';
 
 -- ----------------------------
 -- Records of salon
@@ -5742,7 +5575,7 @@ INSERT INTO `salon` VALUES (1, '鸿发美容院', -1, '18664151832', 0, '广东�
 INSERT INTO `salon` VALUES (2, '大岭山分店好', 1, '189999999966666666', 1, '广东东莞大岭山', b'0', 0, 0.00, '09:35', '11:35', 113.7838360, 23.0338060, '鸿发美容院大岭山分店在哪里呢', '2019-02-28 01:44:56', 1, '2019-04-04 11:36:45', 32, 0, 1);
 INSERT INTO `salon` VALUES (3, '常平分店1', 1, '18664151832', 1, '广东东莞常平', b'0', 1, 200.00, '16:00:00', '16:00:00', 0.0000000, 0.0000000, 'asd', '2019-02-28 01:44:56', 1, '2019-03-27 08:58:40', 32, 0, 1);
 INSERT INTO `salon` VALUES (5, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
-INSERT INTO `salon` VALUES (6, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
+INSERT INTO `salon` VALUES (6, '分店', 2, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
 INSERT INTO `salon` VALUES (8, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
 INSERT INTO `salon` VALUES (12, '分店', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
 INSERT INTO `salon` VALUES (13, '分店1111', 1, '18664151832', 1, '广东东莞大岭山', b'0', 0, 0.00, '00:00:00', '00:00:00', 0.0000000, 0.0000000, '鸿发美容院大岭山分店', '2019-02-28 01:44:56', 1, '2019-03-21 03:37:10', 1, 0, 0);
@@ -5762,7 +5595,10 @@ INSERT INTO `salon` VALUES (26, '门店BB', 25, '13717366311', 441903, '广东�
 INSERT INTO `salon` VALUES (32, '萌点3呃呃呃', 25, '18664151832', 441903, '广东省东莞市东城区莞樟路115-3', b'0', 10, 1000.00, '08:00', '11:00', 113.7935860, 23.0301060, '', '2019-04-03 21:06:38', 1, '2019-04-03 21:08:44', 76, 0, 1);
 INSERT INTO `salon` VALUES (33, '门店555', 25, '13717366311', 441901, '广东省东莞市莞城区莞樟路115-3', b'0', 0, 0.00, NULL, NULL, 113.7935860, 23.0301060, NULL, '2019-04-04 09:10:46', 1, '2019-04-04 09:29:31', 69, 0, 1);
 INSERT INTO `salon` VALUES (34, '柏林美容院', 25, '13929433192', 441902, '广东省东莞市南城区第一国际汇一城', b'1', 0, 0.00, NULL, NULL, 113.7603150, 23.0128080, NULL, '2019-04-04 10:14:43', 1, NULL, NULL, 0, 0);
-INSERT INTO `salon` VALUES (35, 'adsasd', -1, '18664151888', 0, '东莞东城', b'1', 0, 0.00, NULL, NULL, 0.0000000, 0.0000000, NULL, '2019-04-08 15:02:30', 1, NULL, NULL, 0, 1);
+INSERT INTO `salon` VALUES (35, 'adsasd', -1, '18664151888', 0, '东莞东城', b'1', 0, 0.00, NULL, NULL, 0.0000000, 0.0000000, NULL, '2019-04-08 15:02:30', 1, NULL, NULL, 0, 0);
+INSERT INTO `salon` VALUES (36, '柏林隆胸整形美容院', 25, '13929433192', 441902, '广东省东莞市南城区第一国际汇一城', b'0', 10, 100.00, '09:00', '18:00', 113.7603150, 23.0128080, '服务好，专业', '2019-04-11 14:48:38', 1, '2019-04-11 15:20:42', 85, 0, 1);
+INSERT INTO `salon` VALUES (37, '天下美', 25, '15999876807', 441901102, '广东省 东莞市 石龙镇石龙镇政府1号', NULL, 0, 0.00, '09:30', '17:30', 113.8744080, 23.1058770, '天下第一服务态度好', '2019-04-11 15:21:28', 1, '2019-04-11 17:54:19', 87, 0, 1);
+INSERT INTO `salon` VALUES (40, 'HongKong', 1, '18664151838', 441903, '广东省东莞市东城区莞樟133号', b'0', 0, 0.00, NULL, NULL, 113.7778410, 23.0506490, NULL, '2019-04-12 11:19:55', 85, NULL, NULL, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5805,7 +5641,7 @@ CREATE TABLE `schedule` (
   PRIMARY KEY (`record_id`),
   KEY `idx_schedule_01` (`stuff_id`),
   KEY `idx_schedule_02` (`day`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COMMENT='排班信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COMMENT='排班信息表';
 
 -- ----------------------------
 -- Records of schedule
@@ -5878,6 +5714,16 @@ INSERT INTO `schedule` VALUES (108, 1, 65, '2019-05-01', '2019-04-08 16:43:01', 
 INSERT INTO `schedule` VALUES (109, 1, 65, '2019-05-02', '2019-04-08 16:43:01', 1, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (110, 1, 65, '2019-05-03', '2019-04-08 16:43:01', 1, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (111, 1, 65, '2019-05-04', '2019-04-08 16:43:01', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (114, 1, 64, '2019-04-08', '2019-04-09 11:13:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (115, 1, 66, '2019-04-09', '2019-04-09 15:41:04', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (116, 1112, 108, '2019-03-01', '2019-04-12 14:16:30', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (117, 1112, 110, '2019-03-02', '2019-04-12 14:16:30', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (118, 1113, 109, '2019-03-01', '2019-04-12 14:17:22', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (119, 1113, 108, '2019-03-02', '2019-04-12 14:17:22', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (121, 1112, 108, '2019-03-04', '2019-04-12 14:28:18', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (124, 1112, 109, '2019-03-03', '2019-04-12 14:28:18', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (127, 1113, 109, '2019-03-03', '2019-04-12 14:28:35', 85, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (128, 1113, 109, '2019-03-12', '2019-04-12 14:33:30', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5909,7 +5755,7 @@ CREATE TABLE `service` (
   KEY `idx_service_card_02` (`card_type`),
   KEY `idx_service_card_03` (`service_name`),
   KEY `idx_service_card_04` (`record_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COMMENT='次卡/服务项目';
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COMMENT='次卡/服务项目';
 
 -- ----------------------------
 -- Records of service
@@ -5937,6 +5783,12 @@ INSERT INTO `service` VALUES (23, 2, '推背', 6, 1, 0, 1.0, 10, 0.00, 300.00, 1
 INSERT INTO `service` VALUES (47, 2, '9', 8, 0, 0, NULL, 9, 6.00, -1.00, 6.00, 8, -1, '给哈哈哈', '2019-03-29 16:27:45', 1, NULL, NULL, 0);
 INSERT INTO `service` VALUES (48, 2, '9', 8, 0, 0, NULL, 6, 5.00, -1.00, 3.00, 5, -1, '规划局', '2019-03-29 16:29:18', 1, NULL, NULL, 0);
 INSERT INTO `service` VALUES (49, 2, '9', 4, 0, 0, 0.0, 9, 9.00, -1.00, 9.00, 9, -1, '体验一下', '2019-03-29 16:30:46', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (50, 1, '测试服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, '很好', '2019-04-10 11:30:23', 1, '2019-04-10 11:30:30', 1, 0);
+INSERT INTO `service` VALUES (51, 1, '店铺1的服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, '9', '2019-04-10 11:38:39', 9, '2019-04-10 11:38:42', 9, 0);
+INSERT INTO `service` VALUES (52, 36, '次卡1', 27, 0, 1, 0.0, 58, 40.00, 0.00, 6003.00, 4, 0, '舒服', '2019-04-11 15:42:05', 85, '2019-04-11 15:58:57', 85, 0);
+INSERT INTO `service` VALUES (53, 36, '次卡2', 27, 0, 0, 0.0, 58, 40.00, -1.00, 600.00, 4, -1, '舒服', '2019-04-11 15:42:57', 85, NULL, NULL, 0);
+INSERT INTO `service` VALUES (54, 36, '时效卡', 27, 1, 0, 1.0, 40, -1.00, 48.00, 38.00, 4, 1, '名字', '2019-04-11 15:57:16', 85, NULL, NULL, 0);
+INSERT INTO `service` VALUES (55, 36, '一类5', 28, 0, 1, 0.0, 5, 58.00, 0.00, 70.00, 49, 0, '明orz', '2019-04-11 15:57:58', 85, '2019-04-11 16:01:01', 85, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5958,7 +5810,7 @@ CREATE TABLE `service_series` (
   KEY `idx_service_series_01` (`series_name`),
   KEY `idx_service_series_02` (`parent_id`),
   KEY `idx_service_series_03` (`record_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='项目类别/系列';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='项目类别/系列';
 
 -- ----------------------------
 -- Records of service_series
@@ -5985,6 +5837,11 @@ INSERT INTO `service_series` VALUES (20, 33, '头部', 0, 0, '2019-04-04 11:47:2
 INSERT INTO `service_series` VALUES (21, 2, '隆胸', 0, 0, '2019-04-04 16:15:53', 1, NULL, NULL, 0);
 INSERT INTO `service_series` VALUES (22, 2, '隆胸', 0, 0, '2019-04-04 16:16:20', 1, NULL, NULL, 0);
 INSERT INTO `service_series` VALUES (23, 2, '隆胸', 2, 0, '2019-04-04 16:23:18', 1, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (24, 33, '系列1', 20, 0, '2019-04-11 14:39:24', 77, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (25, 36, '类别1', 0, 0, '2019-04-11 15:28:42', 85, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (26, 36, '类别2', 0, 0, '2019-04-11 15:32:25', 85, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (27, 36, '系列1', 25, 0, '2019-04-11 15:32:35', 85, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (28, 36, '一类', 26, 0, '2019-04-11 15:35:38', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6009,7 +5866,7 @@ CREATE TABLE `service_suite` (
   PRIMARY KEY (`record_id`),
   KEY `idx_service_suite_01` (`suite_name`),
   KEY `idx_service_suite_02` (`record_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COMMENT='套卡/服务套餐';
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COMMENT='套卡/服务套餐';
 
 -- ----------------------------
 -- Records of service_suite
@@ -6032,6 +5889,8 @@ INSERT INTO `service_suite` VALUES (40, 2, '套卡008', 10.00, 20.00, '2019-03-2
 INSERT INTO `service_suite` VALUES (41, 2, '套卡100', 10.00, 20.00, '2019-03-29 11:43:24', '1970-01-01 08:00:00', 0, '', '2019-03-29 11:43:24', 1, NULL, NULL, 0);
 INSERT INTO `service_suite` VALUES (42, 2, '套卡10', 40.00, 100.00, '2019-03-29 00:00:00', '2019-03-30 00:00:00', 0, '', '2019-03-29 11:59:00', 1, '2019-03-30 11:56:26', 1, 0);
 INSERT INTO `service_suite` VALUES (43, 2, '测试删除', 460.00, 460.00, '2019-04-02 14:21:38', '2019-04-30 00:00:00', 0, '化橘红', '2019-04-02 14:21:38', 1, NULL, NULL, 0);
+INSERT INTO `service_suite` VALUES (44, 36, '套卡1', 500.00, 500.00, '2019-04-09 00:00:00', '2019-04-27 00:00:00', 0, '舒服', '2019-04-11 16:05:27', 85, '2019-04-12 14:44:51', 85, 0);
+INSERT INTO `service_suite` VALUES (45, 36, '套卡2', 430.00, 430.00, '2019-04-11 00:00:00', '2019-05-10 00:00:00', 0, '心婆哦哟哟婆', '2019-04-11 16:16:20', 85, '2019-04-11 16:38:03', 85, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6050,7 +5909,7 @@ CREATE TABLE `service_suite_item` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_service_suite_item_01` (`service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COMMENT='套卡明细';
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8mb4 COMMENT='套卡明细';
 
 -- ----------------------------
 -- Records of service_suite_item
@@ -6096,6 +5955,9 @@ INSERT INTO `service_suite_item` VALUES (130, 42, 2, 20, '2019-03-30 11:56:26', 
 INSERT INTO `service_suite_item` VALUES (131, 42, 3, 30, '2019-03-30 11:56:26', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (151, 2, 1, 10, '2019-04-02 14:10:40', 1, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (152, 43, 6, 0, '2019-04-02 14:21:38', 1, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (157, 45, 54, 10, '2019-04-11 16:38:03', 85, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (162, 44, 52, 10, '2019-04-12 14:44:51', 85, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (163, 44, 55, 5, '2019-04-12 14:44:51', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6115,7 +5977,7 @@ CREATE TABLE `shift` (
   `opt_lock` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`record_id`),
   KEY `idx_schedule_times_02` (`store_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COMMENT='班次';
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COMMENT='班次';
 
 -- ----------------------------
 -- Records of shift
@@ -6145,10 +6007,10 @@ INSERT INTO `shift` VALUES (59, 23, 0, '9:00', '19:00', '2019-03-27 08:38:19', 1
 INSERT INTO `shift` VALUES (60, 23, 1, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (61, 23, 2, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (62, 23, 3, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
-INSERT INTO `shift` VALUES (63, 2, 0, '08:30 ', ' 17:30', '2019-03-28 03:10:08', 1, '2019-04-08 12:04:56', 1, 0);
-INSERT INTO `shift` VALUES (64, 2, 3, '20:45 ', ' 20:50', '2019-03-28 03:10:08', 1, '2019-04-08 12:04:56', 1, 0);
-INSERT INTO `shift` VALUES (65, 2, 2, '10:45 ', ' 19:30', '2019-03-28 03:10:08', 1, '2019-04-08 12:04:56', 1, 0);
-INSERT INTO `shift` VALUES (66, 2, 1, '05:15', '20:15', '2019-03-28 03:10:08', 1, '2019-04-08 12:04:56', 1, 0);
+INSERT INTO `shift` VALUES (63, 2, 0, '08:30 ', ' 17:30', '2019-03-28 03:10:08', 1, '2019-04-09 15:40:40', 1, 0);
+INSERT INTO `shift` VALUES (64, 2, 3, '19:30 ', ' 20:50', '2019-03-28 03:10:08', 1, '2019-04-09 15:40:41', 1, 0);
+INSERT INTO `shift` VALUES (65, 2, 2, '10:45 ', ' 19:30', '2019-03-28 03:10:08', 1, '2019-04-09 15:40:41', 1, 0);
+INSERT INTO `shift` VALUES (66, 2, 1, '10:15', '13:15', '2019-03-28 03:10:08', 1, '2019-04-09 15:40:41', 1, 0);
 INSERT INTO `shift` VALUES (67, 24, 0, '9:00', '19:00', '2019-04-03 17:57:44', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (68, 24, 1, '9:00', '19:00', '2019-04-03 17:57:44', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (69, 24, 2, '9:00', '19:00', '2019-04-03 17:57:44', 1, NULL, NULL, 0);
@@ -6169,6 +6031,18 @@ INSERT INTO `shift` VALUES (103, 34, 0, '9:00', '19:00', '2019-04-04 10:14:43', 
 INSERT INTO `shift` VALUES (104, 34, 1, '9:00', '19:00', '2019-04-04 10:14:43', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (105, 34, 2, '9:00', '19:00', '2019-04-04 10:14:43', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (106, 34, 3, '9:00', '19:00', '2019-04-04 10:14:43', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (107, 36, 0, '00:00', '23:00', '2019-04-11 14:48:39', 1, '2019-04-12 14:15:22', 85, 0);
+INSERT INTO `shift` VALUES (108, 36, 1, '03:00', '09:00', '2019-04-11 14:48:39', 1, '2019-04-12 14:15:22', 85, 0);
+INSERT INTO `shift` VALUES (109, 36, 2, '11:00', '12:00', '2019-04-11 14:48:39', 1, '2019-04-12 14:15:22', 85, 0);
+INSERT INTO `shift` VALUES (110, 36, 3, '18:00', '20:00', '2019-04-11 14:48:39', 1, '2019-04-12 14:15:22', 85, 0);
+INSERT INTO `shift` VALUES (111, 37, 0, '9:00', '19:00', '2019-04-11 15:21:28', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (112, 37, 1, '9:00', '19:00', '2019-04-11 15:21:28', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (113, 37, 2, '9:00', '19:00', '2019-04-11 15:21:28', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (114, 37, 3, '9:00', '19:00', '2019-04-11 15:21:28', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (123, 40, 0, '9:00', '19:00', '2019-04-12 11:19:55', 85, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (124, 40, 1, '9:00', '19:00', '2019-04-12 11:19:55', 85, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (125, 40, 2, '9:00', '19:00', '2019-04-12 11:19:55', 85, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (126, 40, 3, '9:00', '19:00', '2019-04-12 11:19:55', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6178,15 +6052,20 @@ DROP TABLE IF EXISTS `stock_transfer_application`;
 CREATE TABLE `stock_transfer_application` (
   `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `application_no` char(12) NOT NULL,
+  `product_stock_movement_id` bigint(20) NOT NULL,
+  `in_warehouse_product_id` bigint(20) NOT NULL,
   `out_warehouse_id` bigint(20) NOT NULL,
+  `in_warehouse_id` bigint(20) NOT NULL,
   `remark_application` varchar(500) DEFAULT NULL,
   `remark_audit` varchar(500) DEFAULT NULL,
   `record_status` tinyint(4) NOT NULL,
+  `creator` bigint(20) DEFAULT NULL,
+  `approver` bigint(20) DEFAULT NULL,
   `create_date` datetime NOT NULL,
   `create_by` bigint(20) NOT NULL,
-  `update_date` datetime NOT NULL,
-  `update_by` bigint(20) NOT NULL,
-  `opt_lock` int(11) NOT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_stock_transfer_application_01` (`application_no`),
   KEY `idx_stock_transfer_application_02` (`create_date`),
@@ -6195,14 +6074,7 @@ CREATE TABLE `stock_transfer_application` (
   KEY `idx_stock_transfer_application_05` (`update_date`),
   KEY `idx_stock_transfer_application_06` (`record_status`),
   KEY `idx_stock_transfer_application_07` (`out_warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='调拨申请单';
-
--- ----------------------------
--- Records of stock_transfer_application
--- ----------------------------
-BEGIN;
-INSERT INTO `stock_transfer_application` VALUES (1, '1', 1, '1', '1', 1, '2019-03-05 15:06:28', 1, '2019-03-05 15:06:32', 1, 1);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='调拨申请单';
 
 -- ----------------------------
 -- Table structure for stock_transfer_application_item
@@ -6243,28 +6115,34 @@ CREATE TABLE `store_room` (
   KEY `idx_store_room_01` (`store_id`),
   KEY `idx_store_room_02` (`room_name`),
   KEY `idx_store_room_03` (`record_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='门店房间';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='门店房间';
 
 -- ----------------------------
 -- Records of store_room
 -- ----------------------------
 BEGIN;
 INSERT INTO `store_room` VALUES (1, 2, '快乐神仙房1', 1, '2019-02-28 01:44:56', 1, '2019-03-25 00:56:19', 32, 0);
-INSERT INTO `store_room` VALUES (2, 2, '消除烦恼房', 0, '2019-02-28 01:44:56', 1, NULL, NULL, 0);
-INSERT INTO `store_room` VALUES (3, 2, '轻松房', 0, '2019-02-28 01:44:56', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (2, 2, '消除烦恼房', 0, '2019-02-28 01:44:56', 1, '2019-04-10 19:57:56', 1, 0);
+INSERT INTO `store_room` VALUES (3, 2, '轻松房就', 0, '2019-02-28 01:44:56', 1, '2019-04-08 19:19:45', 1, 0);
 INSERT INTO `store_room` VALUES (5, 1, '神仙房', 1, '2019-02-27 17:44:56', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (10, 1, '神仙房5', 1, '2019-03-01 08:45:39', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (12, 1, '神仙房6', 1, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (13, 2, '快乐神仙房2', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
-INSERT INTO `store_room` VALUES (14, 2, '快乐神仙房13', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (14, 2, '快乐神仙房', 1, '2019-03-02 01:05:10', 1, '2019-04-10 19:58:14', 1, 0);
 INSERT INTO `store_room` VALUES (15, 2, '快乐神仙房14', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (16, 2, '快乐神仙房18', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (17, 2, '快乐神仙房15', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (18, 2, '快乐神仙房16', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
-INSERT INTO `store_room` VALUES (19, 2, '快乐神仙房17', 0, '2019-03-02 01:05:10', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (19, 2, '快乐神仙房66', 1, '2019-03-02 01:05:10', 1, '2019-04-10 19:58:32', 1, 0);
 INSERT INTO `store_room` VALUES (20, 2, '快乐神仙房17', 1, '2019-03-02 01:05:10', 1, '2019-03-25 00:59:39', 32, 0);
-INSERT INTO `store_room` VALUES (21, 2, '天上人间', 0, '2019-04-08 16:42:56', 1, NULL, NULL, 0);
-INSERT INTO `store_room` VALUES (22, 2, '玫瑰房', 0, '2019-04-08 16:44:24', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (23, 2, '大神房', 0, '2019-04-08 18:05:58', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (24, 2, '娇娇房间', 0, '2019-04-10 19:26:08', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (25, 2, '娇娇按摩店', 0, '2019-04-10 19:51:44', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (26, 2, '娇娇店', 0, '2019-04-10 19:54:21', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (27, 2, '搞活经济', 0, '2019-04-10 20:01:38', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (28, 2, '和姐姐快', 0, '2019-04-10 20:03:09', 1, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (29, 36, '长江', 1, '2019-04-11 15:21:44', 85, '2019-04-11 15:23:07', 85, 0);
+INSERT INTO `store_room` VALUES (30, 37, '头部按摩', 1, '2019-04-11 18:00:20', 87, '2019-04-11 18:00:30', 87, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6295,14 +6173,14 @@ CREATE TABLE `stuff` (
   KEY `idx_stuff_02` (`stuff_name`),
   KEY `idx_stuff_03` (`tel`),
   KEY `idx_stuff_04` (`gender`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
+) ENGINE=InnoDB AUTO_INCREMENT=1121 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
 
 -- ----------------------------
 -- Records of stuff
 -- ----------------------------
 BEGIN;
 INSERT INTO `stuff` VALUES (1, 2, '吴浙', '189888888', 0, '2019-02-17 16:00:00', 1.0, '2005-03-20 00:00:00', '篮球', '', 'qq', 'null', '莞樟路', '2019-02-17 16:00:00', 2, '2019-03-21 08:15:22', 1, 1);
-INSERT INTO `stuff` VALUES (2, 1, '小李', '13988888888', 1, '2019-02-27 09:01:22', 1.0, '2022-03-15 00:00:00', '', NULL, '', NULL, '', '2019-02-27 09:01:22', 2, '2019-03-21 09:09:31', 32, 1);
+INSERT INTO `stuff` VALUES (2, 1, '小李', '139587925', 1, '2019-02-27 09:01:22', 1.0, '2022-03-15 00:00:00', '', NULL, '', NULL, '', '2019-02-27 09:01:22', 2, '2019-03-21 09:09:31', 32, 1);
 INSERT INTO `stuff` VALUES (3, 1, '小王子', '189888888', 0, '2019-02-17 16:00:00', 1.0, NULL, '篮球', NULL, NULL, NULL, NULL, '2019-02-17 16:00:00', 2, '2019-02-17 16:00:00', 1, 1);
 INSERT INTO `stuff` VALUES (4, 1, '王子', '189888888', 0, '2019-02-17 16:00:00', 1.0, NULL, NULL, NULL, NULL, NULL, NULL, '2019-02-17 16:00:00', 2, '2019-02-17 16:00:00', 1, 1);
 INSERT INTO `stuff` VALUES (5, 2, 'www', '189888888', 0, '2019-02-17 16:00:00', 1.0, NULL, NULL, NULL, NULL, NULL, NULL, '2019-02-17 16:00:00', 2, '2019-02-17 16:00:00', 1, 1);
@@ -6354,8 +6232,15 @@ INSERT INTO `stuff` VALUES (61, 2, 'momo', '13643344147', 2, NULL, NULL, NULL, N
 INSERT INTO `stuff` VALUES (62, 2, 'nana', '13929466741', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-04 10:28:18', 1, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (63, 33, '咯安安', '13713713713', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-04 11:41:42', 77, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (64, 2, 'yaya', '13694511474', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-04 11:46:53', 1, NULL, NULL, 0);
-INSERT INTO `stuff` VALUES (65, 2, '', '', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-07 11:57:33', 32, NULL, NULL, 0);
 INSERT INTO `stuff` VALUES (66, 35, '18664151888', '18664151888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-08 15:02:30', 1, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (1111, 6, 'sf', '1', 1, '2019-04-11 11:59:20', 2.0, '2019-04-11 11:59:23', '1', '1', '1', '1', '11', '2019-04-11 11:59:35', 1, '2019-04-11 11:59:38', 1, 1);
+INSERT INTO `stuff` VALUES (1112, 36, '小小店长', '13929433192', 0, NULL, 0.0, '2018-02-09 00:00:00', 'jbnj', NULL, '344394154', NULL, '', '2019-04-11 14:48:38', 1, '2019-04-12 10:21:15', 85, 0);
+INSERT INTO `stuff` VALUES (1113, 36, '煎饼', '17688686390', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 15:17:59', 85, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (1114, 37, '15999876807', '15999876807', 1, NULL, NULL, NULL, '', '', '', '', '', '2019-04-11 15:21:28', 1, '2019-04-11 17:30:37', 87, 0);
+INSERT INTO `stuff` VALUES (1115, 37, '刘大姐', '19874236542', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:10:31', 87, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (1116, 37, '柳絮', '123698574555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:42:20', 87, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (1117, 37, '李某某', '18681172013', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 18:27:33', 87, NULL, NULL, 0);
+INSERT INTO `stuff` VALUES (1120, 40, '18664151838', '18664151838', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-12 11:19:55', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6374,7 +6259,7 @@ CREATE TABLE `stuff_job` (
   PRIMARY KEY (`record_id`),
   KEY `idx_stuff_job_01` (`stuff_id`),
   KEY `idx_stuff_job_02` (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
 
 -- ----------------------------
 -- Records of stuff_job
@@ -6442,6 +6327,17 @@ INSERT INTO `stuff_job` VALUES (67, 64, 6, '2019-04-04 11:46:53', 1, NULL, NULL,
 INSERT INTO `stuff_job` VALUES (68, 64, 7, '2019-04-04 11:46:53', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (69, 65, 2, '2019-04-07 11:57:33', 32, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (70, 66, 4, '2019-04-08 15:02:30', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (71, 1112, 2, '2019-04-11 14:48:38', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (72, 1113, 7, '2019-04-11 15:18:00', 85, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (73, 1114, 2, '2019-04-11 15:21:28', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (74, 1115, 2, '2019-04-11 16:10:31', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (75, 1115, 5, '2019-04-11 16:10:31', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (76, 1116, 2, '2019-04-11 16:42:20', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (77, 1116, 5, '2019-04-11 16:42:20', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (78, 1117, 2, '2019-04-11 18:27:33', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (79, 1117, 5, '2019-04-11 18:27:33', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (80, 1117, 7, '2019-04-11 18:27:33', 87, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (83, 1120, 2, '2019-04-12 11:19:55', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6517,6 +6413,7 @@ INSERT INTO `system_program` VALUES ('SYS02_03_02', 'SYS02_03_02', '考勤管理
 INSERT INTO `system_program` VALUES ('SYS02_03_03', 'SYS02_03_03', '补卡申请', ' ', ' ', 2, ' ', 'SYS02_03');
 INSERT INTO `system_program` VALUES ('SYS02_03_04', 'SYS02_03_04', '员工管理', 'system/stuff/stuff.html', NULL, 3, 'test', 'SYS02_03');
 INSERT INTO `system_program` VALUES ('SYS02_03_05', 'SYS02_03_05', '补卡列表', 'system/patch_card/patch_card.html', NULL, 5, 'test', 'SYS02_03');
+INSERT INTO `system_program` VALUES ('SYS02_03_06', 'SYS02_03_06', '预约列表', 'system/stuff/reservation.html', NULL, 6, 'test', 'SYS02_03');
 INSERT INTO `system_program` VALUES ('SYS02_04', 'SYS02_04', '排班管理', '', ' ', 3, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_04_01', 'SYS02_04_01', '排班设置', ' system/shift_schedule/settings.html', ' ', 0, ' ', 'SYS02_04');
 INSERT INTO `system_program` VALUES ('SYS02_04_02', 'SYS02_04_02', '排班情况', ' system/stuff_schedule/stuff_settings.html', ' ', 1, ' ', 'SYS02_04');
@@ -6527,7 +6424,7 @@ INSERT INTO `system_program` VALUES ('SYS02_06_02', 'SYS02_06_02', '套卡管理
 INSERT INTO `system_program` VALUES ('SYS02_07', 'SYS02_07', '产品管理', ' ', ' ', 6, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_07_01', 'SYS02_07_01', '品牌管理', 'system/product/product_series.html', ' ', 0, ' ', 'SYS02_07');
 INSERT INTO `system_program` VALUES ('SYS02_07_02', 'SYS02_07_02', '系列管理', 'system/product/series.html', ' ', 1, ' ', 'SYS02_07');
-INSERT INTO `system_program` VALUES ('SYS02_07_03', 'SYS02_07_03', '产品设置', '  ', ' ', 2, ' ', 'SYS02_07');
+INSERT INTO `system_program` VALUES ('SYS02_07_03', 'SYS02_07_03', '产品设置', 'system/product/product.html', ' ', 2, ' ', 'SYS02_07');
 INSERT INTO `system_program` VALUES ('SYS02_08', 'SYS02_08', '消息管理', ' ', ' ', 8, ' ', 'SYS02');
 INSERT INTO `system_program` VALUES ('SYS02_08_01', 'SYS02_08_01', '店务消息', ' ', ' ', 0, ' ', 'SYS02_08');
 INSERT INTO `system_program` VALUES ('SYS02_08_02', 'SYS02_08_02', '店内工作消息', ' ', ' ', 1, ' ', 'SYS02_08');
@@ -6607,31 +6504,37 @@ CREATE TABLE `system_user` (
   KEY `IDX_SYSTEM_USER_1` (`user_name`),
   KEY `IDX_SYSTEM_USER_2` (`user_status`),
   KEY `IDX_SYSTEM_USER_3` (`online`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-04-08 17:20:04');
+INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-04-12 14:50:25');
 INSERT INTO `system_user` VALUES (2, 'C00002', '吴鸿建54321', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'0', '2019-03-30 10:40:19');
-INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-04-08 14:10:06');
+INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-04-11 16:29:06');
 INSERT INTO `system_user` VALUES (33, 'c00004', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
 INSERT INTO `system_user` VALUES (34, 'c00005', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
-INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-08 11:26:40');
+INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'1', '2019-04-12 14:11:38');
 INSERT INTO `system_user` VALUES (64, 'C00011', '店长测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-03 16:08:58');
-INSERT INTO `system_user` VALUES (65, '123680676131', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (65, '123680676131', '湛丰源333', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', NULL);
 INSERT INTO `system_user` VALUES (67, '12345678', 'app测试', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-03 12:16:30');
-INSERT INTO `system_user` VALUES (69, '18664151656', '18664151656', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-08 11:26:31');
+INSERT INTO `system_user` VALUES (69, '18664151656', '18664151656', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-12 14:11:36');
 INSERT INTO `system_user` VALUES (76, '18664151832', '18664151832', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-04 09:12:49');
-INSERT INTO `system_user` VALUES (77, '13717366311', '13717366311', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-04 16:31:08');
-INSERT INTO `system_user` VALUES (78, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (77, '13717366311', '13717366311', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-12 09:30:45');
 INSERT INTO `system_user` VALUES (79, '13643344147', 'momo', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (80, '13929466741', 'nana', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (81, '13713713713', '咯安安', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (82, '13694511474', 'yaya', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (83, '', '', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (84, '18664151888', '18664151888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-12 14:49:09');
+INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-12 14:35:16');
+INSERT INTO `system_user` VALUES (87, '15999876807', '15999876807', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-12 12:28:05');
+INSERT INTO `system_user` VALUES (88, '19874236542', '刘大姐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (89, '123698574555', '柳絮', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (90, '18681172013', '李某某', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-11 18:32:49');
+INSERT INTO `system_user` VALUES (93, '18664151838', '18664151838', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -6689,7 +6592,7 @@ CREATE TABLE `time_sheet` (
   KEY `idx_clocking_in_01` (`stuff_id`),
   KEY `idx_clocking_in_02` (`day`),
   KEY `idx_clocking_in_03` (`time_sheet_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='考勤表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='考勤表';
 
 -- ----------------------------
 -- Records of time_sheet
@@ -6703,6 +6606,8 @@ INSERT INTO `time_sheet` VALUES (7, 1, '2019-03-28', NULL, '2019-03-28 12:44:18'
 INSERT INTO `time_sheet` VALUES (9, 1, '2019-03-29', '2019-03-29 16:47:18', '2019-03-29 17:02:22', 2, '2019-03-29 16:47:19', 1, '2019-03-29 17:02:51', 1, 0);
 INSERT INTO `time_sheet` VALUES (10, 5, '2019-04-01', '2019-04-01 14:41:31', '2019-04-01 15:02:34', 2, '2019-04-01 14:41:31', 4, '2019-04-01 15:02:35', 4, 0);
 INSERT INTO `time_sheet` VALUES (12, 1, '2019-04-07', '2019-04-07 10:06:17', '2019-04-07 10:08:35', 2, '2019-04-07 10:06:18', 1, '2019-04-07 10:08:36', 1, 0);
+INSERT INTO `time_sheet` VALUES (21, 1, '2019-04-09', '2019-04-09 15:48:11', '2019-04-09 15:54:14', 1, '2019-04-09 15:48:11', 1, '2019-04-09 15:54:14', 1, 0);
+INSERT INTO `time_sheet` VALUES (22, 1, '2019-04-10', '2019-04-10 15:04:45', '2019-04-10 15:04:51', 2, '2019-04-10 15:04:46', 1, '2019-04-10 15:04:51', 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6722,7 +6627,7 @@ CREATE TABLE `verification_code_temporary` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_verification_code_temporary_01` (`phone_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='短信验证码临时表';
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COMMENT='短信验证码临时表';
 
 -- ----------------------------
 -- Records of verification_code_temporary
@@ -6747,6 +6652,30 @@ INSERT INTO `verification_code_temporary` VALUES (16, '13288868900', '8179', 3, 
 INSERT INTO `verification_code_temporary` VALUES (17, '18664151832', '1219', 3, 0, '2019-04-03 20:56:27', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (18, '13717366311', '2417', 3, 0, '2019-04-04 09:09:09', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (19, '13929433192', '1159', 3, 0, '2019-04-04 10:10:57', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (20, '18664151832', '3488', 3, 0, '2019-04-08 17:49:10', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (21, '13717366311', '9383', 3, 0, '2019-04-09 09:24:09', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (22, '15999876807', '6930', 3, 0, '2019-04-09 11:46:08', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (23, '15999876807', '6116', 3, 0, '2019-04-09 11:50:03', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (24, '18664151832', '5880', 3, 0, '2019-04-09 15:23:47', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (25, '18664151832', '5485', 3, 0, '2019-04-09 15:27:26', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (26, '18664151832', '6518', 3, 0, '2019-04-09 15:35:18', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (27, '18664151832', '5721', 3, 0, '2019-04-09 15:38:45', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (28, '18664151832', '7504', 3, 0, '2019-04-09 15:40:42', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (29, '13929433192', '7155', 3, 0, '2019-04-11 14:11:36', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (30, '15999876887', '2634', 3, 0, '2019-04-11 14:36:51', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (31, '13717366311', '8457', 3, 0, '2019-04-11 14:37:54', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (32, '15999876807', '8381', 3, 0, '2019-04-11 14:38:03', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (33, '13929433192', '7560', 3, 0, '2019-04-11 14:46:55', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (34, '15999876807', '4410', 3, 0, '2019-04-11 14:52:44', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (35, '15999876807', '6055', 3, 0, '2019-04-11 15:03:35', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (36, '15999876807', '4961', 3, 0, '2019-04-11 15:18:55', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (37, '13717366311', '2245', 3, 0, '2019-04-11 17:22:57', 77, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (38, '13717366311', '5791', 3, 0, '2019-04-11 17:24:56', 77, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (39, '13717366311', '5070', 3, 0, '2019-04-11 17:29:13', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (40, '13717366311', '2501', 3, 0, '2019-04-11 17:30:15', 77, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (41, '18664151832', '6750', 3, 0, '2019-04-12 11:09:04', 85, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (42, '18664151838', '8888', 3, 0, '2019-04-12 11:09:04', 85, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (43, '18664151838', '4599', 3, 0, '2019-04-12 11:18:08', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6767,7 +6696,7 @@ CREATE TABLE `vip_suite` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_vip_suite_01` (`suite_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡';
 
 -- ----------------------------
 -- Records of vip_suite
@@ -6792,6 +6721,7 @@ INSERT INTO `vip_suite` VALUES (19, 2, '就是我', 800.00, 0, '就随你哦', '
 INSERT INTO `vip_suite` VALUES (20, 2, '就是你', 800.00, 0, '就随你哦', '2019-04-02 19:01:32', 1, '2019-04-03 16:56:37', 1, 0);
 INSERT INTO `vip_suite` VALUES (21, 2, '测试编辑', 4000.00, 0, '倪敏婆婆QQ密码', '2019-04-03 15:51:01', 1, '2019-04-03 16:44:55', 1, 0);
 INSERT INTO `vip_suite` VALUES (22, 2, '测试4编4辑1', 4000.00, 0, '倪敏婆婆QQ密码', '2019-04-03 16:10:36', 1, '2019-04-03 16:47:37', 1, 0);
+INSERT INTO `vip_suite` VALUES (23, 36, '充值卡1', 1000.00, 0, '逆袭ONS', '2019-04-11 17:01:16', 85, '2019-04-11 17:23:26', 85, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6810,7 +6740,7 @@ CREATE TABLE `vip_suite_item` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_vip_suite_item_01` (`record_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡折扣项目';
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡折扣项目';
 
 -- ----------------------------
 -- Records of vip_suite_item
@@ -6853,6 +6783,9 @@ INSERT INTO `vip_suite_item` VALUES (74, 22, 0, 4, '2019-04-03 16:47:37', 1, NUL
 INSERT INTO `vip_suite_item` VALUES (75, 22, 1, 6, '2019-04-03 16:47:37', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (78, 20, 0, 4, '2019-04-03 16:56:40', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (79, 20, 1, 5, '2019-04-03 16:56:40', 1, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (82, 23, 0, 7, '2019-04-11 17:23:26', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (83, 23, 1, 7, '2019-04-11 17:23:26', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (84, 23, 2, 5, '2019-04-11 17:23:27', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6871,7 +6804,7 @@ CREATE TABLE `vip_suite_item_discount_range` (
   PRIMARY KEY (`record_id`),
   KEY `idx_vip_suite_item_discount_range_01` (`vip_suite_item_id`),
   KEY `idx_vip_suite_item_discount_range_02` (`service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡折扣项目适用范围表';
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COMMENT='充值卡折扣项目适用范围表';
 
 -- ----------------------------
 -- Records of vip_suite_item_discount_range
@@ -6928,6 +6861,9 @@ INSERT INTO `vip_suite_item_discount_range` VALUES (109, 78, 12, '2019-04-03 16:
 INSERT INTO `vip_suite_item_discount_range` VALUES (110, 78, 17, '2019-04-03 16:56:40', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item_discount_range` VALUES (111, 79, 12, '2019-04-03 16:56:40', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item_discount_range` VALUES (112, 79, 17, '2019-04-03 16:56:41', 1, NULL, NULL, 0);
+INSERT INTO `vip_suite_item_discount_range` VALUES (115, 82, 26, '2019-04-11 17:23:26', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item_discount_range` VALUES (116, 83, 26, '2019-04-11 17:23:26', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item_discount_range` VALUES (117, 84, 26, '2019-04-11 17:23:27', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
