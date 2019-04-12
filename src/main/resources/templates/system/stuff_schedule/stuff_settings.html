@@ -64,9 +64,13 @@
     var form = layui.form;
     var laydate=layui.laydate;
     var $ = layui.$;
-    productsearch(1);
+    var myDate = new Date();
+    var year =  myDate.getFullYear();    //获取完整的年份(4位,1970-????)
+    var month = myDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)
+    var time = year+"-"+month;
+    productsearch(1,'',time);
 
-    function productsearch(page,filterExpr) {
+    function productsearch(page,filterExpr,time) {
 
       var table = layui.table;
       laydate = layui.laydate,
@@ -81,8 +85,7 @@
         page : false,
         where : {
           filterExpr:filterExpr,
-          time:"2019-04",
-          recordId:2
+          time:time,
         },
         responseHandler: function (res, curr,count) {
           //return res;
