@@ -1,0 +1,408 @@
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>审核图片资料</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+    <link rel="stylesheet" href="../../../js/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+    <script type="text/javascript" src="../../../js/zyupload/zyupload-1.0.0.min.js"></script>
+    <script type="text/javascript" src="../../../js/url.js"></script>
+</head>
+<style type="text/css">
+ body{
+  height: 100%;
+  width: 100%;
+ }
+ .layui-form-label{width: 130px}
+ .btn {
+    background-color: #e5e5e5;
+    background-image: none;
+    filter: none;
+    border: 0;
+    padding: 7px 14px;
+    text-shadow: none;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.layui-input-inline{width: 214px !important}
+</style>
+
+<body>
+ <!-- 内容主体区域 -->
+ <div class="x-body layui-anim layui-anim-up">
+  <div class="layui-fluid">
+  
+    <form class="layui-form layui-form-pane1" lay-filter="first" >
+
+
+
+        <div class="layui-form-item"  id="img1">
+            <label class="layui-form-label">身份证正面</label>
+
+            <div class="layui-input-inline">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img headImage" src="" id="demo1" width=400px height=260px>
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item"  id="img2">
+            <label class="layui-form-label">身份证反面</label>
+
+            <div class="layui-input-inline">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img headImage" src="" id="demo2" width=400px height=260px>
+                    <p id="demoText2"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="img3">
+            <label class="layui-form-label">营业执照</label>
+
+            <div class="layui-input-inline">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img headImage" src="" id="demo3" width=400px height=260px>
+                    <p id="demoText3"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item"  id="img4">
+            <label class="layui-form-label">开户许可证</label>
+
+            <div class="layui-input-inline">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img headImage" src="" id="demo4" width=400px height=260px>
+                    <p id="demoText4"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 140px;">
+            <!--<p id="btnGroup" class="pull-right">-->
+                <!--<button class="layui-btn save"  lay-submit="" lay-filter="*" >审核通过</button>-->
+                <button class="layui-btn quxiao" >关闭</button>
+            <!--</p>-->
+        </div>
+        <input name="recordId" id="recordId"  type="hidden"  class="layui-input">
+
+    </form>
+  </div>
+  </div>
+  </body>
+  </html>
+<script type="text/javascript">
+
+
+
+    //重新渲染表单
+
+    function renderForm(){
+
+        layui.use('form', function(){
+
+            var form = layui.form;
+            form.render();
+
+        });
+
+    }
+
+
+
+    function child(data){
+        var $ = layui.jquery;
+
+
+
+        var recordId=data.recordId;
+        $('#recordId').val(recordId);
+
+
+        $.ajax({
+            url:"/hy/basic/stuff/getStuffDataPidForPc",
+            type:"get",
+            data:{"recordId":recordId},
+            async: false,
+            dataType:"json",
+            success:function(dataJson){
+                console.log('返回类别'+dataJson.data.pic1);
+                $('#demo1').attr('src', ctx+dataJson.data.pic2);
+                $('#demo2').attr('src', ctx+dataJson.data.pic3);
+                $('#demo3').attr('src', ctx+dataJson.data.pic1);
+                $('#demo4').attr('src', ctx+dataJson.data.pic4);
+
+                if(ctx+dataJson.data.pic4 == ""){
+                    $("#img4").hide()
+                }
+
+                // $.each(dataJson.data, function (i, n) {
+                //     console.log('第几个了'+i);
+                //     console.log(n.picUrl);
+                //     console.log('#demo'+i++);
+                //     $('#demo'+i).attr('src', ctx+n.picUrl);
+                //     console.log('#picRecordId'+i);
+                //     $('#picRecordId'+i).val(n.recordId);
+                //
+                //     console.log("#picRecordId"+i+"==========++++++++++++++++++++"+$('#picRecordId'+i).val());
+                //
+                //     var  recordId=$("#picRecordId1").val();
+                //
+                //     console.log("JquerRecordId"+recordId);
+                // });
+
+
+
+
+                renderForm();
+                //
+                // $('#parentSeriesId').val(dataJson.data.parentSeries);
+            },
+            error:function(){
+                alert("驳回异常")
+            }
+        });
+
+
+
+
+
+        $.ajax({
+            url:"/hy/basic/serviceSeries/queryParentServiceSeries",
+            type:"get",
+            data:{"serviceSeriesId":serviceSeriesId},
+            dataType:"json",
+            success:function(dataJson){
+                console.log('返回类别'+dataJson.data.parentSeries);
+                var selDom = $("#parentSeriesId");//根据id获取select的jquery对象
+
+                var sonSele = $("#serviceSeriesId");//根据id获取select的jquery对象
+
+                $.each(dataJson.data.seriesList, function (i, n) {
+                    // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+                    selDom.append("<option value="+n.recordId+">"+n.seriesName+"</option>");//添加option
+                    console.log(n.seriesName);
+                });
+
+                $.each(dataJson.data.sonSeriesList, function (i, n) {
+                    // $("#parentSeriesId").append("<option value='Value'>Text</option>");
+                    sonSele.append("<option value="+n.recordId+">"+n.seriesName+"</option>");//添加option
+                    console.log(n.seriesName);
+                });
+
+                renderForm();
+
+                $('#parentSeriesId').val(dataJson.data.parentSeries);
+            },
+            error:function(){
+                alert("驳回异常")
+            }
+        });
+
+
+        $('#serviceSeriesId').val(serviceSeriesId);
+
+        var serviceName = data.serviceName;
+        $('#serviceName').val(serviceName);
+        console.log("serviceName++++++++++++++++++"+$('#serviceName').val());
+        console.log("#picRecordId++++++++++++++++++++"+$('#picRecordId1').val());
+        var expiredTime = data.expiredTime;
+        $('#expiredTime').val(expiredTime);
+
+        var recordStatus = data.recordStatus;
+        if(recordStatus==1){
+            $("#recordStatus").attr("checked",'checked');
+        }
+        var periodPerTime = data.periodPerTime;
+        $('#periodPerTime').val(periodPerTime);
+
+        var pricePerTime = data.pricePerTime;
+        $('#pricePerTime').val(pricePerTime);
+
+        var priceMarket = data.priceMarket;
+        $('#priceMarket').val(priceMarket);
+
+        var price = data.price;
+        $('#price').val(price);
+
+        var returnVisit = data.returnVisit;
+        $('#returnVisit').val(returnVisit);
+
+        var timeTotal = data.timeTotal;
+        $('#timeTotal').val(timeTotal);
+
+        var description = data.description;
+        $('#description').val(description);
+
+        $('#storeId').val(data.storeId);
+
+
+
+
+    }
+
+    $("#button1").on("click",function(){
+        console.log("ajax表单提交");
+        $("#myForm").ajaxSubmit({
+            type : 'post', // 提交方式 get/post
+            url : '/hy/basic/service/addService', // 需要提交的 url
+            data:{"test1":1},
+            dataType : 'json',
+            success : function(data) {
+                if (data.respCode == '0000') {
+                    layer.msg('操作成功',{icon: 1,time:1000}, function() {
+                        parent.window.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);
+                    });
+
+                } else {
+                    layer.msg(data.respDesc, {
+                        icon : 2,
+                        time : 1000
+                    });
+                }
+
+            }
+        });
+
+    });
+
+
+
+
+
+
+    layui.use(["jquery", "upload", "form", "layer", "element"], function () {
+
+        element = layui.element,
+            layer = layui.layer,
+            upload = layui.upload,
+            form = layui.form;
+        //拖拽上传
+        var  recordId=$("#picRecordId1").val();
+        console.log('上传recordId'+recordId);
+        var masterDataId=12;
+
+        var uploadInst = upload.render({
+
+            elem: '#headImg1'
+            , url: '/hy/basic/pictures/uploadPicForPC'
+            ,data: {"recordType":0,"picType":0,"masterDataId":$("#picRecordId1").val(),"recordId":recordId}
+            , size: 500
+            , before: function (obj) {
+                console.log('成功返回');
+
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+
+                });
+            }
+            , done: function (res) {
+                console.log(res.msg);
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+                /*   console.log(res.data.src);*/
+                window.parent.uploadHeadImage(res.data.src);
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #8f8f8f;">上传成功!!!</span>');
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText1');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+        element.init();
+    });
+
+
+    layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate=layui.laydate;
+        /* function quxiao(){
+            alert(111);
+        } */
+        var $ = layui.jquery,
+            upload = layui.upload;
+
+        form.on('submit(*)', function(data){
+            console.log(data.field);
+            if(data.field.recordStatus=='on'){
+                data.field.recordStatus = 1
+            }else{
+                data.field.recordStatus = 0;
+            }
+
+            var url = '/hy/basic/service/updateService';
+
+            // $.ajax({
+            //     type:'POST',
+            //     url:url,
+            //     data: data.field,
+            //     success: function(data){
+            //         alert("操作成功！");
+            //         window.parent.location.reload(); //刷新父页面
+            //         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            //         parent.layer.close(index);  // 关闭layer
+            //
+            //     },
+            //     error:function(data){
+            //         alert("操作失败");
+            //         console.log(data);
+            //     }
+            // })
+
+            $.ajax({
+                type:'POST',
+                url:'/hy/basic/salon/auditPassForPc',
+                data: data.field,
+                contentType: "application/json",
+                success: function(data){
+
+                    alert("操作成功！");
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                     parent.layer.close(index);  // 关闭layer
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+            return false;
+        });
+
+    })
+
+
+
+
+
+
+</script>  

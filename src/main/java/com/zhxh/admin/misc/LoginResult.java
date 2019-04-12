@@ -16,7 +16,7 @@ public class LoginResult<T> {
     public final static int LOGIN_CODE_OK = 0;
 
     private int msgcode;
-    private String message;
+    private String msg;
     private boolean success;
     private Long salonId;
     private List<SystemRole> listRole;
