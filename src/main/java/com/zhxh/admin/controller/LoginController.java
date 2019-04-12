@@ -98,7 +98,7 @@ public class LoginController {
 
             Salon salon=salonDao.getSalonForId(stuff.getStoreId());
             if(salon.getAudit() == 0){
-                result.setCode(LoginResult.LOGIN_CODE_ERROR);
+                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
                 result.setMessage("门店还未通过审核！");
                 return result;
             }
@@ -108,14 +108,14 @@ public class LoginController {
             result.setSalonId(stuff.getStoreId());
             result.setListRole(list);
             result.setListJob(listJob);
-            result.setCode(LoginResult.LOGIN_CODE_OK);
+            result.setMsgcode(LoginResult.LOGIN_CODE_OK);
             result.setMessage("登录成功！");
             result.setSuccess(true);
             result.setData(null);
 
         } catch (Exception e) {
             Logger.error(e);
-            result.setCode(LoginResult.LOGIN_CODE_ERROR);
+            result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
             result.setMessage(e.getMessage());
         }
         return result;
