@@ -12,6 +12,8 @@ import com.hy.salon.basic.util.TimeBeginAndEndOFaMonth;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.ShiftVo;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -39,6 +41,8 @@ public class ScheduleController  {
     private StuffDao stuffDao;
     @Resource(name = "scheduleDao")
     private ScheduleDao scheduleDao;
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
     /**
      * 获取一个店有排班信息的所有员工
      * recordId ,门店id
@@ -126,6 +130,12 @@ public class ScheduleController  {
         Date timeStartDate = null;
         Date timeEndDate = null;
         Date[] dataList = null;
+
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            recordId = stuff.getStoreId();
+        }
 
 
         if(StringUtils.isNotEmpty(time)){
