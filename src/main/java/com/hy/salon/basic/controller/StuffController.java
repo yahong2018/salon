@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -360,10 +361,22 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             if(salon.getParentId() != -1){
                 salon=salonDao.getSalonForStoreId(salon.getParentId());
             }
-            StuffJob stuffJob=stuffJobDao.getStuffJobForStuff(recordId);
-            Job job=jobDao.getJobForId(stuffJob.getJobId());
+            List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(recordId);
+                String jobName="";
+                for(StuffJob sj:stuffJobList){
+                    Job job=jobDao.getJobForId(sj.getJobId());
+                    if("".equals(jobName)){
+                        jobName=job.getJobName();
+                    }else{
+                        jobName=jobName+","+job.getJobName();
+                    }
 
-            jsonObj.put("jobLevel",job.getJobLevel());
+
+                }
+
+
+
+            jsonObj.put("jobLevel",jobName);
             jsonObj.put("salon",salon.getSalonName());
             if(null == pic){
                 pic=new Pictures();
