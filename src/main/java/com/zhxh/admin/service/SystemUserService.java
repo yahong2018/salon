@@ -76,6 +76,10 @@ public class SystemUserService {
         return systemUserDAO.update(item);
     }
 
+    public int updateApp(SystemUser item) {
+        return systemUserDAO.update(item);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public int delete(Long[] userIdList) {
         //注意：正常来说，系统不允许删除账号

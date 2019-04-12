@@ -86,10 +86,6 @@ public class SystemUserController {
     @ResponseBody
     public Result updatePassword(String password,String tel,String verificationCode){
         Result r= new Result();
-        String where = "tel = #{tel}";
-        Map map = new HashMap<>();
-        map.put("tel",tel);
-        //Stuff stuff = stuffDao.getOne(where,map);
         SystemUser user = systemUserService.getUserByTel(tel);
         user.setPassword(password);
         List<VerificationCodeTemporary> verificationCodeTemporaryList=verificationCodeTemporaryDAO.getCode(tel);
@@ -101,7 +97,7 @@ public class SystemUserController {
                 r.setMsgcode(StatusUtil.ERROR);
                 return r;
             }else{
-                systemUserService.update(user);
+                systemUserService.updateApp(user);
                 r.setMsg("验证成功");
                 r.setSuccess(true);
                 r.setMsgcode(StatusUtil.OK);
