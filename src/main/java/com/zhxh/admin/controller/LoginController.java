@@ -111,6 +111,7 @@ public class LoginController {
             result.setCode(LoginResult.LOGIN_CODE_OK);
             result.setMessage("登录成功！");
             result.setSuccess(true);
+            result.setData("");
 
         } catch (Exception e) {
             Logger.error(e);
