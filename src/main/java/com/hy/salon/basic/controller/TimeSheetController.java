@@ -238,7 +238,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                             jsonS.put("abnormalType", 1);//
                         }
                         jsonS.put("SBStartTime", startTime);
-                        jsonS.put("time", listA.get(0).getAttendanceTime());
+                        jsonS.put("time", DateString.DateToString2(listA.get(0).getAttendanceTime()));
                         jsonS.put("address", listA.get(0).getAddress());
                         jsonS.put("type", 1);
 
@@ -250,7 +250,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                     } else {
                         if (listA.get(0).getAttendanceTime().getTime() < listA.get(1).getAttendanceTime().getTime()) {
                             //早上的
-                            jsonS.put("time", listA.get(0).getAttendanceTime());
+                            jsonS.put("time", DateString.DateToString2(listA.get(0).getAttendanceTime()));
                             jsonS.put("address", listA.get(0).getAddress());
                             jsonS.put("type", 1);
 
@@ -260,7 +260,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                                 jsonS.put("abnormalType", 1);
                             }
                             //晚上的
-                            jsonX.put("time", listA.get(1).getAttendanceTime());
+                            jsonX.put("time", DateString.DateToString2(listA.get(1).getAttendanceTime()));
                             jsonX.put("address", listA.get(1).getAddress());
                             jsonX.put("type", 2);
 
