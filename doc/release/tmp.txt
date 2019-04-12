@@ -1,0 +1,5 @@
+DELETE salon.system_user,salon.role_user,salon.stuff,salon.role_action from salon.system_user
+LEFT JOIN salon.role_user ON salon.system_user.record_id=salon.role_user.user_id
+LEFT JOIN salon.role_action ON salon.system_user.record_id=salon.role_action.system_user_id
+LEFT JOIN salon.stuff ON salon.stuff.record_id=salon.role_action.stuff_id
+ WHERE salon.system_user.record_id=93
