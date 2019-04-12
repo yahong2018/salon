@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class LoginResult {
+public class LoginResult<T> {
     public final static int LOGIN_CODE_ERROR = -1;
     public final static int LOGIN_CODE_OK = 0;
 
@@ -22,6 +22,8 @@ public class LoginResult {
     private List<SystemRole> listRole;
     private List<Job> listJob;
     private List<Salon> listSalon;
+
+    private T data;
 
     private Stuff stuff;
 }
