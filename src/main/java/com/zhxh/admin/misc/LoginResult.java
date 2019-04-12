@@ -26,4 +26,6 @@ public class LoginResult<T> {
     private T data;
 
     private Stuff stuff;
+
+    private String  salonName;
 }

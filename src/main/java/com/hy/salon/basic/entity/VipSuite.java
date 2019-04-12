@@ -20,7 +20,9 @@ public class VipSuite extends TraceableEntity<Long> {
 
     private String description;
 
+    private String picUrl;
 
+    private String discountData;
 
 
 }

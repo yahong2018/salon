@@ -20,16 +20,29 @@ public class LogCostInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse response, Object o) throws Exception {
 
+       String method= httpServletRequest.getMethod();
+
         SystemUser user = authenticateService.getCurrentLogin();
         if(null == user){
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/html;charset=utf-8");
             JSONObject jsonObj = new JSONObject();
-            jsonObj.put("msgcode", "70010");
-            jsonObj.put("msg", "登录超时");
-            jsonObj.put("data", "请重新登录");
-            response.getWriter().write(jsonObj.toJSONString());
-            return false;
+         if(method.equals("GET")){
+             jsonObj.put("msgcode", "70010");
+             jsonObj.put("msg", "登录超时");
+             jsonObj.put("data", "请重新登录");
+             response.getWriter().write(jsonObj.toJSONString());
+             return false;
+         }else if(method.equals("POST")){
+             JSONObject jsonObj2 = new JSONObject();
+             jsonObj.put("msgcode", "70010");
+             jsonObj.put("msg", "登录超时");
+             jsonObj.put("data", "请重新登录");
+             jsonObj2.put("data",jsonObj);
+             response.getWriter().write(jsonObj2.toJSONString());
+             return false;
+         }
+
         }
 
         return true;

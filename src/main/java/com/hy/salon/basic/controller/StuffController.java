@@ -222,6 +222,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
 
+
     /**
      * 获取员工按美容院分类
      *
@@ -230,22 +231,22 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ResponseBody
     @RequestMapping("getStuff")
     @ApiOperation(value="获取员工按美容院分类", notes="获取员工按美容院分类")
-    public Result getStuff(String jobLevel){
-        SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
-        if(jobLevel==null){
-            List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
-            for(Map map:listMap){
-               jobLevel =  (String) map.get("jobLevel");
-            }
-        }
+    public Result getStuff(String jobLevel,Long salonId){
+//        SystemUser user = authenticateService.getCurrentLogin();
+//        Stuff stuff2=stuffDao.getStuffForUser(user.getRecordId());
+//        if(jobLevel==null){
+//            List<Map> listMap = stuffDao.getJobLevelByStuffId(stuff2.getRecordId());
+//            for(Map map:listMap){
+//               jobLevel =  (String) map.get("jobLevel");
+//            }
+//        }
 
 
 
 
         Result r= new Result();
         if(jobLevel.equals("0")){
-            List<Salon> stuffList=salonDao.getSalonForStore(stuff2.getStoreId());
+            List<Salon> stuffList=salonDao.getSalonForStore(salonId);
 
 //        List<Salon> stuffList=salonService.getSalonForCreateId(user.getRecordId());
 
@@ -286,8 +287,8 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             r.setData(jsonArr);
         }else{
             JSONArray jsonArr=new JSONArray();
-            List<Stuff> stuff= stuffService.getStuffForStoreId(stuff2.getStoreId());
-            Salon salon=salonDao.getSalonForStoreId(stuff2.getStoreId());
+            List<Stuff> stuff= stuffService.getStuffForStoreId(salonId);
+            Salon salon=salonDao.getSalonForStoreId(salonId);
             for(Stuff ss:stuff){
                 Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
                 if(null!=pic){
@@ -330,25 +331,36 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
 
+
+
+
+
+
+
+
+
+
+
     /**
      * 获取店长个人资料
      */
     @ResponseBody
     @RequestMapping(value="getStuffData",method = RequestMethod.GET)
     @ApiOperation(value="获取店长个人资料", notes="获取店长个人资料")
-    public Result getStoreDetails() {
+    public Result getStoreDetails(Long recordId) {
         Result r= new Result();
         try {
             JSONObject jsonObj=new JSONObject();
-        SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-        Pictures pic=picturesDao.getOnePicturesForCondition(stuff.getRecordId(),new Byte("1"),new Byte("0"));
-        Salon salon=salonDao.getSalonForStoreId(stuff.getStoreId());
+//        SystemUser user = authenticateService.getCurrentLogin();
+//        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            Stuff stuff=stuffDao.getStuffForRecordId(recordId);
+            Pictures pic=picturesDao.getOnePicturesForCondition(recordId,new Byte("1"),new Byte("0"));
+            Salon salon=salonDao.getSalonForStoreId(stuff.getStoreId());
 
-        if(salon.getParentId() != -1){
-            salon=salonDao.getSalonForStoreId(salon.getParentId());
-        }
-            StuffJob stuffJob=stuffJobDao.getStuffJobForStuff(stuff.getRecordId());
+            if(salon.getParentId() != -1){
+                salon=salonDao.getSalonForStoreId(salon.getParentId());
+            }
+            StuffJob stuffJob=stuffJobDao.getStuffJobForStuff(recordId);
             Job job=jobDao.getJobForId(stuffJob.getJobId());
 
             jsonObj.put("jobLevel",job.getJobLevel());
@@ -358,10 +370,10 @@ public class StuffController extends SimpleCRUDController<Stuff> {
             }
             jsonObj.put("pic",pic);
             jsonObj.put("stuff",stuff);
-        r.setMsg("请求成功");
-        r.setMsgcode(StatusUtil.OK);
-        r.setSuccess(true);
-        r.setData(jsonObj);
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+            r.setData(jsonObj);
         }catch (Exception e){
             e.printStackTrace();
             r.setSuccess(false);

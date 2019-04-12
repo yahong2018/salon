@@ -97,10 +97,14 @@ public class LoginController {
 
 
             Salon salon=salonDao.getSalonForId(stuff.getStoreId());
+
             if(salon.getAudit() == 0){
                 result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
                 result.setMsg("门店还未通过审核！");
                 return result;
+            }
+            if(null != salon){
+                result.setSalonName(salon.getSalonName());
             }
 
             result.setStuff(stuff);

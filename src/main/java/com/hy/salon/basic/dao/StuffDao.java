@@ -71,6 +71,13 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
         return this.getSqlHelper().getSqlSession().selectList(SQL_FUZZY_QUERY_STUFF_FOR_STOREID, parameters);
     }
 
+    public Stuff getStuffForRecordId(Long recordId){
+        String where="record_id=#{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+        return this.getOne(where,parameters);
+    }
+
     protected final static String SQL_GET_STUFF_BY_USER = "com.hy.salon.basic.dao.GET_STUFF_BY_USER";
 
     protected final static String SQL_FUZZY_QUERY_STUFF="com.hy.salon.basic.dao.FUZZY_QUERY_STUFF";

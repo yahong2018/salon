@@ -21,5 +21,14 @@ public class VipSuiteItemDAO extends BaseDAOWithEntity<VipSuiteItem> {
 
     }
 
+    public VipSuiteItem queryVipSuitForId(Long Id,Byte recordType){
+        String where="vip_suite_id = #{Id} and record_type = #{recordType}";
+        Map parameters = new HashMap();
+        parameters.put("Id", Id);
+        parameters.put("recordType", recordType);
+        return this.getOne(where,parameters);
+
+    }
+
 
 }

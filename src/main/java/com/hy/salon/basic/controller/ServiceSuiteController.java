@@ -235,6 +235,20 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             r.setTotal(serviceSuiteDao.querySuitItemForCreateId(storeId).size());
             PageHelper.startPage(page, 10);
             List<ServiceSuite> suiteList= serviceSuiteDao.querySuitItemForCreateId(storeId);
+            if(null != suiteList && suiteList.size()!=0){
+                for(ServiceSuite s:suiteList){
+                if(new Date().getTime()>s.getTimeExpired().getTime()){
+                    s.setIsExpired("1");
+                }else{
+                    s.setIsExpired("0");
+                }
+                    List<Pictures> pic=picturesDao.getPicturesForCondition(s.getRecordId(),new Byte("3"),new Byte("0"));
+                    if(null!=pic && pic.size()!=0){
+                        s.setPicUrl(pic.get(0).getPicUrl());
+                    }
+                }
+            }
+
 
 
             r.setData(suiteList);
