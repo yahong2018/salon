@@ -104,7 +104,7 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
 
 
 
-    public List<MemberVo> getMember(Long salonId, String filterExpr){
+    public List<MemberVo> getMember(Long salonId, String filterExpr,int jobLevel){
         String startTime="";
         String endTime="";
         String defaultStartDate="";
@@ -193,7 +193,12 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
         }else{
             parameters.put("tag", tag);
         }
-        return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_MEMBER_FOR_SALON, parameters);
+        if(jobLevel==0){
+            return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_MEMBER_FOR_SALON2, parameters);
+        }else{
+            return this.getSqlHelper().getSqlSession().selectList(SQL_QUERY_MEMBER_FOR_SALON, parameters);
+        }
+
 
     }
 
@@ -201,6 +206,7 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
 
 
 
+    protected final static String SQL_QUERY_MEMBER_FOR_SALON2 = "com.hy.salon.basic.dao.QUERY_MEMBER_FOR_SALON2";
 
     protected final static String SQL_QUERY_MEMBER_FOR_SALON = "com.hy.salon.basic.dao.QUERY_MEMBER_FOR_SALON";
 

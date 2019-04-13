@@ -348,7 +348,7 @@ public class MemberController extends SimpleCRUDController<Member> {
      */
     @ResponseBody
     @RequestMapping("getMember")
-    public Result getMember(int page, HttpServletRequest request,int limit) {
+    public Result getMember(int page, HttpServletRequest request,int limit,int jobLevel) {
         Result result = new Result();
 
         try {
@@ -357,15 +357,20 @@ public class MemberController extends SimpleCRUDController<Member> {
 
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-
-            result.setTotal(memberDao.getMember(stuff.getStoreId(),filterExpr).size());
             List<MemberVo> memberList=new ArrayList<>();
-            if(limit==-1){
-                memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
-            }else{
-                PageHelper.startPage(page, 10);
-                memberList=memberDao.getMember(stuff.getStoreId(),filterExpr);
-            }
+
+                result.setTotal(memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel).size());
+                if(limit==-1){
+                    memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
+                }else{
+                    PageHelper.startPage(page, 10);
+                    memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
+                }
+
+
+
+
+
 
             result.setData(memberList);
             result.setMsgcode(StatusUtil.OK);
