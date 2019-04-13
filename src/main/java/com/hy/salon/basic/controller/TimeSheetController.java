@@ -451,7 +451,16 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
         Result result=new Result();
         try {
             List<Schedule> list = timeSheetService.getTimeId(stuffId, time);
-            result.setData(list);
+            JSONArray jsonArray = new JSONArray();
+
+            for(Schedule schedule:list){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("day",DateString.DateToString(schedule.getDay()));
+                jsonObject.put("recordId",schedule.getRecordId());
+                jsonArray.add(jsonObject);
+            }
+
+            result.setData(jsonArray);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){

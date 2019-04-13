@@ -1,6 +1,7 @@
 package com.hy.salon.basic.dao;
 
 import com.github.pagehelper.PageHelper;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.SalonShift;
 import com.hy.salon.basic.entity.Shift;
@@ -135,6 +136,9 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
 
         ejr.setTotal(listCount);
         ejr.setData(listSalonShift);
+        ejr.setMsg("");
+        ejr.setMsgcode(StatusUtil.OK);
+        ejr.setSuccess(true);
         return ejr;
     }
 }

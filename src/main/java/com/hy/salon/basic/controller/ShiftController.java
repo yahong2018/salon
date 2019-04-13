@@ -2,8 +2,10 @@ package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.ShiftDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Salon;
+import com.hy.salon.basic.entity.SalonShift;
 import com.hy.salon.basic.entity.Shift;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.NurseLogService;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,10 +48,11 @@ public class ShiftController {
     @Resource(name = "salonService")
     private SalonService salonService;
 
-
-    /**
+    @Resource(name = "shiftDao")
+    private ShiftDao shiftDao;
+   /* *//**
      * 查询一个门店的排班
-     */
+     *//*
     @RequestMapping("/getSalonShift")
     @ResponseBody
     public ExtJsResult getSalonShift(HttpServletRequest request){
@@ -60,7 +64,31 @@ public class ShiftController {
         er.setSuccess(true);
         er.setMsgcode(StatusUtil.OK);
         er.setData(list);
+        er.setMsg("");
+
         return  er;
+    }
+*/
+
+    /**
+     * 查询一个门店排班
+     */
+    @RequestMapping("/getSalonShift")
+    @ResponseBody
+    public ExtJsResult getSalonShift(HttpServletRequest request){
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        String where2="store_id=#{storeId} order by shift_type";
+        Map salonMap = new HashMap();
+        salonMap.put("storeId", stuff.getStoreId());
+        List<Shift> listShift = shiftDao.getByWhere(where2,salonMap);
+        ExtJsResult ejr = new ExtJsResult();
+
+        ejr.setData(listShift);
+        ejr.setSuccess(true);
+        ejr.setMsgcode("0");
+        ejr.setMsg("");
+        return  ejr;
     }
 
     /**

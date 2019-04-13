@@ -231,13 +231,19 @@ public class TimeSheetService {
             Boolean flag = false;
             for (TimeSheet ts :timeSheet){
                 if(temp==0){
-                    if(ts.getTimeSheetType()==1){
+                    if(ts.getTimeSheetType()==4){
                         lateNum = lateNum+1;
-                    }else if(ts.getTimeSheetType()==2){
                         leaveEarlyNum = leaveEarlyNum+1;
-                    }else if(ts.getTimeSheetType()==3){
-                        leaveNum = leaveNum+1;
+                    }else{
+                        if(ts.getTimeSheetType()==1){
+                            lateNum = lateNum+1;
+                        }else if(ts.getTimeSheetType()==2){
+                            leaveEarlyNum = leaveEarlyNum+1;
+                        }else if(ts.getTimeSheetType()==3){
+                            leaveNum = leaveNum+1;
+                        }
                     }
+
 
 /*                    if(ts.getTimeStart()==null||ts.getTimeStart().equals("")){
                         checkinOmission = checkinOmission+1;

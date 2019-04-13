@@ -62,6 +62,10 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
         if((nowM+"").length()==1){
             newStr = "0"+(nowM+1);
         }
+        if((temp[1]+"").length()==1){
+            temp[1] = "0"+temp[1];
+        }
+
         if(temp[1].equals(newStr)){
              timeEnd=time+"-"+nowD;//当月就是拿到今天的时间
         }else{

@@ -22,14 +22,22 @@ public class ShiftService {
             String where=" store_id=#{storeId} ";
             listMap.put("where", where);
             List<Shift> shiftList = shiftDao.getList(listMap, parameters);
-            for(Shift sf : shiftList){
-                for (Shift shift : list) {
+            for (Shift shift : list) { //新的
+                int type = 0;
+                for(Shift sf : shiftList){//旧的，
                     if(sf.getShiftType().equals(shift.getShiftType())){
                         sf.setTimeStart(shift.getTimeStart());
                         sf.setTimeEnd(shift.getTimeEnd());
+                        shiftDao.update(sf);
+                        type++;
+                        break;
                     }
+
                 }
-                shiftDao.update(sf);
+                if(type==0){
+                    shiftDao.insert(shift);
+                }
+
             }
 
         }
