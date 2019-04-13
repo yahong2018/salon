@@ -167,7 +167,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                     result.setMsg("当天没有排班信息");
                     result.setMsgcode("0");
                     JSONObject json = new JSONObject();
-                    json.put("picturesUrl", pictures.getPicUrl());
+                    json.put("picturesUrl", pictures==null?"":pictures.getPicUrl());
                     json.put("type", 3);
                     json.put("sxtype", 3);//没有排班信息
                     result.setData(json);
@@ -323,11 +323,10 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
                 jsonK.put("picturesUrl", pictures==null?"":pictures.getPicUrl());
                 jsonK.put("sxtype", 3);//
                 result.setData(jsonK);
-                result.setSuccess(true);
-                result.setMsgcode(StatusUtil.OK);
-                e.printStackTrace();
                 result.setSuccess(false);
                 result.setMsgcode(StatusUtil.ERROR);
+                e.printStackTrace();
+
             }
         }catch (Exception e){
             e.printStackTrace();

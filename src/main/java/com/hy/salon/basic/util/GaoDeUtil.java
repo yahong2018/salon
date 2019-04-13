@@ -1,8 +1,11 @@
 package com.hy.salon.basic.util;
 
+import com.hy.salon.basic.common.handler.LoggerAspect;
 import com.hy.salon.basic.vo.RequestResult;
 import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -17,7 +20,7 @@ public class GaoDeUtil {
     private static String KEY = "4f071e21116c6cdd1747f67220913890";
 
     private static Pattern pattern = Pattern.compile("\"location\":\"(\\d+\\.\\d+),(\\d+\\.\\d+)\"");
-
+    private static Logger logger = LoggerFactory.getLogger(LoggerAspect.class);
     static {
         init();
     }
@@ -50,6 +53,7 @@ public class GaoDeUtil {
         JSONObject resultStirng = JSONObject.fromObject(result);
 
         int distance = resultStirng.getInt("distance");
+        logger.info("距离大小：{}",distance);
         if(distance<=200){
             flag = true;
         }

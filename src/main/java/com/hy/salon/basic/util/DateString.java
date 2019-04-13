@@ -1,5 +1,8 @@
 package com.hy.salon.basic.util;
 
+import com.hy.salon.sys.SalonApplication;
+import org.springframework.boot.SpringApplication;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -100,6 +103,24 @@ public class DateString {
         try {
             System.out.println(sdf.parse(string));
             return  sdf.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+/*    public static void main(String[] args) {
+        Date  datg = StringToDateAddNum2("2019-04-12",1);
+        datg.getTime();
+    }*/
+    public static Date StringToDateAddNum2(String string,int num ){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            System.out.println(sdf.parse(string));
+            Calendar ca=Calendar.getInstance();
+            Date date = sdf.parse(string);
+            ca.setTime(date);
+            ca.add(Calendar.DAY_OF_MONTH, num);
+            return ca.getTime() ;
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -213,10 +213,11 @@ public class TimeSheetService {
         //查询该员工一个月的排班,减掉休息就是应该出勤
         List<Schedule> list = scheduleDao.getPaiByStuffIdTime(stuffId, time);
         result.setAttendanceNum(list.size());
-
+        map.put("attendanceNum",list.size());
         List<TimeSheet> timeSheet=timeSheetDao.getTSheets(stuffId,time);
 
         result.setHasAttendanceNum(timeSheet.size());
+        map.put("hasAttendanceNum",timeSheet.size());
         int yInt = 0;
 
         int lateNum = 0;
@@ -238,11 +239,11 @@ public class TimeSheetService {
                         leaveNum = leaveNum+1;
                     }
 
-                    if(ts.getTimeStart()==null||ts.getTimeStart().equals("")){
+/*                    if(ts.getTimeStart()==null||ts.getTimeStart().equals("")){
                         checkinOmission = checkinOmission+1;
                     }else if(ts.getTimeEnd()==null||ts.getTimeEnd().equals("")){
                         signOmission = signOmission+1;
-                    }
+                    }*/
 
                     if(ts.getTimeSheetType()!=0){
                         yInt=yInt+1;
@@ -253,12 +254,13 @@ public class TimeSheetService {
         }
         absenceFromDutyNum = list.size() - timeSheet.size();
         result.setYichangNum(yInt);
-        map.put("lateNum",lateNum);
-        map.put("leaveEarlyNum",leaveEarlyNum);
-        map.put("absenceFromDutyNum",absenceFromDutyNum);
-        map.put("checkinOmission",checkinOmission);
-        map.put("signOmission",signOmission);
-        map.put("leaveNum",leaveNum);
+        map.put("yichangNum",yInt);
+        map.put("lateNum",lateNum);//迟到
+        map.put("leaveEarlyNum",leaveEarlyNum);//早退
+        map.put("absenceFromDutyNum",absenceFromDutyNum);//缺勤
+        map.put("checkinOmission",checkinOmission);//签到遗漏
+        map.put("signOmission",signOmission);//签退遗漏
+        map.put("leaveNum",leaveNum);//请假天数
         //正常出勤,缺勤
         /*if(timeSheet!=null){
             map.put("attendance",timeSheet.size());
@@ -288,10 +290,20 @@ public class TimeSheetService {
 
         if(schedule!=null){
             result.setAttendanceNum(result.getAttendanceNum()+1);
-            TimeSheet timeSheet=timeSheetDao.getTSheet(stuffId,time+" 00:00:00",time+" 24:59:59");
+            String startTime = time;
+            /*Date endTime = DateString.StringToDate(time);
+            Calendar c = Calendar.getInstance();
+            c.setTime(endTime);
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            Date temp = c.getTime();*/
+
+
+            Date date = DateString.StringToDateAddNum2(time,1);
+            TimeSheet timeSheet=timeSheetDao.getTSheet(stuffId,time+" 00:00:00",DateString.DateToString(date)+" 00:00:00");
             if(timeSheet!=null){
                 result.setHasAttendanceNum(result.getHasAttendanceNum()+1);
-            }else{
+            }
+            if(timeSheet.getTimeSheetType()!=0){
                 result.setYichangNum(result.getYichangNum()+1);
             }
         }
