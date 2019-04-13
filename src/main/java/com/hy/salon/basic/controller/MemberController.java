@@ -167,7 +167,6 @@ public class MemberController extends SimpleCRUDController<Member> {
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
             if(condition.getRecordId()==null){
-                condition.setMemberGrade(new Long(0));
                 condition.setInitialStoreId(stuff.getStoreId());
                 condition.setBalance(new Double(0));
                 condition.setIntegral(new Double(0));
@@ -366,9 +365,6 @@ public class MemberController extends SimpleCRUDController<Member> {
                     PageHelper.startPage(page, 10);
                     memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
                 }
-
-
-
 
 
 
