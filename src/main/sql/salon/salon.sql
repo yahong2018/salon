@@ -278,7 +278,7 @@ create table vip_suite_item
 
   primary key (record_id),
   index idx_vip_suite_item_01(record_type),
-  index idx_vip_suite_item_02(item_id)
+  index idx_vip_suite_item_02(vip_suite_id)
 )comment '充值卡折扣项目';
 
 create table vip_suite_item_discount_range
@@ -458,7 +458,11 @@ create table member
   primary_beautician               bigint                          null,       -- 负责美容师
   entry_time                       datetime                        null,       -- 入店时间
 
-  balance                          double(10,2)                    not null,   -- 账户总余额
+  balance_cash                     double(10,2)                    not null,
+                      -- 现金余额: 退款的余额
+                      -- todo: 这个钱包里的钱，会员如何使用？
+
+  balance_total                    double(10,2)                    not null,   -- 账户总余额
   integral                         double(10,2)                    not null,   -- 账户积分
   debt                             double(10,2)                    not null,   -- 账户欠款
   amount_consumer                  double(10,2)                    not null,   -- 总消费
@@ -960,11 +964,11 @@ create table visual_range
 (
   record_id                   bigint                 auto_increment            not null,
   stuff_id                    bigint                                           not null, -- 可视员工
-  statu                       int                                              not null, -- 可视状态 0 可见 1 不可见
+  status                      int                                              not null, -- 可视状态 0 可见 1 不可见
 
   primary key (record_id),
   index idx_visual_range_01(stuff_id),
-  index idx_visual_range_02(statu)
+  index idx_visual_range_02(status)
 )comment '可视范围表';
 
 create table visual_range_mapping
@@ -1013,58 +1017,245 @@ create table verification_code_temporary
   index idx_verification_code_temporary_01(phone_no)
 )comment '短信验证码临时表';
 
+create table card_balance
+(
+  record_id                    bigint              auto_increment               not null,
+  member_id                    bigint                                           not null,   -- 会员Id
+  card_id                      bigint                                           not null,   -- 卡Id
+  card_type                    tinyint                                          not null,
+                -- 卡类型:0. 充值卡  1.次卡    3.套卡   4.套卡的项目
+                -- 如果是充值卡，写程序的时候要注意卡金额的合并
 
-#
-#
-# create table purchase_card_info
-# (
-#   record_id                         bigint        auto_increment      not null,
-#   member_id                         bigint                            not null,  -- 开卡的会员
-#   vip_suite_id                      bigint                            not null,  -- 充值卡的种类
-#   purchase_card_info_detail_id      bigint                            not null,  -- 明细表的id
-#   records_of_consumption_id         bigint                            not null,  -- 消费记录明细
-#
-#   primary key (record_id),
-#   index idx_purchase_card_info_01(member_id)
-# )comment '会员开卡记录';
-#
-# create table purchase_card_info_detail
-# (
-#   record_id                bigint        auto_increment       not null,
-#   service_id               bigint                             not null,  -- 次卡/服务项目
-#
-#   primary key(record_id),
-#   index idx_purchase_card_info_detail_01(service_id)
-# )comment '会员卡开卡记录明细表';
-#
-# create table records_of_consumption
-# (
-#   record_id                   bigint           auto_increment          not null,
-#   consumption_type            bigint                                   not null,  -- 消费类型 0 开卡 1 充值 2 做服务 3 购买本店商品
-#   purchase_card_info_id       bigint                                   not null,  -- 消费类型0： 绑定开卡记录
-#   vip_suite_id                bigint                                   not null,  -- 消费类型1： 充值的时候，绑定充值卡
-#   vip_suite_num               int                                      not null,  -- 消费类型1： 购买充值卡的数量
-#   payment_amount              double(10,2)                             not null,  -- 消费类型0/1/2/3: 应付款金额
-#   terms_of_payment            tinyint                                  not null,  -- 消费类型0/1/2/3: 付款方式 0 现金 1 支付宝 2 微信 3 信用卡 4 划卡
-#   service_id                  bigint                                   not null,  -- 消费类型2：使用的次卡
-#   service_num                 tinyint                                  not null,  -- 消费类型2：使用次卡服务的次数，默认1
-#   is_vip_suite                tinyint                                  not null,  -- 消费类型2/3：是否使用会员卡 0 否 1 是
-#   discount_price_before       double(10,2)                             not null,  -- 消费类型2/3：折前价
-#   present_cash_coupon         double(10,2)                             not null,  -- 消费类型2/3：赠送的现金券
-#   present_integral            double(10,2)                             not null,  -- 消费类型2/3：赠送的积分
-#   signature                   blob                                     not null,  -- 消费类型2/3：顾客签字
-#   opt_time                    bigint                                   not null,  -- 操作时间
-#   salon_id                    bigint                                   not null,  -- 操作的门店
-#   stuff_id                    bigint                                   not null,  -- 操作的员工
-#   opt_type                    tinyint                                  not null,  -- 操作类型 0 店内消费
-#
-#   primary key(record_id),
-#   index idx_records_of_consumption_01(consumption_type),
-#   index idx_records_of_consumption_02(opt_time),
-#   index idx_records_of_consumption_03(salon_id),
-#   index idx_records_of_consumption_04(stuff_id),
-#   index idx_records_of_consumption_05(opt_type)
-# )comment '消费记录表';
+  balance                      double(8,2)                                      not null,  -- 卡户余额/剩余 次数
+  card_status                  tinyint                                          not null,  -- 卡的状态: 0.正常  1.失效
+  date_expired                 datetime                                         null,      -- 失效时间：null表示永久有效
+
+  parent_id                    bigint                                           not null,  -- 所属套卡:如果是充值卡、次卡、套卡，则为0，只有次卡的项目才有此字段的值
+
+  create_date                  datetime                                         not null, -- 创建时间/购买时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,     -- 最后一次充值时间
+  update_by                    bigint                                           null,     -- 最后一次充值操作人
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_card_balance_01(member_id),
+  index idx_card_balance_02(card_type)
+) comment  '卡户余额';
+
+
+create table card_purchase
+(
+  record_id                    bigint              auto_increment              not null,
+  member_id                    bigint                                          not null,   -- 会员Id
+  card_id                      bigint                                          not null,   -- 卡Id
+  card_type                    tinyint                                         not null,
+               -- 卡类型:0. 充值卡  1.套卡  2.次卡
+               -- 如果是充值卡，写程序的时候要注意卡金额的合并
+  amount_market                double(8,2)                                     not null,   -- 原价
+  amount                       double(8,2)                                     not null,   -- 充值金额/总金额 = 原价 - 赠送金额(在子表中)
+  amount_debit                 double(8,2)                                     not null,   -- 欠款
+  amount_payed                 double(8,2)                                     not null,   -- 实际支付/现金支付 = 交易价格-欠款
+  method_payed                 tinyint                                         not null,
+       -- 支付方式: 0.微信  1.支付宝  2.银行卡  10.现金
+       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
+
+  remark                       varchar(500)                                    null,       -- 备注
+  member_signature             varchar(255)                                    not null,   -- 客户签名
+
+  create_date                  datetime                                         not null,  -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_card_purchase_01 (member_id),
+  index idx_card_purchase_02(card_id),
+  index idx_card_purchase_03(card_type)
+) comment '购卡记录';
+
+
+create table member_gift
+(
+  record_id                    bigint               auto_increment               not null,
+  member_id                    bigint                                            not null,  -- 会员Id
+  ref_trans_id                 bigint                                            not null,  -- 参考交易Id，比如 充值/买卡Id
+  trans_type                   tinyint                                           not null,  -- 交易类型: 0.购卡/充值交易
+  gift_type                    tinyint                                           not null,
+                -- 赠品类型：0.项目 1.产品 2.优惠券 3.金额
+                --   产品:注意扣除库存数量
+                --   金额:注意修改应支付的金额数量
+  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和产品:填写其对应的Id
+  qty                          double(8,2)                                       not null,  -- 数量/金额
+
+  gift_sub_type                tinyint                                           not null,  -- 优惠券类型： 0.项目券   1.代金券
+  gift_expired_date            datetime                                          null,      -- 有效期
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_gift_01(member_id),
+  index idx_member_gift_02(ref_trans_id),
+  index idx_member_gift_03(gift_type),
+  index idx_member_gift_04(git_id)
+)comment '赠送明细表';
+
+
+create table payment
+(
+  record_id                    bigint              auto_increment              not null,
+  member_id                    bigint                                          not null,  -- 会员Id
+  payment_type                 tinyint                                         not null,  -- 0.一般支付   1.偿还欠款
+
+  remark                       varchar(500)                                    null,       -- 备注
+  member_signature             varchar(255)                                    not null,   -- 客户签名
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_payment_01(member_id)
+)comment  '划卡支付';
+
+create table payment_item
+(
+  record_id                    bigint              auto_increment              not null,
+  payment_id                   bigint                                          not null,  -- 支付Id
+  card_balance_id              bigint                                          not null,  -- 卡户Id:充值卡/次卡/套卡项目/优惠券的编号  -1.欠款
+  merchandise_id               bigint                                          not null,  -- 商品Id:服务/产品的编号   -1.欠款
+  merchandise_type             tinyint                                         not null,  -- 商品类型: 0.服务  1.产品  -1.欠款
+
+  qty                          double(8,2)                                     not null,  -- 数量： 还欠款的话，数量为 1
+  price                        double(10,2)                                    not null,  -- 单价： 还欠款的话，单价=偿还金额
+  amount                       double(10,2)                                    not null,
+                      -- 金额：一般支付 注意扣除card_balance或者服务明细的金额或者次数
+                      --      偿还欠款：注意修改账户欠款余额
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_payment_item_01(payment_id),
+  index idx_payment_item_02(card_balance_id),
+  index idx_payment_item_03(merchandise_id),
+  index idx_payment_item_04(merchandise_type)
+)comment  '划卡支付明细';
+
+create table member_product_keep
+(
+  record_id                    bigint              auto_increment              not null,
+  member_id                    bigint                                          not null,
+
+  remark                       varchar(500)                                    null,       -- 备注
+  member_signature             varchar(255)                                    not null,   -- 客户签名
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_product_keep(member_id)
+)comment  '产品寄存';
+
+create table member_product_keep_item
+(
+  record_id                    bigint              auto_increment              not null,
+  member_product_keep_id       bigint                                          not null,  -- 寄存Id
+  product_id                   bigint                                          not null,  -- 产品Id
+  price                        double(8,2)                                     not null,  -- 单价
+  qty_purchased                double(8,2)                                     not null,  -- 购买数量
+  amount                       double(10,2)                                    not null,  -- 金额
+
+  qty_received                 double(8,2)                                     not null,  -- 已领取数量
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_product_keep_item_01 (member_product_keep_id),
+  index idx_member_product_keep_item_02 (product_id)
+)comment  '产品寄存明细';
+
+
+create table member_product_reject
+(
+  record_id                    bigint              auto_increment              not null,
+  member_id                    bigint                                          not null,
+
+  remark                       varchar(500)                                    null,       -- 备注
+  member_signature             varchar(255)                                    not null,   -- 客户签名
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_product_reject(member_id)
+)comment '产品退款';
+
+
+create table member_product_reject_item
+(
+  record_id                    bigint              auto_increment              not null,
+  member_product_reject_id     bigint                                          not null,  -- 产品退款Id
+  product_keep_item_id         bigint                                          not null,  -- 原购买记录Id
+
+  reject_type                  tinyint                                         not null,  -- 0.未领取退款  1.已领取退款
+  qty_reject                   double(8,2)                                     not null,  -- 退还数量
+  amount_reject                double(10,2)                                    not null,  -- 退还金额
+  type_amount_return           tinyint                                         not null,
+        -- 资金退还方式: 0.现金  1.余额
+        --     如果是以余额的方式，则要修改member的balance_cash字段
+        --   todo:要不要增加一种方式，偿还欠款？
+
+  create_date                  datetime                                         not null,   -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_product_reject_item_01 (member_product_reject_id),
+  index idx_member_product_reject_item_02 (product_keep_item_id)
+)comment  '产品退款明细';
+
+
+create table business_stuff
+(
+  record_id                    bigint              auto_increment              not null,
+  ref_trans_id                 bigint                                          not null,  -- 交易Id
+  trans_type                   tinyint                                         not null,  -- 交易类型: 0.购卡/充值交易  1.划卡明细   2.寄库存   3.库存退还  4.还欠款
+  stuff_id                     bigint                                          not null,  -- 关联员工
+
+  create_date                  datetime                                         not null,  -- 创建时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_business_stuff_01 (stuff_id),
+  index idx_business_stuff_02 (ref_trans_id),
+  index idx_business_stuff_03 (trans_type)
+) comment  '关联员工';
 
 
 /*
