@@ -309,9 +309,13 @@ public class TimeSheetService {
             if(timeSheet!=null){
                 result.setHasAttendanceNum(result.getHasAttendanceNum()+1);
             }
-            if(timeSheet.getTimeSheetType()!=0){
-                result.setYichangNum(result.getYichangNum()+1);
+            if(timeSheet!=null){
+                if(timeSheet.getTimeSheetType()!=0){
+                    result.setYichangNum(result.getYichangNum()+1);
+                }
             }
+
+
         }
 
 
