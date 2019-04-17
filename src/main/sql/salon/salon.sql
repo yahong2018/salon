@@ -409,7 +409,7 @@ create table pictures
 (
   record_id                        bigint    auto_increment        not null ,
   master_data_id                   bigint                          null,     -- 主记录编号
-  record_type                      tinyint                         not null,     -- 记录类型: 0.美容院（门店）  1. 员工    2. 项目/卡   3.套卡   4.充值卡  5.产品    6.会员/顾客    7. 护理日志    8.档案
+  record_type                      tinyint                         not null,     -- 记录类型: 0.美容院（门店）  1. 员工    2. 项目/卡   3.套卡   4.充值卡  5.产品    6.会员/顾客    7. 护理日志    8.档案  9签名
   pic_type                         tinyint                         not null,     -- 照片类型: 0.普通照片（1张)    1.营业执照（1张）   2.身份证（反面1张）  3.身份证（反面1张）  4.开户许可(1张)
   pic_url                          varchar(255)                    not null,     -- 照片: 如果以http|https开头，则是外部绝对地址，否则为内部相对地址。
 
@@ -1028,11 +1028,12 @@ create table card_balance
                 -- 如果是充值卡，写程序的时候要注意卡金额的合并
 
   balance                      double(8,2)                                      not null,  -- 卡户余额/剩余 次数
+
   card_status                  tinyint                                          not null,  -- 卡的状态: 0.正常  1.失效
   date_expired                 datetime                                         null,      -- 失效时间：null表示永久有效
 
   parent_id                    bigint                                           not null,  -- 所属套卡:如果是充值卡、次卡、套卡，则为0，只有次卡的项目才有此字段的值
-
+  remark                       varchar(500)                                    null,       -- 备注
   create_date                  datetime                                         not null, -- 创建时间/购买时间
   create_by                    bigint                                           not null,
   update_date                  datetime                                         null,     -- 最后一次充值时间
@@ -1107,6 +1108,7 @@ create table member_gift
 )comment '赠送明细表';
 
 
+
 create table payment
 (
   record_id                    bigint              auto_increment              not null,
@@ -1125,7 +1127,6 @@ create table payment
   primary key (record_id),
   index idx_payment_01(member_id)
 )comment  '划卡支付';
-
 create table payment_item
 (
   record_id                    bigint              auto_increment              not null,
