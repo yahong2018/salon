@@ -9,6 +9,7 @@ import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.service.ShiftService;
 import com.hy.salon.basic.service.StoreRoomService;
 import com.hy.salon.basic.util.DateString;
+import com.hy.salon.basic.util.TimeBeginAndEndOFaMonth;
 import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.StoreReservation;
@@ -20,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -154,12 +156,20 @@ public class ReservationController {
     @ApiOperation(value="按日期获取每个门店的预约汇总", notes="按日期获取每个门店的预约汇总")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "时间，年月日", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "商店id", required = true, dataType = "long")
     })
-    public Result getReservationByTime(String timeStart ,String timeEnd){
+    public Result getReservationByTime(String timeStart ,String timeEnd,String time,long storeId){
         Result result=new Result();
         try {
-            List<ReservationVo> list = reservationService.getReservationByTime(timeStart, timeEnd);
+            if(StringUtils.isNotEmpty(time)){
+                timeStart = time+" 00:00:00";
+
+                Date date = DateString.StringToDateAddNum2(time,1);
+                timeEnd = DateString.DateToString(date)+" 00:00:00";
+            }
+            List<ReservationVo> list = reservationService.getReservationByTime(timeStart, timeEnd,storeId);
             result.setMsgcode("0");
             result.setSuccess(true);
             result.setData(list);
@@ -175,26 +185,46 @@ public class ReservationController {
      * 查询当天一门店有预约员工列表--店长（统计员工有几个预约）
      */
     @ResponseBody
-    @RequestMapping(value = "getStuff",method = RequestMethod.GET)
+    @RequestMapping(value = "getOneStoreStuffReservation",method = RequestMethod.GET)
     @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "time", value = "时间，年月日", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "page", value = "页码", required = true, dataType = "int")
     })
-    public Result getStuff(Long recordId,String timeStart ,String timeEnd){
-        Result result=new Result();
+    public ExtJsResult getOneStoreStuffReservation(HttpServletRequest request,Long recordId,String timeStart ,String timeEnd,String time){
+        ExtJsResult resultList = new ExtJsResult();
+        if(StringUtils.isNotEmpty(time)){
+            timeStart = time+" 00:00:00";
+
+            Date date = DateString.StringToDateAddNum2(time,1);
+            timeEnd = DateString.DateToString(date)+" 00:00:00";
+        }
         try {
-            List<StuffVo> list = reservationService.getStuff(recordId, timeStart, timeEnd);
+            resultList =  reservationService.getStuffListStoreIdReservation(request, recordId, new ListRequestBaseHandler() {
+                @Override
+                public List getByRequest(ListRequest listRequest) {
+                    return stuffDao.getPageList(listRequest.toMap(), null);
+                }
+
+                @Override
+                public int getRequestListCount(ListRequest listRequest) {
+                    return stuffDao.getPageListCount(listRequest.toMap(), null);
+                }
+            },timeStart,timeEnd);
+
+          /*  List<StuffVo> list = reservationService.getStuff(recordId, timeStart, timeEnd);
             result.setMsgcode("0");
             result.setSuccess(true);
-            result.setData(list);
+            result.setData(list);*/
         }catch (Exception e){
             e.printStackTrace();
-            result.setSuccess(false);
-            result.setMsgcode("200");
+            resultList.setSuccess(false);
+            resultList.setMsgcode("200");
         }
-        return result;
+        return resultList;
     }
 
 /**

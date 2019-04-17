@@ -33,9 +33,11 @@ public class ReservationService {
     private MemberDao memberDao;
     @Resource(name = "picturesDao")
     private PicturesDAO picturesDao;
-    public List<ReservationVo> getReservationByTime(String timeStart, String timeEnd) {
+    public List<ReservationVo> getReservationByTime(String timeStart, String timeEnd,long storeId) {
         List<ReservationVo> listVo=new ArrayList<>();
-        List<Salon> salonList = salonDao.getSalon();
+
+        List<Salon> salonList =  salonDao.getAdminSalonForStore(storeId);
+        //List<Salon> salonList = salonDao.getSalon();
         for (Salon salon : salonList) {
             ReservationVo vo=new ReservationVo();
             vo.setRecordId(salon.getRecordId());
@@ -84,6 +86,8 @@ public class ReservationService {
         String where="store_id=#{storeId}";
         listMap.put("where", where);
         List<Stuff> stufflist = stuffDao.getList(listMap, parameters);
+
+
         for (Stuff stuff : stufflist) {
             StuffVo vo=new StuffVo();
             vo.setRecordId(stuff.getRecordId());
@@ -201,5 +205,10 @@ public class ReservationService {
 
     public Result getReservationVoList(HttpServletRequest request, Long recordId, String oneDay, String toDays  ) {
        return reservationDao.getReservationVoList(request,recordId, oneDay , toDays);
+    }
+
+    public ExtJsResult getStuffListStoreIdReservation(HttpServletRequest request, Long recordId, ListRequestBaseHandler listRequestBaseHandler,String timeStart,String timeEnd) {
+
+        return reservationDao.getStuffListStoreIdReservation(request,recordId, listRequestBaseHandler,timeStart,timeEnd);
     }
 }

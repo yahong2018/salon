@@ -425,10 +425,10 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @RequestMapping(value="deleteStuff")
     @ApiOperation(value="删除员工", notes="删除员工")
     @Transactional(rollbackFor = Exception.class)
-    public Result addStuff(@RequestBody Long[] userIdList) {
+    public Result deleteStuff(@RequestBody Long[] userIdList) {
         for(Long stuffId:userIdList) {
             Stuff stuff = stuffDao.getById(stuffId);
-            SystemUser user=systemUserDAO.getUserByCode(stuff.getTel());
+            SystemUser user=systemUserDAO.getUserByTel(stuff.getTel());
             List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(stuff.getRecordId());
             String where = "stuff_id=#{stuffId} and system_user_id=#{systemUserId}";
             Map parameters = new HashMap();
