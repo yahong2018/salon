@@ -640,4 +640,37 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         }
         return r;
     }
+
+
+    /**
+     * 将员工设为离职或者在职
+     */
+    @ResponseBody
+    @RequestMapping("updateStuffInOffice")
+    public Result updateStuffInOffice(Long recordId) {
+        Result r= new Result();
+        try {
+
+//            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+           Stuff stuff=stuffDao.getStuffForRecordId(recordId);
+            if(stuff.getInOffice() == 0){
+                stuff.setInOffice(1);
+            }else if(stuff.getInOffice() == 1){
+                stuff.setInOffice(0);
+            }
+            stuffDao.update(stuff);
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
+
 }

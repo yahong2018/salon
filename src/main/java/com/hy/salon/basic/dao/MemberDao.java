@@ -3,6 +3,7 @@ package com.hy.salon.basic.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.entity.Member;
 import com.hy.salon.basic.entity.MemberSalonTag;
+import com.hy.salon.basic.entity.ProductSeries;
 import com.hy.salon.basic.vo.MemberVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
@@ -200,6 +201,13 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
         }
 
 
+    }
+
+    public Member getMemberForId(Long recordId){
+        String where = "record_id=#{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("recordId", recordId);
+        return this.getOne(where, parameters);
     }
 
 

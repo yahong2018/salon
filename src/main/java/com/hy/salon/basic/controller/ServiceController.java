@@ -236,7 +236,7 @@ public class ServiceController extends SimpleCRUDController<Service> {
 
 
     @ResponseBody
-    @RequestMapping(value="deleteSeries",method = RequestMethod.GET)
+    @RequestMapping("deleteSeries")
     @ApiOperation(value="获取次卡通过项目分类", notes="获取次卡通过项目分类")
     public Result deleteSeries(Long recordId){
         Result r= new Result();

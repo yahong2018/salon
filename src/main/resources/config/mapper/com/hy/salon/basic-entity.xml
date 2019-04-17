@@ -21,6 +21,7 @@
         <result column="weixin" jdbcType="VARCHAR" property="weixin" />
         <result column="qq" jdbcType="VARCHAR" property="qq" />
         <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="in_office" jdbcType="TINYINT" property="inOffice" />
     </resultMap>
 
 
@@ -95,12 +96,16 @@
     </resultMap>
     <!--调拨申请单-->
     <resultMap id="StockTransferApplication" type="com.hy.salon.basic.entity.StockTransferApplication" extends="com.zhxh.core.data.TraceableEntity">
-        <result column="record_id" property="recordId" jdbcType="BIGINT" />
-        <result column="application_no" property="applicationNo" jdbcType="VARCHAR" />
+        <result column="application_no" property="applicationNo" jdbcType="CHAR" />
+        <result column="product_stock_movement_id" property="productStockMovementId" jdbcType="BIGINT" />
+        <result column="in_warehouse_product_id" property="inWarehouseProductId" jdbcType="BIGINT" />
         <result column="out_warehouse_id" property="outWarehouseId" jdbcType="BIGINT" />
+        <result column="in_warehouse_id" property="inWarehouseId" jdbcType="BIGINT" />
         <result column="remark_application" property="remarkApplication" jdbcType="VARCHAR" />
         <result column="remark_audit" property="remarkAudit" jdbcType="VARCHAR" />
-        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+        <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
+        <result column="creator" property="creator" jdbcType="BIGINT" />
+        <result column="approver" property="approver" jdbcType="BIGINT" />
     </resultMap>
 
     <resultMap id="ServiceSeries" type="com.hy.salon.basic.entity.ServiceSeries"

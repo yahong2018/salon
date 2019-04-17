@@ -22,8 +22,11 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
     }
 
 
-    public List<ProductStockMovement> getProductForSalonId(Long salonId,Byte movementType) {
-        String where = "warehouse_id=#{salonId} and movement_type=#{movementType}";
+    public List<ProductStockMovement> getProductForSalonId(Long salonId,String movementType) {
+        String where = "warehouse_id=#{salonId} ";
+        if(movementType != null && !movementType.equals("")){
+            where=where+"and movement_type=#{movementType}";
+        }
         Map parameters = new HashMap();
         parameters.put("salonId", salonId);
         parameters.put("movementType", movementType);

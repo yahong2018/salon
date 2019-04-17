@@ -31,4 +31,6 @@ import java.sql.Timestamp;
 
     private String jobLevel;
 
+    private int inOffice;
+
 }

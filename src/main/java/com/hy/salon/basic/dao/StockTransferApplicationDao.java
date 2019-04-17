@@ -17,10 +17,11 @@ public class StockTransferApplicationDao extends BaseDAOWithEntity<StockTransfer
         Map parameters = new HashMap();
         parameters.put("recordId", recordId);
         parameters.put("recordStatus", recordStatus);
-        String where = "record_status=#{recordStatus} and in_warehouse_id=#{recordId}";
-        Map listMap = new HashMap();
-        listMap.put("where", where);
-        return this.getList(listMap, parameters);
+        String where = "in_warehouse_id= #{recordId} ";
+        if(null !=recordStatus && !"".equals(recordStatus)){
+            where=where+"and record_status= #{recordStatus}";
+        }
+        return this.getByWhere(where, parameters);
     }
 
     public StockTransferApplication queryOneStock(Long recordId){

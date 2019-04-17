@@ -203,6 +203,44 @@ public class MemberController extends SimpleCRUDController<Member> {
         }
         return result;
     }
+
+
+    /**
+     * 档案顾客添加标签
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "binTag")
+    @ApiOperation(value="档案顾客添加标签", notes="档案顾客添加标签")
+    public Result binTag(String binList,Long tagId) {
+        Result result = new Result();
+        try {
+            if(null!=binList && !"".equals(binList)){
+                //插入照片关联
+                String[] str = binList.split(",");
+                for(String s:str){
+                    MemberTag tag=memberTagDao.getMemberTag(Long.parseLong(s));
+                    if(null != tag){
+                        tag.setTagId(tagId);
+                        memberTagDao.update(tag);
+                    }else{
+                        tag.setTagId(tagId);
+                        tag.setMemberId(Long.parseLong(s));
+                        memberTagDao.insert(tag);
+                    }
+                }
+            }
+
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+    }
     /**
      * 删除顾客
      */

@@ -814,6 +814,7 @@ create table product_stock_movement
 
   movement_no                      char(20)                        not null,  -- 异动单号
   product_id                       bigint                          not null,  -- 产品
+  movement_pur_qty                 int                             not null,  -- 异动前数量
   movement_qty                     int                             not null,  -- 异动数量
 
   date_of_manufacture              datetime                        not null,  -- 生产日期
@@ -849,7 +850,7 @@ create table stock_transfer_application
   record_id                        bigint              auto_increment    not null,
   application_no                   char(12)                              not null,
   product_stock_movement_id        bigint                                not null,  -- 出库单号
-  in_warehouse_product_id          bigint                                not null,  -- 调出仓库产品号
+  in_warehouse_product_id          bigint                                not null,  -- 调入仓库产品号
   out_warehouse_id                 bigint                                not null,  -- 调出仓库/门店
   in_warehouse_id                  bigint                                not null,  -- 调入仓库/门店
   remark_application               varchar(500)                          null,      -- 申请原因

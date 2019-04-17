@@ -93,6 +93,7 @@
     </resultMap>
 
     <resultMap id="MemberVo" type="com.hy.salon.basic.vo.MemberVo" >
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="initial_store_id" property="initialStoreId" jdbcType="BIGINT" />
         <result column="member_name" property="memberName" jdbcType="VARCHAR" />
         <result column="tel" property="tel" jdbcType="VARCHAR" />

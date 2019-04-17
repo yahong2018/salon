@@ -61,7 +61,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
 
 
     @ResponseBody
-    @RequestMapping(value="addServiceSuite",method = RequestMethod.POST)
+    @RequestMapping("addServiceSuite")
     @ApiOperation(value="添加套卡", notes="添加套卡")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "suiteName", value = "套卡名称", required = true, dataType = "String"),
