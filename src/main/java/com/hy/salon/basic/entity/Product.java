@@ -48,4 +48,6 @@ public class Product extends TraceableEntity<Long> {
 
     private String picUrl;
 
+    private String stockQty;
+
 }

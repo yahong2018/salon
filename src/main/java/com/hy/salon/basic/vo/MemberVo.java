@@ -11,6 +11,8 @@ import java.util.Date;
 @Setter
 public class MemberVo  {
 
+    private Long recordId;
+
     private String tagName;
 
     private String stuffName;
