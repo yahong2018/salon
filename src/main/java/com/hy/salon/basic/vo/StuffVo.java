@@ -12,4 +12,5 @@ public class StuffVo {
     private String role;//员工角色
     private Integer workSummary;//总结数
     private  String  picUrl;//头像
+    private String jobName;
 }

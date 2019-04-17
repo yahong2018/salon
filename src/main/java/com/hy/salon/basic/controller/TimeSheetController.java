@@ -129,7 +129,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
      */
     @ResponseBody
     @RequestMapping(value = "getOneTimeSheetByStuffId",method = RequestMethod.GET)
-    @ApiOperation(value="获取月門店考勤", notes="获取当月門店考勤")
+    @ApiOperation(value="获取个人一天的考勤", notes="获取个人一天的考勤")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "time", value = "日期", required = true, dataType = "String")

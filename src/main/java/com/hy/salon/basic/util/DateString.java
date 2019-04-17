@@ -108,10 +108,17 @@ public class DateString {
         }
         return null;
     }
-/*    public static void main(String[] args) {
+    public static void main(String[] args) {
         Date  datg = StringToDateAddNum2("2019-04-12",1);
         datg.getTime();
-    }*/
+    }
+
+    /**
+     * 加一天
+     * @param string
+     * @param num
+     * @return
+     */
     public static Date StringToDateAddNum2(String string,int num ){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -126,6 +133,13 @@ public class DateString {
         }
         return null;
     }
+
+    /**
+     * 加一个小时
+     * @param string
+     * @param num
+     * @return
+     */
     public static Date StringToDateAddNum(String string,int num ){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {

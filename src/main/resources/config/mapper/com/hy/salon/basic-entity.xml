@@ -70,7 +70,7 @@
         <result column="member_id" property="memberId" jdbcType="BIGINT" />
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="room_id" property="roomId" jdbcType="BIGINT" />
-        <result column="date_" property="date" jdbcType="TIMESTAMP" />
+        <result column="date_" property="date_" jdbcType="TIMESTAMP" />
         <result column="duration" property="duration" jdbcType="REAL" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
