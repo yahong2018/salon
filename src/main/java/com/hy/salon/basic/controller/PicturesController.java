@@ -52,7 +52,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                 // 判断文件类型
                 type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {// 判断文件类型是否为空
-                    if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                    if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase() ) || "JPEG".equals(type.toUpperCase() ) || "BMP".equals(type.toUpperCase())) {
                         // 设置存放图片文件的路径
                         UUID uuid = UUID.randomUUID();
                         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
@@ -116,7 +116,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
             // 判断文件类型
             type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
             if (type != null) {// 判断文件类型是否为空
-                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                if ( "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase() ) || "BMP".equals(type.toUpperCase())) {
                     // 项目在容器中实际发布运行的根路径
                     String realPath = request.getSession().getServletContext().getRealPath("/");
                     // 自定义的文件名称
@@ -200,7 +200,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
             // 判断文件类型
             type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
             if (type != null) {// 判断文件类型是否为空
-                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                if ( "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase() ) || "BMP".equals(type.toUpperCase())) {
                     // 项目在容器中实际发布运行的根路径
                     String realPath = request.getSession().getServletContext().getRealPath("/");
                     // 自定义的文件名称
@@ -311,7 +311,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
                 // 判断文件类型
                 type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {// 判断文件类型是否为空
-                    if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                    if ( "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase() )|| "BMP".equals(type.toUpperCase())) {
                         // 项目在容器中实际发布运行的根路径
                         String realPath = request.getSession().getServletContext().getRealPath("/");
                         // 自定义的文件名称
@@ -395,7 +395,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
             // 判断文件类型
             type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
             if (type != null) {// 判断文件类型是否为空
-                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase() )) {
                     // 项目在容器中实际发布运行的根路径
                     String realPath = request.getSession().getServletContext().getRealPath("/");
                     // 自定义的文件名称
@@ -472,7 +472,7 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
             // 判断文件类型
             type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
             if (type != null) {// 判断文件类型是否为空
-                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase()) || "BMP".equals(type.toUpperCase())) {
                     // 项目在容器中实际发布运行的根路径
                     String realPath = request.getSession().getServletContext().getRealPath("/");
                     // 自定义的文件名称
