@@ -459,10 +459,10 @@ create table member
   entry_time                       datetime                        null,       -- 入店时间
 
   balance_cash                     double(10,2)                    not null,
-                      -- 现金余额: 退款的余额
+                      -- 现金余额: 退款的余额(账户余额)
                       -- todo: 这个钱包里的钱，会员如何使用？
 
-  balance_total                    double(10,2)                    not null,   -- 账户总余额
+  balance_total                    double(10,2)                    not null,   -- 账户总余额（账户余额+充值金额）
   integral                         double(10,2)                    not null,   -- 账户积分
   debt                             double(10,2)                    not null,   -- 账户欠款
   amount_consumer                  double(10,2)                    not null,   -- 总消费
@@ -1045,7 +1045,6 @@ create table card_balance
   index idx_card_balance_02(card_type)
 ) comment  '卡户余额';
 
-
 create table card_purchase
 (
   record_id                    bigint              auto_increment              not null,
@@ -1063,7 +1062,9 @@ create table card_purchase
        --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
 
   remark                       varchar(500)                                    null,       -- 备注
-  member_signature             varchar(255)                                    not null,   -- 客户签名
+  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
+
+  recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡
 
   create_date                  datetime                                         not null,  -- 创建时间
   create_by                    bigint                                           not null,
@@ -1116,7 +1117,7 @@ create table payment
   payment_type                 tinyint                                         not null,  -- 0.一般支付   1.偿还欠款
 
   remark                       varchar(500)                                    null,       -- 备注
-  member_signature             varchar(255)                                    not null,   -- 客户签名
+  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
@@ -1127,6 +1128,7 @@ create table payment
   primary key (record_id),
   index idx_payment_01(member_id)
 )comment  '划卡支付';
+
 create table payment_item
 (
   record_id                    bigint              auto_increment              not null,
@@ -1160,7 +1162,7 @@ create table member_product_keep
   member_id                    bigint                                          not null,
 
   remark                       varchar(500)                                    null,       -- 备注
-  member_signature             varchar(255)                                    not null,   -- 客户签名
+  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
@@ -1201,7 +1203,7 @@ create table member_product_reject
   member_id                    bigint                                          not null,
 
   remark                       varchar(500)                                    null,       -- 备注
-  member_signature             varchar(255)                                    not null,   -- 客户签名
+  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
@@ -1226,7 +1228,6 @@ create table member_product_reject_item
   type_amount_return           tinyint                                         not null,
         -- 资金退还方式: 0.现金  1.余额
         --     如果是以余额的方式，则要修改member的balance_cash字段
-        --   todo:要不要增加一种方式，偿还欠款？
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
@@ -1259,6 +1260,48 @@ create table business_stuff
   index idx_business_stuff_03 (trans_type)
 ) comment  '关联员工';
 
+
+create table arrearages_record
+(
+  record_id                  bigint                auto_increment              not null,
+  ref_trans_id               bigint                                            not null,  -- 交易Id
+  member_id                    bigint                                          not null,  --会员id
+  arrearages_date            datetime                                          not null,  -- 欠款日期
+  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消费
+  amount_of_real_pay         double(8,2)                                       not null,  -- 实付金额
+  amount_payable             double(8,2)                                       not null,  -- 应付总额
+  is_paid_off                tinyint                                           not null,  -- 是否还清 0 是 1 否
+
+  create_date                datetime                                          not null,   -- 创建时间
+  create_by                  bigint                                            not null,
+  update_date                datetime                                          null,
+  update_by                  bigint                                            null,
+  opt_lock                   int                                               null,
+
+  primary key (record_id),
+  index idx_arrearages_record_01 (ref_trans_id),
+  index idx_arrearages_record_02 (arrearages_date),
+)comment '欠款记录表';
+
+create table repayment_record
+(
+  record_id                  bigint                auto_increment              not null,
+  arrearages_record          bigint                                            not null,  -- 还的是哪一笔欠款
+  reimbursement_date         datetime                                          not null,  -- 还款日期
+  reimbursement_amount       double(8,2)                                       not null,  -- 本次还款金额
+  still_need_to_pay          double(8,2)                                       not null,  -- 仍需还款
+  is_paid_off                tinyint                                           not null,  -- 是否还清 0 是 1 否
+
+  create_date                datetime                                          not null,   -- 创建时间
+  create_by                  bigint                                            not null,
+  update_date                datetime                                          null,
+  update_by                  bigint                                            null,
+  opt_lock                   int                                               null,
+
+  primary key (record_id),
+  index idx_repayment_record_01 (arrearages_record),
+  index idx_repayment_record_02 (reimbursement_date),
+) comment '还款记录表';
 
 /*
    五类结算：
