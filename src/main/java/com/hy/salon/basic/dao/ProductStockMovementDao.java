@@ -25,7 +25,12 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
     public List<ProductStockMovement> getProductForSalonId(Long salonId,String movementType) {
         String where = "warehouse_id=#{salonId} ";
         if(movementType != null && !movementType.equals("")){
-            where=where+"and movement_type=#{movementType}";
+            if(!movementType.equals("72")){
+                where=where+"and movement_type=#{movementType}";
+            }else{
+                where=where+"and movement_type in(2,72)";
+            }
+
         }
         Map parameters = new HashMap();
         parameters.put("salonId", salonId);
@@ -50,6 +55,17 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
         parameters.put("eTime", endTime);
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_BY_TYPE, parameters);
     }
+
+    public List<Map<String,Object>> getAbnormal(Long salonId) {
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_ABNORMAL_STOCK, parameters);
+    }
+
+
+
+        protected final static String SQL_GET_ABNORMAL_STOCK = "com.hy.salon.basic.dao.GET_ABNORMAL_STOCK";
+
         protected final static String SQL_GET_PRODUCT_BY_TYPE = "com.hy.salon.basic.dao.GET_PRODUCT_BY_TYPE";
 
 }

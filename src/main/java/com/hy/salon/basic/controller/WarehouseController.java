@@ -637,6 +637,8 @@ public class WarehouseController {
     public Result inventory(Long salonId, Long productId, Integer movementQty, Double purchaseCost, String remark,Byte recordCreateType,Date dateOfManufacture,String referenceRecordNo){
         Result result=new Result();
         try {
+            int frontQty=0;
+            int qty=0;
             //查看该产品之前是否入过库
             ProductStock proCondition=productStockDAO.getOneProdectStockForId(productId);
             if(null !=proCondition){
@@ -644,11 +646,17 @@ public class WarehouseController {
                 BigDecimal  b2=new BigDecimal(Double.toString(purchaseCost));
                 //获取相差数量
 
+                frontQty=proCondition.getStockQty();
+                if(proCondition.getStockQty()>movementQty){
+                    qty=proCondition.getStockQty()-movementQty;
+                }else{
+                    qty=movementQty-proCondition.getStockQty();
+                }
 
-                proCondition.setStockQty(proCondition.getStockQty()+movementQty);
+                proCondition.setStockQty(movementQty);
                 BigDecimal b3=b1.multiply(b2);
-                BigDecimal cost=new BigDecimal(Double.toString(proCondition.getCost()));
-                proCondition.setCost(cost.add(b3).doubleValue());
+//                BigDecimal cost=new BigDecimal(Double.toString(proCondition.getCost()));
+                proCondition.setCost(b3.doubleValue());
                 productStockDAO.update(proCondition);
             }else{
                 BigDecimal  b1=new BigDecimal(Integer.toString(movementQty));
@@ -662,12 +670,17 @@ public class WarehouseController {
             }
             ProductStockMovement movement=new ProductStockMovement();
             movement.setRecordCreateType(recordCreateType);
-            movement.setMovementType(new Byte("0"));
+            if(frontQty>movementQty){
+                movement.setMovementType(new Byte("2"));
+            }else{
+                movement.setMovementType(new Byte("72"));
+            }
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String movementNo="HY"+formatter.format(new Date());
             movement.setMovementNo(movementNo);
             movement.setProductId(productId);
-            movement.setMovementQty(movementQty);
+            movement.setMovementQty(qty);
             movement.setDateOfManufacture(dateOfManufacture);
 
             movement.setPurchaseCost(purchaseCost);
@@ -687,6 +700,37 @@ public class WarehouseController {
         }
         return result;
     }
+
+    /**
+     * 盘点列表（以时间分组）
+     */
+    @ResponseBody
+    @RequestMapping("queryAbnormalListForDate")
+    @ApiOperation(value = "盘点列表（以时间分组）", notes = "盘点列表（以时间分组）")
+    public Result queryAbnormalListForDate(Long salonId){
+        Result result=new Result();
+        try {
+            if(salonId==null || salonId==0){
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+                salonId=stuff.getStoreId();
+            }
+            List<Map<String,Object>> abnormalList =productStockMovementDao.getAbnormal(salonId);
+            result.setData(abnormalList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("获取失败");
+        }
+        return result;
+    }
+
+
 
 
 

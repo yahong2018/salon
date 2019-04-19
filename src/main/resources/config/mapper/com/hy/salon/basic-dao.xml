@@ -412,5 +412,12 @@ group by ss.record_id;
 
     </select>
 
+    <select id="GET_ABNORMAL_STOCK"  parameterType="java.util.Map" resultType="java.util.Map">
+       select   DATE_FORMAT(create_date,'%Y-%m-%d') days,sum(record_create_type) abnormalSize from salon.product_stock_movement
+       where  movement_type in(2,72) and warehouse_id=#{salonId} group by days;
+    </select>
+
+
+
 
 </mapper>
