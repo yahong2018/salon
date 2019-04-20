@@ -108,15 +108,16 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             }
 
             //插入照片关联
-            String[] str = picIdList.split(",");
-            for(String s:str){
-                Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                if(null != pic){
-                    pic.setMasterDataId(condition.getRecordId());
-                    picturesDao.update(pic);
+            if(null!=picIdList && !"".equals(picIdList)) {
+                String[] str = picIdList.split(",");
+                for (String s : str) {
+                    Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if (null != pic) {
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
                 }
             }
-
             r.setMsg("插入成功");
             r.setSuccess(true);
             r.setMsgcode(StatusUtil.OK);
@@ -181,7 +182,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
                 }
             }
 
-            if(null!=picIdList && !"".equals(picIdList)){
+                if(null!=picIdList && !"".equals(picIdList)){
                 //插入照片关联
                 String[] str = picIdList.split(",");
                 for(String s:str){

@@ -1,11 +1,19 @@
 package com.hy.salon.basic.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.dao.NurseLogDao;
+import com.hy.salon.basic.dao.NurseLogModelDAO;
+import com.hy.salon.basic.dao.StuffDao;
+import com.hy.salon.basic.entity.NurseLog;
 import com.hy.salon.basic.entity.NurseLogModel;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.NurseLogService;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.TimeSheetVo;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -24,6 +32,18 @@ public class NurseLogController {
 
     @Resource(name = "nurseLogService")
     private NurseLogService nurseLogService;
+
+    @Resource(name = "nurseLogDao")
+    private NurseLogDao nurseLogDao;
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
+
+    @Resource(name = "nurseLogModelDao")
+    private NurseLogModelDAO nurseLogModelDao;
 
     /**
      * 按门店查询护理日志
@@ -82,4 +102,83 @@ public class NurseLogController {
         }
         return result;
     }
+
+
+
+
+    /**
+     * 填写日志
+     */
+    @ResponseBody
+    @RequestMapping(value = "addLog")
+    @ApiOperation(value="填写回访日志", notes="填写回访日志")
+    public Result addLog(NurseLog condition){
+        Result result=new Result();
+        try {
+            nurseLogDao.insert(condition);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+
+    /**
+     * 获取日志
+     */
+    @ResponseBody
+    @RequestMapping(value = "queryLog")
+    @ApiOperation(value="获取日志", notes="获取日志")
+    public Result queryLog(Long storeId,String logType,int page,int limit,String memberName,String stuffName){
+        Result result=new Result();
+        try {
+            if(storeId == null ){
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+                storeId=stuff.getStoreId();
+            }
+
+            result.setTotal(nurseLogDao.queryLog(storeId,logType,memberName,stuffName).size());
+            PageHelper.startPage(page, limit);
+            List<NurseLog> nurseLogList=nurseLogDao.queryLog(storeId,logType,memberName,stuffName);
+            result.setData(nurseLogList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 获取日志模板
+     */
+    @ResponseBody
+    @RequestMapping(value = "queryLogModel")
+    @ApiOperation(value="获取日志模板", notes="获取日志模板")
+    public Result queryLogModel(){
+        Result result=new Result();
+        try {
+            List<NurseLogModel> nurseLogList=nurseLogModelDao.getLogModel();
+            result.setData(nurseLogList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+
+
+
+
 }

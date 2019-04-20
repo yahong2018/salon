@@ -417,6 +417,33 @@ group by ss.record_id;
        where  movement_type in(2,72) and warehouse_id=#{salonId} group by days;
     </select>
 
+    <select id="GET_ABNORMAL_STOCK_FOR_PRODUCT_SERIES"  parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT spsm.movement_qty,spsm.movement_qty,sp.product_name FROM salon.product_stock_movement as spsm
+      left join  salon.product as sp on spsm.product_id = sp.record_id where  spsm.movement_type in(2,72)
+      and sp.product_series_id in(select sps.record_id from salon.product_series as sps where sps.parent_id=#{parentId})
+      and DATE_FORMAT(spsm.create_date,'%Y-%m-%d')=#{days};
+    </select>
+
+    <select id="GET_LOG_FOR_STORE_ID"  parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT snl.log_content as logContent,ss2.stuff_name as stuffName,sm.member_name as memberName,snl.create_date as createDate,snl.log_type logType FROM salon.nurse_log as snl
+      left join salon.stuff as ss2 on ss2.record_id = snl.stuff_id
+      left join salon.member as sm on snl.member_id = sm.record_id
+      where snl.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id=#{storeId})
+      <if test="logType != null">
+      and snl.log_type=#{logType}
+      </if>
+        <if test="memberName != null">
+            and sm.member_name=#{memberName}
+        </if>
+        <if test="stuffName != null">
+            and ss2.stuff_name=#{stuffName}
+        </if>
+
+    </select>
+
+
+
+
 
 
 

@@ -1,10 +1,12 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.stock.entity.ProductStock;
 import com.zhxh.admin.entity.SystemUser;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,15 @@ public class WarehouseController {
 
     @Resource(name = "salonDao")
     private SalonDao salonDao;
+
+    @Resource(name = "stuffService")
+    private StuffService stuffService;
+
+    @Resource(name = "stuffJobDao")
+    private StuffJobDao stuffJobDao;
+
+    @Resource(name = "jobDAO")
+    private JobDAO jobDao;
 
 
     /**
@@ -131,6 +143,16 @@ public class WarehouseController {
                 salonId=stuff.getStoreId();
             }
             List<ProductStockMovement> ProductStockMovementList =productStockMovementDao.getProductForSalonId(salonId,movementType);
+            for(ProductStockMovement p:ProductStockMovementList){
+                if(p.getMovementType().toString().equals("72")){
+                    p.setQty(p.getMovementPurQty()+p.getMovementQty());
+                }else if(p.getMovementType().toString().equals("2")){
+                    p.setQty(p.getMovementPurQty()-p.getMovementQty());
+                }
+            }
+
+
+
             result.setData(ProductStockMovementList);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -258,6 +280,8 @@ public class WarehouseController {
     public Result banishWarehouse(Long salonId, Long productId, Integer movementQty, Double purchaseCost, String remark,Byte recordCreateType,Date dateOfManufacture,String referenceRecordNo,Long banishSalonId,String remarkApplication){
         Result result=new Result();
         try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             //获取发起门店该产品
             Product product=productDao.getOneProdectForId(productId);
             //查看接收门店是否有该产品
@@ -267,6 +291,13 @@ public class WarehouseController {
                 product.setStoreId(banishSalonId);
                 pro=product;
                 productDao.insert(pro);
+                //插入产品图片
+                List<Pictures> picList=picturesDao.getPicturesForCondition(product.getRecordId(),new Byte("5"),new Byte("0"));
+                for(Pictures p:picList){
+                    p.setRecordType(null);
+                    p.setMasterDataId(pro.getRecordId());
+                    picturesDao.insert(p);
+                }
             }
 
             //查看该产品之前是否入过库
@@ -339,6 +370,7 @@ public class WarehouseController {
             stockTransferApplication.setInWarehouseId(banishSalonId);
             stockTransferApplication.setRemarkApplication(remarkApplication);
             stockTransferApplication.setRecordStatus(new Byte("0"));
+            stockTransferApplication.setCreator(stuff.getRecordId());
             stockTransferApplicationDao.insert(stockTransferApplication);
 
 
@@ -365,6 +397,8 @@ public class WarehouseController {
     public Result banishWarehouseExamine(Long StockTransferId){
         Result result=new Result();
         try {
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
             StockTransferApplication stockTransferApplication=stockTransferApplicationDao.queryOneStock(StockTransferId);
 
@@ -407,6 +441,7 @@ public class WarehouseController {
             productStockMovementDao.insert(movement);
 
             stockTransferApplication.setRecordStatus(new Byte("4"));
+            stockTransferApplication.setApprover(stuff.getRecordId());
             stockTransferApplicationDao.update(stockTransferApplication);
 
             result.setSuccess(true);
@@ -609,6 +644,13 @@ public class WarehouseController {
                 jsonObj.put("effect","");
             }
 
+            //查看该产品之前是否入过库
+            ProductStock proStock=productStockDAO.getOneProdectStockForId(p.getRecordId());
+            if(proStock!=null){
+                p.setStockQty(proStock.getStockQty().toString());
+            }else{
+                p.setStockQty("0");
+            }
 
             jsonObj.put("proSeries",proSeries);
             jsonObj.put("parentSeries",parentSeries);
@@ -730,7 +772,163 @@ public class WarehouseController {
         return result;
     }
 
+    /**
+     * 盘点（详情）
+     */
+    @ResponseBody
+    @RequestMapping("queryAbnormalListData")
+    @ApiOperation(value = "盘点（详情）", notes = "盘点（详情）")
+    public Result queryAbnormalListData(String days,Long storeId){
+        Result result=new Result();
+        try {
+            JSONArray jsonArr=new JSONArray();
+            List<ProductSeries> serList=productSeriesDao.getSeriesForUser(storeId);
+            for(ProductSeries p:serList){
+                JSONObject jsonObj=new JSONObject();
+                jsonObj.put("seriesName",p.getSeriesName());
+                List<Map<String,Object>> abnormalList =productStockMovementDao.getStock(p.getParentId(),days);
+                jsonObj.put("abnormalSize",abnormalList.size());
+                jsonObj.put("productSize",productDao.getCountForProduct(p.getRecordId()).size());
+                jsonObj.put("abnormalList",abnormalList);
+                jsonArr.add(jsonObj);
+            }
+            result.setData(jsonArr);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("获取失败");
+        }
+        return result;
+    }
 
+
+/**
+ *库管列表
+ */
+@ResponseBody
+@RequestMapping("queryStorekeeperList")
+@ApiOperation(value = "库管列表", notes = "库管列表")
+public Result queryStorekeeperList(String jobLevel,Long salonId){
+    Result result=new Result();
+    try {
+        if(jobLevel.equals("0")){
+            List<Salon> stuffList=salonDao.getSalonForStore(salonId);
+
+//        List<Salon> stuffList=salonService.getSalonForCreateId(user.getRecordId());
+
+            JSONArray jsonArr=new JSONArray();
+            if(!stuffList.isEmpty()){
+                for(Salon s :stuffList){
+                    List<Stuff> stuff= stuffService.getStuffForStoreId(s.getRecordId());
+                    List<Stuff> newStuffList=new ArrayList<>();
+                    for(Stuff ss:stuff){
+                        Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                        if(null!=pic){
+                            ss.setPicUrl(pic.getPicUrl());
+                        }
+                        List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                        if(stuffJobList.size() != 0 ){
+                            for(StuffJob sj:stuffJobList){
+                                Job job=jobDao.getJobForId(sj.getJobId());
+                                if(job.getJobLevel()==5){
+                                    newStuffList.add(ss);
+                                }
+                            }
+
+                        }
+
+                    }
+                    JSONObject jsonObj=new JSONObject();
+                    jsonObj.put("stuff",newStuffList);
+                    jsonObj.put("salonName",s.getSalonName());
+                    jsonObj.put("salonId",s.getRecordId());
+                    jsonArr.add(jsonObj);
+                    result.setSuccess(true);
+                    result.setMsgcode(StatusUtil.OK);
+                    result.setMsg("获取成功");
+                    return result;
+                }
+
+
+            }
+            result.setData(jsonArr);
+        }else{
+            JSONArray jsonArr=new JSONArray();
+            List<Stuff> stuff= stuffService.getStuffForStoreId(salonId);
+            List<Stuff> newStuffList=new ArrayList<>();
+            Salon salon=salonDao.getSalonForStoreId(salonId);
+            for(Stuff ss:stuff){
+                Pictures pic=picturesDao.getOnePicturesForCondition(ss.getRecordId(),new Byte("1"),new Byte("0"));
+                if(null!=pic){
+                    ss.setPicUrl(pic.getPicUrl());
+                }
+                List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(ss.getRecordId());
+                if(stuffJobList.size() != 0 ){
+                    for(StuffJob sj:stuffJobList){
+                        Job job=jobDao.getJobForId(sj.getJobId());
+                        if(job.getJobLevel()==5){
+                            newStuffList.add(ss);
+                        }
+                    }
+
+                }
+
+            }
+            JSONObject jsonObj=new JSONObject();
+            jsonObj.put("stuff",newStuffList);
+            jsonObj.put("salonName",salon.getSalonName());
+            jsonObj.put("salonId",salon.getRecordId());
+            jsonArr.add(jsonObj);
+            result.setData(jsonArr);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("获取成功");
+            return result;
+        }
+
+
+    }catch (Exception e){
+        e.printStackTrace();
+        result.setSuccess(false);
+        result.setMsgcode(StatusUtil.ERROR);
+        result.setMsg("获取失败");
+    }
+    return result;
+}
+
+    /**
+     *库管设置
+     */
+    @ResponseBody
+    @RequestMapping("updateStorekeeper")
+    @ApiOperation(value = "库管设置", notes = "库管设置")
+    public Result updateStorekeeper(Long newStorekeeperId,Long oldStorekeeperId){
+        Result result=new Result();
+        try {
+            if(null != oldStorekeeperId){
+                StuffJob stuffJob=stuffJobDao.getStuffJobForJobId(oldStorekeeperId);
+                stuffJobDao.delete(stuffJob);
+            }
+
+            StuffJob newStuffJob=new StuffJob();
+            newStuffJob.setJobId(new Long(9));
+            newStuffJob.setStuffId(newStorekeeperId);
+            stuffJobDao.insert(newStuffJob);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("获取失败");
+        }
+        return result;
+    }
 
 
 

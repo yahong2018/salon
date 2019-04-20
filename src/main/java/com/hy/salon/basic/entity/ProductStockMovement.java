@@ -34,6 +34,8 @@ public class ProductStockMovement extends TraceableEntity<Long> {
 
     private Integer movementQty;
 
+    private Integer movementPurQty;
+
     private Date dateOfManufacture;
 
     private Double purchaseCost;
@@ -43,4 +45,6 @@ public class ProductStockMovement extends TraceableEntity<Long> {
     private String referenceRecordNo;
 
     private String remark;
+
+    private Integer qty;
 }

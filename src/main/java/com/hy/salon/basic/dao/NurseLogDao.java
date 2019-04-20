@@ -21,4 +21,29 @@ public class NurseLogDao extends BaseDAOWithEntity<NurseLog> {
     protected final static String SQL_GET_LOG_MODEL = "com.hy.salon.basic.dao.GET_LOG_MODEL";
 
 
+
+    public List<NurseLog> queryLog(Long storeId, String logType,String memberName,String stuffName) {
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        if("".equals(logType)){
+            logType=null;
+        }
+        if("".equals(memberName)){
+            memberName=null;
+        }
+        if("".equals(stuffName)){
+            stuffName=null;
+        }
+
+        parameters.put("logType", logType);
+        parameters.put("memberName", memberName);
+        parameters.put("stuffName", stuffName);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_LOG_FOR_STORE_ID, parameters);
+    }
+
+    protected final static String SQL_GET_LOG_FOR_STORE_ID = "com.hy.salon.basic.dao.GET_LOG_FOR_STORE_ID";
+
+
+
+
 }

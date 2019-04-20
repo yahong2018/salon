@@ -9,6 +9,7 @@ import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.ProductService;
 import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.vo.Result;
+import com.hy.salon.stock.entity.ProductStock;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,9 @@ public class ProductController {
 
     @Resource(name = "productPropertyDAO")
     private ProductPropertyDAO productPropertyDAO;
+
+    @Resource(name="productStockDAO")
+    private ProductStockDAO productStockDAO;
 
 
 
@@ -364,7 +369,7 @@ public class ProductController {
      */
     @ResponseBody
     @RequestMapping("addProduct")
-    @ApiOperation(value="品牌名设置", notes="品牌名设置")
+    @ApiOperation(value="添加产品", notes="添加产品")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "salonId", value = "美容院Id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "productName", value = "产品名称", required = true, dataType = "String"),
@@ -432,6 +437,13 @@ public class ProductController {
                     productPropertyMapDAO.insert(productMapCondition);
                 }
 
+                //默认生成一个仓库
+                ProductStock proCondition=new ProductStock();
+                proCondition.setWarehouseId(condition.getStoreId());
+                proCondition.setStockQty(0);
+                proCondition.setProductId(condition.getRecordId());
+                proCondition.setCost(new Double(0));
+                productStockDAO.insert(proCondition);
 
 
             }else{
@@ -509,6 +521,7 @@ public class ProductController {
 
 
 
+
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setMsg("添加成功");
@@ -582,6 +595,12 @@ public class ProductController {
                 for(ProductPropertyMap p :ppmList){
                     productPropertyMapDAO.delete(p);
                 }
+            }
+
+            //查看该产品之前是否入过库
+            ProductStock proCondition=productStockDAO.getOneProdectStockForId(recordId);
+            if(null !=proCondition){
+                productStockDAO.delete(proCondition);
             }
 
             result.setSuccess(true);
@@ -762,8 +781,6 @@ public class ProductController {
 
 
     }
-
-
 
 
 

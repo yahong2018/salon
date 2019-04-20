@@ -151,6 +151,7 @@
         <result column="movement_no" property="movementNo" jdbcType="CHAR" />
         <result column="product_id" property="productId" jdbcType="BIGINT" />
         <result column="movement_qty" property="movementQty" jdbcType="INTEGER" />
+        <result column="movement_pur_qty" property="movementPurQty" jdbcType="INTEGER" />
         <result column="date_of_manufacture" property="dateOfManufacture" jdbcType="TIMESTAMP" />
         <result column="purchase_cost" property="purchaseCost" jdbcType="DOUBLE" />
         <result column="warehouse_id" property="warehouseId" jdbcType="BIGINT" />

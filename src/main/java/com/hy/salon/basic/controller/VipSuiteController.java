@@ -269,8 +269,6 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         vipSuitItem.setDiscount(Byte.parseByte(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
-
-
                         String[] str = itemId.split(",");
                         for(String s :str){
 

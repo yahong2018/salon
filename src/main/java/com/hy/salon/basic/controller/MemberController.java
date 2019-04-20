@@ -8,9 +8,15 @@ import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.MemberService;
 import com.hy.salon.basic.vo.MemberVo;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemRoleDAO;
+import com.zhxh.admin.dao.SystemUserDAO;
+import com.zhxh.admin.entity.RoleUser;
+import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.utils.StringUtilsExt;
 import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -57,6 +63,16 @@ public class MemberController extends SimpleCRUDController<Member> {
 
     @Resource(name = "picturesDao")
     private PicturesDAO picturesDao;
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDAO;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDao;
+
+    @Resource(name = "systemRoleDAO")
+    private SystemRoleDAO systemRoleDAO;
+
 
 
 
@@ -178,6 +194,23 @@ public class MemberController extends SimpleCRUDController<Member> {
                 tag.setMemberId(condition.getRecordId());
                 tag.setTagId(tagId);
                 memberTagDao.insert(tag);
+
+
+                SystemUser userController=new SystemUser();
+                userController.setUserCode(condition.getTel());
+                userController.setUserName(condition.getMemberName());
+                String passwordMd5 = StringUtilsExt.getMd5("123456");
+                userController.setPassword(passwordMd5);
+                userController.setUserStatus(1);
+                systemUserDAO.insert(userController);
+
+
+                SystemRole systemRole=systemRoleDAO.getRole("member");
+
+                RoleUser roleUser=new RoleUser();
+                roleUser.setRoleId(systemRole.getRecordId());
+                roleUser.setUserId(userController.getRecordId());
+                roleUserDao.insert(roleUser);
 
                 //插入照片关联
                 if(null!=picIdList && !"".equals(picIdList)){

@@ -20,6 +20,13 @@ public class StuffJobDao extends BaseDAOWithEntity<StuffJob> {
         return this.getOne(where, parameters);
     }
 
+    public StuffJob getStuffJobForJobId(Long stuffId){
+        String where = "stuff_id=#{stuffId} and job_id=9";
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        return this.getOne(where, parameters);
+    }
+
     public List<StuffJob> getStuffJobListForStuff(Long stuffId){
         String where = "stuff_id=#{stuffId}";
         Map parameters = new HashMap();
