@@ -1280,7 +1280,7 @@ create table arrearages_record
 
   primary key (record_id),
   index idx_arrearages_record_01 (ref_trans_id),
-  index idx_arrearages_record_02 (arrearages_date),
+  index idx_arrearages_record_02 (arrearages_date)
 )comment '欠款记录表';
 
 create table repayment_record
@@ -1300,8 +1300,22 @@ create table repayment_record
 
   primary key (record_id),
   index idx_repayment_record_01 (arrearages_record),
-  index idx_repayment_record_02 (reimbursement_date),
+  index idx_repayment_record_02 (reimbursement_date)
 ) comment '还款记录表';
+
+
+create table stamp_program
+(
+  recoid_id                bigint                auto_increment                not null,
+  member_id                bigint                                              not null, -- 属于哪个顾客
+  denomination             double(8,2)                                         not null, -- 价值金额
+  expired_time             double(3,1)                                         not null, -- 有效期
+  is_expired               tinyint                                             not null, -- 是否已过期 0 是 1 否
+  is_used                  tinyint                                             not null, -- 是否可用  0 是 1 否
+
+  primary key (record_id),
+  index idx_stamp_program_01 (expired_time)
+)comment '项目券汇总表';
 
 /*
    五类结算：
