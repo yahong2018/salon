@@ -72,6 +72,8 @@ public class LoginController {
         return LOGIN_URL;
     }
 
+
+
     @RequestMapping(value = "/api/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value="登陆返回用户角色，职务", notes="登陆返回用户角色，职务")

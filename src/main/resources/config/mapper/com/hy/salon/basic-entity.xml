@@ -517,4 +517,14 @@
         <result column="recharge_type" property="rechargeType" jdbcType="INTEGER" />
 
     </resultMap>
+
+
+    <resultMap id="StampProgram" type="com.hy.salon.basic.entity.StampProgram" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="denomination" property="denomination" jdbcType="DOUBLE" />
+        <result column="expired_time" property="expiredTime" jdbcType="TIMESTAMP" />
+        <result column="is_expired" property="isExpired" jdbcType="TINYINT" />
+        <result column="is_used" property="isUsed" jdbcType="TINYINT" />
+    </resultMap>
 </mapper>

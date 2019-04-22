@@ -420,17 +420,22 @@ group by ss.record_id;
         select  c.record_id as recordId,
         c.member_id as memberId,
         c.card_id as cardId,
+        v.suite_name  as suiteName,
         c.card_type as cardType,
         c.amount_market as amountMarket,
         c.amount as amount,
         m.member_name as memberName
         from card_purchase c
-        left join member m on c.member_id = m.record_id
+        left join member m on c.member_id = m.record_id left join  vip_suite v on c.card_id = v.record_id
         where 1=1 and
         m.initial_store_id =#{storeId}
         <if test="memberName != null ">
             and
             m.member_name=#{memberName}
+        </if>
+        <if test="timeStart != null ">
+            and
+            c.create_date between  #{timeStart} and #{timeEnd}
         </if>
     </select>
 
@@ -478,6 +483,12 @@ group by ss.record_id;
             and
             m.member_name=#{memberName}
         </if>
+
+        <if test="timeStart != null ">
+            and
+            c.create_date between  #{timeStart} and #{timeEnd}
+        </if>
+
     </select>
 
 
@@ -493,7 +504,7 @@ group by ss.record_id;
           c.record_id as recordId
         from repayment_record c
         where 1=1 and
-        c.arrearages_record =#{arrearagesRecord}
+        c.arrearages_record =#{arrearages_record}
     </select>
 
 

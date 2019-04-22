@@ -32,7 +32,29 @@ public class RepaymentRecordDao extends BaseDAOWithEntity<RepaymentRecord> {
         extJsResult.setSuccess(true);
         extJsResult.setMsg("获取成功");
         extJsResult.setTotal(Integer.parseInt(pageInfo.getTotal()+""));
-        extJsResult.setData(pageInfo.getList());
+        List<Map> list = pageInfo.getList();
+
+        for(Map map :list){
+            int is_paid_off = (int) map.get("isPaidOff");
+            int method_payed = (int) map.get("methodPayed");
+
+            if(is_paid_off==0){
+                map.put("isPaidOff","是");
+            }else{
+                map.put("isPaidOff","否");
+            }
+            if(method_payed==0){
+                map.put("methodPayed","微信");
+            }else if(method_payed==1){
+                map.put("methodPayed","支付宝");
+            }else if(method_payed==2){
+                map.put("methodPayed","银行卡");
+            }else {
+                map.put("methodPayed","现金");
+            }
+
+        }
+        extJsResult.setData(list);
         return extJsResult;
     }
 }
