@@ -462,7 +462,7 @@ create table member
                       -- 现金余额: 退款的余额(账户余额)
                       -- todo: 这个钱包里的钱，会员如何使用？
   cash_coupon                      double(10,2)                    not null,   -- 代金券总额
-  balance_total                    double(10,2)                    not null,   -- 账户总余额（账户余额+充值金额）
+  balance_total                    double(10,2)                    not null,   -- 账户总余额（充值卡总金额+项目总金额+寄存库产品总金额）
   integral                         double(10,2)                    not null,   -- 账户积分
   debt                             double(10,2)                    not null,   -- 账户欠款
   amount_consumer                  double(10,2)                    not null,   -- 总消费
