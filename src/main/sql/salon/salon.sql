@@ -461,7 +461,7 @@ create table member
   balance_cash                     double(10,2)                    not null,
                       -- 现金余额: 退款的余额(账户余额)
                       -- todo: 这个钱包里的钱，会员如何使用？
-
+  cash_coupon                      double(10,2)                    not null,   -- 代金券总额
   balance_total                    double(10,2)                    not null,   -- 账户总余额（账户余额+充值金额）
   integral                         double(10,2)                    not null,   -- 账户积分
   debt                             double(10,2)                    not null,   -- 账户欠款
@@ -1089,10 +1089,12 @@ create table member_gift
                 -- 赠品类型：0.项目 1.产品 2.优惠券 3.金额
                 --   产品:注意扣除库存数量
                 --   金额:注意修改应支付的金额数量
-  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和产品:填写其对应的Id
+  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和
+产品:填写其对应的Id
   qty                          double(8,2)                                       not null,  -- 数量/金额
 
-  gift_sub_type                tinyint                                           not null,  -- 优惠券类型： 0.项目券   1.代金券
+  gift_sub_type                tinyint                                           null,  -- 优惠券类型： 0.项目券
+  gift_cash_type                tinyint                                           null,  -- 赠送金额类型： 0.代金券 1.积分
   gift_expired_date            datetime                                          null,      -- 有效期
 
   create_date                  datetime                                         not null,   -- 创建时间
@@ -1107,6 +1109,7 @@ create table member_gift
   index idx_member_gift_03(gift_type),
   index idx_member_gift_04(git_id)
 )comment '赠送明细表';
+
 
 
 
@@ -1267,9 +1270,12 @@ create table arrearages_record
   ref_trans_id               bigint                                            not null,  -- 交易Id
   member_id                    bigint                                          not null,  --会员id
   arrearages_date            datetime                                          not null,  -- 欠款日期
-  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消费
+  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消
+费
   amount_of_real_pay         double(8,2)                                       not null,  -- 实付金额
   amount_payable             double(8,2)                                       not null,  -- 应付总额
+  amount_dept                double(8,2)                                       not null,  -- 欠款金额
+  reimbursement              double(8,2)                                       not null,  -- 已还款
   is_paid_off                tinyint                                           not null,  -- 是否还清 0 是 1 否
 
   create_date                datetime                                          not null,   -- 创建时间
@@ -1280,7 +1286,7 @@ create table arrearages_record
 
   primary key (record_id),
   index idx_arrearages_record_01 (ref_trans_id),
-  index idx_arrearages_record_02 (arrearages_date)
+  index idx_arrearages_record_02 (arrearages_date),
 )comment '欠款记录表';
 
 create table repayment_record
@@ -1292,6 +1298,13 @@ create table repayment_record
   still_need_to_pay          double(8,2)                                       not null,  -- 仍需还款
   is_paid_off                tinyint                                           not null,  -- 是否还清 0 是 1 否
 
+
+  method_payed                 tinyint                                         not null,
+       -- 支付方式: 0.微信  1.支付宝  2.银行卡  10.现金
+       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
+
+  remark                     varchar(500)                                    null,       -- 备注
+  member_signature           bigint                                          not null,   -- 客户签名(系统照片ID)
   create_date                datetime                                          not null,   -- 创建时间
   create_by                  bigint                                            not null,
   update_date                datetime                                          null,
@@ -1300,7 +1313,7 @@ create table repayment_record
 
   primary key (record_id),
   index idx_repayment_record_01 (arrearages_record),
-  index idx_repayment_record_02 (reimbursement_date)
+  index idx_repayment_record_02 (reimbursement_date),
 ) comment '还款记录表';
 
 

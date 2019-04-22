@@ -75,7 +75,11 @@
         <result column="remark" jdbcType="VARCHAR" property="remark" />
         <result column="time_start" property="timeStart" jdbcType="TIMESTAMP" />
         <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
-        <result column="record_status" property="recordStatus" jdbcType="BIGINT" />
+        <result column="record_status" property="recordStatus" jdbcType="INTEGER" />
+
+        <result column="member_sourc" property="memberSourc" jdbcType="INTEGER" />
+
+
     </resultMap>
     <!--产品-->
     <resultMap id="Product" type="com.hy.salon.basic.entity.Product" extends="com.zhxh.core.data.TraceableEntity">
@@ -218,7 +222,10 @@
         <result column="introducer" property="introducer" jdbcType="VARCHAR" />
         <result column="primary_beautician" property="primaryBeautician" jdbcType="BIGINT" />
         <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
-        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="balance_cash" property="balanceCash" jdbcType="DOUBLE" />
+        <result column="balance_total" property="balanceTotal" jdbcType="DOUBLE" />
+        <result column="cash_coupon" property="cashCoupon" jdbcType="DOUBLE" />
+
         <result column="integral" property="integral" jdbcType="DOUBLE" />
         <result column="debt" property="debt" jdbcType="DOUBLE" />
         <result column="amount_consumer" property="amountConsumer" jdbcType="DOUBLE" />
@@ -449,5 +456,65 @@
         <result column="warehouse_id" property="warehouseId" jdbcType="BIGINT" />
         <result column="stock_qty" property="stockQty" jdbcType="INTEGER" />
         <result column="cost" property="cost" jdbcType="DOUBLE" />
+    </resultMap>
+
+
+
+    <resultMap id="RepaymentRecord" type="com.hy.salon.basic.entity.RepaymentRecord"
+               extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="arrearages_record" property="arrearagesRecord" jdbcType="BIGINT" />
+        <result column="reimbursement_date" property="reimbursementDate" jdbcType="TIMESTAMP" />
+        <result column="reimbursement_amount" property="reimbursementAmount" jdbcType="DOUBLE" />
+        <result column="still_need_to_pay" property="stillNeedToPay" jdbcType="DOUBLE" />
+        <result column="is_paid_off" property="isPaidOff" jdbcType="TINYINT" />
+
+        <result column="method_payed" property="methodPayed" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="member_signature" property="memberSignature" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="ArrearagesRecord" type="com.hy.salon.basic.entity.ArrearagesRecord"
+               extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="ref_trans_id" property="refTransId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="arrearages_date" property="arrearagesDate" jdbcType="TIMESTAMP" />
+        <result column="arrearages_type" property="arrearagesType" jdbcType="TINYINT" />
+        <result column="amount_of_real_pay" property="amountOfRealPay" jdbcType="DOUBLE" />
+        <result column="amount_payable" property="amountPayable" jdbcType="DOUBLE" />
+        <result column="amount_dept" property="amountDept" jdbcType="DOUBLE" />
+        <result column="reimbursement" property="reimbursement" jdbcType="DOUBLE" />
+        <result column="is_paid_off" property="isPaidOff" jdbcType="TINYINT" />
+    </resultMap>
+
+
+    <resultMap id="CardBalance" type="com.hy.salon.basic.entity.CardBalance" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="card_id" property="cardId" jdbcType="BIGINT" />
+        <result column="card_type" property="cardType" jdbcType="TINYINT" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="card_status" property="cardStatus" jdbcType="TINYINT" />
+        <result column="date_expired" property="dateExpired" jdbcType="TIMESTAMP" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <resultMap id="CardPurchase" type="com.hy.salon.basic.entity.CardPurchase" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="card_id" property="cardId" jdbcType="BIGINT" />
+        <result column="card_type" property="cardType" jdbcType="TINYINT" />
+        <result column="amount_market" property="amountMarket" jdbcType="DOUBLE" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="amount_debit" property="amountDebit" jdbcType="DOUBLE" />
+        <result column="amount_payed" property="amountPayed" jdbcType="DOUBLE" />
+        <result column="method_payed" property="methodPayed" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="member_signature" property="memberSignature" jdbcType="BIGINT" />
+        <result column="recharge_type" property="rechargeType" jdbcType="INTEGER" />
+
     </resultMap>
 </mapper>

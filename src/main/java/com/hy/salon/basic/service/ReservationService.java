@@ -122,6 +122,46 @@ public class ReservationService {
         }
         return voList;
     }
+
+    public JSONArray getOneStuffItem(Long recordId, String timeStart, String timeEnd) {
+        JSONArray jsonArray = new JSONArray();
+        Map parameter = new HashMap();
+        parameter.put("stuffId", recordId);
+        parameter.put("timeStart",timeStart);
+        parameter.put("timeEnd", timeEnd);
+        Map rMap = new HashMap();
+        String rwhere="stuff_id=#{stuffId} and time_start between #{timeStart} and #{timeEnd}";
+        rMap.put("where", rwhere);
+        List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);
+        for(Reservation reservation:reservationlist){
+            Map parameterP = new HashMap();
+            parameterP.put("masterDataId", reservation.getMemberId());
+            parameterP.put("recordType",1);
+            parameterP.put("picType",0);
+            String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+            Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+
+            Member member= memberDao.getById(reservation.getMemberId());
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("stuffName",member==null?"散客":member.getMemberName());
+            jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
+            jsonObject.put("timeStart",DateString.getTime(reservation.getTimeStart()));
+            jsonObject.put("timeInfo", DateString.getTimeInfo(reservation.getTimeStart()));
+            List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
+            String serviceNames = "";
+            for(Map map:mapService){
+                String serviceName =  (String) map.get("service_name");
+                serviceNames=serviceNames+serviceName+",";
+            }
+            jsonObject.put("serviceNames",serviceNames);
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
+    }
+
+
+
     public JSONArray getStuffItem(Long recordId, String timeStart, String timeEnd) {
         List<StuffVo> voList=new ArrayList<>();
         //查询门店下所有的员工

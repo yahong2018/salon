@@ -1,15 +1,26 @@
 package com.hy.salon.basic.dao;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hy.salon.basic.entity.CardBalance;
 import com.hy.salon.basic.entity.Product;
+import com.hy.salon.stock.entity.ProductStock;
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequest;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component("productDao")
 public class ProductDao extends BaseDAOWithEntity<Product> {
+    @Resource(name = "cardBalanceDao")
+    private CardBalanceDao cardBalanceDao;
     public List<Product> getProductList(Long salonId) {
         Map parameters = new HashMap();
         parameters.put("salonId", salonId);
@@ -85,6 +96,33 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
     }
 
 
+    public ExtJsResult getProductListAppForMenber(long memberId, long storeId, HttpServletRequest request, ListRequestBaseHandler listRequestBaseHandler) {
+        ListRequest listRequest = getListRequest(request);
+        listRequest.setWhere(listRequest.getWhere()==""?listRequest.getWhere()+" store_id="+storeId:listRequest.getWhere()+" and "+" store_id="+storeId);
+        List<Product> productList=  listRequestBaseHandler.getByRequest(listRequest);
+        ExtJsResult er = new ExtJsResult();
+        int count = listRequestBaseHandler.getRequestListCount(listRequest);
+        JSONArray jsonArray = new JSONArray();
+        for(Product product:productList){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("serviceName",product.getProductName());
+            jsonObject.put("price",product.getPrice());
+            String where = " git_id = #{git_id} and member_id=#{member_id}";
+            Map parameters = new HashMap();
+            parameters.put("git_id", product.getRecordId());
+            parameters.put("member_id", memberId);
+            List<CardBalance> cardBalanceList = cardBalanceDao.getByWhere(where,parameters);
+
+            jsonObject.put("cardBalanceSize",cardBalanceList.size());
+            jsonArray.add(jsonObject);
+        }
+        er.setSuccess(true);
+        er.setMsgcode("0");
+        er.setMsg("获取成功");
+        er.setData(jsonArray);
+        er.setTotal(count);
+        return er;
+    }
 
     protected final static String SQL_QUERY_COUNT_FOR_PRODUCT = "com.hy.salon.basic.dao.QUERY_COUNT_FOR_PRODUCT";
 

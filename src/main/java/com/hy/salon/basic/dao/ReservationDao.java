@@ -1,6 +1,7 @@
 package com.hy.salon.basic.dao;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.entity.Job;
 import com.hy.salon.basic.entity.Pictures;
 import com.hy.salon.basic.entity.Reservation;
@@ -86,12 +87,14 @@ public class ReservationDao extends BaseDAOWithEntity<Reservation> {
         if(StringUtils.isNotEmpty(serviceId)){
             parameters.put("serviceId", serviceId);
         }
-        int countT = this.getSqlHelper().getSqlSession().selectOne(SQL_GET_STUFF_RESERVATIONCOUNT, parameters);
+       /* int countT = this.getSqlHelper().getSqlSession().selectOne(SQL_GET_STUFF_RESERVATIONCOUNT, parameters);*/
         PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_STUFF_RESERVATION, parameters);
+        PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         com.hy.salon.basic.vo.Result result=new com.hy.salon.basic.vo.Result();
         result.setData(listMap);
-        result.setTotal(countT);
+        long tatal = pageInfo.getTotal();
+        result.setTotal(Integer.parseInt(tatal+""));
         return result;
     }
 

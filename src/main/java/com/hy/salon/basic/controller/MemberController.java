@@ -184,7 +184,8 @@ public class MemberController extends SimpleCRUDController<Member> {
 
             if(condition.getRecordId()==null){
                 condition.setInitialStoreId(stuff.getStoreId());
-                condition.setBalance(new Double(0));
+                condition.setBalanceCash(new Double(0));
+                condition.setBalanceTotal(new Double(0));
                 condition.setIntegral(new Double(0));
                 condition.setDebt(new Double(0));
                 condition.setAmountCharge(new Double(0));

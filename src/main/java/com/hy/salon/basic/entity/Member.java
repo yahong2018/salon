@@ -95,7 +95,10 @@ public class Member extends TraceableEntity<Long> {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date entryTime;
 
-    private Double balance;
+    private Double balanceCash;
+    private Double balanceTotal;
+
+    private Double cashCoupon;
 
     private Double integral;
 

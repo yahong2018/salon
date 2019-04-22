@@ -1,0 +1,289 @@
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>充值列表</title>
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <script src="../../../layui/layui.js"></script>
+</head>
+<style type="text/css">
+  body{
+    height: 100%;
+    width: 100%;
+    margin-top: 11px;
+  }
+  .xiugai {
+    margin-left: -0.5px;
+    margin-top: 10px;
+  }
+
+  .layui-form-item .layui-input-inline{
+      width: 174px;
+  }
+
+</style>
+
+<body >
+<!-- 内容主体区域 -->
+<div class="layui-fluid layui-form">
+  <div class="layui-form-item">
+<!--    <div class="layui-input-inline " style=" width: 638px;">
+      <button class="layui-btn layui-btn-primary addUser">新增用户</button>
+&lt;!&ndash;      <button class="layui-btn">默认按钮</button>
+      <button class="layui-btn layui-btn-normal">百搭按钮</button>&ndash;&gt;
+     </div>-->
+<!--    <div class="layui-inline">
+      <div class="layui-input-inline">
+        <select name="modules"  lay-search="" class="listMember">
+            <option value="">选择会员</option>
+        </select>
+      </div>
+    </div>-->
+<!--      <div class="layui-inline">
+          <label class="layui-form-label">一天</label>
+          <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="oneDay" placeholder="yyyy-MM-dd">
+          </div>
+      </div>-->
+<!--      <div class="layui-inline">
+          <label class="layui-form-label">日期范围</label>
+          <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="toDays" placeholder=".">
+          </div>
+      </div>-->
+
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="userKey" class="layui-input memberName ">
+        </div>
+      <div class="layui-input-inline">
+        <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+        </button></div>
+    </div>
+  </div>
+</div>
+
+<div id="pTable" >
+  <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
+
+  </table>
+  <div id="laypage"></div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function child(data) {
+        var $ = layui.jquery;
+        var recordId = data.recordId;
+        $('#recordId').val(recordId);
+        productsearch(1,"","",recordId);
+    }
+
+    function productsearch(page,memberName,toDays,refTransId) {
+        layui.use(['form','laydate','layer','table','laypage','util'],function(){
+            var form = layui.form;
+            var laydate=layui.laydate;
+            var $ = layui.$;
+        var table = layui.table,
+            laydate = layui.laydate,
+            laypage = layui.laypage;
+        var form = layui.form;
+        table.render({
+            elem : '#layui_table_id',
+            url : '/hy/basic/recharge/getSystemMemberGiftList',
+            cols : [ [
+                {checkbox: true,
+                    filter:'test'
+                }
+                ,
+                {
+                    field : 'recordId',
+                    title : 'recordId',
+                    sort : true,
+                    align : 'center'
+                },
+                {
+                    field : 'transType',
+                    title : '交易类型',
+                    sort : true,
+                    align : 'center'
+                }
+                , {
+                    field : 'giftType',
+                    title : '礼物类型',
+                    align : 'center'
+                }
+                , {
+                    field : 'memberName',
+                    title : '会员名称',
+                    align : 'center',
+                },
+                {
+                    field : 'qty',
+                    title : '金额',
+                    align : 'center',
+                },{
+                    field : 'giftExpiredDate',
+                    title : '有效日期',
+                    align : 'center',
+                }
+
+            ] ],
+            page : false,
+            where : {
+                memberName:memberName,
+                toDays:toDays,
+                page:page,
+                refTransId:refTransId
+            },
+            responseHandler: function (res, curr,count) {
+                $('#pageNum').val(curr);
+                return {
+                    "count": res.total,
+                    "data": res.data,
+                    "code": 0,//code值为200表示成功
+                    "msg": ""
+                }
+            },
+            done : function(res, curr, count) {
+                laypage.render({
+                    elem:'laypage'
+                    ,count:count
+                    ,curr:page
+                    ,limit:2
+                    ,layout: ['prev', 'page', 'next', 'skip','count','limit']
+                    ,jump:function (obj,first) {
+                        if(!first){
+                            curnum = obj.curr;;
+                            productsearch(curnum,"")
+                        }
+                    }
+                })
+
+            }
+        })
+        // table.on('checkbox(test)', function(obj){
+        //   console.log(layui.table.checkStatus('layui_table_id'));
+        // });
+        // 监听工具条
+        table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data, //获得当前行数据
+                layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent == 'detail') {
+                queryById(data.id);
+            } else if (layEvent == 'del') {
+                //alert(data.id)
+                var pageNum = $('#pageNum').val();
+                layer.confirm('真的删除行么', function(index){
+                    deleteById(data.id);
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if (layEvent === 'edit') {
+                timeSeetingItem(data);
+            }
+        });
+        //常规用法
+        laydate.render({
+            elem : '#createDate'
+        });
+        //常规用法
+        laydate.render({
+            elem : '#processingTime'
+        });
+        })
+    }
+
+  layui.use(['form','laydate','layer','table','laypage','util'],function(){
+    var form = layui.form;
+    var laydate=layui.laydate;
+    var $ = layui.$;
+      //日期范围
+      laydate.render({
+          elem: '#toDays'
+          ,type: 'datetime',
+          range: '~'
+      });
+      //常规用法
+      laydate.render({
+          elem: '#oneDay'
+      });
+   // productsearch(1);
+    getOtherInfo();
+    function getOtherInfo(storeId) {
+      $.ajax({
+        type:'GET',
+        url:'/hy/basic/recharge/getMemberInfo',
+        data: {recordId:storeId},
+        success: function(data){
+          var listMember = data.listMember;
+          for(index in listMember){
+            var temp = "";
+            temp = "<option value="+listMember[index].recordId+">"+listMember[index].memberName+"</option>";
+            $(".listMember").append(temp);
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
+          }
+            form.render();//表单重新渲染，要不然添加完显示不出来新的option
+        },
+        error:function(data){
+          alert("操作失败");
+          console.log(data);
+        }
+      })
+    }
+
+
+    $(".check").on("click", function() {
+      /*  var memberName = $(".memberName").val();
+        var userKey=$('.userKey option:selected').val();*/
+       var memberName =  $(".listMember option:selected").text();
+      var toDays = $('#toDays').val();
+      productsearch(1,memberName,toDays);
+    })
+
+      function timeSeetingItem (data) {
+
+          layer.open({
+              type:2,
+              area:[882+'px',915+'px'],
+              fix:false,
+              offset: '80px',
+              maxmin:true,
+              shadeClose:true,
+              scrollbar: false,
+              shade:0.4,
+              title:'赠送详情',
+              content:['member_gif.html'],
+              success:function(layero,index){
+                  var iframe = window['layui-layer-iframe' + index];
+                  // 向子页面的全局函数child传参
+                  iframe.child(data);
+                  console.log("成功");
+              },
+              fail:function(data){
+                  console.log(data);
+              }
+          })
+      }
+
+  });
+  function userStatus(t){
+     if(t==0){
+       return '启用';
+     }else{
+       return '禁用';
+     }
+    return util.toDateString(t1);
+  }
+</script>
+
+
+<script type="text/html" id="userStatus">
+
+
+        {{ userStatus(d.userStatus) }}
+</script>

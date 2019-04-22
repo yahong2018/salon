@@ -4,9 +4,12 @@ import com.hy.salon.basic.dao.ProductStockMovementDao;
 import com.hy.salon.basic.entity.ProductStockMovement;
 import com.hy.salon.basic.vo.ProductStockMovementVo;
 import com.hy.salon.stock.dao.ProductSockDAO;
+import com.zhxh.core.web.ExtJsResult;
+import com.zhxh.core.web.ListRequestBaseHandler;
 import org.springframework.stereotype.Component;
 import com.hy.salon.stock.entity.ProductStock;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,4 +63,6 @@ public class ProductStockMovementService {
         one.setStockQty(productStockMovement.getMovementQty());
         ProductSockDAO.update(one);
     }
+
+
 }

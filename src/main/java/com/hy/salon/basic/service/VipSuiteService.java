@@ -19,4 +19,12 @@ public class VipSuiteService {
 
         return  vipSuiteDao.getVipSuiteListIdSystem(storeId,request,listRequestBaseHandler);
     }
+
+    public ExtJsResult getVipSuiteListIdSystemAppForMenber(long memberId,long storeId, HttpServletRequest request, ListRequestBaseHandler listRequestBaseHandler) {
+        return  vipSuiteDao.getVipSuiteListIdSystemAppForMenber(memberId,storeId,request,listRequestBaseHandler);
+    }
+
+    public ExtJsResult getServiceListAppForMenber(long memberId, long storeId, HttpServletRequest request, ListRequestBaseHandler listRequestBaseHandler) {
+        return  vipSuiteDao.getServiceListAppForMenber(memberId,storeId,request,listRequestBaseHandler);
+    }
 }

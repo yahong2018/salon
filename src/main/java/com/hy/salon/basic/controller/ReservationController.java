@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.service.ShiftService;
 import com.hy.salon.basic.service.StoreRoomService;
@@ -14,6 +15,8 @@ import com.hy.salon.basic.vo.ReservationVo;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.StoreReservation;
 import com.hy.salon.basic.vo.StuffVo;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -30,10 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/hy/basic/reservation")
@@ -58,10 +58,14 @@ public class ReservationController {
     @Resource(name = "storeRoomService")
     private StoreRoomService storeRoomService;
 
-
-
+    @Resource(name="jobService")
+    private JobService jobService;
     @Resource(name = "serviceDao")
     private ServiceDAO serviceDao;
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
 /*    @ResponseBody
     @RequestMapping(value = "getReservationById",method = RequestMethod.POST)
     public Map getReservationById(){
@@ -106,6 +110,12 @@ public class ReservationController {
             @ApiImplicitParam(paramType="query", name = "recordId", value = "门店id", required = true, dataType = "Long"),
     })
     public JSONObject getReservationOtherInfo(HttpServletRequest request, Long recordId){
+
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            recordId = stuff2.getStoreId();
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             String where="store_id=#{storeId}";
@@ -284,9 +294,9 @@ public class ReservationController {
 
 
     /**
-     * 查询当天个人有预约--员工（具体到几点，什么项目）
+     * 查询当天个人有预约--员工（具体到几点，什么项目）--整个门店
      */
-    @ResponseBody
+/*    @ResponseBody
     @RequestMapping(value = "getStuffItem",method = RequestMethod.GET)
     @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
     @ApiImplicitParams({
@@ -307,7 +317,39 @@ public class ReservationController {
             result.setMsgcode("200");
         }
         return result;
+    }*/
+    /**
+     * 查询当天个人有预约--员工（具体到几点，什么项目）
+     */
+    @ResponseBody
+    @RequestMapping(value = "getOneStuff",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天一门店有预约员工列表", notes="查询当天一门店有预约员工列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeEnd", value = "結束時間", required = true, dataType = "String")
+    })
+    public Result getOneStuff(Long recordId,String timeStart ,String timeEnd,String time){
+        Result result=new Result();
+        if(StringUtils.isNotEmpty(time)){
+            timeStart = time+" 00:00:00";
+
+            Date date = DateString.StringToDateAddNum2(time,1);
+            timeEnd = DateString.DateToString(date)+" 00:00:00";
+        }
+        try {
+            JSONArray list = reservationService.getOneStuffItem(recordId, timeStart, timeEnd);
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
     }
+
     /**
      * 查询当天个人一个预约具体详情--员工（具体到几点，什么项目）
      */
@@ -315,7 +357,7 @@ public class ReservationController {
     @RequestMapping(value = "getOneStuffItem",method = RequestMethod.GET)
     @ApiOperation(value="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）", notes="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "预约id", required = true, dataType = "Long"),
     })
     public Result getOneStuffItem(Long recordId){
         Result result=new Result();
@@ -357,7 +399,7 @@ public class ReservationController {
     /**
      * 添加、修改预约
      */
-    @ResponseBody
+/*    @ResponseBody
     @RequestMapping(value = "addReservation",method = RequestMethod.POST)
     @ApiOperation(value="添加、修改预约", notes="添加、修改预约")
     @ApiImplicitParams({
@@ -418,7 +460,7 @@ public class ReservationController {
             result.setMsgcode("200");
         }
         return result;
-    }
+    }*/
 
 
     /**
@@ -451,21 +493,222 @@ public class ReservationController {
     }
 
 
+
     /**
-     * 查询当天是否有预约--根据时间段查询
+     * 查询当天可以预约的房间列表
+     * @param storeId
+     * @param timeStart
+     * @param duration
+     * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getIsTrueReservationByTime",method = RequestMethod.GET)
+    @RequestMapping(value = "getIsTrueReservationRoom",method = RequestMethod.GET)
     @ApiOperation(value="查询当天是否有预约", notes="查询当天是否有预约")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "Date"),
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "duration", value = "时长", required = true, dataType = "Float")
     })
-    public Result getIsTrueReservationByTime(Long stuffId,Date timeStart ,float duration){
+    public Result getIsTrueReservationRoom(Long storeId,String timeStart ,float duration) {
         Result result=new Result();
+        List<StoreRoom> roomList=storeRoomService.getRoomForStoreId(storeId+"");
+        List<StoreRoom> listReservationStoreRoom = new ArrayList<>();
+        Date  endTime =    DateString.getDateAddTime2(DateString.StringToDate(timeStart),duration);
+        for(StoreRoom storeRoom:roomList){
+            if("1".equals(storeRoom.getRecordStatus())){
+                continue;
+            }
+            Map parameter = new HashMap();
+            parameter.put("room_id", storeRoom.getRecordId());
+            parameter.put("timeStart",timeStart);
+            parameter.put("timeEnd", endTime);
+            Map rMap = new HashMap();
+            //String rwhere="stuff_id=#{stuffId} and (time_start between #{timeStart} and #{timeEnd} or time_end between #{timeStart} and #{timeEnd})";
+            String rwhere="room_id=#{room_id} and (#{timeStart} between  time_start and time_end  or #{timeEnd} between time_start and time_end)";
+            rMap.put("where", rwhere);
+            List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);//这个时间短存在预约
+
+            //List<Reservation> reservationlistR = reservationDao.getList(parameterR, parameterR);//这个时间短存在预约
+            if(reservationlist.size()>0){
+               /* result.setSuccess(false);
+                result.setMsgcode("200");
+                result.setMsg("房间已经被预约");*/
+                continue;
+                //return result;
+            }else{
+                listReservationStoreRoom.add(storeRoom);
+            }
+
+        }
+        result.setSuccess(true);
+        result.setMsgcode("0");
+        result.setData(listReservationStoreRoom);
+        return result;
+    }
+
+
+
+    /**
+     * 查询当天可以预约的员工列表
+     * @param storeId
+     * @param timeStart
+     * @param duration
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getIsTrueReservationStuffByTime",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天是否有预约", notes="查询当天是否有预约")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "门店id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "開始時間", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "duration", value = "时长", required = true, dataType = "Float")
+    })
+    public Result getIsTrueReservationStuffByTime(Long storeId,String timeStart ,float duration) {
+        Result result=new Result();
+        List<Stuff> listStuff = stuffDao.getStuffForStoreId(storeId);
+        /*List<Stuff> listReservationStuff = new ArrayList<>();*/
+        JSONArray jsonArray = new JSONArray();
+        for(Stuff stuff:listStuff){
+            long stuffId = stuff.getRecordId();
+            try {
+                Date  endTime =    DateString.getDateAddTime2(DateString.StringToDate(timeStart),duration);
+                Map rMapS = new HashMap();
+                String where = "stuff_id=#{stuffId} and  day = #{day}";
+                Date timeStartD =  DateString.StringToDate(timeStart);
+                String day = DateString.DateToString(timeStartD);
+                //String day = timeStart.split(" ")[0];
+                rMapS.put("stuffId",stuffId);
+                rMapS.put("day",day);
+                Schedule schedule =  scheduleDao.getOne(where,rMapS);
+                if(schedule==null){//休假
+                    /*result.setSuccess(false);
+                    result.setMsgcode("200");
+                    result.setMsg("休假");*/
+                    continue;
+                }else{
+                    Shift shift =  shiftDao.getById(schedule.getShiftId());
+                    String STime = day+" "+shift.getTimeStart().trim()+":00";
+                    Date startTime = DateString.StringToDate(STime);
+                    String ETime = day+" "+shift.getTimeEnd().trim()+":00";
+                    Date endDTime = DateString.StringToDate(ETime);
+                    //在上班范围内可以预约
+                    if((timeStartD.getTime()==startTime.getTime()&&endTime.before(endDTime))||(timeStartD.after(startTime)&&endTime.getTime()==endDTime.getTime())||(timeStartD.after(startTime)&&endTime.before(endDTime))){
+                        //再查询是否在存在的预约范围
+                        Map parameter = new HashMap();
+                        parameter.put("stuffId", stuffId);
+                        parameter.put("timeStart",timeStart);
+                        parameter.put("timeEnd", endTime);
+                        Map rMap = new HashMap();
+                        //String rwhere="stuff_id=#{stuffId} and (time_start between #{timeStart} and #{timeEnd} or time_end between #{timeStart} and #{timeEnd})";
+                        String rwhere="stuff_id=#{stuffId} and (#{timeStart} between  time_start and time_end  or #{timeEnd} between time_start and time_end)";
+                        rMap.put("where", rwhere);
+                        List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);//这个时间短存在预约
+                        if(reservationlist.size()>0){
+                           /* result.setSuccess(false);
+                            result.setMsgcode("200");
+                            result.setMsg("时间段内存在预约");*/
+
+                            continue;
+
+                        }else{
+                            List<Job> listJob = jobService.getJobList(stuff.getRecordId());
+                            String jobName = "";
+                            if(listJob.size()>0){
+                                for(Job job:listJob){
+                                    jobName=jobName+job.getJobName()+",";
+                                }
+                            }
+                            Map parameterP = new HashMap();
+                            parameterP.put("masterDataId", stuff.getRecordId());
+                            parameterP.put("recordType",1);
+                            parameterP.put("picType",0);
+                            String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+                            Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+                           // listReservationStuff.add(stuff);
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("stuffName",stuff.getStuffName());
+                            jsonObject.put("recordId",stuff.getRecordId());
+                            jsonObject.put("tel",stuff.getTel());
+                            jsonObject.put("jobName",jobName);
+                            jsonObject.put("picUrl",pictures==null?"":pictures.getPicUrl());
+                            jsonArray.add(jsonObject);
+                            continue;
+                        }
+                    }else {
+                      /*  result.setSuccess(false);
+                        result.setMsgcode("200");
+                        result.setMsg("不在上班范围");*/
+                        continue;
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                result.setSuccess(false);
+                result.setMsg("请求异常");
+                result.setMsgcode("200");
+                return result;
+            }
+        }
+        result.setSuccess(true);
+        result.setMsgcode("0");
+        result.setData(jsonArray);
+        return result;
+    }
+
+    /**
+     * 添加、修改预约
+     */
+    @ResponseBody
+    @RequestMapping(value = "addReservation",method = RequestMethod.POST)
+    @ApiOperation(value="添加、修改预约", notes="添加、修改预约")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "预约id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "memberId", value = "会员id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "memberSourc", value = "会员来源", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "预约美容师Id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "roomId", value = "预约的房间Id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "date_", value = "日期", required = true, dataType = "Date"),
+            @ApiImplicitParam(paramType="query", name = "duration", value = "时长", required = true, dataType = "float"),
+            @ApiImplicitParam(paramType="query", name = "recordStatus", value = "记录状态：0.未开始  1.已确认    2.服务中    3.已完成  ", required = true, dataType = "int"),
+            @ApiImplicitParam(paramType="query", name = "remark", value = "备注", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "timeStart", value = "开始时间", required = true, dataType = "Date"),
+
+            @ApiImplicitParam(paramType="query", name = "serviceIdS", value = "项目id", required = true, dataType = "String")
+
+    })
+    public Result addReservation(Reservation reservation,String serviceIdS /*Long stuffId,Date timeStart ,float duration*/){
+        Result result=new Result();
+        Long stuffId = reservation.getStuffId();
+        Date timeStart  = reservation.getTimeStart();
+
+        /*Date timeStart  =DateString.StringToDate(timeStartS);
+        reservation.setTimeStart(timeStart);*/
+        //reservation.setDate_();
+        float duration = reservation.getDuration();
+        Date  endTime =    DateString.getDateAddTime(timeStart,duration);
+        Map parameterR = new HashMap();
+        parameterR.put("room_id", reservation.getRoomId());
+        parameterR.put("timeStart",timeStart);
+        parameterR.put("timeEnd", endTime);
+        Map RMap = new HashMap();
+        //String rwhere="stuff_id=#{stuffId} and (time_start between #{timeStart} and #{timeEnd} or time_end between #{timeStart} and #{timeEnd})";
+        String Rwhere="room_id=#{room_id} and #{timeStart} between  time_start and time_end  and #{timeEnd} between time_start and time_end";
+        RMap.put("Rwhere", Rwhere);
+        List<Reservation> reservationlistR = reservationDao.getByWhere(Rwhere, parameterR);//这个时间短存在预约
+/*
+        Map parameterR = new HashMap();
+        parameterR.put("room_id", reservation.getRoomId());
+        String Rwhere=" room_id=#{room_id}";
+        parameterR.put("where", Rwhere);
+        List<Reservation> reservationlistR = reservationDao.getList(parameterR, parameterR);//这个时间短存在预约*/
+        if(reservationlistR.size()>0){
+            result.setSuccess(false);
+            result.setMsgcode("200");
+            result.setMsg("房间已经被预约");
+            return result;
+        }
         try {
-            Date  endTime =    DateString.getDateAddTime(timeStart,duration);
+
             Map rMapS = new HashMap();
             String where = "stuff_id=#{stuffId} and  day = #{day}";
             String day = DateString.DateToString(timeStart);
@@ -480,22 +723,24 @@ public class ReservationController {
             }else{
                 Shift shift =  shiftDao.getById(schedule.getShiftId());
                 String STime = day+" "+shift.getTimeStart().trim()+":00";
-                Date startTime = DateString.StringToDate(STime);
+                Date SStartTime = DateString.StringToDate(STime);
                 String ETime = day+" "+shift.getTimeEnd().trim()+":00";
-                Date endDTime = DateString.StringToDate(ETime);
+                Date SEndTime = DateString.StringToDate(ETime);
               /*  if((timeStart.after(startTime)&&timeStart.before(endDTime))&&(endTime.after(startTime)&&endTime.before(endDTime))){
 
                 }*/
                 //在上班范围内可以预约
-                if(timeStart.after(startTime)&&endTime.before(endDTime)){
+                if(timeStart.after(SStartTime)&&endTime.before(SEndTime)){
                     //再查询是否在存在的预约范围
                     Map parameter = new HashMap();
                     parameter.put("stuffId", stuffId);
                     parameter.put("timeStart",timeStart);
                     parameter.put("timeEnd", endTime);
+                    parameter.put("room_id", reservation.getRoomId());
                     Map rMap = new HashMap();
                     //String rwhere="stuff_id=#{stuffId} and (time_start between #{timeStart} and #{timeEnd} or time_end between #{timeStart} and #{timeEnd})";
-                    String rwhere="stuff_id=#{stuffId} and (#{timeStart} between  time_start and time_end  or #{timeEnd} between time_start and time_end)";
+                    String rwhere="(stuff_id=#{stuffId} and #{timeStart} between  time_start and time_end  and #{timeEnd} between time_start and time_end) " +
+                            "or (room_id=#{room_id} and #{timeStart} between  time_start and time_end  and #{timeEnd} between time_start and time_end)";
                     rMap.put("where", rwhere);
                     List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);//这个时间短存在预约
                     if(reservationlist.size()>0){
@@ -504,9 +749,54 @@ public class ReservationController {
                         result.setMsg("时间段内存在预约");
                         return result;
                     }else{
-                        result.setSuccess(true);
+                       /* result.setSuccess(true);
                         result.setMsgcode(StatusUtil.OK);
-                        result.setMsg("可以预约");
+                        result.setMsg("可以预约");*/
+                       //可以查询或者修改
+                        try {
+                            //Date  endTime =    DateString.getDateAddTime(reservation.getTimeStart(),duration);
+                            reservation.setTimeEnd(endTime);
+
+                            if(reservation.getRecordId()!=null){
+                                //修改
+                                reservationDao.update(reservation);
+                                String where2="reservation_id=#{reservation_id}";
+                                Map parameters = new HashMap();
+                                parameters.put("reservation_id", reservation.getRecordId());
+                                List<ReservationItem> reservationItemList  =  reservationItemDao.getByWhere(where2,parameters);
+                                if(reservationItemList.size()>0){
+                                    for(ReservationItem reservationItem1:reservationItemList){
+                                        reservationItemDao.delete(reservationItem1);
+                                    }
+                                }
+                                String[] idList = serviceIdS.split(",");
+                                for (String string:idList){
+                                    ReservationItem reservationItem  = new ReservationItem();
+                                    reservationItem.setReservationId(reservation.getRecordId());
+                                    reservationItem.setServiceId(Long.parseLong(string));
+                                    reservationItemDao.insert(reservationItem);
+                                }
+                            }else{
+                                //新增
+                                reservationDao.insert(reservation);
+                                String[] idList = serviceIdS.split(",");
+                                for (String string:idList){
+                                    ReservationItem reservationItem  = new ReservationItem();
+                                    reservationItem.setReservationId(reservation.getRecordId());
+                                    reservationItem.setServiceId(Long.parseLong(string));
+                                    reservationItemDao.insert(reservationItem);
+                                }
+                            }
+
+                            result.setSuccess(true);
+                            result.setMsgcode(StatusUtil.OK);
+                            result.setSuccess(true);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            result.setSuccess(false);
+                            result.setMsgcode("200");
+                            return result;
+                        }
                         return result;
                     }
                 }else {

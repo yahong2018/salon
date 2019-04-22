@@ -44,6 +44,20 @@ public class DateString {
         return  cal.getTime();
     }
 
+    public static  Date getDateAddTime2(Date date,float duration){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        String durationS =duration+"";
+        String strings[] = durationS.split("\\.");
+
+
+        cal.add(Calendar.HOUR, Integer.parseInt(strings[0]));// 24小时制
+        if(strings[1]=="5"){
+            cal.add(Calendar.MINUTE,30);
+        }
+        return  cal.getTime();
+    }
+
 
     public static  String getTime(Date time)  {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -53,7 +67,7 @@ public class DateString {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//创建日期转换对象HH:mm:ss为时分秒，年月日为yyyy-MM-dd
         Date data = new Date();
         int sxtype = 1;
-        String newDate = dateFormat.format(data);
+        String newDate = dateFormat.format(time);
         return  newDate;
     }
 
@@ -68,12 +82,12 @@ public class DateString {
             newD = df.parse(newDate);
 
         String String12  = "12:00";
-        String zDate = dateFormat.format(String12);
-        Date znewD = df.parse(newDate);
+       // String zDate = dateFormat.format(String12);
+        Date znewD = df.parse(String12);
 
         String String18 = "18:00";
-        String wDate = dateFormat.format(String18);
-        Date wnewD = df.parse(newDate);
+        //String wDate = dateFormat.format(String18);
+        Date wnewD = df.parse(String18);
 
 
         if(newD.before(znewD)){//上午
@@ -108,10 +122,10 @@ public class DateString {
         }
         return null;
     }
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         Date  datg = StringToDateAddNum2("2019-04-12",1);
         datg.getTime();
-    }
+    }*/
 
     /**
      * 加一天

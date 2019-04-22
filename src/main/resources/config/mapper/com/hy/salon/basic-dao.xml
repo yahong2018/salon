@@ -388,7 +388,8 @@ group by ss.record_id;
         </if>
     </select>
 
-    <select id="GET_STUFF_RESERVATIONCOUNT"  parameterType="java.util.Map" resultType="java.lang.Integer">
+
+<!--    <select id="GET_STUFF_RESERVATIONCOUNT"  parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(*)
         from reservation r
         left join stuff sss on r.stuff_id = sss.record_id
@@ -397,7 +398,7 @@ group by ss.record_id;
         where 1=1 and
         sss.store_id =#{storeId}
         <if test="stuffId != null ">
-          and   r.stuff_id=#{stuffId}
+            and   r.stuff_id=#{stuffId}
         </if>
         <if test="roomId != null">
             and r.room_id=#{roomId}
@@ -410,7 +411,91 @@ group by ss.record_id;
             and r.date_ between #{timeStart} and #{timeEnd}
         </if>
 
+    </select>-->
+
+
+
+
+    <select id="GET_RECHARGE"  parameterType="java.util.Map" resultType="java.util.Map">
+        select  c.record_id as recordId,
+        c.member_id as memberId,
+        c.card_id as cardId,
+        c.card_type as cardType,
+        c.amount_market as amountMarket,
+        c.amount as amount,
+        m.member_name as memberName
+        from card_purchase c
+        left join member m on c.member_id = m.record_id
+        where 1=1 and
+        m.initial_store_id =#{storeId}
+        <if test="memberName != null ">
+            and
+            m.member_name=#{memberName}
+        </if>
     </select>
+
+
+    <select id="GET_MEMBERGIFT"  parameterType="java.util.Map" resultType="java.util.Map">
+
+        select  c.record_id as recordId,
+        m.member_name as memberName,
+        c.ref_trans_id as refTransId,
+        c.trans_type as transType,
+        c.gift_type as giftType,
+        c.git_id as gitId,
+        c.qty as qty,
+        c.gift_sub_type as giftSubType,
+        c.gift_expired_date as giftExpiredDate
+        from member_gift c
+        left join member m on c.member_id = m.record_id
+        where 1=1 and
+        m.initial_store_id =#{storeId}
+        and
+        c.ref_trans_id = #{refTransId}
+        <if test="memberName != null ">
+            and
+            m.member_name=#{memberName}
+        </if>
+    </select>
+
+    <select id="GET_ARREARSLIST"  parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        c.record_id as recordId,
+        m.member_name as memberName,
+        c.arrearages_date as arrearagesDate,
+        c.arrearages_type as arrearagesType,
+        c.amount_of_real_pay as amountOfRealPay,
+        c.amount_payable as amountPayable,
+        c.amount_dept as amountDept,
+        c.reimbursement as reimbursement,
+        c.is_paid_off as isPaidOff
+        from arrearages_record c
+        left join member m on c.member_id = m.record_id
+        where 1=1 and
+        m.initial_store_id =#{storeId}
+
+        <if test="memberName != null ">
+            and
+            m.member_name=#{memberName}
+        </if>
+    </select>
+
+
+    <select id="GET_REPAYMENT"  parameterType="java.util.Map" resultType="java.util.Map">
+
+        select
+        c.reimbursement_amount as reimbursementAmount,
+         c.reimbursement_date as reimbursementDate,
+          c.still_need_to_pay as stillNeedToPay,
+           c.is_paid_off as isPaidOff,
+           c.method_payed as methodPayed,
+           c.remark  as remark,
+          c.record_id as recordId
+        from repayment_record c
+        where 1=1 and
+        c.arrearages_record =#{arrearagesRecord}
+    </select>
+
 
     <select id="GET_ABNORMAL_STOCK"  parameterType="java.util.Map" resultType="java.util.Map">
        select   DATE_FORMAT(create_date,'%Y-%m-%d') days,sum(record_create_type) abnormalSize from salon.product_stock_movement
