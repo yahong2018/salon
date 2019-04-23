@@ -98,6 +98,15 @@ public class ProductController {
                     if(null!=pic && pic.size()!=0){
                         p.setPicUrl(pic.get(0).getPicUrl());
                     }
+
+                    //查看该产品之前是否入过库
+                    ProductStock proStock=productStockDAO.getOneProdectStockForId(p.getRecordId());
+                    if(proStock!=null){
+                        p.setStockQty(proStock.getStockQty().toString());
+                    }else{
+                        p.setStockQty("0");
+                    }
+
                 }
             }
 

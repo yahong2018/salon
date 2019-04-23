@@ -1338,6 +1338,49 @@ create table stamp_program
   index idx_stamp_program_01 (expired_time)
 )comment '项目券汇总表';
 
+create table expense_record
+(
+  record_id              bigint               auto_increment                not null,
+  consumption_type       tinyint                                            not null, -- 消费类型 0 单次 1 产品 1 套卡
+  service_id             bigint                                             not null, -- 项目id
+  product_id             bigint                                             not null, -- 产品id
+  service_suite_id       bigint                                             not null, -- 套卡id
+  qty                    double(8,2)                                        not null, -- 购买数量
+  totle_payment          double(8,2)                                        not null, -- 总需支付
+  vip_suite_id           bigint                                             not null, -- 卡户id
+  amount_payed           double(8,2)                                        not null, -- 现金支付
+  member_signature       bigint                                             not null, -- 客户签名(系统照片ID)
+  method_payed           tinyint                                            not null, -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
+  remark                 varchar(500)                                       null,     -- 备注
+
+  create_date            datetime                                           not null,   -- 创建时间
+  create_by              bigint                                             not null,
+  update_date            datetime                                           null,
+  update_by              bigint                                             null,
+  opt_lock               int                                                null,
+
+  primary key (record_id),
+  index idx_expense_record_01 (consumption_type)
+)comment '消费记录表';
+
+create table card_consumption
+(
+  record_id                bigint               auto_increment                not null,
+  vip_suite_id             bigint                                             not null, -- 卡户id
+  expense_record_id        bigint                                             not null, -- 消费id
+  amount_card_consumption  double(8,2)                                        not null, -- 卡耗金额
+  amount_card_balance      double(8,2)                                        not null, -- 卡余额
+
+  create_date            datetime                                           not null,   -- 创建时间
+  create_by              bigint                                             not null,
+  update_date            datetime                                           null,
+  update_by              bigint                                             null,
+  opt_lock               int                                                null,
+
+  primary key (record_id),
+  index idx_card_consumption_01 (vip_suite_id)
+)comment '充值卡消耗记录表';
+
 /*
    五类结算：
        1.会员与店员(门店/美容院)结算

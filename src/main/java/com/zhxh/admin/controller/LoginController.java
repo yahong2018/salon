@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,10 +157,16 @@ public class LoginController {
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("测试登录")
-    public String doLogin(Model model, String userCode, String password) {
+    public String doLogin(Model model, String userCode, String password
+            ,String randomCode, HttpServletRequest req) {
         try {
+            String code= (String) req.getSession().getAttribute("code");
+            if(!code.equalsIgnoreCase(randomCode)){
+                return  "验证码错误";
+            }
 
-          boolean flag =   authenticateService.adminAuthenticate(userCode,password);
+
+            boolean flag =   authenticateService.adminAuthenticate(userCode,password);
           if(flag){
               String url = SysEnv.getAppRoot() + SysEnv.getUrlAppIndex();
               if (StringUtils.isEmpty(url)) {

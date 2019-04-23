@@ -22,7 +22,7 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
     }
 
 
-    public List<ProductStockMovement> getProductForSalonId(Long salonId,String movementType) {
+    public List<ProductStockMovement> getProductForSalonId(Long salonId,String movementType,String startTime,String endTime) {
         String where = "warehouse_id=#{salonId} ";
         if(movementType != null && !movementType.equals("")){
             if(!movementType.equals("72")){
@@ -30,9 +30,14 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
             }else{
                 where=where+"and movement_type in(2,72)";
             }
-
         }
+        if(null!=startTime && !"".equals(startTime)){
+            where=where+"and create_date > #{startTime} and create_date < #{endTime}";
+        }
+
         Map parameters = new HashMap();
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
         parameters.put("salonId", salonId);
         parameters.put("movementType", movementType);
         return this.getByWhere(where, parameters);

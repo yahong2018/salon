@@ -434,7 +434,7 @@ public class MemberController extends SimpleCRUDController<Member> {
                 if(limit==-1){
                     memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
                 }else{
-                    PageHelper.startPage(page, 10);
+                    PageHelper.startPage(page, limit);
                     memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
                 }
 

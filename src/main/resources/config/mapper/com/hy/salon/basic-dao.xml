@@ -540,7 +540,16 @@ group by ss.record_id;
 
 
 
+    <select id="GET_PRODUCT_FOR_SALON"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT sp.* FROM salon.product as sp  where sp.store_id in(select ss.record_id from salon.salon as ss where ss.parent_id =#{salonId})
 
+    <if test="productClass != null">
+        and sp.product_class=#{productClass}
+    </if>
+    <if test="productSeriesId != null">
+        and product_series_id=#{productSeriesId}
+    </if>
+    </select>
 
 
 </mapper>

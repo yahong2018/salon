@@ -28,7 +28,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +37,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 import java.util.List;
 
@@ -889,6 +887,25 @@ public class SalonController extends SimpleCRUDController<Salon> {
         return r;
     }
 
+
+
+    /**
+     * 获取门店分布
+     */
+    @RequestMapping("querySalonIndex")
+    @ResponseBody
+    public Result querySalonIndex(){
+        Result r= new Result();
+
+
+        List<Salon> salonList=salonDao.getAllStore();
+
+        r.setData(salonList);
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
 
 
 
