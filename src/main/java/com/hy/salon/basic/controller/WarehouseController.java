@@ -82,7 +82,9 @@ public class WarehouseController {
         try {
             //查看该产品之前是否入过库
             ProductStock proCondition=productStockDAO.getOneProdectStockForId(productId);
+            int qty=0;
             if(null !=proCondition){
+                qty=proCondition.getStockQty();
                 BigDecimal  b1=new BigDecimal(Integer.toString(movementQty));
                 BigDecimal  b2=new BigDecimal(Double.toString(purchaseCost));
                 proCondition.setStockQty(proCondition.getStockQty()+movementQty);
@@ -101,13 +103,14 @@ public class WarehouseController {
                 productStockDAO.insert(proCondition);
             }
             ProductStockMovement movement=new ProductStockMovement();
-            movement.setRecordCreateType(recordCreateType);
+            movement.setRecordCreateType(new Byte("0"));
             movement.setMovementType(new Byte("0"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String movementNo="HY"+formatter.format(new Date());
             movement.setMovementNo(movementNo);
             movement.setProductId(productId);
             movement.setMovementQty(movementQty);
+            movement.setMovementPurQty(qty);
             movement.setDateOfManufacture(dateOfManufacture);
             movement.setPurchaseCost(purchaseCost);
             movement.setWarehouseId(salonId);
@@ -133,7 +136,7 @@ public class WarehouseController {
     @ResponseBody
     @RequestMapping("queryWarehousingList")
     @ApiOperation(value = "入库记录", notes = "入库记录")
-    public Result queryWarehousingList(Long salonId,String movementType){
+    public Result queryWarehousingList(Long salonId,String movementType,String startTime,String endTime){
         Result result=new Result();
         try {
             if(salonId==null || salonId==0){
@@ -142,13 +145,19 @@ public class WarehouseController {
 
                 salonId=stuff.getStoreId();
             }
-            List<ProductStockMovement> ProductStockMovementList =productStockMovementDao.getProductForSalonId(salonId,movementType);
+            List<ProductStockMovement> ProductStockMovementList =productStockMovementDao.getProductForSalonId(salonId,movementType,startTime,endTime);
             for(ProductStockMovement p:ProductStockMovementList){
                 if(p.getMovementType().toString().equals("72")){
                     p.setQty(p.getMovementPurQty()+p.getMovementQty());
                 }else if(p.getMovementType().toString().equals("2")){
                     p.setQty(p.getMovementPurQty()-p.getMovementQty());
                 }
+
+                List<Pictures> pic=picturesDao.getPicturesForCondition(p.getProductId(),new Byte("5"),new Byte("0"));
+                if(null!=pic && pic.size()!=0){
+                    p.setPicUrl(pic.get(0).getPicUrl());
+                }
+
             }
 
 
@@ -171,13 +180,15 @@ public class WarehouseController {
      */
     @ResponseBody
     @RequestMapping("queryWarehousingData")
-    @ApiOperation(value = "入库记录", notes = "入库记录")
     public Result queryWarehousingData(Long recordId){
         Result result=new Result();
         try {
             JSONObject jsonObj=new JSONObject();
             ProductStockMovement ProductStockMovement =productStockMovementDao.getOneProductForSalonId(recordId);
             jsonObj.put("ProductStockMovement",ProductStockMovement);
+            Stuff stuff=stuffDao.getStuffForUser(ProductStockMovement.getCreateBy());
+            jsonObj.put("stuffName",stuff.getStuffName());
+
             Product pro=productDao.getOneProdectForId(ProductStockMovement.getProductId());
             jsonObj.put("product",pro);
             List<Map<String,Object>> Property1= productPropertyDAO.getPropertyName(ProductStockMovement.getProductId(),new Byte("0"));
@@ -244,7 +255,7 @@ public class WarehouseController {
                 productStockDAO.insert(proCondition);
             }
             ProductStockMovement movement=new ProductStockMovement();
-            movement.setRecordCreateType(recordCreateType);
+            movement.setRecordCreateType(new Byte("0"));
             movement.setMovementType(new Byte("64"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String movementNo="HY"+formatter.format(new Date());
@@ -545,7 +556,7 @@ public class WarehouseController {
     @ResponseBody
     @RequestMapping("queryProductStockList")
     @ApiOperation(value = "产品库存记录", notes = "产品库存记录")
-    public Result queryProductStockList(Long salonId,String productClass,Long productSeriesId,int page,int limit){
+    public Result queryProductStockList(Long salonId,String productClass,Long productSeriesId,int page,int limit,String jobLevel){
         Result result=new Result();
         try {
 
@@ -555,9 +566,9 @@ public class WarehouseController {
                 salonId=stuff.getStoreId();
             }
 
-            result.setTotal(productDao.getProdectForCondition(salonId,productClass,productSeriesId).size());
+            result.setTotal(productDao.getProdectForCondition2(salonId,productClass,productSeriesId,jobLevel).size());
             PageHelper.startPage(page, limit);
-            List<Product> list=productDao.getProdectForCondition(salonId,productClass,productSeriesId);
+            List<Product> list=productDao.getProdectForCondition2(salonId,productClass,productSeriesId,jobLevel);
             if(list.size()!=0){
                 for(Product p:list){
                     List<Map<String,Object>> Property1= productPropertyDAO.getPropertyName(p.getRecordId(),new Byte("0"));

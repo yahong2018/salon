@@ -64,6 +64,13 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
     }
 
 
+    public List<Salon> getAllStore(){
+        String where=" parent_id != -1";
+        Map parameters = new HashMap();
+        return this.getByWhere(where,parameters);
+    }
+
+
     public List<Salon> getSalonForStore(Long storeId){
         String where=" parent_id = #{storeId}";
         Map parameters = new HashMap();

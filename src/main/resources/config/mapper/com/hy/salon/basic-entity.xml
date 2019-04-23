@@ -527,4 +527,20 @@
         <result column="is_expired" property="isExpired" jdbcType="TINYINT" />
         <result column="is_used" property="isUsed" jdbcType="TINYINT" />
     </resultMap>
+
+
+    <resultMap id="StuffScore" type="com.hy.salon.basic.entity.StuffScore" >
+        <result column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="existing" property="existing" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="StuffScoreRecord" type="com.hy.salon.basic.entity.StuffScoreRecord"
+               extends="com.zhxh.core.data.TraceableEntity">
+        <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
+        <result column="matter" property="matter" jdbcType="VARCHAR" />
+        <result column="get_point" property="getPoint" jdbcType="BIGINT" />
+        <result column="get_by_id" property="getById" jdbcType="BIGINT" />
+    </resultMap>
+
 </mapper>

@@ -9,6 +9,7 @@
 <!--    <script type="text/javascript" src="../static/js/jquery/jquery-3.3.1.min.js"></script>-->
     <script src="../layui/layui.js"></script>
     <script type="text/javascript" src="../js/md5.js"></script>
+    <script type="text/javascript" src="../../../js/url.js"></script>
     <style>
         .window{
             /*width: 400px;
@@ -49,7 +50,7 @@
     </style>
 </head>
 <body >
-<div class="window">
+<div class="window" style=" height: 330px;">
     <form  class="layui-form"  id="login-form" >
         <div class="row">
             <h2 class="title">合一美容院信息管理平台</h2>
@@ -64,6 +65,13 @@
             <label class="layui-form-label">密   码：</label>
             <div class="layui-input-inline">
                 <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" id="password">
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">验证码：</label>
+            <div class="layui-input-inline">
+                <input type="randomCode" name="randomCode" required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input" id="randomCode">
+                <img  id="codePic" src="" style="cursor:pointer;width: 180px; height: 30px;margin-top: 15px;" onclick="createNewCode(this)">
             </div>
         </div>
 <!--        <div class="layui-form-item" >
@@ -87,9 +95,18 @@
 </body>
 
 <script type="text/javascript">
+
+
+
     layui.use(['jquery', 'laydate', 'layer', 'form'], function () {
         var form = layui.form;
         var $ = layui.$;
+
+
+        $("#codePic").attr("src",ctx+"/randomCode");
+
+
+
 
         $(document).ready(function(){
             var password= hex_md5("123456");
@@ -118,13 +135,17 @@
                             })
                         });*/
         });
+
     });
     function login(obj) {
+
+        console.log("登录进来一次");
         var $ = layui.$;
         $(obj).attr("disabled", true);
 
         var userCode = $.trim($('#userCode').val());
         var password = $.trim($('#password').val());
+        var randomCode = $.trim($('#randomCode').val());
         password =  hex_md5(password);
         if (userCode == "" || password == "") {
             $("#info").html('用户名或者密码不能为空');
@@ -133,14 +154,18 @@
             $.ajax({
                 type : 'POST',
                 url : '/login/doLogin',
-                data : {userCode:userCode,password:password},
+                data : {userCode:userCode,password:password,randomCode:randomCode},
                 contentType: "application/x-www-form-urlencoded",
                 success : function(data) {
                     if(data=="error"){
                         alert("登陆失败");
-                    }else {
+                        window.location.reload()
+                    }else if(data=="验证码错误"){
+                        alert(data);
+                        window.location.reload()
+                    }else{
                         localStorage.setItem("token", data.token);
-                       // location.href = '/index.html';
+                        // location.href = '/index.html';
                         location.href = data.substr(data.lastIndexOf("redirect:") + "redirect:".length);
                     }
                 },
@@ -154,6 +179,34 @@
 
         }
     }
+    function createNewCode(obj){
+        var $ = layui.$;
+        // window.location.reload()
+        var rnd=RndNum(4);
+         $(obj).attr("src",ctx+"/randomCode?rndNum="+rnd);
+    }
+
+    //产生随机数函数
+    function RndNum(n){
+        var rnd="";
+        for(var i=0;i<n;i++)
+            rnd+=Math.floor(Math.random()*10);
+        return rnd;
+    }
+
+    //重新渲染表单
+
+    function renderForm(){
+
+        layui.use('form', function(){
+
+            var form = layui.form;
+            form.render();
+
+        });
+
+    }
+
 
 </script>
 </html>

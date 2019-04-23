@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.NurseLogDao;
 import com.hy.salon.basic.dao.NurseLogModelDAO;
+import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.NurseLog;
 import com.hy.salon.basic.entity.NurseLogModel;
+import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.NurseLogService;
 import com.hy.salon.basic.vo.NurseLogVo;
@@ -44,6 +46,9 @@ public class NurseLogController {
 
     @Resource(name = "nurseLogModelDao")
     private NurseLogModelDAO nurseLogModelDao;
+
+    @Resource(name = "salonDao")
+    private SalonDao salonDao;
 
     /**
      * 按门店查询护理日志
@@ -177,6 +182,31 @@ public class NurseLogController {
         return result;
     }
 
+    /**
+     * 院长角色查看各门店日志情况
+     */
+    @ResponseBody
+    @RequestMapping(value = "queryLogForSalon")
+    @ApiOperation(value="院长角色查看各门店日志情况", notes="院长角色查看各门店日志情况")
+    public Result queryLogForSalon(Long salonId){
+        Result result=new Result();
+        try {
+            List<Salon> storeList=salonDao.getSalonForStoreId2(salonId);
+
+            for(Salon s:storeList){
+
+            }
+
+//          result.setData(nurseLogList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
 
 
 

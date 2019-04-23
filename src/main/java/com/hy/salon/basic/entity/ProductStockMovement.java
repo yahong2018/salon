@@ -1,5 +1,6 @@
 package com.hy.salon.basic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -47,4 +48,9 @@ public class ProductStockMovement extends TraceableEntity<Long> {
     private String remark;
 
     private Integer qty;
+
+    private String picUrl;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date createDate;
 }

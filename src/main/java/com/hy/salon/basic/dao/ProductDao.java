@@ -76,6 +76,32 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return this.getByWhere(where, parameters);
     }
 
+    public List<Product> getProdectForCondition2(Long salonId,String productClass,Long productSeriesId,String jobLevel){
+
+        String where = "store_id=#{salonId} ";
+        if(null != productClass && !"".equals(productClass)){
+            where=where+" and product_class=#{productClass}";
+        }
+
+        if(null != productSeriesId && productSeriesId!=0){
+            where=where+" and product_series_id=#{productSeriesId}";
+        }
+
+        Map parameters = new HashMap();
+        parameters.put("salonId", salonId);
+        parameters.put("productClass", productClass);
+        parameters.put("productSeriesId", productSeriesId);
+
+        if(jobLevel.equals("0")){
+            return this.getByWhere(where, parameters);
+        }else{
+            return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_FOR_SALON, parameters);
+        }
+
+
+    }
+
+
 
 
     public List<Product> getProdectForCondition(Long salonId){
@@ -127,4 +153,8 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
     protected final static String SQL_QUERY_COUNT_FOR_PRODUCT = "com.hy.salon.basic.dao.QUERY_COUNT_FOR_PRODUCT";
 
     protected final static String SQL_GET_PRODUCT_LIST = "com.hy.salon.basic.dao.GET_PRODUCT_LIST";
+
+    protected final static String SQL_GET_PRODUCT_FOR_SALON = "com.hy.salon.basic.dao.GET_PRODUCT_FOR_SALON";
+
+
 }
