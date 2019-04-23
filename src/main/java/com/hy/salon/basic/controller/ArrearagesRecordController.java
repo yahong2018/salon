@@ -58,7 +58,7 @@ public class ArrearagesRecordController  {
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberName,recordId, request);
+        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberName,recordId, request,toDays);
 
 
         return  VipSuiteList;

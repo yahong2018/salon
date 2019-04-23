@@ -1,17 +1,11 @@
 package com.hy.salon.basic.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.*;
-import com.hy.salon.basic.vo.Result;
-import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
-import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,14 +13,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
@@ -85,6 +76,8 @@ public class RechargeController {
     @Resource(name="arrearagesRecordDao")
     private ArrearagesRecordDao arrearagesRecordDao;
 
+    @Resource(name="stampProgramDao")
+    private  StampProgramDao stampProgramDao;
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
     @ResponseBody
     @RequestMapping("/getMemberInfo")
@@ -123,7 +116,7 @@ public class RechargeController {
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberName,recordId, request);
+        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberName,recordId, request,toDays);
         return  VipSuiteList;
     }
 
@@ -225,6 +218,14 @@ public class RechargeController {
                     product.setStockOfPreWarning(product.getStockOfPreWarning()-qty);//数量减少
                     balance = balance + product.getPrice()*qty;
                     productDao.update(product);//产品表
+                }else  if(mg.getGiftType()==2){
+                    StampProgram stampProgram = new StampProgram();
+                    stampProgram.setMemberId(cardBalance.getMemberId());
+                    stampProgram.setDenomination(mg.getQty());
+                    stampProgram.setExpiredTime(mg.getGiftExpiredDate());
+                    stampProgram.setIsExpired((byte)1);
+                    stampProgram.setIsUsed((byte)1);
+                    stampProgramDao.insert(stampProgram);
                 }
 
                 memberGiftDao.insert(mg);//赠送表
@@ -239,7 +240,7 @@ public class RechargeController {
             }
 
             Member member =  memberDao.getById(cardBalance.getMemberId());
-            member.setBalanceTotal(member.getBalanceCash()+balance);
+            member.setBalanceTotal(member.getBalanceTotal()+balance);
             member.setDebt(member.getDebt()+cardPurchase.getAmountDebit());
             member.setAmountCharge(member.getAmountCharge()+cardPurchase.getAmount());
        /*if(cardBalance.getRecordId()!=null) {//说明是已存在的卡户

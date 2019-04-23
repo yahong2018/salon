@@ -55,9 +55,9 @@
       </div>
 
     <div class="layui-inline">
-        <div class="layui-input-inline">
+       <!-- <div class="layui-input-inline">
             <input type="text" name="userKey" class="layui-input memberName ">
-        </div>
+        </div>-->
       <div class="layui-input-inline">
         <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
           <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
@@ -133,21 +133,20 @@
                 title : 'recordId',
                 sort : true,
                 align : 'center'
-            }
-              ,
-              {
-                field : 'memberId',
-                title : '员工id',
-                sort : true,
-                align : 'center'
-              },
-              {
+            },{
                 field : 'cardId',
                 title : '卡id',
                 sort : true,
                 align : 'center'
-              }
-              , {
+            }
+            ,
+              {
+                field : 'suiteName',
+                title : '卡名称',
+                sort : true,
+                align : 'center'
+              },
+              {
                 field : 'cardType',
                 title : '卡类型',
                 align : 'center'
@@ -162,7 +161,7 @@
                 title : '会员名称',
                 align : 'center',
             },{
-                title : '操作',
+                title : '赠送详情',
                 fixed: 'right',
                 align:'center',
                 toolbar: '#barDemo'}
@@ -237,6 +236,9 @@
         var userKey=$('.userKey option:selected').val();*/
        var memberName =  $(".listMember option:selected").text();
       var toDays = $('#toDays').val();
+      if(memberName=='选择会员'){
+          memberName = "";
+      }
       productsearch(1,memberName,toDays);
     })
 
@@ -244,7 +246,7 @@
 
           layer.open({
               type:2,
-              area:[882+'px',915+'px'],
+              area:[982+'px',615+'px'],
               fix:false,
               offset: '80px',
               maxmin:true,

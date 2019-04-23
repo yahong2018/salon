@@ -1319,13 +1319,18 @@ create table repayment_record
 
 create table stamp_program
 (
-  recoid_id                bigint                auto_increment                not null,
+  record_id                bigint                auto_increment                not null,
   member_id                bigint                                              not null, -- 属于哪个顾客
   denomination             double(8,2)                                         not null, -- 价值金额
-  expired_time             double(3,1)                                         not null, -- 有效期
+  expired_time             datetime                                            not null, -- 有效期
   is_expired               tinyint                                             not null, -- 是否已过期 0 是 1 否
   is_used                  tinyint                                             not null, -- 是否可用  0 是 1 否
 
+  create_date                datetime                                          not null,   -- 创建时间
+  create_by                  bigint                                            not null,
+  update_date                datetime                                          null,
+  update_by                  bigint                                            null,
+  opt_lock                   int                                               null,
   primary key (record_id),
   index idx_stamp_program_01 (expired_time)
 )comment '项目券汇总表';
