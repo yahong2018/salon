@@ -495,6 +495,8 @@
         <result column="card_id" property="cardId" jdbcType="BIGINT" />
         <result column="card_type" property="cardType" jdbcType="TINYINT" />
         <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="balance_total" property="balanceTotal" jdbcType="TINYINT" />
+
         <result column="card_status" property="cardStatus" jdbcType="TINYINT" />
         <result column="date_expired" property="dateExpired" jdbcType="TIMESTAMP" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />

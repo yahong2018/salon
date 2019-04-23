@@ -1,9 +1,12 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.*;
+import com.hy.salon.basic.util.DateString;
+import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.web.*;
@@ -14,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -78,6 +82,9 @@ public class RechargeController {
 
     @Resource(name="stampProgramDao")
     private  StampProgramDao stampProgramDao;
+
+    @Resource(name = "reservationDao")
+    private ReservationDao reservationDao;
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
     @ResponseBody
     @RequestMapping("/getMemberInfo")
@@ -99,9 +106,6 @@ public class RechargeController {
         return  jsonObject;
     }
 
-
-
-
     /**
      * 会员卡充值记录列表
      */
@@ -120,7 +124,7 @@ public class RechargeController {
         return  VipSuiteList;
     }
 
-    /* *
+    /**
      * 会员卡充值记录赠送列表
      */
     @ResponseBody
@@ -194,6 +198,7 @@ public class RechargeController {
                 cardBalanceOld.setRemark(cardBalance.getRemark());
                 cardPurchase.setRechargeType(0);
                 cardBalanceOld.setBalance(cardBalance.getBalance()+cardBalanceOld.getBalance());
+                cardBalanceOld.setBalanceTotal((byte)(cardBalanceOld.getBalanceTotal()+cardBalance.getBalanceTotal()));
                 cardBalanceDao.update(cardBalanceOld);//卡户表
                 transType= 1;
             }else{
@@ -225,7 +230,7 @@ public class RechargeController {
                     stampProgram.setExpiredTime(mg.getGiftExpiredDate());
                     stampProgram.setIsExpired((byte)1);
                     stampProgram.setIsUsed((byte)1);
-                    stampProgramDao.insert(stampProgram);
+                    stampProgramDao.insert(stampProgram);//项目券
                 }
 
                 memberGiftDao.insert(mg);//赠送表

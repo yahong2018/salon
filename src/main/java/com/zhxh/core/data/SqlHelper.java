@@ -1,5 +1,6 @@
 package com.zhxh.core.data;
 
+import com.github.pagehelper.Page;
 import com.zhxh.core.data.meta.annotation.AutoGenerationType;
 import com.zhxh.core.utils.BeanUtils;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -73,6 +74,9 @@ public class SqlHelper {
 
         return this.executeList(clazz, sql, map);
     }
+
+
+
 
     public List getList(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);

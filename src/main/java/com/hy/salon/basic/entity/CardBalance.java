@@ -18,6 +18,8 @@ public class CardBalance extends TraceableEntity<Long> {
 
     private Double balance;
 
+    private Byte balanceTotal;
+
     private Byte cardStatus;
 
     private Date dateExpired;

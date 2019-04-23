@@ -1029,6 +1029,7 @@ create table card_balance
 
   balance                      double(8,2)                                      not null,  -- 卡户余额/剩余 次数
 
+  balance_total                tinyint                                          not null,  -- 卡可使用总次数
   card_status                  tinyint                                          not null,  -- 卡的状态: 0.正常  1.失效
   date_expired                 datetime                                         null,      -- 失效时间：null表示永久有效
 
@@ -1049,9 +1050,9 @@ create table card_purchase
 (
   record_id                    bigint              auto_increment              not null,
   member_id                    bigint                                          not null,   -- 会员Id
-  card_id                      bigint                                          not null,   -- 卡Id
+  card_id                      bigint                                          not null,   -- 卡Id、产品id
   card_type                    tinyint                                         not null,
-               -- 卡类型:0. 充值卡  1.套卡  2.次卡
+               -- 卡类型:0. 充值卡  1.套卡  2.次卡、3产品
                -- 如果是充值卡，写程序的时候要注意卡金额的合并
   amount_market                double(8,2)                                     not null,   -- 原价
   amount                       double(8,2)                                     not null,   -- 充值金额/总金额 = 原价 - 赠送金额(在子表中)
@@ -1064,7 +1065,7 @@ create table card_purchase
   remark                       varchar(500)                                    null,       -- 备注
   member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
-  recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡
+  recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡、2 产品
 
   create_date                  datetime                                         not null,  -- 创建时间
   create_by                    bigint                                           not null,
@@ -1139,6 +1140,8 @@ create table payment_item
   card_balance_id              bigint                                          not null,  -- 卡户Id:充值卡/次卡/套卡项目/优惠券的编号  -1.欠款
   merchandise_id               bigint                                          not null,  -- 商品Id:服务/产品的编号   -1.欠款
   merchandise_type             tinyint                                         not null,  -- 商品类型: 0.服务  1.产品  -1.欠款
+
+  payment_type                 tinyint                                         not null,  --划卡类型 0.使用次数  1.使用项目券
 
   qty                          double(8,2)                                     not null,  -- 数量： 还欠款的话，数量为 1
   price                        double(10,2)                                    not null,  -- 单价： 还欠款的话，单价=偿还金额
