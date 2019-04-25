@@ -1059,7 +1059,7 @@ create table card_purchase
   amount_debit                 double(8,2)                                     not null,   -- 欠款
   amount_payed                 double(8,2)                                     not null,   -- 实际支付/现金支付 = 交易价格-欠款
   method_payed                 tinyint                                         not null,
-       -- 支付方式: 0.微信  1.支付宝  2.银行卡  10.现金
+       -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
        --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
 
   remark                       varchar(500)                                    null,       -- 备注
@@ -1190,6 +1190,9 @@ create table member_product_keep_item
   amount                       double(10,2)                                    not null,  -- 金额
 
   qty_received                 double(8,2)                                     not null,  -- 已领取数量
+
+  product_get_type             tinyint                                         not null,  --0.购买， 1.赠送
+
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
