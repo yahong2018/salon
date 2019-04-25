@@ -1167,7 +1167,6 @@ create table member_product_keep
 (
   record_id                    bigint              auto_increment              not null,
   member_id                    bigint                                          not null,
-
   remark                       varchar(500)                                    null,       -- 备注
   member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
@@ -1189,11 +1188,8 @@ create table member_product_keep_item
   price                        double(8,2)                                     not null,  -- 单价
   qty_purchased                double(8,2)                                     not null,  -- 购买数量
   amount                       double(10,2)                                    not null,  -- 金额
-
   qty_received                 double(8,2)                                     not null,  -- 已领取数量
-
   product_get_type             tinyint                                         not null,  --0.购买， 1.赠送
-
 
   create_date                  datetime                                         not null,   -- 创建时间
   create_by                    bigint                                           not null,
@@ -1206,6 +1202,16 @@ create table member_product_keep_item
   index idx_member_product_keep_item_02 (product_id)
 )comment  '产品寄存明细';
 
+create table member_product_get_record
+(
+  record_id                     bigint             auto_increment               not null,
+  member_product_keep_item      bigint                                          not null,  -- 产品寄存明细id
+  qty                           double(8,2)                                     not null,  -- 当前领取数量
+
+  remark                        varchar(500)                                    null,       -- 备注
+  member_signature              bigint                                          not null,   -- 客户签名(系统照片ID)
+
+)comment '产品寄存领取表';
 
 create table member_product_reject
 (
@@ -1342,48 +1348,6 @@ create table stamp_program
   index idx_stamp_program_01 (expired_time)
 )comment '项目券汇总表';
 
-create table expense_record
-(
-  record_id              bigint               auto_increment                not null,
-  consumption_type       tinyint                                            not null, -- 消费类型 0 单次 1 产品 1 套卡
-  service_id             bigint                                             not null, -- 项目id
-  product_id             bigint                                             not null, -- 产品id
-  service_suite_id       bigint                                             not null, -- 套卡id
-  qty                    double(8,2)                                        not null, -- 购买数量
-  totle_payment          double(8,2)                                        not null, -- 总需支付
-  vip_suite_id           bigint                                             not null, -- 卡户id
-  amount_payed           double(8,2)                                        not null, -- 现金支付
-  member_signature       bigint                                             not null, -- 客户签名(系统照片ID)
-  method_payed           tinyint                                            not null, -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
-  remark                 varchar(500)                                       null,     -- 备注
-
-  create_date            datetime                                           not null,   -- 创建时间
-  create_by              bigint                                             not null,
-  update_date            datetime                                           null,
-  update_by              bigint                                             null,
-  opt_lock               int                                                null,
-
-  primary key (record_id),
-  index idx_expense_record_01 (consumption_type)
-)comment '消费记录表';
-
-create table card_consumption
-(
-  record_id                bigint               auto_increment                not null,
-  vip_suite_id             bigint                                             not null, -- 卡户id
-  expense_record_id        bigint                                             not null, -- 消费id
-  amount_card_consumption  double(8,2)                                        not null, -- 卡耗金额
-  amount_card_balance      double(8,2)                                        not null, -- 卡余额
-
-  create_date            datetime                                           not null,   -- 创建时间
-  create_by              bigint                                             not null,
-  update_date            datetime                                           null,
-  update_by              bigint                                             null,
-  opt_lock               int                                                null,
-
-  primary key (record_id),
-  index idx_card_consumption_01 (vip_suite_id)
-)comment '充值卡消耗记录表';
 
 /*
    五类结算：
