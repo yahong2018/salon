@@ -27,4 +27,7 @@ public class Salon extends TraceableEntity<Long> {
     private Double latitude;
     private String description;
     private String inviteCode;
+
+    private  Long existing;
+    private Long awardsNumber;
 }

@@ -36,7 +36,7 @@ public class ProductStockMovement extends TraceableEntity<Long> {
     private Integer movementQty;
 
     private Integer movementPurQty;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfManufacture;
 
     private Double purchaseCost;

@@ -79,6 +79,10 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @Resource(name = "systemRoleDAO")
     private SystemRoleDAO systemRoleDAO;
 
+    @Resource(name = "stuffScoreDao")
+    private StuffScoreDAO stuffScoreDao;
+
+
 
 
 
@@ -307,14 +311,16 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                             String str=ss.getJobName()+","+job.getJobName();
                             ss.setJobName(str);
                         }
-
-
-
-
                     }
-
                 }
 
+                StuffScore stuffScore=stuffScoreDao.getStuffScore(ss.getRecordId());
+                if(null==stuffScore){
+                    ss.setExisting(new Long(0));
+                }else{
+                    ss.setExisting(stuffScore.getExisting());
+                }
+                ss.setStoreName(salon.getSalonName());
             }
             JSONObject jsonObj=new JSONObject();
             jsonObj.put("stuff",stuff);

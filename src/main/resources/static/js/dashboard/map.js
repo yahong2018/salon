@@ -585,7 +585,7 @@ option = {
             coordinateSystem: 'bmap',
             data: convertData(data.sort(function (a, b) {
                 return b.value - a.value;
-            }).slice(0, 6)),
+            }).slice(0, 1000)),
             symbolSize: function (val) {
                 return val[2] / 10;
             },

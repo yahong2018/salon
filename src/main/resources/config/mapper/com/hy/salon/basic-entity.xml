@@ -541,8 +541,10 @@
                extends="com.zhxh.core.data.TraceableEntity">
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="matter" property="matter" jdbcType="VARCHAR" />
-        <result column="get_point" property="getPoint" jdbcType="BIGINT" />
-        <result column="get_by_id" property="getById" jdbcType="BIGINT" />
+        <result column="score" property="score" jdbcType="BIGINT" />
+        <result column="total_score" property="totalScore" jdbcType="BIGINT" />
+        <result column="issued_by" property="issuedBy" jdbcType="BIGINT" />
+        <!--<result column="stuff_name" property="stuffName" jdbcType="VARCHAR" />-->
     </resultMap>
 
 </mapper>
