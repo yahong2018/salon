@@ -1091,19 +1091,18 @@ create table member_gift
                 -- 赠品类型：0.项目 1.产品 2.优惠券 3.金额
                 --   产品:注意扣除库存数量
                 --   金额:注意修改应支付的金额数量
-  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和
-产品:填写其对应的Id
+  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和产品:填写其对应的Id
   qty                          double(8,2)                                       not null,  -- 数量/金额
 
-  gift_sub_type                tinyint                                           null,  -- 优惠券类型： 0.项目券
-  gift_cash_type                tinyint                                           null,  -- 赠送金额类型： 0.代金券 1.积分
+  gift_sub_type                tinyint                                           null,      -- 优惠券类型： 0.项目券
+  gift_cash_type                tinyint                                          null,      -- 赠送金额类型： 0.代金券 1.积分
   gift_expired_date            datetime                                          null,      -- 有效期
 
-  create_date                  datetime                                         not null,   -- 创建时间
-  create_by                    bigint                                           not null,
-  update_date                  datetime                                         null,
-  update_by                    bigint                                           null,
-  opt_lock                     int                                              null,
+  create_date                  datetime                                          not null,  -- 创建时间
+  create_by                    bigint                                            not null,
+  update_date                  datetime                                          null,
+  update_by                    bigint                                            null,
+  opt_lock                     int                                               null,
 
   primary key (record_id),
   index idx_member_gift_01(member_id),
@@ -1121,14 +1120,14 @@ create table payment
   member_id                    bigint                                          not null,  -- 会员Id
   payment_type                 tinyint                                         not null,  -- 0.一般支付   1.偿还欠款
 
-  remark                       varchar(500)                                    null,       -- 备注
-  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
+  remark                       varchar(500)                                    null,      -- 备注
+  member_signature             bigint                                          not null,  -- 客户签名(系统照片ID)
 
-  create_date                  datetime                                         not null,   -- 创建时间
-  create_by                    bigint                                           not null,
-  update_date                  datetime                                         null,
-  update_by                    bigint                                           null,
-  opt_lock                     int                                              null,
+  create_date                  datetime                                        not null,  -- 创建时间
+  create_by                    bigint                                          not null,
+  update_date                  datetime                                        null,
+  update_by                    bigint                                          null,
+  opt_lock                     int                                             null,
 
   primary key (record_id),
   index idx_payment_01(member_id)
