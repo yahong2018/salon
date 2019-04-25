@@ -1230,7 +1230,7 @@ create table member_product_reject_item
 (
   record_id                    bigint              auto_increment              not null,
   member_product_reject_id     bigint                                          not null,  -- 产品退款Id
-  product_keep_item_id         bigint                                          not null,  -- 原购买记录Id
+  product_keep_item_id         bigint                                          not null,  -- 原购买记录Id(产品寄存明细表id)
 
   reject_type                  tinyint                                         not null,  -- 0.未领取退款  1.已领取退款
   qty_reject                   double(8,2)                                     not null,  -- 退还数量
