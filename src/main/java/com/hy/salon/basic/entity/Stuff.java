@@ -33,4 +33,8 @@ import java.sql.Timestamp;
 
     private int inOffice;
 
+    private Long existing;
+
+    private String storeName;
+
 }

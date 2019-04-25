@@ -29,7 +29,7 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
         return this.getAll();
     }
 
-    public Salon getSalonForId(Long id){
+    public  Salon getSalonForId(Long id){
         String where = "record_id=#{id}";
         Map parameters = new HashMap();
         parameters.put("id", id);
@@ -64,9 +64,14 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
     }
 
 
-    public List<Salon> getAllStore(){
+    public List<Salon> getAllStore(String startTime,String endTime){
         String where=" parent_id != -1";
+        if(null!=startTime && !"".equals(startTime)){
+            where=where+"and create_date > #{startTime} and create_date < #{endTime}";
+        }
         Map parameters = new HashMap();
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
         return this.getByWhere(where,parameters);
     }
 

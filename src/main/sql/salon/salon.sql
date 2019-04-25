@@ -848,7 +848,7 @@ create table product_stock_movement
 create table stock_transfer_application
 (
   record_id                        bigint              auto_increment    not null,
-  application_no                   char(12)                              not null,
+  application_no                   char(50)                              not null,
   product_stock_movement_id        bigint                                not null,  -- 出库单号
   in_warehouse_product_id          bigint                                not null,  -- 调入仓库产品号
   out_warehouse_id                 bigint                                not null,  -- 调出仓库/门店
@@ -905,6 +905,7 @@ create table stuff_score_record
   stuff_id                      bigint                                    not null, -- 哪个员工
   matter                        varchar(500)                              not null, -- 在哪里，做了些什么事
   score                         bigint                                    not null, -- 得到的积分总数
+  total_score                   bigint                                    not null, -- 当次积分总额
   issued_by                     bigint                                    not null, -- 谁给的 ,这个id来源于员工表， 一般是店长或者院长给的
 
   create_date                   datetime                                  not null,--  在什么时候

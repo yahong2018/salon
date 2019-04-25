@@ -898,7 +898,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
         Result r= new Result();
 
 
-        List<Salon> salonList=salonDao.getAllStore();
+        List<Salon> salonList=salonDao.getAllStore(null,null);
 
         r.setData(salonList);
         r.setMsg("请求成功");

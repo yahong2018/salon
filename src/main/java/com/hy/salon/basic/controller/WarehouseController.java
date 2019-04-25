@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.stock.entity.ProductStock;
@@ -69,6 +70,12 @@ public class WarehouseController {
 
     @Resource(name = "jobDAO")
     private JobDAO jobDao;
+
+    @Resource(name = "salonService")
+    private SalonService salonService;
+
+    @Resource(name = "productPropertyMapDAO")
+    private ProductPropertyMapDAO productPropertyMapDAO;
 
 
     /**
@@ -303,12 +310,19 @@ public class WarehouseController {
                 pro=product;
                 productDao.insert(pro);
                 //插入产品图片
-                List<Pictures> picList=picturesDao.getPicturesForCondition(product.getRecordId(),new Byte("5"),new Byte("0"));
+                List<Pictures> picList=picturesDao.getPicturesForCondition(productId,new Byte("5"),new Byte("0"));
                 for(Pictures p:picList){
-                    p.setRecordType(null);
+                    p.setRecordId(null);
                     p.setMasterDataId(pro.getRecordId());
                     picturesDao.insert(p);
                 }
+                List<ProductPropertyMap> productPropertyMap=productPropertyMapDAO.getProForId(productId);
+                for(ProductPropertyMap p:productPropertyMap){
+                    p.setProductId(pro.getRecordId());
+                    p.setRecordId(null);
+                    productPropertyMapDAO.insert(p);
+                }
+
             }
 
             //查看该产品之前是否入过库
@@ -357,7 +371,7 @@ public class WarehouseController {
 
             //发起门店产生一笔出库记录
             ProductStockMovement movement=new ProductStockMovement();
-            movement.setRecordCreateType(recordCreateType);
+            movement.setRecordCreateType(new Byte("0"));
             movement.setMovementType(new Byte("71"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String movementNo="HY"+formatter.format(new Date());
@@ -375,7 +389,7 @@ public class WarehouseController {
             //插入一笔记录
             StockTransferApplication stockTransferApplication=new StockTransferApplication();
             stockTransferApplication.setApplicationNo("HY"+formatter.format(new Date()));
-            stockTransferApplication.setInWarehouseId(pro.getRecordId());
+            stockTransferApplication.setInWarehouseProductId(pro.getRecordId());
             stockTransferApplication.setProductStockMovementId(movement.getRecordId());
             stockTransferApplication.setOutWarehouseId(salonId);
             stockTransferApplication.setInWarehouseId(banishSalonId);
@@ -474,7 +488,7 @@ public class WarehouseController {
     @ResponseBody
     @RequestMapping("queryStockTransferList")
     @ApiOperation(value = "调库记录", notes = "调库记录")
-    public Result queryStockTransferList(Long salonId,Byte  recordStatus){
+    public Result queryStockTransferList(Long salonId,Byte  recordStatus,String startTime,String endTime){
         Result result=new Result();
         try {
 
@@ -483,7 +497,7 @@ public class WarehouseController {
                 Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
                 salonId=stuff.getStoreId();
             }
-            List<StockTransferApplication> stockTransferApplication=stockTransferApplicationDao.getStockTransferApplication(recordStatus,salonId);
+            List<StockTransferApplication> stockTransferApplication=stockTransferApplicationDao.getStockTransferApplication(recordStatus,salonId,startTime,endTime);
             result.setData(stockTransferApplication);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -940,6 +954,36 @@ public Result queryStorekeeperList(String jobLevel,Long salonId){
         }
         return result;
     }
+
+    /**
+     *获取美容院门店（店长，库管角色）
+     */
+    @ResponseBody
+    @RequestMapping("querySalonList")
+    @ApiOperation(value = "获取美容院门店（店长，库管角色）", notes = "获取美容院门店（店长，库管角色）")
+    public Result querySalonList(Long storeId,int page){
+        Result result=new Result();
+        try {
+            Salon store=salonDao.getSalonForId(storeId);
+            result.setTotal(salonService.getSalonForStoreId2(store.getParentId()).size());
+            PageHelper.startPage(page, 10);
+            List<Salon> StoreList=salonService.getSalonForStoreId2(store.getParentId());
+            result.setData(StoreList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+            result.setMsg("获取成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("获取失败");
+        }
+        return result;
+    }
+
+
+
+
 
 
 

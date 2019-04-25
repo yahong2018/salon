@@ -13,14 +13,20 @@ import java.util.Map;
 @Component("stockTransferApplicationDao")
 public class StockTransferApplicationDao extends BaseDAOWithEntity<StockTransferApplication> {
 
-    public List<StockTransferApplication> getStockTransferApplication(Byte recordStatus,Long recordId) {
+    public List<StockTransferApplication> getStockTransferApplication(Byte recordStatus,Long recordId,String startTime,String endTime) {
         Map parameters = new HashMap();
         parameters.put("recordId", recordId);
         parameters.put("recordStatus", recordStatus);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
         String where = "in_warehouse_id= #{recordId} ";
         if(null !=recordStatus && !"".equals(recordStatus)){
-            where=where+"and record_status= #{recordStatus}";
+            where=where+"and record_status= #{recordStatus} ";
         }
+        if(null!=startTime && !"".equals(startTime)){
+            where=where+" and create_date > #{startTime} and create_date < #{endTime}";
+        }
+
         return this.getByWhere(where, parameters);
     }
 
