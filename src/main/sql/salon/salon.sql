@@ -1211,6 +1211,14 @@ create table member_product_get_record
   remark                        varchar(500)                                    null,       -- 备注
   member_signature              bigint                                          not null,   -- 客户签名(系统照片ID)
 
+  create_date                  datetime                                         not null,   -- 领取时间
+  create_by                    bigint                                           not null,
+  update_date                  datetime                                         null,
+  update_by                    bigint                                           null,
+  opt_lock                     int                                              null,
+
+  primary key (record_id),
+  index idx_member_product_get_record(create_date)
 )comment '产品寄存领取表';
 
 create table member_product_reject
