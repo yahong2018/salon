@@ -1352,10 +1352,72 @@ create table stamp_program
   update_date                datetime                                          null,
   update_by                  bigint                                            null,
   opt_lock                   int                                               null,
+
   primary key (record_id),
   index idx_stamp_program_01 (expired_time)
 )comment '项目券汇总表';
 
+create table bill_type
+(
+  record_id                bigint                auto_increment                 not null,
+  type                     tinyint                                              not null, -- 单据类型 0 请假 1 调休 2 离职 等等。。
+  type_name                varchar(10)                                          not null, -- 类型名称
+  -- 审批流程表id
+
+  primary key (record_id),
+  index idx_bill_type_01 (type)
+)comment '单据类型表';
+
+create table submit_approval
+(
+  record_id                bigint                auto_increment                 not null,
+  approval_number          varchar(20)                                          not null, -- 审批单号
+  approval_date            datetime                                             not null, -- 送审日期
+  approver                 bigint                                               not null, -- 送审人
+  remark                   varchar(500)                                         not null, -- 送审说明
+  -- 附件图片
+  -- 单据类型表id
+
+  create_date              datetime                                             not null,   -- 创建时间
+  create_by                bigint                                               not null,
+  update_date              datetime                                             null,
+  update_by                bigint                                               null,
+  opt_lock                 int                                                  null,
+
+  primary key (record_id),
+  index idx_submit_approval_01 (approval_number)
+)comment '送审表(提交审批)';
+
+create table approval_process
+(
+  record_id                bigint                auto_increment                 not null,
+  first                    bigint                                               not null, -- 第一审批人
+  second                   bigint                                               not null, -- 第二审批人
+  third                    bigint                                               not null, -- 第三审批人
+  four                     bigint                                               not null, -- 第四审批人
+
+  primary key (record_id),
+  index idx_approval_process_01 (first)
+)comment '审批流程表';
+
+create table approval_record
+(
+  record_id                bigint                                               not null,
+  approval_opinion         varchar(100)                                         not null, -- 审批意见
+  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝
+  approval_date            datetime                                             not null, -- 审批日期
+  -- 送审表id
+
+  create_date              datetime                                             not null,   -- 记录创建时间
+  create_by                bigint                                               not null,
+  update_date              datetime                                             null,
+  update_by                bigint                                               null,
+  opt_lock                 int                                                  null,
+
+  primary key (record_id),
+  index idx_approval_record_01 (approval_date),
+  index idx_approval_record_02 (approval_status)
+)comment '审批记录表';
 
 /*
    五类结算：
