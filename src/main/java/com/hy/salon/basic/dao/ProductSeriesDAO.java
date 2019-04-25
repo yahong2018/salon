@@ -70,6 +70,23 @@ public class ProductSeriesDAO extends BaseDAOWithEntity<ProductSeries> {
         return this.getByWhere(where, parameters);
     }
 
+    public List<ProductSeries> getSeriesForUser(Long id,String parentId){
+        String where=null;
+        Map parameters = new HashMap();
+        if(null!=parentId && !"".equals(parentId)){
+            where = "store_id=#{id} and parent_id = #{parentId}";
+            parameters.put("parentId", Long.parseLong(parentId));
+        }else{
+            where = "store_id=#{id} and parent_id != 0";
+        }
+
+
+        parameters.put("id", id);
+
+
+        return this.getByWhere(where, parameters);
+    }
+
 
 
 

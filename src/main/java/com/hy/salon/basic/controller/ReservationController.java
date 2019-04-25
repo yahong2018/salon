@@ -659,7 +659,7 @@ public class ReservationController {
      * 添加、修改预约
      */
     @ResponseBody
-    @RequestMapping(value = "addReservation",method = RequestMethod.POST)
+    @RequestMapping(value = "addReservation")
     @ApiOperation(value="添加、修改预约", notes="添加、修改预约")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "预约id", required = true, dataType = "Long"),
@@ -676,11 +676,12 @@ public class ReservationController {
             @ApiImplicitParam(paramType="query", name = "serviceIdS", value = "项目id", required = true, dataType = "String")
 
     })
-    public Result addReservation(Reservation reservation,String serviceIdS /*Long stuffId,Date timeStart ,float duration*/){
+    public Result addReservation(HttpServletRequest request,Reservation reservation,String serviceIdS /*Long stuffId,Date timeStart ,float duration*/){
         Result result=new Result();
-        Long stuffId = reservation.getStuffId();
+         Long stuffId = reservation.getStuffId();
         Date timeStart  = reservation.getTimeStart();
-
+        String reservationS = request.getParameter("reservation");
+        System.out.println(reservationS);
         /*Date timeStart  =DateString.StringToDate(timeStartS);
         reservation.setTimeStart(timeStart);*/
         //reservation.setDate_();

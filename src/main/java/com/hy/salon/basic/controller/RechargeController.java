@@ -83,6 +83,12 @@ public class RechargeController {
     @Resource(name="stampProgramDao")
     private  StampProgramDao stampProgramDao;
 
+    @Resource(name="memberProductKeepDao")
+    private MemberProductKeepDao memberProductKeepDao;
+
+    @Resource(name="memberProductKeepItemDao")
+    private MemberProductKeepItemDao memberProductKeepItemDao;
+
     @Resource(name = "reservationDao")
     private ReservationDao reservationDao;
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
@@ -157,6 +163,7 @@ public class RechargeController {
             @ApiImplicitParam(paramType="query", name = "cardType", value = "卡类型", required = true, dataType = "Byte"),
 
             @ApiImplicitParam(paramType="query", name = "balance", value = "卡户余额/剩余  次数(充值面额)", required = true, dataType = "double"),
+
             @ApiImplicitParam(paramType="query", name = "cardStatus", value = "卡状态：0：正常  1：失效", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "remark", value = "备注", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "parentId", value = "所属套卡:如果是充值卡、次卡、套卡，则为0，只有次卡的项目才有此字段的值", required = true, dataType = "Long"),
@@ -194,7 +201,7 @@ public class RechargeController {
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             int transType = 0;
             if(cardBalance.getRecordId()!=null){//说明是已存在的卡户
-                CardBalance cardBalanceOld=   cardBalanceDao.getById(cardBalance.getRecordId());
+                CardBalance cardBalanceOld= cardBalanceDao.getById(cardBalance.getRecordId());
                 cardBalanceOld.setRemark(cardBalance.getRemark());
                 cardPurchase.setRechargeType(0);
                 cardBalanceOld.setBalance(cardBalance.getBalance()+cardBalanceOld.getBalance());
@@ -208,12 +215,19 @@ public class RechargeController {
             cardPurchaseDao.insert(cardPurchase);//充值、购卡记录表
             double balance = 0;
             double cashCoupon = 0;
+            double integral = 0;
             for(MemberGift mg:memberGiftList){
                 mg.setRefTransId(cardPurchase.getRecordId());
-                mg.setTransType((byte)transType);
+                //mg.setTransType((byte)transType);
+                mg.setTransType((byte)0);
                 if(mg.getGiftType()==3){
-                    balance = balance +mg.getQty();
-                    cashCoupon = cashCoupon = mg.getQty();
+                  //  balance = balance +mg.getQty();
+                    if (mg.getGiftCashType() == 1) {
+                        integral = integral+integral;
+                    }else{
+                        cashCoupon = cashCoupon +mg.getQty();
+                    }
+
                 }else if(mg.getGiftType()==0){
                     Service service =  serviceDao.getById(mg.getGitId());//项目表
                     balance = balance + service.getPrice();
@@ -223,6 +237,23 @@ public class RechargeController {
                     product.setStockOfPreWarning(product.getStockOfPreWarning()-qty);//数量减少
                     balance = balance + product.getPrice()*qty;
                     productDao.update(product);//产品表
+
+                    balance  = product.getPrice();
+                    MemberProductKeep memberProductKeep = new MemberProductKeep();
+                    memberProductKeep.setMemberId(cardBalance.getMemberId());
+                    memberProductKeep.setMemberSignature(cardPurchase.getMemberSignature());
+                    memberProductKeep.setRemark(cardPurchase.getRemark());
+                    memberProductKeepDao.insert(memberProductKeep);
+                    MemberProductKeepItem memberProductKeepItem = new MemberProductKeepItem();
+
+                    memberProductKeepItem.setMemberProductKeepId(memberProductKeep.getRecordId());
+                    memberProductKeepItem.setProductId(product.getRecordId());
+                    memberProductKeepItem.setPrice(balance);
+                    memberProductKeepItem.setQtyPurchased((double)1);
+                    memberProductKeepItem.setAmount(1*balance);
+                    memberProductKeepItem.setQtyReceived((double)0);
+                    memberProductKeepItem.setProductGetType((byte) 1);
+                    memberProductKeepItemDao.insert(memberProductKeepItem);
                 }else  if(mg.getGiftType()==2){
                     StampProgram stampProgram = new StampProgram();
                     stampProgram.setMemberId(cardBalance.getMemberId());
@@ -239,9 +270,9 @@ public class RechargeController {
             for(Long stuffId:stuffIdList){
                 BusinessStuff businessStuff  = new BusinessStuff();
                 businessStuff.setStuffId(stuffId);
-                businessStuff.setTransType((byte)transType);
+                businessStuff.setTransType((byte)0);
                 businessStuff.setRefTransId(cardPurchase.getRecordId());
-                businessStuffDao.insert(businessStuff);//员工表
+                businessStuffDao.insert(businessStuff);//关联员工
             }
 
             Member member =  memberDao.getById(cardBalance.getMemberId());
@@ -262,7 +293,7 @@ public class RechargeController {
                 arrearagesRecord.setAmountOfRealPay(cardPurchase.getAmount());
                 arrearagesRecord.setAmountPayable(cardPurchase.getAmountPayed());
                 arrearagesRecord.setIsPaidOff((byte)1);
-                arrearagesRecordDao.insert(arrearagesRecord);
+                arrearagesRecordDao.insert(arrearagesRecord);//欠款表
             }
             ejr.setMsg("充值成功");
             ejr.setMsgcode("0");

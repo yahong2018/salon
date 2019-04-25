@@ -568,5 +568,12 @@ group by ss.record_id;
 
 
 
+    <select id="GET_MEMBERPRODUCTKEEP"  parameterType="java.util.Map" resultType="java.util.Map">
+       select m.record_id  as recordId,p.product_name as productName,p.price price ,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
+        member_product_keep_item mi on m.record_id = mi.member_product_keep_id
+        left join product p on mi.product_id = p.record_id
+        where m.member_id = #{memberId}
+    </select>
+
 
 </mapper>

@@ -547,4 +547,35 @@
         <!--<result column="stuff_name" property="stuffName" jdbcType="VARCHAR" />-->
     </resultMap>
 
+
+    <resultMap id="MemberProductKeep" type="com.hy.salon.basic.entity.MemberProductKeep"   extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="member_signature" property="memberSignature" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="MemberProductKeepItem" type="com.hy.salon.basic.entity.MemberProductKeepItem" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_product_keep_id" property="memberProductKeepId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="qty_purchased" property="qtyPurchased" jdbcType="DOUBLE" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="qty_received" property="qtyReceived" jdbcType="DOUBLE" />
+        <result column="product_get_type" property="productGetType" jdbcType="TINYINT" />
+
+    </resultMap>
+
+    <resultMap id="MemberGift" type="com.hy.salon.basic.entity.MemberGift" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" jdbcType="BIGINT" property="recordId" />
+        <result column="member_id" jdbcType="BIGINT" property="memberId" />
+        <result column="ref_trans_id" jdbcType="BIGINT" property="refTransId" />
+        <result column="trans_type" jdbcType="TINYINT" property="transType" />
+        <result column="gift_type" jdbcType="TINYINT" property="giftType" />
+        <result column="git_id" jdbcType="BIGINT" property="gitId" />
+        <result column="qty" jdbcType="DOUBLE" property="qty" />
+        <result column="gift_sub_type" jdbcType="TINYINT" property="giftSubType" />
+        <result column="gift_expired_date" jdbcType="TIMESTAMP" property="giftExpiredDate" />
+    </resultMap>
 </mapper>

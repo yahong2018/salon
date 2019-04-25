@@ -24,8 +24,9 @@ public class MemberGift  extends TraceableEntity<Long> {
 
     private Byte giftSubType;
 
-    private Date giftExpiredDate;
+    private Byte giftCashType;
 
+    private Date giftExpiredDate;
 
 
 }
