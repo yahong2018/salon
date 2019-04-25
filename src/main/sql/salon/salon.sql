@@ -1061,7 +1061,6 @@ create table card_purchase
   amount_payed                 double(8,2)                                     not null,   -- 实际支付/现金支付 = 交易价格-欠款
   method_payed                 tinyint                                         not null,
        -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
-       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
 
   remark                       varchar(500)                                    null,       -- 备注
   member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
@@ -1290,8 +1289,7 @@ create table arrearages_record
   ref_trans_id               bigint                                            not null,  -- 交易Id
   member_id                    bigint                                          not null,  --会员id
   arrearages_date            datetime                                          not null,  -- 欠款日期
-  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消
-费
+  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消费
   amount_of_real_pay         double(8,2)                                       not null,  -- 实付金额
   amount_payable             double(8,2)                                       not null,  -- 应付总额
   amount_dept                double(8,2)                                       not null,  -- 欠款金额
@@ -1320,8 +1318,7 @@ create table repayment_record
 
 
   method_payed                 tinyint                                         not null,
-       -- 支付方式: 0.微信  1.支付宝  2.银行卡  10.现金
-       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
+        -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
 
   remark                     varchar(500)                                    null,       -- 备注
   member_signature           bigint                                          not null,   -- 客户签名(系统照片ID)
