@@ -1061,7 +1061,6 @@ create table card_purchase
   amount_payed                 double(8,2)                                     not null,   -- 实际支付/现金支付 = 交易价格-欠款
   method_payed                 tinyint                                         not null,
        -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
-       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
 
   remark                       varchar(500)                                    null,       -- 备注
   member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
@@ -1091,19 +1090,18 @@ create table member_gift
                 -- 赠品类型：0.项目 1.产品 2.优惠券 3.金额
                 --   产品:注意扣除库存数量
                 --   金额:注意修改应支付的金额数量
-  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和
-产品:填写其对应的Id
+  git_id                       bigint                                            not null,  -- 赠品Id: 金额:-1，优惠券:-2 项目和产品:填写其对应的Id
   qty                          double(8,2)                                       not null,  -- 数量/金额
 
-  gift_sub_type                tinyint                                           null,  -- 优惠券类型： 0.项目券
-  gift_cash_type                tinyint                                           null,  -- 赠送金额类型： 0.代金券 1.积分
+  gift_sub_type                tinyint                                           null,      -- 优惠券类型： 0.项目券
+  gift_cash_type                tinyint                                          null,      -- 赠送金额类型： 0.代金券 1.积分
   gift_expired_date            datetime                                          null,      -- 有效期
 
-  create_date                  datetime                                         not null,   -- 创建时间
-  create_by                    bigint                                           not null,
-  update_date                  datetime                                         null,
-  update_by                    bigint                                           null,
-  opt_lock                     int                                              null,
+  create_date                  datetime                                          not null,  -- 创建时间
+  create_by                    bigint                                            not null,
+  update_date                  datetime                                          null,
+  update_by                    bigint                                            null,
+  opt_lock                     int                                               null,
 
   primary key (record_id),
   index idx_member_gift_01(member_id),
@@ -1121,14 +1119,14 @@ create table payment
   member_id                    bigint                                          not null,  -- 会员Id
   payment_type                 tinyint                                         not null,  -- 0.一般支付   1.偿还欠款
 
-  remark                       varchar(500)                                    null,       -- 备注
-  member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
+  remark                       varchar(500)                                    null,      -- 备注
+  member_signature             bigint                                          not null,  -- 客户签名(系统照片ID)
 
-  create_date                  datetime                                         not null,   -- 创建时间
-  create_by                    bigint                                           not null,
-  update_date                  datetime                                         null,
-  update_by                    bigint                                           null,
-  opt_lock                     int                                              null,
+  create_date                  datetime                                        not null,  -- 创建时间
+  create_by                    bigint                                          not null,
+  update_date                  datetime                                        null,
+  update_by                    bigint                                          null,
+  opt_lock                     int                                             null,
 
   primary key (record_id),
   index idx_payment_01(member_id)
@@ -1291,8 +1289,7 @@ create table arrearages_record
   ref_trans_id               bigint                                            not null,  -- 交易Id
   member_id                    bigint                                          not null,  --会员id
   arrearages_date            datetime                                          not null,  -- 欠款日期
-  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消
-费
+  arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消费
   amount_of_real_pay         double(8,2)                                       not null,  -- 实付金额
   amount_payable             double(8,2)                                       not null,  -- 应付总额
   amount_dept                double(8,2)                                       not null,  -- 欠款金额
@@ -1321,8 +1318,7 @@ create table repayment_record
 
 
   method_payed                 tinyint                                         not null,
-       -- 支付方式: 0.微信  1.支付宝  2.银行卡  10.现金
-       --        todo: 如果使用会员的现金账户(member.balance_cash)支付，如何操作？
+        -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
 
   remark                     varchar(500)                                    null,       -- 备注
   member_signature           bigint                                          not null,   -- 客户签名(系统照片ID)
@@ -1352,10 +1348,72 @@ create table stamp_program
   update_date                datetime                                          null,
   update_by                  bigint                                            null,
   opt_lock                   int                                               null,
+
   primary key (record_id),
   index idx_stamp_program_01 (expired_time)
 )comment '项目券汇总表';
 
+create table bill_type
+(
+  record_id                bigint                auto_increment                 not null,
+  type                     tinyint                                              not null, -- 单据类型 0 请假 1 调休 2 离职 等等。。
+  type_name                varchar(10)                                          not null, -- 类型名称
+  -- 审批流程表id
+
+  primary key (record_id),
+  index idx_bill_type_01 (type)
+)comment '单据类型表';
+
+create table submit_approval
+(
+  record_id                bigint                auto_increment                 not null,
+  approval_number          varchar(20)                                          not null, -- 审批单号
+  approval_date            datetime                                             not null, -- 送审日期
+  approver                 bigint                                               not null, -- 送审人
+  remark                   varchar(500)                                         not null, -- 送审说明
+  -- 附件图片
+  -- 单据类型表id
+
+  create_date              datetime                                             not null,   -- 创建时间
+  create_by                bigint                                               not null,
+  update_date              datetime                                             null,
+  update_by                bigint                                               null,
+  opt_lock                 int                                                  null,
+
+  primary key (record_id),
+  index idx_submit_approval_01 (approval_number)
+)comment '送审表(提交审批)';
+
+create table approval_process
+(
+  record_id                bigint                auto_increment                 not null,
+  first                    bigint                                               not null, -- 第一审批人
+  second                   bigint                                               not null, -- 第二审批人
+  third                    bigint                                               not null, -- 第三审批人
+  four                     bigint                                               not null, -- 第四审批人
+
+  primary key (record_id),
+  index idx_approval_process_01 (first)
+)comment '审批流程表';
+
+create table approval_record
+(
+  record_id                bigint                                               not null,
+  approval_opinion         varchar(100)                                         not null, -- 审批意见
+  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝
+  approval_date            datetime                                             not null, -- 审批日期
+  -- 送审表id
+
+  create_date              datetime                                             not null,   -- 记录创建时间
+  create_by                bigint                                               not null,
+  update_date              datetime                                             null,
+  update_by                bigint                                               null,
+  opt_lock                 int                                                  null,
+
+  primary key (record_id),
+  index idx_approval_record_01 (approval_date),
+  index idx_approval_record_02 (approval_status)
+)comment '审批记录表';
 
 /*
    五类结算：
