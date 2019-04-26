@@ -66,4 +66,16 @@ public class MemberGiftDao extends BaseDAOWithEntity<MemberGift> {
         extJsResult.setData(jsonArray);
         return extJsResult;
     }
+
+    public Map<String,Object> getQty(String startTime,String endTime,String giftCashType) {
+        Map parameters = new HashMap();
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
+        parameters.put("giftCashType", giftCashType);
+       return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_QTY, parameters);
+    }
+
+
+    protected final static String SQL_GET_QTY = "com.hy.salon.basic.dao.GET_QTY";
+
 }

@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.entity.CardBalance;
 import com.hy.salon.basic.entity.CardPurchase;
 import com.hy.salon.basic.entity.Service;
+import com.hy.salon.basic.entity.StuffScoreRecord;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
@@ -99,4 +100,18 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
             extJsResult.setData(pageInfo.getList());
             return extJsResult;
         }
+
+    public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType) {
+        Map parameters = new HashMap();
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
+        parameters.put("rechargeType", rechargeType);
+        parameters.put("carType", carType);
+       return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_SUM_AMOUNT, parameters);
+    }
+
+
+    protected final static String SQL_GET_SUM_AMOUNT = "com.hy.salon.basic.dao.GET_SUM_AMOUNT";
+
+
 }

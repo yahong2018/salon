@@ -11,7 +11,6 @@ $.ajax({
     async:false,
     dataType:"json",
     success:function(dataJson){
-        console.log("+++"+JSON.stringify(dataJson));
         $.each(dataJson.data, function (i, n) {
             var data3={};
             data3.name=n.salonName;
@@ -32,8 +31,6 @@ $.ajax({
         alert("驳回异常")
     }
 });
-console.log("+++++++++++++++++++++++++++++++++++2"+JSON.stringify(data));
-console.log("+++++++++++++++++++++++++++++++++++2"+JSON.stringify(geoCoordMap));
 var app = {};
 option = null;
 // var data = [

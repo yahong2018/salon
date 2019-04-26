@@ -211,7 +211,7 @@ public class StuffScoreController {
             JSONObject jsonObj=new JSONObject();
             StuffScore stuffScore=stuffScoreDao.getStuffScore(stuffId);
 
-            List<StuffScoreRecord> stuffScoreRecordList=stuffScoreRecordDao.queryScoreRecord(stuffId);
+            List<StuffScoreRecord> stuffScoreRecordList=stuffScoreRecordDao.getForStuffId(stuffId);
             jsonObj.put("stuffScore",stuffScore);
 
             jsonObj.put("stuffScoreRecordList",stuffScoreRecordList);

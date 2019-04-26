@@ -575,5 +575,27 @@ group by ss.record_id;
         where m.member_id = #{memberId}
     </select>
 
+    <select id="GET_SUM_AMOUNT"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT sum(amount) amount FROM salon.card_purchase
+        where create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
+        <if test="rechargeType != null">
+            and recharge_type=#{rechargeType}
+        </if>
+        <if test="cardType != null">
+            and card_type=#{cardType}
+        </if>
+    </select>
+
+
+    <select id="GET_QTY"  parameterType="java.util.Map" resultType="java.util.Map">
+         SELECT sum(qty) as qty FROM salon.member_gift where gift_cash_type=#{giftCashType} and create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
+    </select>
+
+    <select id="GET_PRODUCT_"  parameterType="java.util.Map" resultType="java.util.Map">
+         SELECT sum(qty) as qty FROM salon.member_gift where gift_cash_type=#{giftCashType} and create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
+    </select>
+    <!--SELECT sp.product_name as productName,count(sp.product_name) as count1 FROM salon.card_purchase as scp left join salon.product as sp on scp.card_id = sp.record_id-->
+    <!--where scp.recharge_type=2 group by sp.product_name order by count1 desc;-->
+
 
 </mapper>

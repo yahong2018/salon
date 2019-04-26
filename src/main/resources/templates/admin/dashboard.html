@@ -6,6 +6,8 @@
     <title>Title</title>
     <!--<link  href="../layui/css/layui.css"  type="text/css" rel="stylesheet"/>-->
     <!--<script src="../layui/layui.js"></script>-->
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <script src="../../../layui/layui.js"></script>
     <script src="../js/jquery-2.1.1.min.js"></script>
     <link rel="stylesheet" href="../css/dashboard/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dashboard/css.css">
@@ -24,60 +26,42 @@
 
 </head>
 <body>
-<div style="height: 20px;margin: 30px">
+<!-- 店长角色-->
+<div class="layui-tab" style="display:none;">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>用户管理</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+
+<!-- 平台角色-->
+<div style="height: 20px;margin: 30px;">
 
     <div class="row">
         <div class="col-md-3">
-            <div class="card card-stats card-warning">
+            <div class="card card-stats card-danger">
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-5">
-                            <div class="icon-big text-center">
-                                <i class="la la-users"></i>
-                            </div>
+                            <!--<div class="icon-big text-center">-->
+                                <!--&lt;!&ndash;<i class="la la-users"></i>&ndash;&gt;-->
+                            <!--</div>-->
                         </div>
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
                                 <p class="card-category">今日新增门店数</p>
-                                <h4 class="card-title">1,294</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card card-stats card-warning">
-                <div class="card-body ">
-                    <div class="row">
-                        <div class="col-5">
-                            <div class="icon-big text-center">
-                                <i class="la la-bar-chart"></i>
-                            </div>
-                        </div>
-                        <div class="col-7 d-flex align-items-center">
-                            <div class="numbers">
-                                <p class="card-category">今日新增会员数</p>
-                                <h4 class="card-title">$ 1,345</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card card-stats card-danger">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-5">
-                            <div class="icon-big text-center">
-                                <i class="la la-newspaper-o"></i>
-                            </div>
-                        </div>
-                        <div class="col-7 d-flex align-items-center">
-                            <div class="numbers">
-                                <p class="card-category">今日充值总额</p>
-                                <h4 class="card-title">1303</h4>
+                                <h4 class="card-title" id="salonSize"></h4>
                             </div>
                         </div>
                     </div>
@@ -90,13 +74,51 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
-                                <i class="la la-check-circle"></i>
+                                <!--<i class="la la-bar-chart"></i>-->
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">今日新增会员数</p>
+                                <h4 class="card-title" id="memberSize"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-stats card-info">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <!--<i class="la la-newspaper-o"></i>-->
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">今日充值总额(旧卡充值/新购卡)</p>
+                                <h4 class="card-title" id="sumAmount"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-stats card-default">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <!--<i class="la la-check-circle"></i>-->
                             </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
                                 <p class="card-category">今日消费总额</p>
-                                <h4 class="card-title">576</h4>
+                                <h4 class="card-title" id="sumAmount3"></h4>
                             </div>
                         </div>
                     </div>
@@ -112,13 +134,13 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
-                                <i class="la la-users"></i>
+                                <!--<i class="la la-users"></i>-->
                             </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
                                 <p class="card-category">今日积分产生</p>
-                                <h4 class="card-title">1,294</h4>
+                                <h4 class="card-title" id="qty2"></h4>
                             </div>
                         </div>
                     </div>
@@ -131,7 +153,7 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
-                                <i class="la la-bar-chart"></i>
+                                <!--<i class="la la-bar-chart"></i>-->
                             </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
@@ -150,13 +172,13 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
-                                <i class="la la-newspaper-o"></i>
+                                <!--<i class="la la-newspaper-o"></i>-->
                             </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
                                 <p class="card-category">今日代金券产生</p>
-                                <h4 class="card-title">1303</h4>
+                                <h4 class="card-title" id="qty"></h4>
                             </div>
                         </div>
                     </div>
@@ -169,7 +191,7 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="icon-big text-center">
-                                <i class="la la-check-circle"></i>
+                                <!--<i class="la la-check-circle"></i>-->
                             </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
@@ -234,6 +256,49 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+
+
+    $.ajax({
+        url:"/hy/basic/statistics/total",
+        type:"get",
+        async:false,
+        dataType:"json",
+        success:function(dataJson){
+
+            console.log("+++"+JSON.stringify(dataJson));
+
+            $("#salonSize").text(dataJson.data.salonSize);
+
+            $("#memberSize").text(dataJson.data.memberSize);
+
+            $("#sumAmount").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
+
+            $("#sumAmount3").text("¥"+dataJson.data.sumAmount3);
+
+            $("#qty").text(dataJson.data.qty);
+
+            $("#qty2").text(dataJson.data.qty2);
+
+
+            // console.log("+++"+dataJson.data.salonSize);
+
+
+        },
+        error:function(){
+            alert("驳回异常")
+        }
+    });
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+
+</script>
 </html>
 
 

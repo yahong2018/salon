@@ -10,6 +10,7 @@ import com.hy.salon.basic.service.SalonService;
 import com.hy.salon.basic.service.StuffService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.stock.entity.ProductStock;
+import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
@@ -77,6 +78,8 @@ public class WarehouseController {
     @Resource(name = "productPropertyMapDAO")
     private ProductPropertyMapDAO productPropertyMapDAO;
 
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDao;
 
     /**
      * 新增入库
@@ -419,13 +422,13 @@ public class WarehouseController {
     @ResponseBody
     @RequestMapping("banishWarehouseExamine")
     @ApiOperation(value = "调拨审核", notes = "调拨审核")
-    public Result banishWarehouseExamine(Long StockTransferId){
+    public Result banishWarehouseExamine(Long stockTransferId){
         Result result=new Result();
         try {
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
-            StockTransferApplication stockTransferApplication=stockTransferApplicationDao.queryOneStock(StockTransferId);
+            StockTransferApplication stockTransferApplication=stockTransferApplicationDao.queryOneStock(stockTransferId);
 
             ProductStockMovement productStockMovement= productStockMovementDao.getOneProductForSalonId(stockTransferApplication.getProductStockMovementId());
             //查看该产品之前是否入过库
@@ -498,6 +501,16 @@ public class WarehouseController {
                 salonId=stuff.getStoreId();
             }
             List<StockTransferApplication> stockTransferApplication=stockTransferApplicationDao.getStockTransferApplication(recordStatus,salonId,startTime,endTime);
+            for(StockTransferApplication s:stockTransferApplication){
+                Salon salon=salonDao.getSalonForStoreId(s.getOutWarehouseId());
+                Stuff stuff2= stuffDao.getStuffForRecordId(s.getCreator());
+                List<Pictures> picList=picturesDao.getPicturesForCondition(s.getInWarehouseProductId(),new Byte("5"),new Byte("0"));
+                s.setStuffName(stuff2.getStuffName());
+                s.setOutStoreName(salon.getSalonName());
+                if(picList.size()!=0){
+                s.setPicUrl(picList.get(0).getPicUrl());
+                }
+            }
             result.setData(stockTransferApplication);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -526,6 +539,8 @@ public class WarehouseController {
             jsonObj.put("stockTransferApplication",stockTransferApplication);
             Salon inStore=salonDao.getSalonForStoreId(stockTransferApplication.getInWarehouseId());
             Salon outStore=salonDao.getSalonForStoreId(stockTransferApplication.getOutWarehouseId());
+            Stuff stuff=stuffDao.getStuffForRecordId(stockTransferApplication.getCreator());
+            jsonObj.put("shenQingRen",stuff.getStuffName());
             jsonObj.put("inStore",inStore);
             jsonObj.put("outStore",outStore);
             ProductStockMovement ProductStockMovement =productStockMovementDao.getOneProductForSalonId(stockTransferApplication.getProductStockMovementId());
@@ -736,13 +751,15 @@ public class WarehouseController {
                 productStockDAO.insert(proCondition);
             }
             ProductStockMovement movement=new ProductStockMovement();
-            movement.setRecordCreateType(recordCreateType);
+            movement.setRecordCreateType(new Byte("0"));
             if(frontQty>movementQty){
                 movement.setMovementType(new Byte("2"));
+
             }else{
                 movement.setMovementType(new Byte("72"));
-            }
 
+            }
+            movement.setMovementPurQty(frontQty);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String movementNo="HY"+formatter.format(new Date());
             movement.setMovementNo(movementNo);
@@ -811,7 +828,7 @@ public class WarehouseController {
             for(ProductSeries p:serList){
                 JSONObject jsonObj=new JSONObject();
                 jsonObj.put("seriesName",p.getSeriesName());
-                List<Map<String,Object>> abnormalList =productStockMovementDao.getStock(p.getParentId(),days);
+                List<Map<String,Object>> abnormalList =productStockMovementDao.getStock(p.getRecordId(),days);
                 jsonObj.put("abnormalSize",abnormalList.size());
                 jsonObj.put("productSize",productDao.getCountForProduct(p.getRecordId()).size());
                 jsonObj.put("abnormalList",abnormalList);

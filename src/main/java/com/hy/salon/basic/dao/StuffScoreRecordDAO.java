@@ -31,6 +31,16 @@ public class StuffScoreRecordDAO extends BaseDAOWithEntity<StuffScoreRecord> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_SCORE_RECORD_FOR_STORE, parameters);
     }
 
+
+
+    public List<StuffScoreRecord> getForStuffId(Long stuffId){
+        String where="stuff_id=#{stuffId}";
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+
+        return this.getByWhere(where,parameters);
+    }
+
     protected final static String SQL_GET_SCORE_RECORD_FOR_STORE = "com.hy.salon.basic.dao.GET_SCORE_RECORD_FOR_STORE";
 
 

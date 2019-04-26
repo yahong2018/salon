@@ -65,9 +65,9 @@ public class SalonDao extends BaseDAOWithEntity<Salon> {
 
 
     public List<Salon> getAllStore(String startTime,String endTime){
-        String where=" parent_id != -1";
+        String where=" parent_id != -1 ";
         if(null!=startTime && !"".equals(startTime)){
-            where=where+"and create_date > #{startTime} and create_date < #{endTime}";
+            where=where+" and create_date > #{startTime} and create_date < #{endTime}";
         }
         Map parameters = new HashMap();
         parameters.put("startTime", startTime);

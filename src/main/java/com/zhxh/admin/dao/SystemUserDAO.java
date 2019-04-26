@@ -18,6 +18,13 @@ public class SystemUserDAO extends BaseDAOWithEntity<SystemUser> {
         return this.getOne(where,parameters);
     }
 
+    public SystemUser getUserByRecordId(Long recordId){
+        String where = "record_id=#{recordId}";
+        Map parameters = new HashMap();
+        parameters.put("recordId",recordId);
+        return this.getOne(where,parameters);
+    }
+
     protected final static String SQL_GET_SYSTEM_USER_BY_TEL = "com.zhxh.admin.dao.GET_SYSTEM_USER_BY_TEL";
     public SystemUser getUserByTel(String tel) {
         Map parameters = new HashMap();
