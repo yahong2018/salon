@@ -170,6 +170,14 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         return er;
     }
 
+
+    public List<Map<String,Object>> getProductTotal() {
+        Map parameters = new HashMap();
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_TOTAL, parameters);
+    }
+
+    protected final static String SQL_GET_PRODUCT_TOTAL = "com.hy.salon.basic.dao.GET_PRODUCT_TOTAL";
+
     protected final static String SQL_QUERY_COUNT_FOR_PRODUCT = "com.hy.salon.basic.dao.QUERY_COUNT_FOR_PRODUCT";
 
     protected final static String SQL_GET_PRODUCT_LIST = "com.hy.salon.basic.dao.GET_PRODUCT_LIST";

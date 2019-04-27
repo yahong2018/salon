@@ -75,7 +75,15 @@ public class ProductStockMovementDao extends BaseDAOWithEntity<ProductStockMovem
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_ABNORMAL_STOCK_FOR_PRODUCT_SERIES, parameters);
     }
 
+    public List<Map<String,Object>> getMovement(Long storeId,String days) {
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        parameters.put("days", days);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_MOVEMENT, parameters);
+    }
 
+
+        protected final static String SQL_GET_MOVEMENT = "com.hy.salon.basic.dao.GET_MOVEMENT";
 
         protected final static String SQL_GET_ABNORMAL_STOCK_FOR_PRODUCT_SERIES = "com.hy.salon.basic.dao.GET_ABNORMAL_STOCK_FOR_PRODUCT_SERIES";
 

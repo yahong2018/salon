@@ -107,4 +107,6 @@ public class Member extends TraceableEntity<Long> {
     private Double amountConsumer;
 
     private Double amountCharge;
+
+    private String  picUrl;
 }

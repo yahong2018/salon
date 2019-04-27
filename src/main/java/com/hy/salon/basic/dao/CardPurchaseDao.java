@@ -101,12 +101,13 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
             return extJsResult;
         }
 
-    public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType) {
+    public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType,Long storeId) {
         Map parameters = new HashMap();
         parameters.put("startTime", startTime);
         parameters.put("endTime", endTime);
         parameters.put("rechargeType", rechargeType);
         parameters.put("carType", carType);
+        parameters.put("storeId", storeId);
        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_SUM_AMOUNT, parameters);
     }
 

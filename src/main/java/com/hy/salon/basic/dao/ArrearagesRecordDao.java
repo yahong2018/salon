@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.entity.ArrearagesRecord;
+import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.util.DateString;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.ExtJsResult;
@@ -78,4 +79,15 @@ public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
         return extJsResult;
 
     }
+    public Map<String,Object> getArreagesAmount(Long storeId) {
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_ARREARAGES_RECORD, parameters);
+    }
+
+
+
+    protected final static String SQL_GET_ARREARAGES_RECORD = "com.hy.salon.basic.dao.GET_ARREARAGES_RECORD";
+
+
 }

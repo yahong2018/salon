@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.spring.web.json.Json;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -141,8 +143,23 @@ public class MemberController extends SimpleCRUDController<Member> {
     public Result getCustomerFiles(Long recordId) {
         Result result = new Result();
         try {
-            Member member = memberService.getCustomerFiles(recordId);
-            result.setData(member);
+            JSONObject json=new JSONObject();
+
+            Member member= memberDao.getMemberForId(recordId);
+//            Member member = memberService.getCustomerFiles(recordId);
+
+            List<Pictures> pic=picturesDao.getPicturesForCondition(member.getRecordId(),new Byte("6"),new Byte("0"));
+            if(pic.size()!=0){
+                member.setPicUrl(pic.get(0).getPicUrl());
+            }
+
+            List<Map<String,Object>> tag=TagDao.getMemberTag(member.getRecordId());
+
+            Salon salon=salonDao.getSalonForId(member.getInitialStoreId());
+            json.put("salon",salon);
+            json.put("tag",tag);
+            json.put("member",member);
+            result.setData(json);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
         } catch (Exception e) {
@@ -436,6 +453,16 @@ public class MemberController extends SimpleCRUDController<Member> {
                 }else{
                     PageHelper.startPage(page, limit);
                     memberList=memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel);
+                }
+
+
+
+                for(MemberVo m:memberList){
+                List<Pictures> pic=picturesDao.getPicturesForCondition(m.getRecordId(),new Byte("6"),new Byte("0"));
+                if(pic.size()!=0){
+                    m.setPicUrl(pic.get(0).getPicUrl());
+                }
+
                 }
 
 

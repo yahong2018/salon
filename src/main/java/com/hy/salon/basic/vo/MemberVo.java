@@ -77,4 +77,6 @@ public class MemberVo  {
     private Double amountConsumer;
 
     private Double amountCharge;
+
+    private String picUrl;
 }

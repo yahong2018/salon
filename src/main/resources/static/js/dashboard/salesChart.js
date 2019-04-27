@@ -3,32 +3,51 @@ var myChart = echarts.init(dom);
 var app = {};
 option = null;
 
-var source1=[]
+// var source1=[]
+// var source2=[]
+// source2.push('score')
+// source2.push('amount')
+// source2.push('product')
+// source1.push(source2)
+// var source3=[]
+// source3.push(89.3)
+// source3.push(58212)
+// source3.push('爽肤水')
+// source1.push(source3)
+// console.log("+++json"+JSON.stringify(source1));
+var productTotal2=[];
 var source2=[]
 source2.push('score')
 source2.push('amount')
 source2.push('product')
-source1.push(source2)
-var source3=[]
-source3.push(89.3)
-source3.push(58212)
-source3.push('爽肤水')
-source1.push(source3)
-console.log("+++json"+JSON.stringify(source1));
+productTotal2.push(source2)
+
+$.ajax({
+    url:"/hy/basic/statistics/queryProductTotal",
+    type:"get",
+    async:false,
+    dataType:"json",
+    success:function(dataJson){
+        $.each(dataJson.data, function (i, n) {
+
+            var source3=[]
+            source3.push(0)
+            source3.push(n.count1)
+            source3.push(n.productName)
+            productTotal2.push(source3)
+
+
+        });
+    },
+    error:function(){
+        alert("驳回异常")
+    }
+});
+
+
 var option = {
     dataset: {
-        source: [
-            ['score', 'amount', 'product'],
-            [0, 58212, '爽肤水'],
-            [0, 78254, '乳液'],
-            [0, 41032, '面霜'],
-            [0, 12755, '精华素'],
-            [0, 20145, '原液'],
-            [0, 79146, 'Tea'],
-            [0, 91852, '面部润肤'],
-            [0, 101852, 'BB霜'],
-            [0, 20112, '纯露']
-        ]
+        source: productTotal2
     },
     grid: {containLabel: true},
     xAxis: {name: 'amount'},

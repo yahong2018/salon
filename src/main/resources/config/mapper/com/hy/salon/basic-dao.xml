@@ -576,14 +576,21 @@ group by ss.record_id;
     </select>
 
     <select id="GET_SUM_AMOUNT"  parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT sum(amount) amount FROM salon.card_purchase
-        where create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
+        SELECT sum(scp.amount) amount FROM salon.card_purchase as scp
+        <where>
+       <if test="storeId != null">
+            and scp.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+       </if>
+        <if test="startTime != null">
+           and scp.create_date &gt;= #{startTime} and scp.create_date &lt;= #{endTime}
+        </if>
         <if test="rechargeType != null">
-            and recharge_type=#{rechargeType}
+            and scp.recharge_type=#{rechargeType}
         </if>
         <if test="cardType != null">
-            and card_type=#{cardType}
+            and scp.card_type=#{cardType}
         </if>
+        </where>
     </select>
 
 
@@ -591,11 +598,39 @@ group by ss.record_id;
          SELECT sum(qty) as qty FROM salon.member_gift where gift_cash_type=#{giftCashType} and create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
     </select>
 
-    <select id="GET_PRODUCT_"  parameterType="java.util.Map" resultType="java.util.Map">
-         SELECT sum(qty) as qty FROM salon.member_gift where gift_cash_type=#{giftCashType} and create_date &gt;= #{startTime} and create_date &lt;= #{endTime}
+    <select id="GET_PRODUCT_TOTAL"  parameterType="java.util.Map" resultType="java.util.Map">
+         SELECT sp.product_name as productName,count(sp.product_name) as count1 FROM salon.card_purchase as scp left join salon.product as sp on scp.card_id = sp.record_id
+        where scp.recharge_type=2 group by sp.product_name order by count1 desc limit 10;
     </select>
-    <!--SELECT sp.product_name as productName,count(sp.product_name) as count1 FROM salon.card_purchase as scp left join salon.product as sp on scp.card_id = sp.record_id-->
-    <!--where scp.recharge_type=2 group by sp.product_name order by count1 desc;-->
+
+    <select id="GET_MOVEMENT"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT spsm.record_id as recordId,spsm.movement_qty as movementQty,spsm.movement_pur_qty as movementPurQty,sp.product_name as productName,sps2.series_name as seriesName FROM salon.product_stock_movement as spsm
+    left join salon.product as sp on spsm.product_id=sp.record_id
+    left join salon.product_series as sps on sp.product_series_id =sps.record_id
+    left join salon.product_series as sps2 on sps2.record_id =sps.parent_id
+    where spsm.movement_type in(2,72) and DATE_FORMAT(spsm.create_date,'%Y-%m-%d')=#{days} and spsm.warehouse_id=#{storeId};
+   </select>
+
+
+    <select id="GET_ARREARAGES_RECORD"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT sum(srr.reimbursement_amount) as reimbursementAmount FROM salon.repayment_record as srr
+    left join salon.arrearages_record as sar on sar.ref_trans_id =srr.record_id
+    and sar.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+   </select>
+
+    <select id="GET_REJECT_AMOUNT"  parameterType="java.util.Map" resultType="java.util.Map">
+    select sum(smpri.amount_reject) as rejectAmount from salon.member_product_reject_item as smpri
+    left join salon.member_product_reject as smpr on smpri.member_product_reject_id=smpr.record_id
+    where smpr.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+   </select>
+
+    <select id="GET_MEMBER_TAG"  parameterType="java.util.Map" resultType="java.util.Map">
+    select t.tag_name as tagName from salon.tag as t left join salon.member_tag as mt  on t.record_id=mt.tag_id
+    left join salon.member as sm on sm.record_id = mt.member_id
+    where sm.record_id = #{recordId}
+
+   </select>
+
 
 
 </mapper>

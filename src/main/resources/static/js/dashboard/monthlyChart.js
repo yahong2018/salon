@@ -42,7 +42,8 @@ option = {
             },
             data:[
                 {value:size1, name:'直接访问'},
-                {value:size2, name:'别人推荐'}
+                {value:size2, name:'别人推荐'},
+                {value:200, name:'网络访问'}
             ]
         }
     ]

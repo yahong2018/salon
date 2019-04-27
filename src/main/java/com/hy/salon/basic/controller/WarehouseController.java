@@ -824,17 +824,18 @@ public class WarehouseController {
         Result result=new Result();
         try {
             JSONArray jsonArr=new JSONArray();
-            List<ProductSeries> serList=productSeriesDao.getSeriesForUser(storeId);
-            for(ProductSeries p:serList){
-                JSONObject jsonObj=new JSONObject();
-                jsonObj.put("seriesName",p.getSeriesName());
-                List<Map<String,Object>> abnormalList =productStockMovementDao.getStock(p.getRecordId(),days);
-                jsonObj.put("abnormalSize",abnormalList.size());
-                jsonObj.put("productSize",productDao.getCountForProduct(p.getRecordId()).size());
-                jsonObj.put("abnormalList",abnormalList);
-                jsonArr.add(jsonObj);
-            }
-            result.setData(jsonArr);
+            List<Map<String,Object>> abnormalList =productStockMovementDao.getMovement(storeId,days);
+//            List<ProductSeries> serList=productSeriesDao.getSeriesForUser(storeId);
+//            for(ProductSeries p:serList){
+//                JSONObject jsonObj=new JSONObject();
+//                jsonObj.put("seriesName",p.getSeriesName());
+//                List<Map<String,Object>> abnormalList =productStockMovementDao.getStock(p.getRecordId(),days);
+//                jsonObj.put("abnormalSize",abnormalList.size());
+//                jsonObj.put("productSize",productDao.getCountForProduct(p.getRecordId()).size());
+//                jsonObj.put("abnormalList",abnormalList);
+//                jsonArr.add(jsonObj);
+//            }
+            result.setData(abnormalList);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setMsg("获取成功");

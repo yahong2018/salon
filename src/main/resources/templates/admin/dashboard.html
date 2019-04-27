@@ -27,26 +27,235 @@
 </head>
 <body>
 <!-- 店长角色-->
-<div class="layui-tab" style="display:none;">
+<div class="layui-tab"  id="dianZhang">
     <ul class="layui-tab-title">
-        <li class="layui-this">网站设置</li>
-        <li>用户管理</li>
-        <li>权限分配</li>
-        <li>商品管理</li>
-        <li>订单管理</li>
+        <li class="layui-this">综合分析</li>
+        <li>收支分析</li>
+
+        <li>员工分析</li>
+        <li>顾客到店</li>
     </ul>
     <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">
+        <!--综合分析 -->
+            <div class="layui-tab-item layui-show">
+            <div style="height: 20px;margin: 30px;" >
+
+            <div class="row">
+            <div class="col-md-3">
+            <div class="card card-stats card-danger">
+            <div class="card-body ">
+            <div class="row">
+            <div class="col-5">
+            <div class="icon-big text-center">
+            <!--&lt;!&ndash;<i class="la la-users"></i>&ndash;&gt;-->
             </div>
-        <div class="layui-tab-item">内容2</div>
-        <div class="layui-tab-item">内容3</div>
+            </div>
+            <div class="col-7 d-flex align-items-center">
+            <div class="numbers">
+            <p class="card-category">充值</p>
+            <h4 class="card-title" id="recharge"></h4>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="card card-stats card-primary">
+            <div class="card-body ">
+            <div class="row">
+            <div class="col-5">
+            <div class="icon-big text-center">
+            <!--<i class="la la-bar-chart"></i>-->
+            </div>
+            </div>
+            <div class="col-7 d-flex align-items-center">
+            <div class="numbers">
+            <p class="card-category">消费</p>
+            <h4 class="card-title" id="consumption"></h4>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="card card-stats card-info">
+            <div class="card-body">
+            <div class="row">
+            <div class="col-5">
+            <div class="icon-big text-center">
+            <!--<i class="la la-newspaper-o"></i>-->
+            </div>
+            </div>
+            <div class="col-7 d-flex align-items-center">
+            <div class="numbers">
+            <p class="card-category">还欠款</p>
+            <h4 class="card-title" id="arrears"></h4>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="card card-stats card-default">
+            <div class="card-body ">
+            <div class="row">
+            <div class="col-5">
+            <div class="icon-big text-center">
+            <!--<i class="la la-check-circle"></i>-->
+            </div>
+            </div>
+            <div class="col-7 d-flex align-items-center">
+            <div class="numbers">
+            <p class="card-category">退款</p>
+            <h4 class="card-title" id="refund"></h4>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+
+
+
+
+            <div class="row" style="margin: 50px 10px 10px 10px;">
+            <div class="col-md-4">
+            <div class="card">
+            <div class="card-header">
+            <h4 class="card-title">综合分析</h4>
+            <p class="card-category">
+            本月综合分析</p>
+            </div>
+            <div class="card-body">
+            <div id="monthlyChart2" style="width: 385px;height: 500px;"></div>
+            <script src="../js/dashboard/comprehensiveAnalysis.js"></script>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+
+        </div>
+        <div class="layui-tab-item">
+
+
+            <div style="height: 20px;margin: 30px;" >
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-stats card-danger">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--&lt;!&ndash;<i class="la la-users"></i>&ndash;&gt;-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">充值</p>
+                                            <h4 class="card-title" id="recharge4"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats card-primary">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--<i class="la la-bar-chart"></i>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">消费</p>
+                                            <h4 class="card-title" id="consumption2"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats card-info">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--<i class="la la-newspaper-o"></i>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">还欠款</p>
+                                            <h4 class="card-title" id="arrears2"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats card-default">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--<i class="la la-check-circle"></i>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">退款</p>
+                                            <h4 class="card-title" id="refund2"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin: 50px 10px 10px 10px;">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">综合分析</h4>
+                                <p class="card-category">
+                                    本月综合分析</p>
+                            </div>
+                            <div class="card-body">
+                                <div id="monthlyChart" style="width: 385px;height: 500px;"></div>
+                                <script src="../js/dashboard/comprehensiveAnalysis.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
         <div class="layui-tab-item">内容4</div>
         <div class="layui-tab-item">内容5</div>
     </div>
+
 </div>
 
 <!-- 平台角色-->
-<div style="height: 20px;margin: 30px;">
+<div style="height: 20px;margin: 30px;" id="pinTai">
 
     <div class="row">
         <div class="col-md-3">
@@ -54,9 +263,9 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-5">
-                            <!--<div class="icon-big text-center">-->
+                            <div class="icon-big text-center">
                                 <!--&lt;!&ndash;<i class="la la-users"></i>&ndash;&gt;-->
-                            <!--</div>-->
+                            </div>
                         </div>
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
@@ -235,7 +444,7 @@
                         本月用户统计</p>
                 </div>
                 <div class="card-body">
-                    <div id="monthlyChart" style="width: 98%;height: 500px;"></div>
+                    <div id="monthlyChart3" style="width: 98%;height: 500px;"></div>
                     <script src="../js/dashboard/monthlyChart.js"></script>
                 </div>
             </div>
@@ -245,7 +454,7 @@
                 <div class="card-header">
                     <h4 class="card-title">热销产品</h4>
                     <p class="card-category">
-                        热销产品月份分析</p>
+                        热销产品分析</p>
                 </div>
                 <div class="card-body">
                     <div id="salesChart" style="width: 98%;height: 500px;"></div>
@@ -258,6 +467,12 @@
 </body>
 <script type="text/javascript">
 
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
 
     $.ajax({
         url:"/hy/basic/statistics/total",
@@ -267,21 +482,39 @@
         success:function(dataJson){
 
             console.log("+++"+JSON.stringify(dataJson));
+            if(dataJson.data.jobLevel==-1){
+                $("#dianZhang").css("display","none")
+                $("#salonSize").text(dataJson.data.salonSize);
 
-            $("#salonSize").text(dataJson.data.salonSize);
+                $("#memberSize").text(dataJson.data.memberSize);
 
-            $("#memberSize").text(dataJson.data.memberSize);
+                $("#sumAmount").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
 
-            $("#sumAmount").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
+                $("#sumAmount3").text("¥"+dataJson.data.sumAmount3);
 
-            $("#sumAmount3").text("¥"+dataJson.data.sumAmount3);
+                $("#qty").text(dataJson.data.qty);
 
-            $("#qty").text(dataJson.data.qty);
+                $("#qty2").text(dataJson.data.qty2);
+            }else{
+                $("#pinTai").css("display","none")
 
-            $("#qty2").text(dataJson.data.qty2);
+                $("#recharge").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
+
+                $("#consumption").text("¥"+dataJson.data.sumAmount3);
+
+                $("#arrears").text("¥"+dataJson.data.ArreagesAmount);
+
+                $("#refund").text("¥"+dataJson.data.rejectAmount);
 
 
-            // console.log("+++"+dataJson.data.salonSize);
+            }
+
+
+
+
+
+
+
 
 
         },
@@ -290,12 +523,6 @@
         }
     });
 
-    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
-        var element = layui.element;
-
-        //…
-    });
 
 
 </script>
