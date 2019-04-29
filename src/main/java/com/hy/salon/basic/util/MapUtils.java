@@ -52,15 +52,4 @@ public class MapUtils {
         return null;
     }
 
-
-    public static void main(String[] args) {
-        double[] aaa = MapUtils.getLatAndLonByAddress("广东省东莞市黄江镇政府");
-        System.out.println(aaa);
-        for (double cccc : aaa) {
-            System.out.println(cccc);
-        }
-
-
-    }
-
 }
