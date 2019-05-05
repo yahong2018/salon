@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 27/04/2019 09:07:42
+ Date: 05/05/2019 14:28:31
 */
 
 SET NAMES utf8mb4;
@@ -180,7 +180,15 @@ CREATE TABLE `business_stuff` (
   KEY `idx_business_stuff_01` (`stuff_id`),
   KEY `idx_business_stuff_02` (`ref_trans_id`),
   KEY `idx_business_stuff_03` (`trans_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='关联员工';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='关联员工';
+
+-- ----------------------------
+-- Records of business_stuff
+-- ----------------------------
+BEGIN;
+INSERT INTO `business_stuff` VALUES (1, 1, 0, 1, '2019-04-25 14:28:40', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (2, 2, 0, 1, '2019-04-25 14:28:40', 1, NULL, NULL, 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for card_balance
@@ -205,7 +213,7 @@ CREATE TABLE `card_balance` (
   PRIMARY KEY (`record_id`),
   KEY `idx_card_balance_01` (`member_id`),
   KEY `idx_card_balance_02` (`card_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='卡户余额';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='卡户余额';
 
 -- ----------------------------
 -- Records of card_balance
@@ -217,6 +225,7 @@ INSERT INTO `card_balance` VALUES (3, 1, 3, 0, 3.00, 12, 0, NULL, 0, 'wer2', '20
 INSERT INTO `card_balance` VALUES (4, 31, 56, 0, 2.00, 12, 0, NULL, 0, '23', '2019-04-26 16:00:07', 1, '2019-04-26 16:00:10', 1, 0);
 INSERT INTO `card_balance` VALUES (5, 29, 55, 0, 2.00, 100, 0, NULL, 0, '1000', '2019-04-26 16:11:25', 1, '2019-04-26 16:11:29', 1, 0);
 INSERT INTO `card_balance` VALUES (6, 31, 55, 0, 2.00, 10, 0, NULL, 0, '10', '2019-04-26 17:11:17', 1, '2019-04-26 17:11:20', 1, 0);
+INSERT INTO `card_balance` VALUES (7, 1, 12, 1, 23.00, 12, 0, NULL, 0, '12', '2019-04-27 09:11:21', 1, '2019-04-27 09:11:24', 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -251,10 +260,10 @@ CREATE TABLE `card_purchase` (
 -- Records of card_purchase
 -- ----------------------------
 BEGIN;
-INSERT INTO `card_purchase` VALUES (1, 1, 17, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试', '1', 0, '2019-04-25 14:09:29', 1, '2019-04-19 14:09:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (2, 1, 21, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试2', '1', 0, '2019-04-25 14:28:23', 1, '2019-04-19 14:28:29', 1, 1);
+INSERT INTO `card_purchase` VALUES (1, 1, 17, 1, 0.00, 100.00, 0.00, 100.00, 0, '测试', '1', 0, '2019-04-25 14:09:29', 1, '2019-04-19 14:09:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (2, 1, 21, 2, 0.00, 100.00, 0.00, 100.00, 0, '测试2', '1', 3, '2019-04-25 14:28:23', 1, '2019-04-19 14:28:29', 1, 1);
 INSERT INTO `card_purchase` VALUES (3, 1, 21, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 1, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (4, 1, 17, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 0, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (4, 1, 17, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 0, '2019-05-01 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (5, 1, 21, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (6, 1, 21, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (7, 1, 13, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
@@ -263,12 +272,12 @@ INSERT INTO `card_purchase` VALUES (9, 1, 16, 0, 0.00, 100.00, 0.00, 100.00, 0, 
 INSERT INTO `card_purchase` VALUES (10, 1, 18, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (11, 1, 19, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (12, 1, 20, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (13, 1, 24, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (14, 1, 25, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (13, 1, 24, 0, 0.00, 100.00, 0.00, 100.00, 3, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (14, 1, 25, 0, 0.00, 100.00, 0.00, 100.00, 1, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (15, 1, 27, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (16, 1, 29, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (16, 1, 29, 0, 0.00, 100.00, 0.00, 100.00, 2, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 INSERT INTO `card_purchase` VALUES (17, 1, 31, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 2, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
-INSERT INTO `card_purchase` VALUES (18, 1, 32, 0, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 1, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
+INSERT INTO `card_purchase` VALUES (18, 1, 32, 1, 0.00, 100.00, 0.00, 100.00, 0, '测试3', '1', 1, '2019-04-25 14:28:40', 1, '2019-04-19 14:28:37', 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -3968,7 +3977,7 @@ CREATE TABLE `member` (
   KEY `idx_member_04` (`tel`),
   KEY `idx_member_05` (`primary_beautician`),
   KEY `idx_member_06` (`introducer`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COMMENT='会员';
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COMMENT='会员';
 
 -- ----------------------------
 -- Records of member
@@ -4012,6 +4021,7 @@ INSERT INTO `member` VALUES (70, 2, '赵川', '18965233455', 0, 'eecha', '2019-0
 INSERT INTO `member` VALUES (71, 2, '赵宏博', '1899666555', 0, 'wechat', '2019-04-23 00:00:00', 11, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, '2019-04-23 14:44:17', 1, NULL, NULL, 0);
 INSERT INTO `member` VALUES (72, 2, '老A', '15632698888', 0, 'we', '2019-04-23 00:00:00', 8, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, '2019-04-25 15:38:35', 1, NULL, NULL, 0);
 INSERT INTO `member` VALUES (73, 2, '和解决', '1559666', 1, '规划好', '2021-04-25 00:00:00', 4, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, '2019-04-25 16:13:54', 1, NULL, NULL, 0);
+INSERT INTO `member` VALUES (74, 36, '测试顾客头像', '13929433196', 0, '7425866', '2003-04-27 00:00:00', 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, '本子', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, '2019-04-27 10:26:48', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4145,7 +4155,14 @@ CREATE TABLE `member_product_reject` (
   `opt_lock` int(11) DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_member_product_reject` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品退款';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='产品退款';
+
+-- ----------------------------
+-- Records of member_product_reject
+-- ----------------------------
+BEGIN;
+INSERT INTO `member_product_reject` VALUES (1, 1, '测绘', '1', '2019-04-27 10:24:25', 1, '2019-04-27 10:24:28', 1, 1);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for member_product_reject_item
@@ -4167,7 +4184,14 @@ CREATE TABLE `member_product_reject_item` (
   PRIMARY KEY (`record_id`),
   KEY `idx_member_product_reject_item_01` (`member_product_reject_id`),
   KEY `idx_member_product_reject_item_02` (`product_keep_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品退款明细';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='产品退款明细';
+
+-- ----------------------------
+-- Records of member_product_reject_item
+-- ----------------------------
+BEGIN;
+INSERT INTO `member_product_reject_item` VALUES (1, 1, 1, 1, 2.00, 100.00, 12, '2019-04-27 10:24:56', 1, '2019-04-27 10:24:58', 1, 1);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for member_salon_tag
@@ -4220,7 +4244,7 @@ CREATE TABLE `member_tag` (
   PRIMARY KEY (`record_id`),
   KEY `idx_member_tag_01` (`member_id`),
   KEY `idx_member_tag_02` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签';
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COMMENT='会员标签';
 
 -- ----------------------------
 -- Records of member_tag
@@ -4275,6 +4299,7 @@ INSERT INTO `member_tag` VALUES (47, 70, 10, '2019-04-23 14:36:17', 1, NULL, NUL
 INSERT INTO `member_tag` VALUES (48, 71, 10, '2019-04-23 14:44:17', 1, NULL, NULL, 0);
 INSERT INTO `member_tag` VALUES (49, 72, 10, '2019-04-23 15:38:35', 1, NULL, NULL, 0);
 INSERT INTO `member_tag` VALUES (50, 73, 10, '2019-04-25 16:13:54', 1, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (51, 74, 13, '2019-04-27 10:26:48', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -4416,7 +4441,7 @@ CREATE TABLE `operate_log` (
   `opt_result` varchar(10) NOT NULL,
   PRIMARY KEY (`record_id`),
   KEY `idx_operate_log_01` (`opt_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1520 DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1563 DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志';
 
 -- ----------------------------
 -- Records of operate_log
@@ -4746,6 +4771,49 @@ INSERT INTO `operate_log` VALUES (1516, 1, 10, 'com.zhxh.admin.controller.LoginC
 INSERT INTO `operate_log` VALUES (1517, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-26 19:31:44', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"pwra\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"pwra\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
 INSERT INTO `operate_log` VALUES (1518, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-26 19:31:36', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"\",\"userCode\":\"C00010\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"\"],\"userCode\":[\"C00010\"]}}', NULL, '/login/doLogin', 200, 'redirect:/');
 INSERT INTO `operate_log` VALUES (1519, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:05:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"\",\"userCode\":\"C00010\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"\"],\"userCode\":[\"C00010\"]}}', NULL, '/login/doLogin', 200, 'redirect:/');
+INSERT INTO `operate_log` VALUES (1520, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:10:28', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"pfgr\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"pfgr\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1521, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:11:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"ah0k\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"ah0k\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1522, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:11:57', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"btte\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"btte\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1523, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:12:04', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"jd9e\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"jd9e\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1524, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:24:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"aocz\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"aocz\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1525, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:24:34', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"8bu1\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"8bu1\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1526, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 09:25:03', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"j6l4\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"j6l4\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1527, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 11:10:05', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"unr2\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"unr2\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1528, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 11:31:58', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, 'redirect:/');
+INSERT INTO `operate_log` VALUES (1529, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-27 12:37:36', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, 'redirect:/');
+INSERT INTO `operate_log` VALUES (1530, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 10:06:17', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"c0sm\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"c0sm\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1531, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 10:11:58', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"c6fe\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"c6fe\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1532, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 10:31:48', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"ettb\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"ettb\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1533, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 10:33:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"u73g\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"u73g\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1534, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 10:33:58', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"beti\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"beti\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1535, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 11:06:34', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"p44s\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"p44s\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1536, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 11:16:17', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"a8c1\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"a8c1\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1537, 1, 1, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 14:53:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"3lf5\",\"userCode\":\"c00010\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"3lf5\"],\"userCode\":[\"c00010\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1538, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 15:24:30', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"2f26\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"2f26\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1539, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 15:32:12', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"hbvt\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"hbvt\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1540, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 15:32:19', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"6kqe\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"6kqe\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1541, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-28 15:54:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"mmvy\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"mmvy\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1542, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-29 09:05:20', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"c64p\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"c64p\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1543, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-29 15:26:55', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"y21u\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"y21u\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1544, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-29 15:31:44', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"gi8u\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"gi8u\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1545, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-29 15:51:19', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"ddui\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"ddui\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1546, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-29 16:58:10', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"tm08\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"tm08\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1547, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 09:14:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"mamc\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"mamc\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1548, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 09:29:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"0a8i\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"0a8i\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1549, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 11:04:36', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"zo2y\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"zo2y\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1550, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:26:18', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"lz2n\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"lz2n\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1551, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:26:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"98rg\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"98rg\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1552, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:29:01', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"kyw4\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"kyw4\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1553, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:29:33', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"vx4h\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"vx4h\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1554, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:47:02', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"8cu2\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"8cu2\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1555, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:49:29', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"kwmb\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"kwmb\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1556, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:50:36', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"8dys\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"8dys\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1557, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:52:25', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"pjy8\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"pjy8\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1558, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:56:02', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"kslq\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"kslq\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1559, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 14:58:32', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"10e7\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"10e7\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1560, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-04-30 15:43:51', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"wy2e\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"wy2e\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1561, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-05-05 10:09:46', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"ul1i\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"ul1i\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, '成功');
+INSERT INTO `operate_log` VALUES (1562, 1, 10, 'com.zhxh.admin.controller.LoginController.doLogin', '2019-05-05 11:46:06', '{\"password\":\"e10adc3949ba59abbe56e057f20f883e\",\"model\":{},\"randomCode\":\"6mm4\",\"userCode\":\"c00001\",\"req\":{\"password\":[\"e10adc3949ba59abbe56e057f20f883e\"],\"randomCode\":[\"6mm4\"],\"userCode\":[\"c00001\"]}}', NULL, '/login/doLogin', 200, 'redirect:/');
 COMMIT;
 
 -- ----------------------------
@@ -4826,7 +4894,7 @@ CREATE TABLE `pictures` (
   KEY `idx_pictures_01` (`master_data_id`),
   KEY `idx_pictures_02` (`record_type`),
   KEY `idx_pictures_03` (`pic_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=692 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
+) ENGINE=InnoDB AUTO_INCREMENT=695 DEFAULT CHARSET=utf8mb4 COMMENT='系统照片';
 
 -- ----------------------------
 -- Records of pictures
@@ -5431,6 +5499,9 @@ INSERT INTO `pictures` VALUES (688, 31, 5, 0, '/pic/20190424/d2a6ee83-da97-44c3-
 INSERT INTO `pictures` VALUES (689, 32, 5, 0, '/pic/20190424/d2a6ee83-da97-44c3-8311-6ab6d53c833c.jpg', '2019-04-24 17:25:17', 85, '2019-04-24 17:23:35', 85, 0);
 INSERT INTO `pictures` VALUES (690, 73, 6, 0, '/pic/20190425/474bab09-f10e-47ce-9a13-b9e7b4d5e302.jpg', '2019-04-25 16:12:35', 1, '2019-04-25 16:13:54', 1, 0);
 INSERT INTO `pictures` VALUES (691, 56, 2, 0, '/pic/20190426/d31ef0e9-e5d1-4a52-ac9b-2b057ffdfca0.jpg', '2019-04-26 17:06:50', 85, '2019-04-26 17:06:51', 85, 0);
+INSERT INTO `pictures` VALUES (692, 74, 6, 0, '/pic/20190427/1736045a-8d37-4bc5-9749-d00d78a90b4c.jpg', '2019-04-27 10:26:48', 85, '2019-04-27 10:26:48', 85, 0);
+INSERT INTO `pictures` VALUES (693, NULL, 6, 0, '/pic/20190503/72566c81-bf6f-4b20-926b-2d4de3803d8d.jpg', '2019-05-03 18:19:58', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (694, 33, 5, 0, '/pic/20190412/c7f0cb90-048a-4660-b522-8ff9acd400ad.jpg', '2019-05-04 14:52:03', 85, '2019-04-12 15:37:58', 85, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5465,7 +5536,7 @@ CREATE TABLE `product` (
   KEY `idx_product_05` (`shelf_life`),
   KEY `idx_product_06` (`day_of_pre_warning`),
   KEY `idx_product_07` (`stock_of_pre_warning`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COMMENT='产品';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COMMENT='产品';
 
 -- ----------------------------
 -- Records of product
@@ -5476,8 +5547,8 @@ INSERT INTO `product` VALUES (15, 2, '路路3', 1, 22, 56.00, 39.00, '7855', '53
 INSERT INTO `product` VALUES (16, 3, '路路2', 1, 27, 56.00, 39.00, '7855', '53566', 6, 1, 8, 0, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
 INSERT INTO `product` VALUES (17, 36, '产品狗', 0, 35, 560.00, 520.00, '1809', '555555', 5, 70, 5, 0, '楼同', '2019-04-12 15:37:58', 85, NULL, NULL, 0);
 INSERT INTO `product` VALUES (18, 2, '很好', 1, 22, 99.00, 88.00, '677', '135', 2, 1, 1, 0, NULL, '2019-04-20 11:31:24', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (19, 2, '天空一号', 0, 26, 99.00, 6.00, '16', '235', 1, 1, 2, 0, NULL, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (20, 2, '下大雨', 0, 26, 99.00, 6.00, '16', '235', 1, 1, 2, 0, NULL, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (19, 2, '天空一号', 2, 26, 99.00, 6.00, '16', '235', 1, 1, 2, 0, '很不错的一款全新产品', '2019-04-20 11:33:10', 1, '2019-04-27 10:59:21', 1, 0);
+INSERT INTO `product` VALUES (20, 2, '下大雨', 0, 26, 99.00, 6.00, '16', '235', 1, 1, 2, 1, '美腿产品', '2019-04-20 11:38:10', 1, '2019-04-27 11:06:04', 1, 0);
 INSERT INTO `product` VALUES (21, 36, '抵制加班', 0, 49, 7000.00, 1.00, '996', '996', 12, 12, 5, 0, 'toll', '2019-04-22 10:12:28', 85, NULL, NULL, 0);
 INSERT INTO `product` VALUES (24, 37, '抵制加班', 0, 49, 7000.00, 1.00, '996', '996', 12, 12, 5, 0, 'toll', '2019-04-24 15:29:36', 85, NULL, NULL, 0);
 INSERT INTO `product` VALUES (25, 34, '抵制加班', 0, 49, 7000.00, 1.00, '996', '996', 12, 12, 5, 0, 'toll', '2019-04-24 15:36:38', 85, NULL, NULL, 0);
@@ -5485,6 +5556,7 @@ INSERT INTO `product` VALUES (27, 36, '蚕丝面膜', 1, 49, 50.00, 48.00, '996'
 INSERT INTO `product` VALUES (29, 36, '保湿面膜', 2, 35, 60.00, 46.00, '9456', '64521515', 12, 4, 4, 0, '迷宫', '2019-04-24 17:13:39', 85, NULL, NULL, 0);
 INSERT INTO `product` VALUES (31, 36, '逗逼砖石卡', 0, 35, 50.00, 25.00, '75369', '789654123', 12, 25, 10, 0, '测试', '2019-04-24 17:23:35', 85, NULL, NULL, 0);
 INSERT INTO `product` VALUES (32, 33, '逗逼砖石卡', 0, 35, 50.00, 25.00, '75369', '789654123', 12, 25, 10, 0, '测试', '2019-04-24 17:25:17', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (33, 32, '产品狗', 0, 35, 560.00, 520.00, '1809', '555555', 5, 70, 5, 0, '楼同', '2019-05-04 14:52:03', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5535,7 +5607,7 @@ CREATE TABLE `product_property_map` (
   PRIMARY KEY (`record_id`),
   KEY `idx_product_property_map_01` (`product_id`),
   KEY `idx_product_property_map_02` (`product_property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COMMENT='产品属性关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COMMENT='产品属性关系表';
 
 -- ----------------------------
 -- Records of product_property_map
@@ -5557,14 +5629,6 @@ INSERT INTO `product_property_map` VALUES (59, 18, 16, '2019-04-20 11:31:25', 1,
 INSERT INTO `product_property_map` VALUES (60, 18, 17, '2019-04-20 11:31:25', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (61, 18, 20, '2019-04-20 11:31:25', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (62, 18, 21, '2019-04-20 11:31:25', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (63, 19, 15, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (64, 19, 18, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (65, 19, 19, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (66, 19, 22, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (67, 20, 15, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (68, 20, 18, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (69, 20, 19, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (70, 20, 22, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (71, 21, 15, '2019-04-22 10:12:28', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (72, 21, 18, '2019-04-22 10:12:28', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (73, 21, 20, '2019-04-22 10:12:28', 85, NULL, NULL, 0);
@@ -5585,6 +5649,18 @@ INSERT INTO `product_property_map` VALUES (87, 32, 16, '2019-04-24 17:25:17', 85
 INSERT INTO `product_property_map` VALUES (88, 32, 18, '2019-04-24 17:25:17', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (89, 32, 20, '2019-04-24 17:25:17', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (90, 32, 22, '2019-04-24 17:25:17', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (99, 19, 15, '2019-04-27 10:59:22', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (100, 19, 18, '2019-04-27 10:59:22', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (101, 19, 19, '2019-04-27 10:59:22', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (102, 19, 22, '2019-04-27 10:59:22', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (107, 20, 16, '2019-04-27 11:06:04', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (108, 20, 18, '2019-04-27 11:06:04', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (109, 20, 19, '2019-04-27 11:06:04', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (110, 20, 22, '2019-04-27 11:06:04', 1, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (111, 33, 16, '2019-05-04 14:52:03', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (112, 33, 18, '2019-05-04 14:52:03', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (113, 33, 19, '2019-05-04 14:52:03', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (114, 33, 22, '2019-05-04 14:52:03', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -5671,13 +5747,13 @@ CREATE TABLE `product_stock` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `product_stock` VALUES (1, 1, 1, 1, 1.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', 1, 1);
-INSERT INTO `product_stock` VALUES (2, 13, 1, 20, 200.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
+INSERT INTO `product_stock` VALUES (2, 13, 1, 86, 1652.00, '2019-03-05 15:46:53', 1, '2019-05-03 09:57:45', 1, 1);
 INSERT INTO `product_stock` VALUES (3, 15, 1, 30, 300.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
 INSERT INTO `product_stock` VALUES (4, 16, 1, 1, 1.00, '2019-03-05 15:46:53', 1, '2019-03-05 15:46:55', NULL, 1);
-INSERT INTO `product_stock` VALUES (5, 17, 2, -35, -7320.00, '2019-03-05 15:46:53', 1, '2019-04-24 16:36:48', 85, 1);
+INSERT INTO `product_stock` VALUES (5, 17, 2, -43, -7360.00, '2019-03-05 15:46:53', 1, '2019-05-04 14:52:03', 85, 1);
 INSERT INTO `product_stock` VALUES (6, 18, 2, 0, 0.00, '2019-04-20 11:31:25', 1, NULL, NULL, 0);
-INSERT INTO `product_stock` VALUES (7, 19, 2, 0, 0.00, '2019-04-20 11:33:10', 1, NULL, NULL, 0);
-INSERT INTO `product_stock` VALUES (8, 20, 2, 0, 0.00, '2019-04-20 11:38:10', 1, NULL, NULL, 0);
+INSERT INTO `product_stock` VALUES (7, 19, 2, 44, 968.00, '2019-04-20 11:33:10', 1, '2019-04-30 17:28:38', 1, 0);
+INSERT INTO `product_stock` VALUES (8, 20, 2, 22, 484.00, '2019-04-20 11:38:10', 1, '2019-04-30 16:11:26', 1, 0);
 INSERT INTO `product_stock` VALUES (9, 21, 36, -470, -30980.00, '2019-04-22 10:12:28', 85, '2019-04-24 15:38:55', 85, 0);
 INSERT INTO `product_stock` VALUES (10, 27, 36, -20, -720.00, '2019-04-24 16:50:09', 85, '2019-04-24 17:11:23', 85, 0);
 INSERT INTO `product_stock` VALUES (11, 29, 36, -6, -216.00, '2019-04-24 17:13:39', 85, '2019-04-24 17:20:54', 85, 0);
@@ -5717,7 +5793,7 @@ CREATE TABLE `product_stock_movement` (
   KEY `idx_product_stock_movement_07` (`update_by`),
   KEY `idx_product_stock_movement_08` (`update_date`),
   KEY `idx_product_stock_movement_09` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='产品库存异动';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COMMENT='产品库存异动';
 
 -- ----------------------------
 -- Records of product_stock_movement
@@ -5748,6 +5824,12 @@ INSERT INTO `product_stock_movement` VALUES (22, 0, 2, 'HY20190425162000960', 31
 INSERT INTO `product_stock_movement` VALUES (23, 0, 72, 'HY20190425200702897', 31, 100, NULL, '2019-04-25 00:00:00', 63.00, 36, NULL, '2019-04-25 20:07:03', 85, NULL, NULL, 0, '分享下');
 INSERT INTO `product_stock_movement` VALUES (24, 0, 72, 'HY20190425201011507', 31, 200, 300, '2019-04-25 00:00:00', 36.00, 36, NULL, '2019-04-25 20:10:12', 1, NULL, NULL, 0, '阿伦');
 INSERT INTO `product_stock_movement` VALUES (25, 0, 2, 'HY20190425201044381', 31, 300, 500, '2019-04-25 00:00:00', 36.00, 36, NULL, '2019-04-25 20:10:44', 1, NULL, NULL, 0, '痛');
+INSERT INTO `product_stock_movement` VALUES (26, 0, 0, 'HY20190430160214170', 13, 22, 20, '2022-04-30 00:00:00', 22.00, 2, NULL, '2019-04-30 16:02:14', 1, NULL, NULL, 0, '规划局');
+INSERT INTO `product_stock_movement` VALUES (27, 0, 0, 'HY20190430161125700', 20, 22, 0, '2023-04-30 00:00:00', 22.00, 2, NULL, '2019-04-30 16:11:26', 1, NULL, NULL, 0, '不错');
+INSERT INTO `product_stock_movement` VALUES (28, 0, 0, 'HY20190430161802036', 13, 22, 42, '2019-04-30 00:00:00', 22.00, 2, NULL, '2019-04-30 16:18:02', 1, NULL, NULL, 0, '很好');
+INSERT INTO `product_stock_movement` VALUES (29, 0, 0, 'HY20190430172543610', 19, 22, 0, '2019-04-30 00:00:00', 22.00, 2, NULL, '2019-04-30 17:25:44', 1, NULL, NULL, 0, '还回家');
+INSERT INTO `product_stock_movement` VALUES (30, 0, 0, 'HY20190430172837573', 19, 22, 22, '2019-04-30 00:00:00', 22.00, 2, NULL, '2019-04-30 17:28:38', 1, NULL, NULL, 0, '好纠结');
+INSERT INTO `product_stock_movement` VALUES (31, 0, 71, 'HY20190504145203175', 17, 8, NULL, '2019-05-04 00:00:00', 5.00, 36, NULL, '2019-05-04 14:52:03', 85, NULL, NULL, 0, '');
 COMMIT;
 
 -- ----------------------------
@@ -6010,7 +6092,7 @@ CREATE TABLE `role_action` (
   PRIMARY KEY (`record_id`),
   KEY `idx_role_action_01` (`stuff_id`),
   KEY `idx_role_action_02` (`system_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COMMENT='角色权限映射表';
 
 -- ----------------------------
 -- Records of role_action
@@ -6062,6 +6144,8 @@ INSERT INTO `role_action` VALUES (51, 1117, 90);
 INSERT INTO `role_action` VALUES (55, 1121, 94);
 INSERT INTO `role_action` VALUES (56, 1122, 95);
 INSERT INTO `role_action` VALUES (57, 1123, 96);
+INSERT INTO `role_action` VALUES (58, 1124, 104);
+INSERT INTO `role_action` VALUES (59, 1125, 105);
 COMMIT;
 
 -- ----------------------------
@@ -6415,7 +6499,7 @@ CREATE TABLE `role_user` (
   PRIMARY KEY (`record_id`),
   KEY `IDX_ROLE_USER_0` (`role_id`),
   KEY `IDX_ROLE_USER_1` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of role_user
@@ -6452,6 +6536,9 @@ INSERT INTO `role_user` VALUES (79, 3, 99);
 INSERT INTO `role_user` VALUES (80, 3, 100);
 INSERT INTO `role_user` VALUES (81, 3, 101);
 INSERT INTO `role_user` VALUES (82, 3, 102);
+INSERT INTO `role_user` VALUES (83, 3, 103);
+INSERT INTO `role_user` VALUES (84, 2, 104);
+INSERT INTO `role_user` VALUES (85, 2, 105);
 COMMIT;
 
 -- ----------------------------
@@ -7039,7 +7126,7 @@ CREATE TABLE `stock_transfer_application` (
   KEY `idx_stock_transfer_application_05` (`update_date`),
   KEY `idx_stock_transfer_application_06` (`record_status`),
   KEY `idx_stock_transfer_application_07` (`out_warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='调拨申请单';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='调拨申请单';
 
 -- ----------------------------
 -- Records of stock_transfer_application
@@ -7053,6 +7140,7 @@ INSERT INTO `stock_transfer_application` VALUES (5, 'HY20190424171123398', 16, 2
 INSERT INTO `stock_transfer_application` VALUES (6, 'HY20190424172053841', 17, 30, 36, 33, NULL, NULL, 0, 1112, NULL, '2019-04-24 17:20:54', 85, NULL, NULL, 0);
 INSERT INTO `stock_transfer_application` VALUES (7, 'HY20190424172517576', 18, 32, 36, 33, NULL, NULL, 0, 1112, NULL, '2019-04-24 17:25:18', 85, NULL, NULL, 0);
 INSERT INTO `stock_transfer_application` VALUES (8, 'HY20190424172524029', 19, 32, 36, 33, NULL, NULL, 4, 1112, NULL, '2019-04-24 17:25:24', 85, NULL, NULL, 0);
+INSERT INTO `stock_transfer_application` VALUES (9, 'HY20190504145203225', 31, 33, 36, 32, NULL, NULL, 0, 1112, NULL, '2019-05-04 14:52:03', 85, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -7154,13 +7242,13 @@ CREATE TABLE `stuff` (
   KEY `idx_stuff_02` (`stuff_name`),
   KEY `idx_stuff_03` (`tel`),
   KEY `idx_stuff_04` (`gender`)
-) ENGINE=InnoDB AUTO_INCREMENT=1124 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
+) ENGINE=InnoDB AUTO_INCREMENT=1126 DEFAULT CHARSET=utf8mb4 COMMENT='院长/店长/员工';
 
 -- ----------------------------
 -- Records of stuff
 -- ----------------------------
 BEGIN;
-INSERT INTO `stuff` VALUES (1, 2, '吴浙', '189888888', 0, '2019-02-17 00:00:00', 1.0, '2005-03-19 00:00:00', '篮球', '', 'qq', 'null', '莞樟路', '2019-02-17 16:00:00', 2, '2019-04-23 18:27:47', 1, 1, 1);
+INSERT INTO `stuff` VALUES (1, 2, '吴浙', '189888888', 0, '2019-02-17 00:00:00', 1.0, '2005-03-19 00:00:00', '篮球', '', 'qq', 'null', '莞樟路', '2019-02-17 16:00:00', 2, '2019-04-29 17:49:10', 1, 1, 0);
 INSERT INTO `stuff` VALUES (2, 1, '小李', '139587925', 1, '2019-02-27 09:01:22', 1.0, '2022-03-15 00:00:00', '', NULL, '', NULL, '', '2019-02-27 09:01:22', 2, '2019-03-21 09:09:31', 32, 1, 0);
 INSERT INTO `stuff` VALUES (3, 1, '小王子', '189888888', 0, '2019-02-17 16:00:00', 1.0, NULL, '篮球', NULL, NULL, NULL, NULL, '2019-02-17 16:00:00', 2, '2019-02-17 16:00:00', 1, 1, 0);
 INSERT INTO `stuff` VALUES (4, 1, '王子', '189888888', 0, '2019-02-17 16:00:00', 1.0, NULL, NULL, NULL, NULL, NULL, NULL, '2019-02-17 16:00:00', 2, '2019-02-17 16:00:00', 1, 1, 0);
@@ -7223,6 +7311,8 @@ INSERT INTO `stuff` VALUES (1117, 37, '李某某', '18681172013', 2, NULL, NULL,
 INSERT INTO `stuff` VALUES (1121, 36, '五条蛇', '13929433194', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-12 17:40:20', 85, '2019-04-16 20:02:14', 85, 0, 0);
 INSERT INTO `stuff` VALUES (1122, 41, '15999876807', '15999876807', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-13 10:04:56', 1, NULL, NULL, 0, 0);
 INSERT INTO `stuff` VALUES (1123, 42, '13532307827', '13532307827', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-13 10:25:01', 1, NULL, NULL, 0, 0);
+INSERT INTO `stuff` VALUES (1124, 2, '客服', '169853241485', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-03 18:31:20', 1, '2019-05-03 18:31:37', 1, 0, 1);
+INSERT INTO `stuff` VALUES (1125, 2, '李子核', '1366985555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-03 18:32:22', 1, NULL, NULL, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -7241,7 +7331,7 @@ CREATE TABLE `stuff_job` (
   PRIMARY KEY (`record_id`),
   KEY `idx_stuff_job_01` (`stuff_id`),
   KEY `idx_stuff_job_02` (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COMMENT='员工职务';
 
 -- ----------------------------
 -- Records of stuff_job
@@ -7325,7 +7415,10 @@ INSERT INTO `stuff_job` VALUES (85, 1121, 5, '2019-04-12 17:40:20', 85, NULL, NU
 INSERT INTO `stuff_job` VALUES (86, 1121, 7, '2019-04-12 17:40:20', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (87, 1122, 2, '2019-04-13 10:04:56', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (88, 1123, 2, '2019-04-13 10:25:01', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (99, 1121, 9, '2019-04-24 12:37:22', 85, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (120, 9, 9, '2019-05-03 10:10:07', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (121, 1124, 2, '2019-05-03 18:31:21', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (122, 1124, 5, '2019-05-03 18:31:21', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (123, 1125, 2, '2019-05-03 18:32:22', 1, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -7532,32 +7625,32 @@ CREATE TABLE `system_user` (
   KEY `IDX_SYSTEM_USER_1` (`user_name`),
   KEY `IDX_SYSTEM_USER_2` (`user_status`),
   KEY `IDX_SYSTEM_USER_3` (`online`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-04-27 09:06:25');
+INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-05-05 14:26:35');
 INSERT INTO `system_user` VALUES (2, 'C00002', '吴鸿建', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-04-25 15:27:42');
-INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'0', '2019-04-26 15:07:10');
+INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'0', '2019-05-04 17:19:20');
 INSERT INTO `system_user` VALUES (33, 'c00004', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
 INSERT INTO `system_user` VALUES (34, 'c00005', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL);
-INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'1', '2019-04-27 09:05:12');
+INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'1', '2019-04-28 14:53:51');
 INSERT INTO `system_user` VALUES (64, 'C00011', '店长测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-03 16:08:58');
 INSERT INTO `system_user` VALUES (65, '123680676131', '湛丰源333', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', NULL);
 INSERT INTO `system_user` VALUES (67, '12345678', 'app测试', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-03 12:16:30');
 INSERT INTO `system_user` VALUES (69, '18664151656', '18664151656', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-24 20:21:36');
 INSERT INTO `system_user` VALUES (76, '18664151832', '18664151832', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-04 09:12:49');
-INSERT INTO `system_user` VALUES (77, '13717366311', '13717366311', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-25 15:15:04');
+INSERT INTO `system_user` VALUES (77, '13717366311', '13717366311', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-29 15:54:01');
 INSERT INTO `system_user` VALUES (79, '13643344147', 'momo', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (80, '13929466741', 'nana', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (81, '13713713713', '咯安安', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-25 15:30:48');
 INSERT INTO `system_user` VALUES (82, '13694511474', 'yaya', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (83, '', '', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (84, '18664151888', '18664151888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
-INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-26 19:51:49');
-INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-26 17:07:16');
+INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-05 11:36:43');
+INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-29 16:05:17');
 INSERT INTO `system_user` VALUES (88, '19874236542', '刘大姐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (89, '123698574555', '柳絮', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (94, '13929433194', '五条蛇', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-04-18 15:23:48');
@@ -7569,6 +7662,9 @@ INSERT INTO `system_user` VALUES (99, '18965233455', '赵川', 'e10adc3949ba59ab
 INSERT INTO `system_user` VALUES (100, '1899666555', '赵宏博', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (101, '15632698888', '老A', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
 INSERT INTO `system_user` VALUES (102, '1559666', '和解决', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (103, '13929433196', '测试顾客头像', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (104, '169853241485', '客服', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
+INSERT INTO `system_user` VALUES (105, '1366985555', '李子核', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -7801,14 +7897,8 @@ CREATE TABLE `vip_suite_item` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `vip_suite_item` VALUES (19, 4, 0, 8, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (20, 4, 0, 8, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (21, 4, 0, 8, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (22, 4, 1, 0, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (23, 4, 1, 0, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (24, 4, 1, 0, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (25, 4, 2, 0, '2019-03-07 09:06:37', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (26, 4, 2, 0, '2019-03-07 09:06:37', 1, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (27, 4, 2, 0, '2019-03-07 09:06:37', 1, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (20, 4, 1, 8, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (21, 4, 2, 8, '2019-03-07 09:06:36', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (37, 9, 0, 9, '2019-03-25 08:26:08', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (46, 12, 0, 9, '2019-04-02 16:57:11', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (47, 12, 1, 8, '2019-04-02 16:57:11', 1, NULL, NULL, 0);
