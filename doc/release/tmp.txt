@@ -29,3 +29,25 @@ INSERT INTO `system_program` VALUES ('SYS03_05_02', 'SYS03_05_02', '消费单次
 INSERT INTO `system_program` VALUES ('SYS03_05_03', 'SYS03_05_03', '消费产品记录', ' ', ' ', 2, ' ', 'SYS03_05');
 INSERT INTO `system_program` VALUES ('SYS03_05_04', 'SYS03_05_04', '消费套卡记录', ' ', ' ', 3, ' ', 'SYS03_05');
 INSERT INTO `system_program` VALUES ('SYS03_05_05', 'SYS03_05_05', '消费结算记录', ' ', ' ', 4, ' ', 'SYS03_05');
+
+
+
+INSERT INTO `program_privilege` VALUES (48, 'SYS03', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (49, 'SYS03_01', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (50, 'SYS03_02', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (51, 'SYS03_02_01', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (52, 'SYS03_02_02', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (85, 'SYS03_03', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (86, 'SYS03_03_01', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (87, 'SYS03_03_02', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (88, 'SYS03_04', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (89, 'SYS03_04_01', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (90, 'SYS03_04_02', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (91, 'SYS03_04_03', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (92, 'SYS03_04_04', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (93, 'SYS03_05', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (94, 'SYS03_05_01', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (95, 'SYS03_05_02', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (96, 'SYS03_05_03', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (97, 'SYS03_05_04', 'RUN', '系统运行');
+INSERT INTO `program_privilege` VALUES (98, 'SYS03_05_05', 'RUN', '系统运行');
