@@ -578,4 +578,12 @@
         <result column="gift_sub_type" jdbcType="TINYINT" property="giftSubType" />
         <result column="gift_expired_date" jdbcType="TIMESTAMP" property="giftExpiredDate" />
     </resultMap>
+
+    <resultMap id="MemberProductGetRecord" type="com.hy.salon.basic.entity.MemberProductGetRecord" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_product_keep_item" property="memberProductKeepItem" jdbcType="BIGINT" />
+        <result column="qty" property="qty" jdbcType="DOUBLE" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="member_signature" property="memberSignature" jdbcType="BIGINT" />
+    </resultMap>
 </mapper>

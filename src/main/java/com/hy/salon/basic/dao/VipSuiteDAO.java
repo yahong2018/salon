@@ -248,9 +248,9 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serviceName",service.getServiceName());
             jsonObject.put("price",service.getPrice());
-            String where = " git_id = #{git_id} and member_id=#{member_id}";
+            String where = " card_id = #{card_id} and member_id=#{member_id}";
             Map parameters = new HashMap();
-            parameters.put("git_id", service.getRecordId());
+            parameters.put("card_id", service.getRecordId());
             parameters.put("member_id", memberId);
             List<CardBalance> cardBalanceList = cardBalanceDao.getByWhere(where,parameters);
 

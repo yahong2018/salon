@@ -145,6 +145,8 @@ public class ReservationService {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("stuffName",member==null?"散客":member.getMemberName());
+
+            jsonObject.put("stuffId",reservation==null?"":reservation.getStuffId());
             jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
             jsonObject.put("timeStart",DateString.getTime(reservation.getTimeStart()));
             jsonObject.put("timeInfo", DateString.getTimeInfo(reservation.getTimeStart()));

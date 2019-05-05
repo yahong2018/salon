@@ -27,24 +27,24 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
     protected final static String SQL_GET_RECHARGE = "com.hy.salon.basic.dao.GET_RECHARGE";
     public ExtJsResult getSystemRechargeList(String memberName, long storeId, HttpServletRequest request,String toDays) {
         ExtJsResult extJsResult = new ExtJsResult();
-            Map parameters = new HashMap();
-            parameters.put("storeId",storeId);
-            if(StringUtils.isNotEmpty(memberName)){
-                parameters.put("memberName",memberName);
-            }
-            if(StringUtils.isNotEmpty(toDays)){
-                String days[] =  toDays.split("~");
-               String timeStart = days[0];
-                String  timeEnd = days[1];
-                parameters.put("timeStart", timeStart);
-                parameters.put("timeEnd", timeEnd);
-            }
-            PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
-            List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_RECHARGE, parameters);
-            PageInfo<Map> pageInfo = new PageInfo<>(listMap);
-            extJsResult.setSuccess(true);
-            extJsResult.setMsg("获取成功");
-            extJsResult.setTotal(Integer.parseInt(pageInfo.getTotal()+""));
+        Map parameters = new HashMap();
+        parameters.put("storeId",storeId);
+        if(StringUtils.isNotEmpty(memberName)){
+            parameters.put("memberName",memberName);
+        }
+        if(StringUtils.isNotEmpty(toDays)){
+            String days[] =  toDays.split("~");
+            String timeStart = days[0];
+            String  timeEnd = days[1];
+            parameters.put("timeStart", timeStart);
+            parameters.put("timeEnd", timeEnd);
+        }
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_RECHARGE, parameters);
+        PageInfo<Map> pageInfo = new PageInfo<>(listMap);
+        extJsResult.setSuccess(true);
+        extJsResult.setMsg("获取成功");
+        extJsResult.setTotal(Integer.parseInt(pageInfo.getTotal()+""));
 /*        {
             field : 'recordId',
                     title : 'recordId',
@@ -84,6 +84,7 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
         for(Map map :pageInfo.getList()){
             JSONObject jsonObject  = new JSONObject();
             jsonObject.put("recordId",map.get("recordId"));
+            jsonObject.put("cardId",map.get("cardId"));
             jsonObject.put("suiteName",map.get("suiteName"));
             jsonObject.put("amount",map.get("amount"));
             jsonObject.put("memberName",map.get("memberName"));
@@ -95,11 +96,12 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
             }else{
                 jsonObject.put("cardType","次卡");
             }
+            jsonArray.add(jsonObject);
 
         }
-            extJsResult.setData(pageInfo.getList());
-            return extJsResult;
-        }
+        extJsResult.setData(jsonArray);
+        return extJsResult;
+    }
 
     public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType,Long storeId) {
         Map parameters = new HashMap();

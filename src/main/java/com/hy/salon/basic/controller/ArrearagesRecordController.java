@@ -50,7 +50,7 @@ public class ArrearagesRecordController  {
     @ResponseBody
     @RequestMapping("/getSystemArrearsList")
     @ApiOperation(value="欠款记录列表", notes="欠款记录列表")
-    public ExtJsResult getSystemArrearsList(HttpServletRequest request,String memberName,Long recordId,String toDays){
+    public ExtJsResult getSystemArrearsList(HttpServletRequest request,Long memberId,Long recordId,String toDays){
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
@@ -58,7 +58,7 @@ public class ArrearagesRecordController  {
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberName,recordId, request,toDays);
+        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberId,recordId, request,toDays);
 
 
         return  VipSuiteList;

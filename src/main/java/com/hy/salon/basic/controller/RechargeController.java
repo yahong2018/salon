@@ -118,7 +118,7 @@ public class RechargeController {
     @ResponseBody
     @RequestMapping("/getSystemRechargeList")
     @ApiOperation(value="会员卡充值记录列表", notes="会员卡充值记录列表")
-    public ExtJsResult getSystemRechargeList(HttpServletRequest request,String memberName,Long recordId,String toDays){
+    public ExtJsResult getSystemRechargeList(HttpServletRequest request,String memberId,Long recordId,String toDays){
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
@@ -126,7 +126,7 @@ public class RechargeController {
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberName,recordId, request,toDays);
+        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberId,recordId, request,toDays);
         return  VipSuiteList;
     }
 
@@ -368,9 +368,9 @@ public class RechargeController {
      */
     @ResponseBody
     @RequestMapping("/getVipSuiteItem")
-    @ApiOperation(value="充值详情", notes="充值详情")
-    public ExtJsResult getVipSuiteItem(HttpServletRequest request,long record_id,long memberId){
-        ExtJsResult ejr = new ExtJsResult();
+    @ApiOperation(value="页面：充值2.2", notes="页面：充值2.2")
+    public Result getVipSuiteItem(HttpServletRequest request,long record_id,long memberId){
+        Result ejr = new Result();
         VipSuite vipSuite = vipSuiteDao.getById(record_id);
         JSONObject jsonObject = vipSuiteDao.getVipSuiteJSONObject(vipSuite,memberId);
         ejr.setData(jsonObject);

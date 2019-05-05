@@ -21,12 +21,12 @@ import java.util.Map;
 @Component("arrearagesRecordDao")
 public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
     protected final static String SQL_GET_ARREARSLIST = "com.hy.salon.basic.dao.GET_ARREARSLIST";
-    public ExtJsResult getSystemArrearsList(String memberName, Long storeId, HttpServletRequest request,String toDays) {
+    public ExtJsResult getSystemArrearsList(Long memberId, Long storeId, HttpServletRequest request,String toDays) {
         ExtJsResult extJsResult = new ExtJsResult();
         Map parameters = new HashMap();
         parameters.put("storeId",storeId);
-        if(StringUtils.isNotEmpty(memberName)){
-            parameters.put("memberName",memberName);
+        if(memberId!=null){
+            parameters.put("memberId",memberId);
         }
         if(StringUtils.isNotEmpty(toDays)){
             String days[] =  toDays.split("~");

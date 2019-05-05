@@ -88,7 +88,7 @@ public class LoggerAspect {
    // @Before("declareJoinPointExpression() &&@annotation(authorized)") //该标签声明次方法是一个前置通知：在目标方法开始之前执行
     @Before("declareJoinPointExpression()")
     public void beforeMethod(JoinPoint joinPoint) throws Exception {
-        if (null == RequestContextHolder.getRequestAttributes()) {
+/*        if (null == RequestContextHolder.getRequestAttributes()) {
             return;
         }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -122,10 +122,10 @@ public class LoggerAspect {
                 String[] userCode =  (String[])reqParams.get("userCode");
                 String code = "";
                 if(userCode==null){
-               /*if(args.length>0){
+               *//*if(args.length>0){
                    SystemUser su =  (SystemUser)args[0];
                    code =   su.getUserCode();
-               }*/
+               }*//*
                 }else{
                     code =   userCode[0];
                 }
@@ -151,7 +151,7 @@ public class LoggerAspect {
 
         }else {
 
-        }
+        }*/
 
     }
     /**
@@ -193,27 +193,77 @@ public class LoggerAspect {
      */
     @Around(value="declareJoinPointExpression()")
     public Object aroundMethod(ProceedingJoinPoint point) throws Throwable {
-
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        logger.info("request 字符集为 {}", request.getCharacterEncoding());
+        logger.info("request contentType is {}", request.getContentType());
+        Object[] args = point.getArgs();
+        Signature signature = point.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        String[] names = methodSignature.getParameterNames();
+        System.out.println(Arrays.toString(names));
+        Map reqParams = request.getParameterMap();
         Object result = null;
         String methodName = point.getSignature().getName();
-        try {
-            //前置通知
-            System.out.println("The method "+ methodName+" start. param<"+ Arrays.asList(point.getArgs())+">");
-            //执行目标方法
+        getMethodDescription(point).forEach(logger::info);
+        logger.info("响应方法名：{}",point.getSignature().getName());
+        logger.info("请求URL参数集: {}",  JSON.toJSONString(reqParams, SerializerFeature.IgnoreErrorGetter));
+        logger.info("接受参数集：{}", helper.getJsonFromString(names, args));
+        if(methodName.equals("createStore")||methodName.equals("doLogin")){
+            OperateLog ol = new OperateLog();
+            SystemUser user = authenticateService.getCurrentLogin();
+            if(user!=null){
+            }else{
+                String[] userCode =  (String[])reqParams.get("userCode");
+                String code = "";
+                if(userCode==null){
+               if(args.length>0){
+                   SystemUser su =  (SystemUser)args[0];
+                   code =   su.getUserCode();
+               }
+                }else{
+                    code =   userCode[0];
+                }
+                user = systemUserDAO.getUserByCode(code);
+            }
+            if(user!=null) {
+                Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+                if(stuff2!=null){
+                    List<SystemRole> list = systemRoleService.getRoleListById(user.getRecordId());
+                    logger.info("登陆用户名 {}", stuff2.getStuffName());
+                    ol.setOptUserId(stuff2.getRecordId());
+                    ol.setOptRoleId(list.get(0).getRecordId());
+                }
+            }
 
-            //返回通知
-            System.out.println("The method "+ methodName+" end. result<"+ result+">");
-        } catch (Throwable e) {
-            //异常通知
-            System.out.println("this method "+methodName+" end.ex message<"+e+">");
-            throw new RuntimeException(e);
+            try {
+                //前置通知
+                System.out.println("The method "+ methodName+" start. param<"+ Arrays.asList(point.getArgs())+">");
+                //执行目标方法
+                //返回通知
+                System.out.println("The method "+ methodName+" end. result<"+ result+">");
+            } catch (Throwable e) {
+                //异常通知
+                System.out.println("this method "+methodName+" end.ex message<"+e+">");
+                throw new RuntimeException(e);
+            }
+            //后置通知
+            System.out.println("The method "+ methodName+" end.");
+            long startTime = System.currentTimeMillis();
+            result = point.proceed();
+            long endTime = System.currentTimeMillis();
+            logger.info("方法 " + point.getTarget().getClass().getName() + "." + point.getSignature().getName() + " 执行了 {} ms", endTime - startTime);
+            ol.setOptUrl(request.getRequestURI());
+            ol.setOptDate(new Date());
+            ol.setOptAction(point.getTarget().getClass().getName() + "." + point.getSignature().getName());
+            ol.setOptInfo(helper.getJsonFromString(names, args));
+            ol.setOptStatu(200);
+            ol.setOptResult(result.toString());
+            operateLogDao.insert(ol);
+
+        }else {
+            result = point.proceed();
         }
-        //后置通知
-        System.out.println("The method "+ methodName+" end.");
-        long startTime = System.currentTimeMillis();
-         result = point.proceed();
-        long endTime = System.currentTimeMillis();
-        logger.info("方法 " + point.getTarget().getClass().getName() + "." + point.getSignature().getName() + " 执行了 {} ms", endTime - startTime);
+
         return result;
     }
 

@@ -3,6 +3,8 @@ package com.hy.salon.basic.controller;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/memberProductKeep")
@@ -36,6 +41,80 @@ public class MemberProductKeepController {
     private MemberProductGetRecordDao memberProductGetRecordDao;
     @Resource(name = "memberDao")
     private MemberDao memberDao;
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
+    /**
+     * 会员退款寄存库产品列表
+     */
+    @ResponseBody
+    @RequestMapping("refundMemberProductKeepList")
+    @ApiOperation(value="会员退款寄存库产品列表", notes="会员退款寄存库产品列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "memberProductKeepItem", value = "寄存明细表id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "toDays", value = "时间", required = true, dataType = "String")
+    })
+    public Result refundMemberProductKeepList(Long memberProductKeepItem,Long memberId,String toDays) {
+        Result result = new Result();
+    /*    Map parameterP = new HashMap();
+        parameterP.put("memberProductKeepItem", memberProductKeepItem);
+        String rwhereP="member_product_keep_item=#{memberProductKeepItem} ";*/
+        // Result result =    memberProductKeepDao.receiveMemberProductKeepList(storeId,memberId,toDays);
+         result = memberProductRejectDao.refundMemberProductKeepList(memberProductKeepItem);
+
+
+        return  result;
+    }
+    /**
+     * 会员领取寄存库产品列表
+     */
+    @ResponseBody
+    @RequestMapping("receiveMemberProductKeepList")
+    @ApiOperation(value="会员领取寄存库产品列表", notes="会员领取寄存库产品列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "memberProductKeepItem", value = "寄存明细表id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "toDays", value = "时间", required = true, dataType = "String")
+    })
+    public Result receiveMemberProductKeepList(Long memberProductKeepItem,Long memberId,String toDays) {
+        Result result = new Result();
+        Map parameterP = new HashMap();
+        parameterP.put("memberProductKeepItem", memberProductKeepItem);
+        String rwhereP="member_product_keep_item=#{memberProductKeepItem} ";
+       // Result result =    memberProductKeepDao.receiveMemberProductKeepList(storeId,memberId,toDays);
+        List<MemberProductGetRecord> list = memberProductGetRecordDao.getByWhere(rwhereP,parameterP);
+        result.setTotal(list.size());
+        result.setData(list);
+        result.setSuccess(true);
+
+        return  result;
+    }
+
+
+    /**
+     * 获取一个门店的会员寄存库产品列表
+     */
+    @ResponseBody
+    @RequestMapping("getStoreMemberProductKeepList")
+    @ApiOperation(value="获取会员寄存库产品列表", notes="获取会员寄存库产品列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "storeId", value = "店铺id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "memberId", value = "会员id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "toDays", value = "时间", required = true, dataType = "String")
+    })
+    public Result getStoreMemberProductKeepList(Long storeId,Long memberId,String toDays) {
+        if(storeId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            storeId = stuff2.getStoreId();
+        }
+        Result result =    memberProductKeepDao.getStoreMemberProductKeepList(storeId,memberId,toDays);
+
+        return  result;
+    }
+
+
     /**
      * 获取会员寄存库产品列表
      */
@@ -126,7 +205,7 @@ public class MemberProductKeepController {
 
     })
     public Result refundMemberProductKeep(MemberProductReject memberProductReject, MemberProductRejectItem memberProductRejectItem){
-
+        Result result = new Result();
         memberProductRejectDao.insert(memberProductReject);
         memberProductRejectItem.setMemberProductRejectId(memberProductReject.getRecordId());
 
@@ -143,9 +222,13 @@ public class MemberProductKeepController {
         if(memberProductRejectItem.getTypeAmountReturn()==1){
             member.setBalanceCash(member.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
         }
+        memberDao.update(member);
 
+        result.setSuccess(true);
+        result.setMsgcode("0");
+        result.setMsg("领取成功");
 
-        return  null;
+        return  result;
     }
 
 }

@@ -66,6 +66,111 @@ public class ReservationController {
     private PicturesDAO picturesDao;
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
+    @Resource(name = "cardBalanceDao")
+    private CardBalanceDao cardBalanceDao;
+
+    @Resource(name = "storeRoomDao")
+    private StoreRoomDao storeRoomDao;
+
+    @Resource(name = "memberDao")
+    private MemberDao memberDao;
+    /**
+     * 预约详情---店长
+     */
+    @ResponseBody
+    @RequestMapping(value = "getOneStuffListItem",method = RequestMethod.GET)
+    @ApiOperation(value="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）", notes="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long")
+    })
+    public Result getOneStuffListItem(Long recordId,String time,String timeStart,String timeEnd){
+        Result result=new Result();
+        if(StringUtils.isNotEmpty(time)){
+            timeStart = time+" 00:00:00";
+
+            Date date = DateString.StringToDateAddNum2(time,1);
+            timeEnd = DateString.DateToString(date)+" 00:00:00";
+        }
+        try {
+            Map parameter = new HashMap();
+            parameter.put("stuffId",recordId);
+            parameter.put("timeStart",timeStart);
+            parameter.put("timeEnd", timeEnd);
+            Map rMap = new HashMap();
+            String rwhere="stuff_id=#{stuffId} and time_start between #{timeStart} and #{timeEnd}";
+            rMap.put("where", rwhere);
+            List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);
+            JSONArray jsonArrayL = new JSONArray();
+            for(Reservation reservation :reservationlist){
+                List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
+                JSONObject jsonObject  = new JSONObject();
+                String serviceIds = "";
+                JSONArray jsonArray = new JSONArray();
+                for(Map map :mapService){
+                    JSONObject jsonObject1 = new JSONObject();
+                    long serviceId =  (long) map.get("record_id");
+                    String serviceName =  (String) map.get("service_name");
+                    //serviceIds=serviceIds+serviceId+",";
+                    Map parameterP = new HashMap();
+                    parameterP.put("memberId", reservation.getMemberId());
+                    parameterP.put("cardId",serviceId);
+                    String rwhereP="card_id=#{cardId} and member_id=#{memberId}";
+                    CardBalance cardBalance = cardBalanceDao.getOne(rwhereP,parameterP);
+                    jsonObject1.put("balance",cardBalance.getBalance());
+                    jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
+                    jsonObject1.put("serviceName",serviceName);
+                    jsonObject1.put("serviceId",serviceId);
+                    jsonArray.add(jsonObject1);
+                }
+
+
+
+                jsonObject.put("service",jsonArray);//预约项目
+
+                Map parameterP = new HashMap();
+                parameterP.put("masterDataId", reservation.getMemberId());
+                parameterP.put("recordType",1);
+                parameterP.put("picType",0);
+                String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+                Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+                jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
+
+
+                Member member = memberDao.getById(reservation.getMemberId());
+                Stuff stuff = stuffDao.getById(reservation.getStuffId());
+                jsonObject.put("memberName",member.getMemberName());
+
+                jsonObject.put("stuffName",stuff.getStuffName());
+                jsonObject.put("memberId",reservation.getMemberId());
+                jsonObject.put("stuffId",reservation.getStuffId());
+                StoreRoom storeRoom = storeRoomDao.getById(reservation.getRoomId());
+                jsonObject.put("roomId",reservation.getRoomId());
+                jsonObject.put("roomName",storeRoom.getRoomName());
+                jsonObject.put("timeStart",reservation.getTimeStart());
+                jsonObject.put("timeEnd",reservation.getTimeEnd());
+                jsonObject.put("recordStatus",reservation.getRecordStatus());
+                jsonObject.put("remark",reservation.getRemark());
+                jsonObject.put("date_",reservation.getDate_());
+                jsonObject.put("duration",reservation.getDuration());
+                jsonObject.put("memberSourc",reservation.getMemberSourc());
+                jsonObject.put("serviceId",serviceIds);
+                jsonObject.put("serviceNum",mapService.size());
+                jsonArrayL.add(jsonObject);
+            }
+
+            result.setMsgcode("0");
+            result.setSuccess(true);
+            result.setData(jsonArrayL);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode("200");
+        }
+        return result;
+    }
+
+
+
 /*    @ResponseBody
     @RequestMapping(value = "getReservationById",method = RequestMethod.POST)
     public Map getReservationById(){
@@ -731,7 +836,7 @@ public class ReservationController {
 
                 }*/
                 //在上班范围内可以预约
-                if(timeStart.after(SStartTime)&&endTime.before(SEndTime)){
+                if(timeStart.getTime()>=SStartTime.getTime()&&endTime.getTime()<=SEndTime.getTime()){
                     //再查询是否在存在的预约范围
                     Map parameter = new HashMap();
                     parameter.put("stuffId", stuffId);
@@ -792,6 +897,7 @@ public class ReservationController {
                             result.setSuccess(true);
                             result.setMsgcode(StatusUtil.OK);
                             result.setSuccess(true);
+                            result.setMsg("预约成功！");
                         }catch (Exception e){
                             e.printStackTrace();
                             result.setSuccess(false);

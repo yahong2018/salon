@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>充值列表</title>
+  <title>寄存库列表</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -73,6 +73,9 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
     </script>
+    <script type="text/html" id="barDemo2">
+        <a class="layui-btn layui-btn-xs" lay-event="edit2">查看</a>
+    </script>
   <div id="laypage"></div>
 </div>
 </body>
@@ -123,7 +126,7 @@
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/recharge/getSystemRechargeList',
+        url : '/hy/basic/memberProductKeep/getStoreMemberProductKeepList',
         cols : [ [
               {checkbox: true,
                 filter:'test'
@@ -131,41 +134,48 @@
             {
                 field : 'recordId',
                 title : 'recordId',
-                sort : true,
                 align : 'center'
-            },{
-                field : 'cardId',
-                title : '卡id',
-                sort : true,
-                align : 'center'
-            }
-            ,
-              {
-                field : 'suiteName',
-                title : '卡名称',
-                sort : true,
-                align : 'center'
-              },
-              {
-                field : 'cardType',
-                title : '卡类型',
-                align : 'center'
-              }
-              , {
-                field : 'amount',
-                title : '充值金额',
-                align : 'center',
-              },
+            },
             {
                 field : 'memberName',
                 title : '会员名称',
-                align : 'center',
-            },{
-                title : '赠送详情',
+                align : 'center'
+            },
+            {
+                field : 'productKeepItemId',
+                title : '赠送明细id',
+                align : 'center'
+            },
+            {
+                field : 'productName',
+                title : '产品名称',
+                align : 'center'
+            },
+            {
+                field : 'price',
+                title : '产品价格',
+                align : 'center'
+            },
+              {
+                field : 'qtyPurchased',
+                title : '购买数量',
+                align : 'center'
+              },
+              {
+                field : 'qtyReceived',
+                title : '已领取数量',
+                align : 'center'
+              },{
+                title : '领取详情',
                 fixed: 'right',
                 align:'center',
                 toolbar: '#barDemo'}
 
+            ,{
+                title : '退款详情',
+                fixed: 'right',
+                align:'center',
+                toolbar: '#barDemo2'}
         ] ],
         page : false,
         where : {
@@ -218,6 +228,8 @@
           });
         } else if (layEvent === 'edit') {
             timeSeetingItem(data);
+        }else if(layEvent ==='edit2'){
+            timeSeetingItem2(data);
         }
       });
       //常规用法
@@ -234,7 +246,7 @@
     $(".check").on("click", function() {
       /*  var memberName = $(".memberName").val();
         var userKey=$('.userKey option:selected').val();*/
-       var memberName =  $(".listMember option:selected").text();
+       var memberName =  $(".listMember option:selected").val();
       var toDays = $('#toDays').val();
       if(memberName=='选择会员'){
           memberName = "";
@@ -242,6 +254,30 @@
       productsearch(1,memberName,toDays);
     })
 
+      function timeSeetingItem2 (data) {
+
+          layer.open({
+              type:2,
+              area:[982+'px',615+'px'],
+              fix:false,
+              offset: '80px',
+              maxmin:true,
+              shadeClose:true,
+              scrollbar: false,
+              shade:0.4,
+              title:'退款详情',
+              content:['refundproduct_keep.html'],
+              success:function(layero,index){
+                  var iframe = window['layui-layer-iframe' + index];
+                  // 向子页面的全局函数child传参
+                  iframe.child(data);
+                  console.log("成功");
+              },
+              fail:function(data){
+                  console.log(data);
+              }
+          })
+      }
       function timeSeetingItem (data) {
 
           layer.open({
@@ -253,8 +289,8 @@
               shadeClose:true,
               scrollbar: false,
               shade:0.4,
-              title:'赠送详情',
-              content:['member_gif.html'],
+              title:'领取详情',
+              content:['getproduct_keep.html'],
               success:function(layero,index){
                   var iframe = window['layui-layer-iframe' + index];
                   // 向子页面的全局函数child传参

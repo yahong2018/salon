@@ -153,9 +153,9 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serviceName",product.getProductName());
             jsonObject.put("price",product.getPrice());
-            String where = " git_id = #{git_id} and member_id=#{member_id}";
+            String where = " card_id = #{card_id} and member_id=#{member_id}";
             Map parameters = new HashMap();
-            parameters.put("git_id", product.getRecordId());
+            parameters.put("card_id", product.getRecordId());
             parameters.put("member_id", memberId);
             List<CardBalance> cardBalanceList = cardBalanceDao.getByWhere(where,parameters);
 

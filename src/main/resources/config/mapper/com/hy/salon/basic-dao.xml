@@ -479,9 +479,8 @@ group by ss.record_id;
         where 1=1 and
         m.initial_store_id =#{storeId}
 
-        <if test="memberName != null ">
-            and
-            m.member_name=#{memberName}
+        <if test="memberId != null">
+            and  c.member_id = #{memberId}
         </if>
 
         <if test="timeStart != null ">
@@ -631,6 +630,39 @@ group by ss.record_id;
 
    </select>
 
+    <select id="GET_STORWMEMBERPRODUCTKEEP"  parameterType="java.util.Map" resultType="java.util.Map">
+        select mm.member_name as memberName,m.record_id  as recordId,p.product_name as productName,p.price price ,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
+        member_product_keep_item mi on m.record_id = mi.member_product_keep_id
+        left join product p on mi.product_id = p.record_id left join  member mm on mm.record_id =m.member_id
+        where mm.initial_store_id = #{storeId}
+        <if test="memberId != null">
+            and  m.member_id = #{memberId}
+        </if>
 
+        <if test="timeStart != null">
+            and p.create_date between #{timeStart} and #{timeEnd}
+        </if>
+    </select>
+
+
+
+
+    <select id="GET_PAYMENTLIST"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT m.member_name, pi.card_balance_id,p.record_id, p.payment_type ,p.remark,pi.amount,pi.price ,pi.qty,pi.payment_type ,pi.merchandise_type,pi.merchandise_id FROM salon.payment p left  join  payment_item pi on p.record_id = pi.payment_id  left join member m
+        on p.member_id = m.record_id  where m.initial_store_id = #{storeId}
+        <if test="memberId != null">
+            and p.member_id=#{memberId}
+        </if>
+        <if test="timeStart != null">
+            and p.create_date between #{timeStart} and #{timeEnd}
+        </if>
+    </select>
+
+
+    <select id="GET_REFUNDPRODUCT"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT m.record_id,m.remark ,mp.reject_type , mp.qty_reject, mp.amount_reject ,mp.type_amount_return FROM member_product_reject  m left  join  member_product_reject_item mp
+        on m.record_id = mp.member_product_reject_id
+         where mp.product_keep_item_id = #{product_keep_item_id}
+    </select>
 
 </mapper>

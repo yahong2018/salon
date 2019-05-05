@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>充值列表</title>
+  <title>划卡记录</title>
   <link rel="stylesheet" href="../../../layui/css/layui.css">
   <script src="../../../layui/layui.js"></script>
 </head>
@@ -123,7 +123,7 @@
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
-        url : '/hy/basic/recharge/getSystemRechargeList',
+        url : '/hy/basic/consumption/getPaymentList',
         cols : [ [
               {checkbox: true,
                 filter:'test'
@@ -131,37 +131,48 @@
             {
                 field : 'recordId',
                 title : 'recordId',
-                sort : true,
                 align : 'center'
-            },{
-                field : 'cardId',
-                title : '卡id',
-                sort : true,
+            },
+            {
+                field : 'memberName',
+                title : '会员名称',
                 align : 'center'
-            }
-            ,
-              {
-                field : 'suiteName',
-                title : '卡名称',
-                sort : true,
+            },
+            {
+                field : 'merchandiseType',
+                title : '商品类型',
                 align : 'center'
-              },
+            },
               {
                 field : 'cardType',
                 title : '卡类型',
                 align : 'center'
+              },
+              {
+                field : 'cardName',
+                title : '卡名称',
+                align : 'center'
               }
               , {
-                field : 'amount',
-                title : '充值金额',
-                align : 'center',
+                field : 'paymentType',
+                title : '划卡类型',
+                align : 'center'
               },
             {
-                field : 'memberName',
-                title : '会员名称',
-                align : 'center',
+                field : 'qty',
+                title : '次数',
+                align : 'center'
+            },
+            {
+                field : 'price',
+                title : '单价',
+                align : 'center'
             },{
-                title : '赠送详情',
+                title : '总价',
+                field: 'amount',
+                align:'center'}
+            ,{
+                title : '领取详情',
                 fixed: 'right',
                 align:'center',
                 toolbar: '#barDemo'}
@@ -234,7 +245,7 @@
     $(".check").on("click", function() {
       /*  var memberName = $(".memberName").val();
         var userKey=$('.userKey option:selected').val();*/
-       var memberName =  $(".listMember option:selected").text();
+       var memberName =  $(".listMember option:selected").val();
       var toDays = $('#toDays').val();
       if(memberName=='选择会员'){
           memberName = "";

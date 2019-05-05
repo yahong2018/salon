@@ -4,20 +4,17 @@ package com.hy.salon.basic.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
-import com.zhxh.core.web.ExtJsResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,6 +79,25 @@ public class ConsumptionController {
     private MemberProductKeepItemDao memberProductKeepItemDao;
 
 
+    /**
+     * 划卡记录PC
+     */
+    @ResponseBody
+    @RequestMapping("/getPaymentList")
+    @ApiOperation(value="划卡记录PC", notes="划卡记录PC")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "page", value = "页数", required = true, dataType = "int")
+    })
+    public Result getPaymentList(int page,Long memberId,String days,Long storeId){
+        if(storeId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            storeId = stuff2.getStoreId();
+        }
+
+        Result result = paymentDao.getPaymentList(page,memberId,days,storeId);
+        return  result;
+    }
 
     /**
      * 消费结算
