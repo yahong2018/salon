@@ -2,6 +2,7 @@ package com.hy.salon.basic.dao;
 
 import com.hy.salon.basic.entity.NurseLog;
 import com.hy.salon.basic.entity.NurseLogModel;
+import com.hy.salon.basic.entity.Stuff;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +43,17 @@ public class NurseLogDao extends BaseDAOWithEntity<NurseLog> {
     }
 
     protected final static String SQL_GET_LOG_FOR_STORE_ID = "com.hy.salon.basic.dao.GET_LOG_FOR_STORE_ID";
+
+
+    public List<NurseLog> getNurseLogForStuffId(Long stuffId,String logType){
+        String where="stuff_id = #{stuffId} and log_type =#{logType}";
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        parameters.put("logType", logType);
+
+        return this.getByWhere(where,parameters);
+    }
+
 
 
 

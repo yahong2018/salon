@@ -30,4 +30,7 @@ public class Salon extends TraceableEntity<Long> {
 
     private  Long existing;
     private Long awardsNumber;
+
+    private Integer stuffSize;
+    private Integer summarySize;
 }

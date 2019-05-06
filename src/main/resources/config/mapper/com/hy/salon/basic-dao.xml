@@ -565,8 +565,6 @@ group by ss.record_id;
     </select>
 
 
-
-
     <select id="GET_MEMBERPRODUCTKEEP"  parameterType="java.util.Map" resultType="java.util.Map">
        select m.record_id  as recordId,p.product_name as productName,p.price price ,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
         member_product_keep_item mi on m.record_id = mi.member_product_keep_id
@@ -577,20 +575,24 @@ group by ss.record_id;
     <select id="GET_SUM_AMOUNT"  parameterType="java.util.Map" resultType="java.util.Map">
         SELECT sum(scp.amount) amount FROM salon.card_purchase as scp
         <where>
-       <if test="storeId != null">
-            and scp.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
-       </if>
-        <if test="startTime != null">
-           and scp.create_date &gt;= #{startTime} and scp.create_date &lt;= #{endTime}
-        </if>
-        <if test="rechargeType != null">
-            and scp.recharge_type=#{rechargeType}
-        </if>
-        <if test="cardType != null">
-            and scp.card_type=#{cardType}
-        </if>
+            <if test="storeId != null">
+                and scp.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+            </if>
+            <if test="startTime != null">
+                and scp.create_date &gt;= #{startTime} and scp.create_date &lt;= #{endTime}
+            </if>
+            <if test="rechargeType != null">
+                and scp.recharge_type=#{rechargeType}
+            </if>
+            <if test="cardType != null">
+                and scp.card_type=#{cardType}
+            </if>
+            <if test="methodPayed != null">
+                and scp.method_payed=#{methodPayed}
+            </if>
         </where>
     </select>
+
 
 
     <select id="GET_QTY"  parameterType="java.util.Map" resultType="java.util.Map">
@@ -612,16 +614,22 @@ group by ss.record_id;
 
 
     <select id="GET_ARREARAGES_RECORD"  parameterType="java.util.Map" resultType="java.util.Map">
-    SELECT sum(srr.reimbursement_amount) as reimbursementAmount FROM salon.repayment_record as srr
-    left join salon.arrearages_record as sar on sar.ref_trans_id =srr.record_id
-    and sar.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
-   </select>
+        SELECT sum(srr.reimbursement_amount) as reimbursementAmount FROM salon.repayment_record as srr
+        left join salon.arrearages_record as sar on sar.ref_trans_id =srr.record_id
+        and sar.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+        <if test="startTime != null">
+            and srr.create_date &gt;= #{startTime} and srr.create_date &lt;= #{endTime}
+        </if>
+    </select>
 
     <select id="GET_REJECT_AMOUNT"  parameterType="java.util.Map" resultType="java.util.Map">
-    select sum(smpri.amount_reject) as rejectAmount from salon.member_product_reject_item as smpri
-    left join salon.member_product_reject as smpr on smpri.member_product_reject_id=smpr.record_id
-    where smpr.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
-   </select>
+        select sum(smpri.amount_reject) as rejectAmount from salon.member_product_reject_item as smpri
+        left join salon.member_product_reject as smpr on smpri.member_product_reject_id=smpr.record_id
+        where smpr.member_id in(select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+        <if test="startTime != null">
+            and smpri.create_date &gt;= #{startTime} and smpri.create_date &lt;= #{endTime}
+        </if>
+    </select>
 
     <select id="GET_MEMBER_TAG"  parameterType="java.util.Map" resultType="java.util.Map">
     select t.tag_name as tagName from salon.tag as t left join salon.member_tag as mt  on t.record_id=mt.tag_id
@@ -664,5 +672,37 @@ group by ss.record_id;
         on m.record_id = mp.member_product_reject_id
          where mp.product_keep_item_id = #{product_keep_item_id}
     </select>
+
+
+    <select id="GET_AMOUNT_FRO_STUFF"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT sum(scp.amount) as amount FROM salon.card_purchase as scp left join salon.business_stuff sbs on scp.record_id = sbs.ref_trans_id
+        where sbs.trans_type=0 and sbs.stuff_id  =#{stuffId}
+        <if test="rechargeType != null">
+            and scp.recharge_type in(0,1)
+        </if>
+        <if test="startTime != null">
+            and scp.create_date &gt;= #{startTime} and scp.create_date &lt;= #{endTime}
+        </if>
+    </select>
+
+    <select id="GET_PAYMENT_AMOUNT_FRO_STUFF"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT sum(pi.amount) as amount FROM salon.payment_item as pi left join salon.business_stuff sbs on pi.record_id = sbs.ref_trans_id
+        where sbs.trans_type=1 and sbs.stuff_id  =#{stuffId}
+        <if test="startTime != null">
+            and pi.create_date &gt;= #{startTime} and pi.create_date &lt;= #{endTime}
+        </if>
+    </select>
+
+    <select id="GET_REFUND_AMOUNT_FRO_STUFF"  parameterType="java.util.Map" resultType="java.util.Map">
+    select sum(smpri.amount_reject) as amount from salon.member_product_reject_item as smpri
+    left join salon.member_product_reject as smpr  on smpri.member_product_reject_id = smpr.record_id
+    where smpr.member_id in (select sm.record_id from salon.member as sm where sm.initial_store_id = #{storeId})
+    </select>
+
+    <select id="GET_SUMMARY_SIZE_FRO_STORE"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT count(sws.record_id) as summarySize FROM salon.work_summary as sws
+    where sws.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id=#{storeId});
+    </select>
+
 
 </mapper>

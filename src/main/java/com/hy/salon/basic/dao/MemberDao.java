@@ -211,9 +211,24 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
     }
 
 
-    public List<Member> getMemberForTime(String startTime,String endTime){
-        String where = "create_date > #{startTime} and create_date < #{endTime}";
+    public List<Member> getMemberForTime(String startTime,String endTime,Long storeId){
+
+        String where ="";
+
+        if(null!=storeId){
+            where = where+"initial_store_id = #{storeId} ";
+        }
+        if(null!=startTime){
+            if(!"".equals(where)){
+                where =where+" and ";
+            }
+            where = where+" create_date > #{startTime} and create_date < #{endTime}";
+        }
+
+
+
         Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
         parameters.put("startTime", startTime);
         parameters.put("endTime", endTime);
         return this.getByWhere(where, parameters);

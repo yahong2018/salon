@@ -87,7 +87,7 @@ public class WarehouseController {
     @ResponseBody
     @RequestMapping("warehousing")
     @ApiOperation(value = "新增入库", notes = "新增入库")
-    public Result warehousing(Long salonId, Long productId, Integer movementQty, Double purchaseCost, String remark,Byte recordCreateType,Date dateOfManufacture,String referenceRecordNo){
+    public Result warehousing(Long salonId, Long productId, Integer movementQty, Double purchaseCost, String remark,Date dateOfManufacture,String referenceRecordNo){
         Result result=new Result();
         try {
             //查看该产品之前是否入过库

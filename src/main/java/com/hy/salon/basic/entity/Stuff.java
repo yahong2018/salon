@@ -37,4 +37,6 @@ import java.sql.Timestamp;
 
     private String storeName;
 
+    private Integer workSummarySize;
+
 }

@@ -113,9 +113,9 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
         parameters.put("productSeriesId", productSeriesId);
 
         if(jobLevel.equals("0")){
-            return this.getByWhere(where, parameters);
-        }else{
             return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_FOR_SALON, parameters);
+        }else{
+            return this.getByWhere(where, parameters);
         }
 
 
