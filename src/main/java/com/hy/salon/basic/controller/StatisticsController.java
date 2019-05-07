@@ -1,6 +1,7 @@
 package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.Member;
@@ -56,6 +57,11 @@ public class StatisticsController {
     @Resource(name = "memberProductRejectItemDao")
     private MemberProductRejectItemDao memberProductRejectItemDao;
 
+    @Resource(name = "paymentItemDao")
+    private PaymentItemDao paymentItemDao;
+
+    @Resource(name = "memberProductRejectDao")
+    private MemberProductRejectDao memberProductRejectDao;
     /**
      * 数据统计
      */
@@ -68,43 +74,63 @@ public class StatisticsController {
         RoleUser roleUser=roleUserDAO.getByUserIdAndRoleId(user.getRecordId());
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
         JSONObject jsonObj=new JSONObject();
+
+        //今天0点0分
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date zero = calendar.getTime();
+        String startTime = sDateFormat.format(zero);
+        //今天23点59分
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(new Date());
+        calendar2.set(Calendar.HOUR_OF_DAY,23);
+        calendar2.set(Calendar.MINUTE, 59);
+        calendar2.set(Calendar.SECOND, 59);
+        Date zero2 = calendar2.getTime();
+        String endTime = sDateFormat.format(zero2);
+
+        //当前时间的30天前
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, -30);
+        String DaysAgo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now.getTime());
+
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        String first = sDateFormat.format(c.getTime());
+
+        //现在时间
+        String date = sDateFormat.format(new Date());
         if(null !=roleUser){
             if(roleUser.getRoleId()==1){
 
-                SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.set(Calendar.HOUR_OF_DAY,0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                Date zero = calendar.getTime();
-                String startTime = sDateFormat.format(zero);
 
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(new Date());
-                calendar2.set(Calendar.HOUR_OF_DAY,23);
-                calendar2.set(Calendar.MINUTE, 59);
-                calendar2.set(Calendar.SECOND, 59);
-                Date zero2 = calendar2.getTime();
-                String endTime = sDateFormat.format(zero2);
 
                 List<Salon> salonList=salonDao.getAllStore(startTime,endTime);
 
-                List<Member> memberList=memberDao.getMemberForTime(startTime,endTime);
+                List<Member> memberList=memberDao.getMemberForTime(startTime,endTime,null);
 
                 Double sumAmount=new Double(0);
                 Double sumAmount2=new Double(0);
                 Double sumAmount3=new Double(0);
-                Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(startTime,endTime,"0","0",null);
+                Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(startTime,endTime,"0","0",null,null);
                 if(null!=sumAmountMap){
                     sumAmount=(Double)sumAmountMap.get("amount");
                 }
-                Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(startTime,endTime,"1","0",null);
+                Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(startTime,endTime,"1","0",null,null);
                 if(null!=sumAmountMap2){
                     sumAmount2=(Double)sumAmountMap2.get("amount");
                 }
 
-                Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(startTime,endTime,null,null,null);
+                Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(startTime,endTime,null,null,null,null);
                 if(null!=sumAmountMap3){
                     sumAmount3=(Double)sumAmountMap3.get("amount");
                 }
@@ -135,31 +161,80 @@ public class StatisticsController {
                 Double sumAmount2=new Double(0);
                 Double sumAmount3=new Double(0);
                 //充值
-                Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(null,null,"0","0",stuff.getStoreId());
+                Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(first,date,"0","0",stuff.getStoreId(),null);
                 if(null!=sumAmountMap){
                     sumAmount=(Double)sumAmountMap.get("amount");
                 }
-                Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(null,null,"1","0",stuff.getStoreId());
+                Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(first,date,"1","0",stuff.getStoreId(),null);
                 if(null!=sumAmountMap2){
                     sumAmount2=(Double)sumAmountMap2.get("amount");
                 }
                 //消费
-                Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(null,null,null,null,stuff.getStoreId());
+                Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),null);
                 if(null!=sumAmountMap3){
                     sumAmount3=(Double)sumAmountMap3.get("amount");
                 }
                 //还欠款
                 Double ArreagesAmount=new Double(0);
-               Map<String,Object> arrearagesAmount=arrearagesRecordDao.getArreagesAmount(stuff.getStoreId());
+               Map<String,Object> arrearagesAmount=arrearagesRecordDao.getArreagesAmount(stuff.getStoreId(),first,date);
                 if(null!=arrearagesAmount){
                     ArreagesAmount=(Double)arrearagesAmount.get("reimbursementAmount");
                 }
                 //退款金额
                 Double rejectAmount=new Double(0);
-                Map<String,Object> rejectAmountMap=memberProductRejectItemDao.getRejectAmount(stuff.getStoreId());
+                Map<String,Object> rejectAmountMap=memberProductRejectItemDao.getRejectAmount(stuff.getStoreId(),first,date);
                 if(null!=rejectAmountMap){
                     rejectAmount=(Double)rejectAmountMap.get("rejectAmount");
                 }
+
+
+                Double refundAmount=new Double(0);
+                Double cashAmount=new Double(0);
+                Double bankCardAmount=new Double(0);
+                Double weixinAmount=new Double(0);
+                Double alipayAmount=new Double(0);
+
+                //总收入
+
+                //总支出
+                Map<String,Object>  refundAmountMap=memberProductRejectDao.queryRefundAmountForStuff(stuff.getStoreId());
+                if(null!=refundAmountMap){
+                    refundAmount=(Double)refundAmountMap.get("amount");
+                }
+
+                //现金
+                Map<String,Object>  cashAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"3");
+                if(null!=cashAmountMap){
+                    cashAmount=(Double)cashAmountMap.get("amount");
+                }
+                //银行卡
+                Map<String,Object>  bankCardAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"2");
+                if(null!=bankCardAmountMap){
+                    bankCardAmount=(Double)bankCardAmountMap.get("amount");
+                }
+                //微信
+                Map<String,Object>  weixinAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"0");
+                if(null!=weixinAmountMap){
+                    weixinAmount=(Double)weixinAmountMap.get("amount");
+                }
+                //支付宝
+                Map<String,Object>  alipayAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"1");
+                if(null!=alipayAmountMap){
+                    alipayAmount=(Double)alipayAmountMap.get("amount");
+                }
+
+
+
+                //顾客到店相关
+                //顾客数
+                List<Member> memberList=memberDao.getMemberForTime(null,null,stuff.getStoreId());
+
+                //30天内增加的会员数
+                List<Member> daysAgoMemberList=memberDao.getMemberForTime(DaysAgo,sDateFormat.format(new Date()),stuff.getStoreId());
+
+
+
+
 
 
 
@@ -168,6 +243,17 @@ public class StatisticsController {
                 jsonObj.put("sumAmount3",sumAmount3);
                 jsonObj.put("ArreagesAmount",ArreagesAmount);
                 jsonObj.put("rejectAmount",rejectAmount);
+
+
+                jsonObj.put("refundAmount",refundAmount);
+                jsonObj.put("cashAmount",cashAmount);
+                jsonObj.put("bankCardAmount",bankCardAmount);
+                jsonObj.put("weixinAmount",weixinAmount);
+                jsonObj.put("alipayAmount",alipayAmount);
+
+                jsonObj.put("memberSize",memberList.size());
+                jsonObj.put("daysAgoMemberSize",daysAgoMemberList.size());
+
                 jsonObj.put("jobLevel",1);
             }
 
@@ -213,6 +299,20 @@ public class StatisticsController {
     public Result queryComprehensiveAnalysis(){
         Result r= new Result();
         JSONObject jsonObj=new JSONObject();
+
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        String first = sDateFormat.format(c.getTime());
+
+        //现在时间
+        String date = sDateFormat.format(new Date());
+
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
@@ -220,28 +320,28 @@ public class StatisticsController {
         Double sumAmount2=new Double(0);
         Double sumAmount3=new Double(0);
         //充值
-        Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(null,null,"0","0",stuff.getStoreId());
+        Map<String,Object>  sumAmountMap=CardPurchaseDao.queryAmount(first,date,"0","0",stuff.getStoreId(),null);
         if(null!=sumAmountMap){
             sumAmount=(Double)sumAmountMap.get("amount");
         }
-        Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(null,null,"1","0",stuff.getStoreId());
+        Map<String,Object>  sumAmountMap2=CardPurchaseDao.queryAmount(first,date,"1","0",stuff.getStoreId(),null);
         if(null!=sumAmountMap2){
             sumAmount2=(Double)sumAmountMap2.get("amount");
         }
         //消费
-        Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(null,null,null,null,stuff.getStoreId());
+        Map<String,Object>  sumAmountMap3=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),null);
         if(null!=sumAmountMap3){
             sumAmount3=(Double)sumAmountMap3.get("amount");
         }
         //还欠款
         Double ArreagesAmount=new Double(0);
-        Map<String,Object> arrearagesAmount=arrearagesRecordDao.getArreagesAmount(stuff.getStoreId());
+        Map<String,Object> arrearagesAmount=arrearagesRecordDao.getArreagesAmount(stuff.getStoreId(),first,date);
         if(null!=arrearagesAmount){
             ArreagesAmount=(Double)arrearagesAmount.get("reimbursementAmount");
         }
         //退款金额
         Double rejectAmount=new Double(0);
-        Map<String,Object> rejectAmountMap=memberProductRejectItemDao.getRejectAmount(stuff.getStoreId());
+        Map<String,Object> rejectAmountMap=memberProductRejectItemDao.getRejectAmount(stuff.getStoreId(),first,date);
         if(null!=rejectAmountMap){
             rejectAmount=(Double)rejectAmountMap.get("rejectAmount");
         }
@@ -260,6 +360,167 @@ public class StatisticsController {
     }
 
 
+
+    /**
+     * 获取收支分析
+     */
+    @RequestMapping("queryBudgetAnalysis")
+    @ResponseBody
+    public Result queryBudgetAnalysis(){
+        Result r= new Result();
+        JSONObject jsonObj=new JSONObject();
+
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        String first = sDateFormat.format(c.getTime());
+
+        //现在时间
+        String date = sDateFormat.format(new Date());
+
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        Double cashAmount=new Double(0);
+        Double bankCardAmount=new Double(0);
+        Double weixinAmount=new Double(0);
+        Double alipayAmount=new Double(0);
+
+        //总收入
+
+        //现金
+        Map<String,Object>  cashAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"3");
+        if(null!=cashAmountMap){
+            cashAmount=(Double)cashAmountMap.get("amount");
+        }
+        //银行卡
+        Map<String,Object>  bankCardAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"2");
+        if(null!=bankCardAmountMap){
+            bankCardAmount=(Double)bankCardAmountMap.get("amount");
+        }
+        //微信
+        Map<String,Object>  weixinAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"0");
+        if(null!=weixinAmountMap){
+            weixinAmount=(Double)weixinAmountMap.get("amount");
+        }
+        //支付宝
+        Map<String,Object>  alipayAmountMap=CardPurchaseDao.queryAmount(first,date,null,null,stuff.getStoreId(),"1");
+        if(null!=alipayAmountMap){
+            alipayAmount=(Double)alipayAmountMap.get("amount");
+        }
+
+        jsonObj.put("cashAmount",cashAmount);
+        jsonObj.put("bankCardAmount",bankCardAmount);
+        jsonObj.put("weixinAmount",weixinAmount);
+        jsonObj.put("alipayAmount",alipayAmount);
+
+        r.setData(jsonObj);
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
+
+
+    /**
+     * 获取员工分析
+     */
+    @RequestMapping("queryStuffAnalysis")
+    @ResponseBody
+    public Result queryStuffAnalysis(){
+        Result r= new Result();
+        JSONObject jsonObj=new JSONObject();
+
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        String first = sDateFormat.format(c.getTime());
+
+        //现在时间
+        String date = sDateFormat.format(new Date());
+
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        //员工分析
+
+        List<Map<String,Object>> stuffAmountList=new ArrayList<>();
+        //获取所有员工
+
+//        PageHelper.startPage(1, 10);
+        List<Stuff> stuffList=stuffDao.getStuffForStoreId(stuff.getStoreId());
+        for(Stuff s:stuffList){
+            Map<String,Object> stuffAmountMap=new HashMap<>();
+            stuffAmountMap.put("stuffName",s.getStuffName());
+            Double consumptionAmount=new Double(0);
+            Double rechargeAmount=new Double(0);
+            Double paymentAmount=new Double(0);
+            //通过每个员工的消费
+            Map<String,Object>  amountMap1=CardPurchaseDao.queryAmountForStuff(s.getRecordId(),null,first,date);
+            if(null != amountMap1){
+                consumptionAmount=(Double) amountMap1.get("amount");
+            }
+            //通过每个员工的消费
+                Map<String,Object>  amountMap2=CardPurchaseDao.queryAmountForStuff(s.getRecordId(),"1",first,date);
+                if(null != amountMap2){
+                rechargeAmount=(Double) amountMap2.get("amount");
+            }
+            Map<String,Object>  amountMap3=paymentItemDao.queryPaymentAmountForStuff(s.getRecordId(),first,date);
+            if(null != amountMap3){
+                paymentAmount=(Double) amountMap3.get("amount");
+            }
+
+            stuffAmountMap.put("paymentAmount",paymentAmount);
+            stuffAmountMap.put("consumptionAmount",consumptionAmount);
+            stuffAmountMap.put("rechargeAmount",rechargeAmount);
+            stuffAmountList.add(stuffAmountMap);
+        }
+
+        Collections.sort(stuffAmountList, new Comparator<Map<String,Object>>() {
+            @Override
+            public int compare(Map<String,Object> o1, Map<String,Object> o2) {
+
+                Double a=(Double)o1.get("consumptionAmount");
+                Double b=(Double)o2.get("consumptionAmount");
+//                char a = o1.getString("letter").charAt(0);
+//                char b = o2.getString("letter").charAt(0);
+                if (a > b) {
+                    return -1;
+                } else if(a == b) {
+                    return 0;
+                } else
+                    return 1;
+            }
+        });
+
+        //获取前十名
+        List<Map<String,Object>> stuffAmountList2=new ArrayList<>();
+        for (int i=0;i<10;i++){
+            if(null!=stuffAmountList.get(i)){
+                stuffAmountList2.add(stuffAmountList.get(i));
+            }
+
+        }
+
+        jsonObj.put("stuffAmountList",stuffAmountList);
+        jsonObj.put("stuffAmountList2",stuffAmountList2);
+
+        r.setData(jsonObj);
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+    }
 
 
 

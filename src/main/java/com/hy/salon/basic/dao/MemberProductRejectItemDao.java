@@ -13,9 +13,11 @@ import java.util.Map;
 @Component("memberProductRejectItemDao")
 public class MemberProductRejectItemDao  extends BaseDAOWithEntity<MemberProductRejectItem> {
 
-    public Map<String,Object> getRejectAmount( Long storeId) {
+    public Map<String,Object> getRejectAmount( Long storeId,String startTime,String endTime) {
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
         return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_REJECT_AMOUNT, parameters);
     }
 

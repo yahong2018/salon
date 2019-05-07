@@ -103,15 +103,30 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
         return extJsResult;
     }
 
-    public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType,Long storeId) {
+    public Map<String,Object> queryAmount(String startTime,String endTime,String rechargeType,String carType,Long storeId,String methodPayed) {
         Map parameters = new HashMap();
         parameters.put("startTime", startTime);
         parameters.put("endTime", endTime);
         parameters.put("rechargeType", rechargeType);
         parameters.put("carType", carType);
         parameters.put("storeId", storeId);
-       return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_SUM_AMOUNT, parameters);
+        parameters.put("methodPayed", methodPayed);
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_SUM_AMOUNT, parameters);
     }
+
+
+    public Map<String,Object> queryAmountForStuff(Long stuffId,String rechargeType,String startTime,String endTime) {
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        parameters.put("rechargeType", rechargeType);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_AMOUNT_FRO_STUFF, parameters);
+    }
+
+
+
+    protected final static String SQL_GET_AMOUNT_FRO_STUFF = "com.hy.salon.basic.dao.GET_AMOUNT_FRO_STUFF";
 
 
     protected final static String SQL_GET_SUM_AMOUNT = "com.hy.salon.basic.dao.GET_SUM_AMOUNT";

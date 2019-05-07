@@ -129,7 +129,7 @@
             <div class="card-header">
             <h4 class="card-title">综合分析</h4>
             <p class="card-category">
-            本月综合分析</p>
+            综合分析</p>
             </div>
             <div class="card-body">
             <div id="monthlyChart2" style="width: 385px;height: 500px;"></div>
@@ -142,6 +142,7 @@
 
 
         </div>
+         <!-- 收支分析-->
         <div class="layui-tab-item">
 
 
@@ -159,14 +160,34 @@
                                     </div>
                                     <div class="col-7 d-flex align-items-center">
                                         <div class="numbers">
-                                            <p class="card-category">充值</p>
-                                            <h4 class="card-title" id="recharge4"></h4>
+                                            <p class="card-category">总收入</p>
+                                            <h4 class="card-title" id="income"></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats card-danger">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--<i class="la la-newspaper-o"></i>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">总支出</p>
+                                            <h4 class="card-title" id="expenditure"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-3">
                         <div class="card card-stats card-primary">
                             <div class="card-body ">
@@ -178,8 +199,8 @@
                                     </div>
                                     <div class="col-7 d-flex align-items-center">
                                         <div class="numbers">
-                                            <p class="card-category">消费</p>
-                                            <h4 class="card-title" id="consumption2"></h4>
+                                            <p class="card-category">现金</p>
+                                            <h4 class="card-title" id="cashAmount"></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -197,8 +218,8 @@
                                     </div>
                                     <div class="col-7 d-flex align-items-center">
                                         <div class="numbers">
-                                            <p class="card-category">还欠款</p>
-                                            <h4 class="card-title" id="arrears2"></h4>
+                                            <p class="card-category">银行卡</p>
+                                            <h4 class="card-title" id="bankCardAmount"></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -216,14 +237,34 @@
                                     </div>
                                     <div class="col-7 d-flex align-items-center">
                                         <div class="numbers">
-                                            <p class="card-category">退款</p>
-                                            <h4 class="card-title" id="refund2"></h4>
+                                            <p class="card-category">微信</p>
+                                            <h4 class="card-title" id="weixinAmount"></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats card-default">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <!--<i class="la la-check-circle"></i>-->
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">支付宝</p>
+                                            <h4 class="card-title" id="alipayAmount"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
 
@@ -231,13 +272,13 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">综合分析</h4>
+                                <h4 class="card-title">收支分析</h4>
                                 <p class="card-category">
-                                    本月综合分析</p>
+                                    收支分析</p>
                             </div>
                             <div class="card-body">
-                                <div id="monthlyChart" style="width: 385px;height: 500px;"></div>
-                                <script src="../js/dashboard/comprehensiveAnalysis.js"></script>
+                                <div id="monthlyChart3" style="width: 385px;height: 500px;"></div>
+                                <script src="../js/dashboard/budgetAnalysis2.js"></script>
                             </div>
                         </div>
                     </div>
@@ -247,9 +288,85 @@
 
 
         </div>
+        <!-- 员工分析-->
+        <div class="layui-tab-item">
 
-        <div class="layui-tab-item">内容4</div>
-        <div class="layui-tab-item">内容5</div>
+            <div class="row" style="margin: 50px 10px 10px 10px;">
+                <div class="">
+                    <div class="card">
+                        <div class="">
+                            <h4 class="">员工业绩前十</h4>
+                            <p class="card-category">
+                                员工业绩前十</p>
+                        </div>
+                        <div class="">
+                            <div id="stuffAmount" style="width: 1600px;height: 500px;"></div>
+                            <script src="../js/dashboard/stuffAmount.js"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pTable" style=" margin: 0 0 0 0;">
+                <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" >
+
+                </table>
+                <!--  <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                  </script>-->
+                <div id="laypage"></div>
+            </div>
+
+
+
+        </div>
+        <!-- 顾客到店 -->
+        <div class="layui-tab-item">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-stats card-danger">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <!--&lt;!&ndash;<i class="la la-users"></i>&ndash;&gt;-->
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">顾客数</p>
+                                        <h4 class="card-title" id="memberSize2"></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-primary">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <!--<i class="la la-bar-chart"></i>-->
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">新增顾客数</p>
+                                        <h4 class="card-title" id="daysAgoMemberSize"></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
     </div>
 
 </div>
@@ -444,7 +561,7 @@
                         本月用户统计</p>
                 </div>
                 <div class="card-body">
-                    <div id="monthlyChart3" style="width: 98%;height: 500px;"></div>
+                    <div id="monthlyChart" style="width: 98%;height: 500px;"></div>
                     <script src="../js/dashboard/monthlyChart.js"></script>
                 </div>
             </div>
@@ -498,6 +615,7 @@
             }else{
                 $("#pinTai").css("display","none")
 
+                //综合分析
                 $("#recharge").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
 
                 $("#consumption").text("¥"+dataJson.data.sumAmount3);
@@ -505,6 +623,28 @@
                 $("#arrears").text("¥"+dataJson.data.ArreagesAmount);
 
                 $("#refund").text("¥"+dataJson.data.rejectAmount);
+                //收支分析
+
+
+
+                $("#expenditure").text("¥"+dataJson.data.refundAmount);
+
+                $("#income").text("¥"+dataJson.data.sumAmount3);
+
+                $("#cashAmount").text("¥"+dataJson.data.cashAmount);
+
+                $("#bankCardAmount").text("¥"+dataJson.data.bankCardAmount);
+
+                $("#weixinAmount").text("¥"+dataJson.data.weixinAmount);
+
+                $("#alipayAmount").text("¥"+dataJson.data.alipayAmount);
+
+                //顾客到店
+
+                $("#memberSize2").text("¥"+dataJson.data.memberSize);
+
+                $("#daysAgoMemberSize").text("¥"+dataJson.data.daysAgoMemberSize);
+
 
 
             }
@@ -521,6 +661,111 @@
         error:function(){
             alert("驳回异常")
         }
+    });
+
+
+
+    layui.use(['form','laydate','layer','table','laypage','util'],function(){
+        var form = layui.form;
+        var laydate=layui.laydate;
+        var $ = layui.$;
+        productsearch(1);
+
+        function productsearch(page,filterExpr) {
+
+            var table = layui.table,
+                laydate = layui.laydate,
+                laypage = layui.laypage;
+            var form = layui.form;
+            table.render({
+                elem : '#layui_table_id',
+                url : '/hy/basic/statistics/queryStuffAnalysis',
+                cols : [ [
+
+                    {
+                        field : 'stuffName',
+                        title : '员工',
+                        align : 'center'
+                    }
+                    ,
+                    {
+                        field : '',
+                        title : '业绩',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'paymentAmount',
+                        title : '卡耗',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'consumptionAmount',
+                        title : '消费',
+                        align : 'center'
+                    }
+                    , {
+                        field : 'rechargeAmount',
+                        title : '充值',
+                        align : 'center'
+                    }
+
+
+                ] ],
+                page : false,
+                where : {
+                    filterExpr:filterExpr,
+                },
+                responseHandler: function (res, curr,count) {
+                    $('#pageNum').val(curr);
+                    return {
+                        "count": res.total,
+                        "data": res.data.stuffAmountList,
+                        "code": 0,//code值为200表示成功
+                        "msg": ""
+                    }
+                },
+                done : function(res, curr, count) {
+                    console.log(res)
+                    $('#pageNum').val(curr);
+
+                }
+            })
+            // table.on('checkbox(test)', function(obj){
+            //   console.log(layui.table.checkStatus('layui_table_id'));
+            // });
+            // 监听工具条
+            table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data, //获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent == 'detail') {
+                    queryById(data.id);
+                } else if (layEvent == 'del') {
+                    //alert(data.id)
+                    var pageNum = $('#pageNum').val();
+                    layer.confirm('真的删除行么', function(index){
+                        deleteById(data.id);
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if (layEvent === 'edit') {
+                    layer.msg('编辑操作');
+                }
+            });
+            //常规用法
+            laydate.render({
+                elem : '#createDate'
+            });
+            //常规用法
+            laydate.render({
+                elem : '#processingTime'
+            });
+
+        }
+
+
+
+
+
     });
 
 

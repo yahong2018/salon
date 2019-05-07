@@ -79,9 +79,11 @@ public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
         return extJsResult;
 
     }
-    public Map<String,Object> getArreagesAmount(Long storeId) {
+    public Map<String,Object> getArreagesAmount(Long storeId,String startTime,String endTime) {
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
         return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_ARREARAGES_RECORD, parameters);
     }
 

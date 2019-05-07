@@ -268,14 +268,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                         if(stuffJobList.size() != 0 ){
                             for(StuffJob sj:stuffJobList){
                                 Job job=jobDao.getJobForId(sj.getJobId());
-                                if(ss.getJobName()==null) {
-                                    ss.setJobName("");
-                                    String str=ss.getJobName()+job.getJobName();
-                                    ss.setJobName(str);
-                                }else{
-                                    String str=ss.getJobName()+","+job.getJobName();
-                                    ss.setJobName(str);
+                                if(null!=job){
+                                    if(ss.getJobName()==null) {
+                                        ss.setJobName("");
+                                        String str=ss.getJobName()+job.getJobName();
+                                        ss.setJobName(str);
+                                    }else{
+                                        String str=ss.getJobName()+","+job.getJobName();
+                                        ss.setJobName(str);
+                                    }
                                 }
+
                             }
 
                         }
@@ -303,14 +306,17 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                 if(stuffJobList.size() != 0 ){
                     for(StuffJob sj:stuffJobList){
                         Job job=jobDao.getJobForId(sj.getJobId());
-                        if(ss.getJobName()==null) {
-                            ss.setJobName("");
-                            String str=ss.getJobName()+job.getJobName();
-                            ss.setJobName(str);
-                        }else{
-                            String str=ss.getJobName()+","+job.getJobName();
-                            ss.setJobName(str);
+                        if(null!=job){
+                            if(ss.getJobName()==null) {
+                                ss.setJobName("");
+                                String str=ss.getJobName()+job.getJobName();
+                                ss.setJobName(str);
+                            }else{
+                                String str=ss.getJobName()+","+job.getJobName();
+                                ss.setJobName(str);
+                            }
                         }
+
                     }
                 }
 

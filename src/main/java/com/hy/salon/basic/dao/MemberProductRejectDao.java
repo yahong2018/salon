@@ -41,4 +41,14 @@ public class MemberProductRejectDao extends BaseDAOWithEntity<MemberProductRejec
         result.setSuccess(true);
         return  result;
     }
+
+
+    public Map<String,Object> queryRefundAmountForStuff(Long storeId) {
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_REFUND_AMOUNT_FRO_STUFF, parameters);
+    }
+
+
+    protected final static String SQL_GET_REFUND_AMOUNT_FRO_STUFF = "com.hy.salon.basic.dao.GET_REFUND_AMOUNT_FRO_STUFF";
 }
