@@ -458,16 +458,6 @@ create table member
   primary_beautician               bigint                          null,       -- 负责美容师
   entry_time                       datetime                        null,       -- 入店时间
 
-  balance_cash                     double(10,2)                    not null,
-                      -- 现金余额: 退款的余额(账户余额)
-                      -- todo: 这个钱包里的钱，会员如何使用？
-  cash_coupon                      double(10,2)                    not null,   -- 代金券总额
-  balance_total                    double(10,2)                    not null,   -- 账户总余额（充值卡总金额+项目总金额+寄存库产品总金额）
-  integral                         double(10,2)                    not null,   -- 账户积分
-  debt                             double(10,2)                    not null,   -- 账户欠款
-  amount_consumer                  double(10,2)                    not null,   -- 总消费
-  amount_charge                    double(10,2)                    not null,   -- 总充值
-
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
   update_date                      datetime                        null,
@@ -482,6 +472,28 @@ create table member
   index idx_member_05(primary_beautician),
   index idx_member_06(introducer)
 ) comment '会员';
+
+create table member_wallet
+(
+  record_id                        bigint                          not null,
+  member_id                        bigint                          not null, -- 会员id
+  balance_cash                     double(10,2)                    not null default 0, -- 现金余额: 退款的余额(账户余额)
+  cash_coupon                      double(10,2)                    not null default 0,   -- 代金券总额
+  balance_total                    double(10,2)                    not null default 0,   -- 账户总余额（充值卡总金额+项目总金额+寄存库产品总金额）
+  integral                         double(10,2)                    not null default 0,   -- 账户积分
+  debt                             double(10,2)                    not null default 0,   -- 账户欠款
+  amount_consumer                  double(10,2)                    not null default 0,   -- 总消费
+  amount_charge                    double(10,2)                    not null default 0,   -- 总充值
+
+  create_date                      datetime                        not null,
+  create_by                        bigint                          not null,
+  update_date                      datetime                        null,
+  update_by                        bigint                          null,
+  opt_lock                         int                             null,
+
+  primary key (record_id),
+  index idx_member_wallet_01(member_id)
+)comment '会员钱包表';
 
 create table member_tag
 (
