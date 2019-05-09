@@ -309,6 +309,17 @@ public class SalonController extends SimpleCRUDController<Salon> {
         Result r= new Result();
 
         try {
+
+            double[] aaa = MapUtils.getLatAndLonByAddress(condition.getAddress());
+            if(null == aaa){
+                r.setMsg("请输入详细地址");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+            condition.setLongitude(aaa[0]);
+            condition.setLatitude(aaa[1]);
+
             int i= salonDao.update(condition);
 
             if(i != 1){
