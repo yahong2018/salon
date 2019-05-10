@@ -46,6 +46,9 @@ public class MemberProductKeepController {
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
 
+    @Resource(name = "memberWalletDAO")
+    private MemberWalletDAO MemberWalletDao;
+
     /**
      * 会员退款寄存库产品列表
      */
@@ -219,8 +222,14 @@ public class MemberProductKeepController {
         long memberId =  memberProductReject.getMemberId();
         memberProductRejectItemDao.insert(memberProductRejectItem);
         Member member = memberDao.getById(memberId);
+
+        //获取顾客钱包
+        MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(memberId);
+
         if(memberProductRejectItem.getTypeAmountReturn()==1){
-            member.setBalanceCash(member.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
+//            member.setBalanceCash(member.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
+
+            memberWallet.setBalanceCash(memberWallet.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
         }
         memberDao.update(member);
 

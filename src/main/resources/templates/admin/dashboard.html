@@ -26,8 +26,10 @@
 
 </head>
 <body>
+
+
 <!-- 店长角色-->
-<div class="layui-tab"  id="dianZhang">
+<div class="layui-tab"  id="dianZhang" style="display:none">
     <ul class="layui-tab-title">
         <li class="layui-this">综合分析</li>
         <li>收支分析</li>
@@ -370,9 +372,8 @@
     </div>
 
 </div>
-
 <!-- 平台角色-->
-<div style="height: 20px;margin: 30px;" id="pinTai">
+<div style="height: 20px;margin: 30px;visibility:hidden" id="pinTai">
 
     <div class="row">
         <div class="col-md-3">
@@ -581,6 +582,7 @@
         </div>
     </div>
 </div>
+
 </body>
 <script type="text/javascript">
 
@@ -600,7 +602,7 @@
 
             console.log("+++"+JSON.stringify(dataJson));
             if(dataJson.data.jobLevel==-1){
-                $("#dianZhang").css("display","none")
+                $("#pinTai").css("visibility","visible")
                 $("#salonSize").text(dataJson.data.salonSize);
 
                 $("#memberSize").text(dataJson.data.memberSize);
@@ -613,7 +615,7 @@
 
                 $("#qty2").text(dataJson.data.qty2);
             }else{
-                $("#pinTai").css("display","none")
+                $("#dianZhang").css("display","block")
 
                 //综合分析
                 $("#recharge").text("¥"+dataJson.data.sumAmount+"/¥"+dataJson.data.sumAmount2);
@@ -659,7 +661,7 @@
 
         },
         error:function(){
-            alert("驳回异常")
+            alert("返回异常")
         }
     });
 

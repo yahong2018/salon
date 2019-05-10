@@ -2,6 +2,7 @@ package com.hy.salon.basic.dao;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -121,6 +122,9 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
         }
         er.setData(jsonArray);
         er.setTotal(count);
+        er.setMsgcode(StatusUtil.OK);
+        er.setSuccess(true);
+        er.setMsg("获取成功");
         return  er;
     }
 
@@ -166,13 +170,13 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
                 }
                 if(vsi.getRecordType()==0){
                     discountString = discountString+"单次"+vsi.getDiscount();
-                    jsonObjectC.put("单次",vsi.getDiscount());
+                    jsonObjectC.put("single",vsi.getDiscount());
                 }else if(vsi.getRecordType()==1){
                     discountString = discountString+"疗程卡"+vsi.getDiscount();
-                    jsonObjectC.put("疗程卡",vsi.getDiscount());
+                    jsonObjectC.put("card",vsi.getDiscount());
                 }else if(vsi.getRecordType()==2){
                     discountString = discountString+"产品折"+vsi.getDiscount();
-                    jsonObjectC.put("产品折",vsi.getDiscount());
+                    jsonObjectC.put("product",vsi.getDiscount());
                 }
                 jsonArrayC.add(jsonObjectC);
 
@@ -248,6 +252,7 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serviceName",service.getServiceName());
             jsonObject.put("price",service.getPrice());
+            jsonObject.put("serviceId",service.getRecordId());
             String where = " card_id = #{card_id} and member_id=#{member_id}";
             Map parameters = new HashMap();
             parameters.put("card_id", service.getRecordId());

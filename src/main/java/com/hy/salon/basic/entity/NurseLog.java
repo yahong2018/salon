@@ -14,6 +14,10 @@ public class NurseLog extends TraceableEntity<Long> {
     private Long memberId  ;//会员
     private String logContent;//内容：里面包含有文字、表情(emoj)
     private Integer logType   ;//日志类型 0 回访日志 1 护理日志
+    private Long reservationId;
+
+    private String picUrl;
+    private String jobName;
 
 
 }

@@ -103,16 +103,16 @@ public class MemberService {
         return member;
     }
 
-    public void addMember(Member member) {
-        //设置会员默认值
-        member.setMemberGrade(3L);
-       // member.setBalance(0.0);
-        member.setIntegral(0.0);
-        member.setDebt(0.0);
-        member.setAmountConsumer(0.0);
-        member.setAmountCharge(0.0);
-        memberDao.insert(member);
-    }
+//    public void addMember(Member member) {
+//        //设置会员默认值
+//        member.setMemberGrade(3L);
+//       // member.setBalance(0.0);
+//        member.setIntegral(0.0);
+//        member.setDebt(0.0);
+//        member.setAmountConsumer(0.0);
+//        member.setAmountCharge(0.0);
+//        memberDao.insert(member);
+//    }
 
     public List<Member> getMemberTag(Long storeId) {
         List<Salon> list=new ArrayList<>();

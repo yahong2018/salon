@@ -78,6 +78,9 @@ public class ConsumptionController {
     @Resource(name="memberProductKeepItemDao")
     private MemberProductKeepItemDao memberProductKeepItemDao;
 
+    @Resource(name = "memberWalletDAO")
+    private MemberWalletDAO MemberWalletDao;
+
 
     /**
      * 划卡记录PC
@@ -146,7 +149,7 @@ public class ConsumptionController {
             cardBalanceOld.setRemark(cardBalance.getRemark());
             cardPurchase.setRechargeType(0);
             cardBalanceOld.setBalance(cardBalance.getBalance()+cardBalanceOld.getBalance());
-            cardBalanceOld.setBalanceTotal((byte)(cardBalanceOld.getBalanceTotal()+cardBalance.getBalanceTotal()));
+            cardBalanceOld.setBalanceTotal(cardBalanceOld.getBalanceTotal()+cardBalance.getBalanceTotal());
             cardBalanceDao.update(cardBalanceOld);//卡户表
         }else{
             cardPurchase.setRechargeType(1);
@@ -154,6 +157,8 @@ public class ConsumptionController {
         }
 
         Member member =  memberDao.getById(cardBalance.getMemberId());
+        //获取钱包
+        MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(cardBalance.getMemberId());
 
         byte  method_payed  = cardPurchase.getMethodPayed();// 10 账户余额  11 充值卡余额
         byte  cardType  = cardBalance.getCardType();//卡类型: 1.套卡  2.次卡、3产品
@@ -186,8 +191,12 @@ public class ConsumptionController {
             memberProductKeepItemDao.insert(memberProductKeepItem);
         }
         if(method_payed==10){//减掉menber 表的现金余额
-            member.setBalanceCash(member.getBalanceCash() - balance);//现金余额减少
-            member.setBalanceTotal(member.getBalanceTotal()+balance);//总余额增加
+//            member.setBalanceCash(member.getBalanceCash() - balance);//现金余额减少
+//            member.setBalanceTotal(member.getBalanceTotal()+balance);//总余额增加
+
+            memberWallet.setBalanceCash(memberWallet.getBalanceCash() - balance);//现金余额减少
+            memberWallet.setBalanceTotal(memberWallet.getBalanceTotal()+balance);//总余额增加
+
             consumptionBalance = balance;
         }else if(method_payed==11){//11 充值卡余额
            /* Map parameterV = new HashMap();
@@ -212,12 +221,21 @@ public class ConsumptionController {
             double temp = balance*discount;//折扣后的价格
             consumptionBalance = temp;//消费掉的钱
             cardBalanceV.setBalance(cardBalanceV.getBalance() - temp);
-            member.setBalanceTotal(member.getBalanceTotal()+ balance- temp);//总余额增加消费购买的卡的金额减掉用充值卡消费的金额
+
+//            member.setBalanceTotal(member.getBalanceTotal()+ balance- temp);//总余额增加消费购买的卡的金额减掉用充值卡消费的金额
+
+            memberWallet.setBalanceTotal(memberWallet.getBalanceTotal()+ balance- temp);//总余额增加消费购买的卡的金额减掉用充值卡消费的金额
         }
 
-        member.setDebt(member.getDebt()+cardPurchase.getAmountDebit());//账户欠款
-        member.setAmountCharge(member.getAmountCharge()+cardPurchase.getAmount());//总充值
-        member.setAmountConsumer(member.getAmountConsumer()+consumptionBalance);//总消费
+//        member.setDebt(member.getDebt()+cardPurchase.getAmountDebit());//账户欠款
+//        member.setAmountCharge(member.getAmountCharge()+cardPurchase.getAmount());//总充值
+//        member.setAmountConsumer(member.getAmountConsumer()+consumptionBalance);//总消费
+
+
+        memberWallet.setDebt(memberWallet.getDebt()+cardPurchase.getAmountDebit());//账户欠款
+        memberWallet.setAmountCharge(memberWallet.getAmountCharge()+cardPurchase.getAmount());//总充值
+        memberWallet.setAmountConsumer(memberWallet.getAmountConsumer()+consumptionBalance);//总消费
+
         if(cardPurchase.getAmountDebit()!=null||cardPurchase.getAmountDebit()!=0){
             ArrearagesRecord arrearagesRecord = new ArrearagesRecord();
             arrearagesRecord.setRefTransId(cardPurchase.getRecordId());
@@ -229,7 +247,7 @@ public class ConsumptionController {
             arrearagesRecord.setIsPaidOff((byte)1);
             arrearagesRecordDao.insert(arrearagesRecord);//欠款表
         }
-        memberDao.update(member);//会员表
+//        memberDao.update(member);//会员表
         result.setSuccess(true);
         result.setMsg("消费成功");
         result.setMsgcode("0");
@@ -346,18 +364,24 @@ public class ConsumptionController {
         paymentDao.insert(payment);
         paymentItem.setPaymentId(payment.getRecordId());
         Member member =  memberDao.getById(payment.getMemberId());
+        //获取钱包
+        MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(payment.getMemberId());
+
         CardBalance cardBalance = cardBalanceDao.getById(paymentItem.getCardBalanceId());
 
         if(paymentItem.getPaymentType()==0){//次数
             cardBalance.setBalance(cardBalance.getBalance() -1);
-            member.setBalanceTotal(member.getBalanceTotal() - paymentItem.getPrice()*paymentItem.getQty());
+//            member.setBalanceTotal(member.getBalanceTotal() - paymentItem.getPrice()*paymentItem.getQty());
+
+            memberWallet.setBalanceTotal(memberWallet.getBalanceTotal() - paymentItem.getPrice()*paymentItem.getQty());
         }else{//项目券
          long id =    paymentItem.getCardBalanceId();
          StampProgram stampProgram = stampProgramDao.getById(id);
             stampProgram.setIsUsed((byte)0);
             stampProgramDao.update(stampProgram);
         }
-        memberDao.update(member);
+        MemberWalletDao.update(memberWallet);
+//        memberDao.update(member);
         cardBalanceDao.update(cardBalance);
         result.setMsgcode("0");
         result.setSuccess(true);

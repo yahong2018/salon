@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -88,6 +89,9 @@ public class RechargeController {
 
     @Resource(name="memberProductKeepItemDao")
     private MemberProductKeepItemDao memberProductKeepItemDao;
+
+    @Resource(name = "memberWalletDAO")
+    private MemberWalletDAO MemberWalletDao;
 
     @Resource(name = "reservationDao")
     private ReservationDao reservationDao;
@@ -193,44 +197,83 @@ public class RechargeController {
             /*business_stuff 关联员工表*/
             @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long"),
     })
-    public ExtJsResult addRecharge(CardBalance cardBalance,CardPurchase cardPurchase,List<MemberGift> memberGiftList,List<Long> stuffIdList){
+    @Transactional(rollbackFor = Exception.class)
+    public ExtJsResult addRecharge(CardBalance cardBalance,CardPurchase cardPurchase,String memberGiftListJson,String stuffIdListJson,String memberRechargeType/*,List<MemberGift> memberGiftList,List<Long> stuffIdList*/){
         ExtJsResult  ejr = new ExtJsResult();
-        try{
+//        try{
 
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+//            SystemUser user = authenticateService.getCurrentLogin();
+//            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
+        if("1".equals(memberRechargeType)){
+            CardBalance checkCard=cardBalanceDao.getCardForMemberId(cardBalance.getMemberId(),cardBalance.getCardId(),new Long(0));
             int transType = 0;
-            if(cardBalance.getRecordId()!=null){//说明是已存在的卡户
-                CardBalance cardBalanceOld= cardBalanceDao.getById(cardBalance.getRecordId());
-                cardBalanceOld.setRemark(cardBalance.getRemark());
+            if(checkCard!=null){//说明是已存在的卡户
+//                CardBalance cardBalanceOld= cardBalanceDao.getById(cardBalance.getRecordId());
+                checkCard.setRemark(cardBalance.getRemark());
                 cardPurchase.setRechargeType(0);
-                cardBalanceOld.setBalance(cardBalance.getBalance()+cardBalanceOld.getBalance());
-                cardBalanceOld.setBalanceTotal((byte)(cardBalanceOld.getBalanceTotal()+cardBalance.getBalanceTotal()));
-                cardBalanceDao.update(cardBalanceOld);//卡户表
+                checkCard.setBalance(cardBalance.getBalance()+checkCard.getBalance());
+                checkCard.setBalanceTotal(checkCard.getBalanceTotal()+cardBalance.getBalanceTotal());
+                cardBalanceDao.update(checkCard);//卡户表
                 transType= 1;
             }else{
                 cardPurchase.setRechargeType(1);
                 cardBalanceDao.insert(cardBalance);//卡户表
             }
-            cardPurchaseDao.insert(cardPurchase);//充值、购卡记录表
+
+        }else{
+            cardPurchase.setRechargeType(3);
+        }
+        cardPurchaseDao.insert(cardPurchase);//充值、购卡记录表
+
             double balance = 0;
             double cashCoupon = 0;
             double integral = 0;
-            for(MemberGift mg:memberGiftList){
+
+
+
+        if(!"".equals(memberGiftListJson)){
+
+            net.sf.json.JSONArray memberGiftListArr=net.sf.json.JSONArray.fromObject(memberGiftListJson);
+            List<MemberGift> memberGiftlist = net.sf.json.JSONArray.toList(memberGiftListArr, MemberGift.class);// 转换成实体类
+//            JSONArray
+            for(MemberGift mg:memberGiftlist){
                 mg.setRefTransId(cardPurchase.getRecordId());
                 //mg.setTransType((byte)transType);
                 mg.setTransType((byte)0);
                 if(mg.getGiftType()==3){
                   //  balance = balance +mg.getQty();
                     if (mg.getGiftCashType() == 1) {
-                        integral = integral+integral;
+                        integral = integral+mg.getQty();
                     }else{
                         cashCoupon = cashCoupon +mg.getQty();
                     }
 
                 }else if(mg.getGiftType()==0){
                     Service service =  serviceDao.getById(mg.getGitId());//项目表
-                    balance = balance + service.getPrice();
+                    int qty = mg.getQty().intValue();
+                    balance = balance + service.getPrice()*qty;
+
+                    //卡户余额添加次卡次数
+                    CardBalance checkCard=cardBalanceDao.getCardForMemberId(cardBalance.getMemberId(),mg.getGitId(),new Long(1));
+                    if(null==checkCard){
+                        checkCard=new CardBalance();
+                        checkCard.setCardId(mg.getGitId());
+                        checkCard.setMemberId(mg.getMemberId());
+                        checkCard.setCardType(new Byte("1"));
+                        checkCard.setBalance(mg.getQty());
+                        checkCard.setBalanceTotal(mg.getQty());
+                        checkCard.setCardStatus(new Byte("0"));
+                        checkCard.setParentId(new Long(0));
+                        cardBalanceDao.insert(checkCard);
+                    }else{
+                        checkCard.setBalance(checkCard.getBalance()+mg.getQty());
+                        checkCard.setBalanceTotal(checkCard.getBalanceTotal()+mg.getQty());
+                        cardBalanceDao.update(checkCard);
+
+                    }
+
+
                 }else if(mg.getGiftType()==1){
                     Product product = productDao.getById(mg.getGitId());//产品表
                     int qty = mg.getQty().intValue();
@@ -266,8 +309,11 @@ public class RechargeController {
 
                 memberGiftDao.insert(mg);//赠送表
             }
+        }
+        net.sf.json.JSONArray stuffListArr=net.sf.json.JSONArray.fromObject(stuffIdListJson);
+        List<Long> stufflist = net.sf.json.JSONArray.toList(stuffListArr, Long.class);// 转换成实体类
 
-            for(Long stuffId:stuffIdList){
+            for(Long stuffId:stufflist){
                 BusinessStuff businessStuff  = new BusinessStuff();
                 businessStuff.setStuffId(stuffId);
                 businessStuff.setTransType((byte)0);
@@ -275,36 +321,45 @@ public class RechargeController {
                 businessStuffDao.insert(businessStuff);//关联员工
             }
 
-            Member member =  memberDao.getById(cardBalance.getMemberId());
-            member.setBalanceTotal(member.getBalanceTotal()+balance);
-            member.setDebt(member.getDebt()+cardPurchase.getAmountDebit());
-            member.setAmountCharge(member.getAmountCharge()+cardPurchase.getAmount());
-       /*if(cardBalance.getRecordId()!=null) {//说明是已存在的卡户
-           member.setBalanceCash(member.getBalanceCash()+cardBalance.getBalance());//余额充值
-       }*/
-            member.setCashCoupon(cashCoupon);
-            memberDao.update(member);//会员表
-            if(cardPurchase.getAmountDebit()!=null||cardPurchase.getAmountDebit()!=0){
-                ArrearagesRecord arrearagesRecord = new ArrearagesRecord();
-                arrearagesRecord.setRefTransId(cardPurchase.getRecordId());
-                arrearagesRecord.setMemberId(cardBalance.getMemberId());
-                arrearagesRecord.setArrearagesDate(new Date());
-                arrearagesRecord.setArrearagesType((byte)0);
-                arrearagesRecord.setAmountOfRealPay(cardPurchase.getAmount());
-                arrearagesRecord.setAmountPayable(cardPurchase.getAmountPayed());
-                arrearagesRecord.setIsPaidOff((byte)1);
-                arrearagesRecordDao.insert(arrearagesRecord);//欠款表
-            }
+
+            //获取钱包
+            MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(cardBalance.getMemberId());
+            memberWallet.setBalanceTotal(memberWallet.getBalanceTotal()+balance+cardPurchase.getAmount());
+            memberWallet.setAmountCharge(memberWallet.getAmountCharge()+cardPurchase.getAmount());
+            memberWallet.setCashCoupon(memberWallet.getCashCoupon()+cashCoupon);
+            memberWallet.setIntegral(memberWallet.getIntegral()+integral);
+            MemberWalletDao.update(memberWallet);
+
+//            Member member =  memberDao.getById(cardBalance.getMemberId());
+//            member.setBalanceTotal(member.getBalanceTotal()+balance);
+//            member.setDebt(member.getDebt()+cardPurchase.getAmountDebit());
+//            member.setAmountCharge(member.getAmountCharge()+cardPurchase.getAmount());
+//       /*if(cardBalance.getRecordId()!=null) {//说明是已存在的卡户
+//           member.setBalanceCash(member.getBalanceCash()+cardBalance.getBalance());//余额充值
+//       }*/
+//            member.setCashCoupon(cashCoupon);
+//            memberDao.update(member);//会员表
+//            if(cardPurchase.getAmountDebit()!=null||cardPurchase.getAmountDebit()!=0){
+//                ArrearagesRecord arrearagesRecord = new ArrearagesRecord();
+//                arrearagesRecord.setRefTransId(cardPurchase.getRecordId());
+//                arrearagesRecord.setMemberId(cardBalance.getMemberId());
+//                arrearagesRecord.setArrearagesDate(new Date());
+//                arrearagesRecord.setArrearagesType((byte)0);
+//                arrearagesRecord.setAmountOfRealPay(cardPurchase.getAmount());
+//                arrearagesRecord.setAmountPayable(cardPurchase.getAmountPayed());
+//                arrearagesRecord.setIsPaidOff((byte)1);
+//                arrearagesRecordDao.insert(arrearagesRecord);//欠款表
+//            }
             ejr.setMsg("充值成功");
             ejr.setMsgcode("0");
             ejr.setSuccess(true);
             return ejr;
-        }catch (Exception e){
-            ejr.setMsg("充值失败");
-            ejr.setMsgcode("200");
-            ejr.setSuccess(false);
-            return ejr;
-        }
+//        }catch (Exception e){
+//            ejr.setMsg("充值失败");
+//            ejr.setMsgcode("200");
+//            ejr.setSuccess(false);
+//            return ejr;
+//        }
     }
 
 

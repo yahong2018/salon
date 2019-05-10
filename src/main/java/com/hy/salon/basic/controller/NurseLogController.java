@@ -2,14 +2,8 @@ package com.hy.salon.basic.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
-import com.hy.salon.basic.dao.NurseLogDao;
-import com.hy.salon.basic.dao.NurseLogModelDAO;
-import com.hy.salon.basic.dao.SalonDao;
-import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.NurseLog;
-import com.hy.salon.basic.entity.NurseLogModel;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.dao.*;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.NurseLogService;
 import com.hy.salon.basic.vo.NurseLogVo;
 import com.hy.salon.basic.vo.Result;
@@ -26,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/nurseLog")
@@ -49,6 +44,17 @@ public class NurseLogController {
 
     @Resource(name = "salonDao")
     private SalonDao salonDao;
+
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
+
+    @Resource(name = "stuffJobDao")
+    private StuffJobDao stuffJobDao;
+
+    @Resource(name = "jobDAO")
+    private JobDAO jobDao;
+
+
 
     /**
      * 按门店查询护理日志
@@ -138,18 +144,55 @@ public class NurseLogController {
     @ResponseBody
     @RequestMapping(value = "queryLog")
     @ApiOperation(value="获取日志", notes="获取日志")
-    public Result queryLog(Long storeId,String logType,int page,int limit,String memberName,String stuffName){
+    public Result queryLog(Long storeId,String logType,int page,int limit,String memberName,String stuffName,Long memberId){
         Result result=new Result();
         try {
-            if(storeId == null ){
-                SystemUser user = authenticateService.getCurrentLogin();
-                Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-                storeId=stuff.getStoreId();
+            if(null==memberId){
+                if(storeId == null ){
+                    SystemUser user = authenticateService.getCurrentLogin();
+                    Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+                    storeId=stuff.getStoreId();
+                }
             }
 
-            result.setTotal(nurseLogDao.queryLog(storeId,logType,memberName,stuffName).size());
+
+            result.setTotal(nurseLogDao.queryLog(storeId,logType,memberName,stuffName,memberId).size());
             PageHelper.startPage(page, limit);
-            List<NurseLog> nurseLogList=nurseLogDao.queryLog(storeId,logType,memberName,stuffName);
+            List<Map<String,Object>> nurseLogList=nurseLogDao.queryLog(storeId,logType,memberName,stuffName,memberId);
+            for(Map<String,Object> n:nurseLogList){
+                Pictures pic=picturesDao.getOnePicturesForCondition((Long)n.get("stuffId"),new Byte("1"),new Byte("0"));
+                if(null!=pic){
+                    n.put("picUrl",pic.getPicUrl());
+                }else{
+                    n.put("picUrl","");
+                }
+
+
+
+                List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff((Long)n.get("stuffId"));
+                if(stuffJobList.size() != 0 ){
+                    String str1="";
+                    for(StuffJob sj:stuffJobList){
+                        Job job=jobDao.getJobForId(sj.getJobId());
+
+                        if(null!=job){
+                            str1=str1+" "+job.getJobName();
+//                            if(n.getJobName()==null) {
+//                                n.setJobName("");
+//                                String str=n.getJobName()+job.getJobName();
+//                                n.setJobName(str);
+//                            }else{
+//                                String str=n.getJobName()+","+job.getJobName();
+//                                n.setJobName(str);
+//                            }
+                        }
+
+                    }
+                    n.put("jobName",str1);
+                }
+
+
+            }
             result.setData(nurseLogList);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
@@ -160,6 +203,7 @@ public class NurseLogController {
         }
         return result;
     }
+
 
     /**
      * 获取日志模板
@@ -188,16 +232,17 @@ public class NurseLogController {
     @ResponseBody
     @RequestMapping(value = "queryLogForSalon")
     @ApiOperation(value="院长角色查看各门店日志情况", notes="院长角色查看各门店日志情况")
-    public Result queryLogForSalon(Long salonId){
+    public Result queryLogForSalon(Long salonId,String logType){
         Result result=new Result();
         try {
             List<Salon> storeList=salonDao.getSalonForStoreId2(salonId);
 
             for(Salon s:storeList){
-
+                List<Map<String,Object>> nurseLogList=nurseLogDao.queryLog(s.getRecordId(),logType,null,null,null);
+                s.setLogSize(nurseLogList.size());
             }
 
-//          result.setData(nurseLogList);
+          result.setData(storeList);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){

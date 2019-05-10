@@ -745,6 +745,7 @@ create table nurse_log
   member_id                        bigint                          not null,   -- 会员
   log_content                      varchar(1000)                   not null,   -- 内容：里面包含有文字、表情(emoj)
   log_type                         tinyint                         not null,   -- 日志类型 0 回访日志 1 护理日志
+  reservation_id                   bigint                              null,   -- 关联预约
 
   -- parent_id                        bigint                          not null,   -- 前一主题的编号，如果是顶级主题，则parent_id = -1
   -- pic                      照片存储在照片表里面
@@ -936,7 +937,7 @@ create table work_summary
   record_id                     bigint              atuto_increment          not null,
   stuff_id                      bigint                                       not null, -- 员工 id
   summary                       varchar(1000)                                not null, -- 本月总结
-  plan                          varchar(1000)                                not null, -- 下月计划
+  plan                          varchar(1000)                                null, -- 下月计划
   cur_month                     date                                         not null, -- 报告的当前年月
   summary_type                  tinyint                                      not null, -- 总结类型 0 月总结  1 日总结
 
@@ -1042,7 +1043,7 @@ create table card_balance
 
   balance                      double(8,2)                                      not null,  -- 卡户余额/剩余 次数
 
-  balance_total                tinyint                                          not null,  -- 卡可使用总次数
+  balance_total                double(8,2)                                      not null,  -- 卡可使用总次数
   card_status                  tinyint                                          not null,  -- 卡的状态: 0.正常  1.失效
   date_expired                 datetime                                         null,      -- 失效时间：null表示永久有效
 
@@ -1063,13 +1064,13 @@ create table card_purchase
 (
   record_id                    bigint              auto_increment              not null,
   member_id                    bigint                                          not null,   -- 会员Id
-  card_id                      bigint                                          not null,   -- 卡Id、产品id
+  card_id                      bigint                                           not null,   -- 卡Id、产品id
   card_type                    tinyint                                         not null,
                -- 卡类型:0. 充值卡  1.套卡  2.次卡、3产品
                -- 如果是充值卡，写程序的时候要注意卡金额的合并
-  amount_market                double(8,2)                                     not null,   -- 原价
+  amount_market                double(8,2)                                     null,   -- 原价
   amount                       double(8,2)                                     not null,   -- 充值金额/总金额 = 原价 - 赠送金额(在子表中)
-  amount_debit                 double(8,2)                                     not null,   -- 欠款
+  amount_debit                 double(8,2)                                     null,   -- 欠款
   amount_payed                 double(8,2)                                     not null,   -- 实际支付/现金支付 = 交易价格-欠款
   method_payed                 tinyint                                         not null,
        -- 支付方式: 0.微信  1.支付宝  2.银行卡  3.现金  10 账户余额  11 充值卡余额
@@ -1077,7 +1078,7 @@ create table card_purchase
   remark                       varchar(500)                                    null,       -- 备注
   member_signature             bigint                                          not null,   -- 客户签名(系统照片ID)
 
-  recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡、2 产品
+  recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡、2 产品，3余额充值（暂时）
 
   create_date                  datetime                                         not null,  -- 创建时间
   create_by                    bigint                                           not null,

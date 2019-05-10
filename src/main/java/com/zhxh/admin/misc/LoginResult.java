@@ -18,6 +18,7 @@ public class LoginResult<T> {
     private int msgcode;
     private String msg;
     private boolean success;
+    private boolean areMember;
     private Long salonId;
     private List<SystemRole> listRole;
     private List<Job> listJob;
@@ -28,4 +29,6 @@ public class LoginResult<T> {
     private Stuff stuff;
 
     private String  salonName;
+
+
 }

@@ -506,9 +506,12 @@ public class StatisticsController {
         //获取前十名
         List<Map<String,Object>> stuffAmountList2=new ArrayList<>();
         for (int i=0;i<10;i++){
-            if(null!=stuffAmountList.get(i)){
-                stuffAmountList2.add(stuffAmountList.get(i));
+            if(stuffAmountList.size()-1>=i){
+                if(null!=stuffAmountList.get(i)){
+                    stuffAmountList2.add(stuffAmountList.get(i));
+                }
             }
+
 
         }
 

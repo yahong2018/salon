@@ -19,4 +19,8 @@ public class Reservation extends TraceableEntity<Long> {
     private Date date_;
     private Float duration;//时长
     private Byte memberSourc;//会员来源
+
+
+    private String stuffName;
+    private String memberName;
 }

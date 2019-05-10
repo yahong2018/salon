@@ -66,6 +66,9 @@ public class LoginController {
     @Resource(name = "stuffDao")
     private StuffDao stuffDao;
 
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
+
     @Resource(name = "stuffJobService")
     private StuffJobService stuffJobService;
     @RequestMapping("/login")
@@ -84,41 +87,58 @@ public class LoginController {
     })
     public LoginResult doLoginByApi(@RequestBody SystemUser user) {
         LoginResult result = new LoginResult();
+
         try {
             String userCode = user.getUserCode();
             String password = user.getPassword();
             authenticateService.authenticate(userCode, password);
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
             long id = systemUser.getRecordId();
-            Stuff stuff=stuffDao.getStuffForUser(id);
 
-            List<SystemRole> list = systemRoleService.getRoleListById(id);
-            List<Job> listJob = jobService.getJobList(stuff.getRecordId());
+            //判断账号属于员工还是属于顾客
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", id);
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+
+            if(roleUser.getRoleId()==3){
+            //顾客
+                result.setAreMember(true);
+                result.setMsg("登录成功！");
+                result.setSuccess(true);
+                result.setData(null);
+            }else{
+                Stuff stuff=stuffDao.getStuffForUser(id);
+                List<SystemRole> roleList = systemRoleService.getRoleListById(id);
+                List<Job> listJob = jobService.getJobList(stuff.getRecordId());
+
+                List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
 
 
-            List<Salon> salonList=salonDao.getSalonForStoreId2(stuff.getStoreId());
+                Salon salon=salonDao.getSalonForId(stuff.getStoreId());
 
+                if(salon.getAudit() == 0){
+                    result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                    result.setMsg("门店还未通过审核！");
+                    return result;
+                }
+                if(null != salon){
+                    result.setSalonName(salon.getSalonName());
+                }
 
-            Salon salon=salonDao.getSalonForId(stuff.getStoreId());
-
-            if(salon.getAudit() == 0){
-                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
-                result.setMsg("门店还未通过审核！");
-                return result;
+                result.setStuff(stuff);
+                result.setListSalon(salonList);
+                result.setSalonId(stuff.getStoreId());
+                result.setListRole(roleList);
+                result.setListJob(listJob);
+                result.setMsgcode(LoginResult.LOGIN_CODE_OK);
+                result.setMsg("登录成功！");
+                result.setSuccess(true);
+                result.setAreMember(false);
+                result.setData(null);
             }
-            if(null != salon){
-                result.setSalonName(salon.getSalonName());
-            }
 
-            result.setStuff(stuff);
-            result.setListSalon(salonList);
-            result.setSalonId(stuff.getStoreId());
-            result.setListRole(list);
-            result.setListJob(listJob);
-            result.setMsgcode(LoginResult.LOGIN_CODE_OK);
-            result.setMsg("登录成功！");
-            result.setSuccess(true);
-            result.setData(null);
+
 
         } catch (Exception e) {
             Logger.error(e);
@@ -185,6 +205,8 @@ public class LoginController {
 
         return LOGIN_URL;
     }
+
+
 
     @RequestMapping("/login/logout")
     public String logout(){

@@ -83,7 +83,7 @@ public class ReservationController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "recordId", value = "员工id", required = true, dataType = "Long")
     })
-    public Result getOneStuffListItem(Long recordId,String time,String timeStart,String timeEnd){
+    public Result getOneStuffListItem(Long recordId,String time,String timeStart,String timeEnd,Long memberId){
         Result result=new Result();
         if(StringUtils.isNotEmpty(time)){
             timeStart = time+" 00:00:00";
@@ -94,10 +94,20 @@ public class ReservationController {
         try {
             Map parameter = new HashMap();
             parameter.put("stuffId",recordId);
+            parameter.put("memberId", memberId);
             parameter.put("timeStart",timeStart);
             parameter.put("timeEnd", timeEnd);
             Map rMap = new HashMap();
-            String rwhere="stuff_id=#{stuffId} and time_start between #{timeStart} and #{timeEnd}";
+            String rwhere="";
+            if(null!=recordId){
+                rwhere="stuff_id=#{stuffId} ";
+            }
+            if(null!=memberId){
+                rwhere="member_id=#{memberId} ";
+            }
+            if(null!=time){
+                rwhere=rwhere+" and time_start between #{timeStart} and #{timeEnd}";
+            }
             rMap.put("where", rwhere);
             List<Reservation> reservationlist = reservationDao.getList(rMap, parameter);
             JSONArray jsonArrayL = new JSONArray();
@@ -116,15 +126,22 @@ public class ReservationController {
                     parameterP.put("cardId",serviceId);
                     String rwhereP="card_id=#{cardId} and member_id=#{memberId}";
                     CardBalance cardBalance = cardBalanceDao.getOne(rwhereP,parameterP);
-                    jsonObject1.put("balance",cardBalance.getBalance());
-                    jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
+                    if(null!=cardBalance){
+                        jsonObject1.put("balance",cardBalance.getBalance());
+                        jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
+                    }else{
+                        jsonObject1.put("balance",0);
+                        jsonObject1.put("balanceTotal",0);
+                    }
+
                     jsonObject1.put("serviceName",serviceName);
                     jsonObject1.put("serviceId",serviceId);
+
                     jsonArray.add(jsonObject1);
                 }
 
 
-
+                jsonObject.put("reservationId",reservation.getRecordId());
                 jsonObject.put("service",jsonArray);//预约项目
 
                 Map parameterP = new HashMap();
@@ -923,6 +940,45 @@ public class ReservationController {
             result.setMsgcode("200");
         }
         return result;
+    }
+
+    /**
+     * 预约详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "getReservationData")
+    @ApiOperation(value="预约详情", notes="预约详情")
+    public Result getReservationData(Long reservationId){
+        JSONObject jsonObj=new JSONObject();
+        Reservation reservation = reservationDao.getById(reservationId);
+        String where="reservation_id=#{reservation_id}";
+        Map parameters = new HashMap();
+        parameters.put("reservation_id", reservation.getRecordId());
+        List<ReservationItem> reservationItem  =  reservationItemDao.getByWhere(where,parameters);
+        if(reservationItem.size()>0){
+            for(ReservationItem reservationItem1:reservationItem){
+                Service service=serviceDao.queryOneService(reservationItem1.getServiceId());
+                if(null!=service){
+                    reservationItem1.setServiceName(service.getServiceName());
+                }
+
+            }
+        }
+
+        Stuff stuff=stuffDao.getStuffForRecordId(reservation.getStuffId());
+        Member member=memberDao.getMemberForId(reservation.getMemberId());
+        reservation.setStuffName(stuff==null?"":stuff.getStuffName());
+        reservation.setMemberName(member==null?"":member.getMemberName());
+
+
+        jsonObj.put("reservation",reservation);
+        jsonObj.put("ReservationItem",reservationItem);
+        Result result  = new Result();
+        result.setData(jsonObj);
+        result.setSuccess(true);
+        result.setMsgcode(StatusUtil.OK);
+        return result;
+
     }
 
 

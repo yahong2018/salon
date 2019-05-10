@@ -13,4 +13,6 @@ public class ReservationItem extends TraceableEntity<Long> {
 
     private Long serviceId;
 
+    private String serviceName;
+
 }

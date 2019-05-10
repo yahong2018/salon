@@ -18,7 +18,7 @@ public class CardBalance extends TraceableEntity<Long> {
 
     private Double balance;
 
-    private Byte balanceTotal;
+    private Double balanceTotal;
 
     private Byte cardStatus;
 

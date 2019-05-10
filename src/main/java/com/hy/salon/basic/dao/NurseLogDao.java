@@ -23,9 +23,10 @@ public class NurseLogDao extends BaseDAOWithEntity<NurseLog> {
 
 
 
-    public List<NurseLog> queryLog(Long storeId, String logType,String memberName,String stuffName) {
+    public List<Map<String,Object>> queryLog(Long storeId, String logType,String memberName,String stuffName,Long memberId) {
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
+        parameters.put("memberId", memberId);
         if("".equals(logType)){
             logType=null;
         }

@@ -1,14 +1,18 @@
 package com.hy.salon.basic.entity;
 
-import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.data.TraceableEntity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @DataTableConfiguration("arrearages_record")
 @Data
-public class ArrearagesRecord extends BaseDAOWithEntity<Long> {
+@Getter
+@Setter
+public class ArrearagesRecord extends TraceableEntity<Long> {
     private Long recordId;
 
     private Long refTransId;

@@ -159,7 +159,7 @@
     <select id="GET_JOB_BY_USERID"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Job">
 
      SELECT job.* FROM salon.job as job left join salon.stuff_job as stuffjob on job.record_id= stuffjob.job_id
-      where stuffjob.stuff_id= #{stuffId};
+      where stuffjob.stuff_id= #{stuffId} order by job.job_level;
 
     </select>
 
@@ -476,8 +476,7 @@ group by ss.record_id;
         c.is_paid_off as isPaidOff
         from arrearages_record c
         left join member m on c.member_id = m.record_id
-        where 1=1 and
-        m.initial_store_id =#{storeId}
+        where 1=1
 
         <if test="memberId != null">
             and  c.member_id = #{memberId}
@@ -519,11 +518,18 @@ group by ss.record_id;
       and DATE_FORMAT(spsm.create_date,'%Y-%m-%d')=#{days};
     </select>
 
-    <select id="GET_LOG_FOR_STORE_ID"  parameterType="java.util.Map" resultType="java.util.Map">
-      SELECT snl.log_content as logContent,ss2.stuff_name as stuffName,sm.member_name as memberName,snl.create_date as createDate,snl.log_type logType FROM salon.nurse_log as snl
+    <select id="GET_LOG_FOR_STORE_ID"  parameterType="java.util.Map"  resultType="java.util.Map">
+      SELECT snl.log_content as logContent,ss2.stuff_name as stuffName,sm.member_name as memberName,snl.create_date as createDate,snl.log_type logType,sm.member_grade as memberGrade,ss2.record_id stuffId,snl.reservation_id as reservationId
+       FROM salon.nurse_log as snl
       left join salon.stuff as ss2 on ss2.record_id = snl.stuff_id
       left join salon.member as sm on snl.member_id = sm.record_id
-      where snl.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id=#{storeId})
+      <where>
+          <if test="storeId != null">
+              and snl.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id=#{storeId})
+          </if>
+          <if test="memberId != null">
+              and snl.member_id =#{memberId}
+          </if>
       <if test="logType != null">
       and snl.log_type=#{logType}
       </if>
@@ -533,7 +539,7 @@ group by ss.record_id;
         <if test="stuffName != null">
             and ss2.stuff_name=#{stuffName}
         </if>
-
+      </where>
     </select>
 
 

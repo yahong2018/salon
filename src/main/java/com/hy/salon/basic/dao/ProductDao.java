@@ -153,6 +153,7 @@ public class ProductDao extends BaseDAOWithEntity<Product> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serviceName",product.getProductName());
             jsonObject.put("price",product.getPrice());
+            jsonObject.put("productId",product.getRecordId());
             String where = " card_id = #{card_id} and member_id=#{member_id}";
             Map parameters = new HashMap();
             parameters.put("card_id", product.getRecordId());

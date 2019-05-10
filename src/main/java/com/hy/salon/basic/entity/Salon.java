@@ -33,4 +33,6 @@ public class Salon extends TraceableEntity<Long> {
 
     private Integer stuffSize;
     private Integer summarySize;
+
+    private Integer logSize;
 }

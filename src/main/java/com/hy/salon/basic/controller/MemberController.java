@@ -75,6 +75,8 @@ public class MemberController extends SimpleCRUDController<Member> {
     @Resource(name = "systemRoleDAO")
     private SystemRoleDAO systemRoleDAO;
 
+    @Resource(name = "memberWalletDAO")
+    private MemberWalletDAO MemberWalletDao;
 
 
 
@@ -156,6 +158,12 @@ public class MemberController extends SimpleCRUDController<Member> {
             List<Map<String,Object>> tag=TagDao.getMemberTag(member.getRecordId());
 
             Salon salon=salonDao.getSalonForId(member.getInitialStoreId());
+
+            //获取顾客钱包
+            MemberWallet memberWallet= MemberWalletDao.getMemberWalletForMemberId(member.getRecordId());
+
+
+            json.put("memberWallet",memberWallet);
             json.put("salon",salon);
             json.put("tag",tag);
             json.put("member",member);
@@ -200,14 +208,38 @@ public class MemberController extends SimpleCRUDController<Member> {
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
             if(condition.getRecordId()==null){
+
+                //检查该手机号是否被使用
+                SystemUser user2=systemUserDAO.getUserByCode(condition.getTel());
+                if(null != user2){
+                    result.setMsg("该账号已被使用");
+                    result.setSuccess(false);
+                    result.setMsgcode(StatusUtil.ERROR);
+                    return result;
+                }
+
+                condition.setPrimaryBeautician(stuff.getRecordId());
+
                 condition.setInitialStoreId(stuff.getStoreId());
-                condition.setBalanceCash(new Double(0));
-                condition.setBalanceTotal(new Double(0));
-                condition.setIntegral(new Double(0));
-                condition.setDebt(new Double(0));
-                condition.setAmountCharge(new Double(0));
-                condition.setAmountConsumer(new Double(0));
+//                condition.setBalanceCash(new Double(0));
+//                condition.setBalanceTotal(new Double(0));
+//                condition.setIntegral(new Double(0));
+//                condition.setDebt(new Double(0));
+//                condition.setAmountCharge(new Double(0));
+//                condition.setAmountConsumer(new Double(0));
                 memberDao.insert(condition);
+
+                //创建钱包
+                MemberWallet memberWallet=new MemberWallet();
+                memberWallet.setMemberId(condition.getRecordId());
+                memberWallet.setBalanceCash(new Double(0));
+                memberWallet.setBalanceTotal(new Double(0));
+                memberWallet.setIntegral(new Double(0));
+                memberWallet.setDebt(new Double(0));
+                memberWallet.setAmountCharge(new Double(0));
+                memberWallet.setAmountConsumer(new Double(0));
+                MemberWalletDao.insert(memberWallet);
+
                 MemberTag tag=new MemberTag();
                 tag.setMemberId(condition.getRecordId());
                 tag.setTagId(tagId);

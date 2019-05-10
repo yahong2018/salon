@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class WorkSummaryController {
     public Result addWorkSummary(WorkSummary condition){
         Result result=new Result();
         try {
+            condition.setCurMonth(new Date());
             workSummaryDao.insert(condition);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -184,7 +186,7 @@ public class WorkSummaryController {
 
             List<Stuff> stuffList=stuffDao.getStuffForStoreId(recordId);
             for(Stuff s:stuffList){
-                List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(s.getRecordId(),startTime,endTime);
+                List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(s.getRecordId(),startTime,endTime,null);
                 s.setWorkSummarySize(workSummaryList.size());
 
                 List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(s.getRecordId());
@@ -222,12 +224,12 @@ public class WorkSummaryController {
     @ResponseBody
     @RequestMapping(value = "queryWorkSummary")
     @ApiOperation(value="获取该员工的工作总结", notes="获取该员工的工作总结")
-    public Result queryWorkSummary(Long recordId){
+    public Result queryWorkSummary(Long recordId,Long summaryType){
         Result result=new Result();
         try {
-            List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(recordId,null,null);
+            List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(recordId,null,null,summaryType);
 
-
+            result.setData(workSummaryList);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
         }catch (Exception e){
@@ -287,6 +289,7 @@ public class WorkSummaryController {
         }
         return result;
     }
+
 
 
 }

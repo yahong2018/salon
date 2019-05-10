@@ -24,14 +24,19 @@ public class WorkSummaryDao extends BaseDAOWithEntity<WorkSummary> {
 
 
 
-    public List<WorkSummary> getSummaryForStuff(Long stuffId,String startTime,String endTime){
-        String where = "stuff_dd=#{stuffId} ";
+    public List<WorkSummary> getSummaryForStuff(Long stuffId,String startTime,String endTime,Long summaryType){
+        String where = "stuff_id=#{stuffId} ";
 
         if(null!=startTime){
-            where = "and create_date > #{startTime} and create_date < #{endTime}";
+            where = where+" and create_date > #{startTime} and create_date < #{endTime} ";
+        }
+
+        if(null!=summaryType){
+            where = where+" and summary_type = #{summaryType}";
         }
 
         Map parameters = new HashMap();
+        parameters.put("summaryType", summaryType);
         parameters.put("stuffId", stuffId);
         parameters.put("startTime", startTime);
         parameters.put("endTime", endTime);

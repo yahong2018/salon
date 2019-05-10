@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.entity.ArrearagesRecord;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.util.DateString;
@@ -35,7 +36,7 @@ public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
             parameters.put("timeStart", timeStart);
             parameters.put("timeEnd", timeEnd);
         }
-        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
+//        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_ARREARSLIST, parameters);
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         extJsResult.setSuccess(true);
@@ -76,6 +77,7 @@ public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
             }
         }
         extJsResult.setData(jsonArray);
+        extJsResult.setMsgcode(StatusUtil.OK);
         return extJsResult;
 
     }

@@ -1,11 +1,10 @@
-package com.hy.salon.basic.controller;
+package com.hy.score.controller;
 
 import com.hy.salon.basic.dao.*;
-import com.hy.salon.basic.entity.*;
-import com.zhxh.admin.entity.SystemUser;
-import com.zhxh.admin.service.AuthenticateService;
+import com.hy.salon.basic.entity.ArrearagesRecord;
+import com.hy.salon.basic.entity.MemberWallet;
+import com.hy.salon.basic.entity.RepaymentRecord;
 import com.zhxh.core.web.ExtJsResult;
-import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,71 +17,22 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-
 @Controller
-@RequestMapping("/hy/basic/arrearagesRecord")
-@Api(value = "ArrearagesRecordController| 还欠款控制器")
-public class ArrearagesRecordController  {
+@RequestMapping("/hy/score/arrearagesRecord")
+@Api(value = "ArrearagesRecordForSeoreController| 还款控制器")
+public class ArrearagesRecordForScoreController {
 
 
     @Resource(name = "arrearagesRecordDao")
     private ArrearagesRecordDao arrearagesRecordDao;
 
-    @Resource(name = "memberDao")
-    private MemberDao memberDao;
 
     @Resource(name="repaymentRecordDao")
     private RepaymentRecordDao repaymentRecordDao;
 
-    @Resource(name = "authenticateService")
-    private AuthenticateService authenticateService;
-    @Resource(name = "stuffDao")
-    private StuffDao stuffDao;
 
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
-    /**
-     * 欠款记录列表
-     */
-    @ResponseBody
-    @RequestMapping("/getSystemArrearsList")
-    @ApiOperation(value="欠款记录列表", notes="欠款记录列表")
-    public ExtJsResult getSystemArrearsList(HttpServletRequest request,Long memberId,Long recordId,String toDays){
-        if(recordId==null){
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-            recordId = stuff2.getStoreId();
-        }
-
-        //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberId,recordId, request,toDays);
-
-
-        return  VipSuiteList;
-    }
-
-
-    /**
-     * 还欠款记录列表
-     */
-    @ResponseBody
-    @RequestMapping("/getSystemRepaymentRecordList")
-    @ApiOperation(value="欠款记录列表", notes="欠款记录列表")
-    public ExtJsResult getSystemRepaymentRecordList(HttpServletRequest request,String memberName,Long recordId,String toDays,Long arrearagesRecord){
-        if(recordId==null){
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
-            recordId = stuff2.getStoreId();
-        }
-
-        //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=repaymentRecordDao.getSystemRepaymentRecordList(memberName,arrearagesRecord, request);
-
-
-        return  VipSuiteList;
-    }
-
-
 
 
     @ResponseBody
@@ -97,14 +47,14 @@ public class ArrearagesRecordController  {
             @ApiImplicitParam(paramType = "query", name = "remark", value = "备注", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "memberSignature", value = "签名id", required = true, dataType = "long"),
     })
-    public ExtJsResult toArrears(HttpServletRequest request,long arrearagesRecordId,long memberId,double amountDebit,byte methodPayed,String remark,long memberSignature){
+    public ExtJsResult toArrears(HttpServletRequest request, long arrearagesRecordId, long memberId, double amountDebit, byte methodPayed, String remark, long memberSignature){
 //        Member member = memberDao.getById(memberId);
         //获取顾客钱包
         MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(memberId);
         ArrearagesRecord arrearagesRecord = arrearagesRecordDao.getById(arrearagesRecordId);//要还款的记录
         double AmountDept = arrearagesRecord.getAmountDept();
         double temp =AmountDept -  amountDebit -arrearagesRecord.getReimbursement();
-        RepaymentRecord  repaymentRecord = new RepaymentRecord();
+        RepaymentRecord repaymentRecord = new RepaymentRecord();
         repaymentRecord.setArrearagesRecord(arrearagesRecord.getRecordId());
         repaymentRecord.setReimbursementDate(new Date());
         repaymentRecord.setReimbursementAmount(amountDebit);
@@ -132,9 +82,5 @@ public class ArrearagesRecordController  {
         ejr.setSuccess(true);
         return  ejr;
     }
-
-
-
-
 
 }
