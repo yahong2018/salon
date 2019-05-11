@@ -59,9 +59,9 @@ public class WorkSummaryService {
         return list;
     }
 
-    public List<SalonVo> getWorkSummary() {
+    public List<SalonVo> getWorkSummary(Long storeId) {
         List<SalonVo> list=new ArrayList<>();
-        List<Salon> salonList = salonDao.getSalon();
+        List<Salon> salonList = salonDao.getSalonForStoreId2(storeId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (Salon salon : salonList) {
             SalonVo vo=new SalonVo();

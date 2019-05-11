@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,14 +69,20 @@ public class MemberProductKeepDao  extends BaseDAOWithEntity<MemberProductKeep> 
         return  result;
     }
 
-    public Result getMemberProductKeepList(Long memberId) {
+    public Result getMemberProductKeepList(Long memberId) throws ParseException {
         Result result = new Result();
-        PageHelper.startPage(Integer.parseInt("1"),2);
+//        PageHelper.startPage(Integer.parseInt("1"),2);
         Map parameters = new HashMap();
         if(StringUtils.isNotEmpty(memberId+"")){
             parameters.put("memberId",memberId);
         }
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_MEMBERPRODUCTKEEP, parameters);
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for(Map m:listMap){
+
+            Date date = sDateFormat.parse(m.get("createDate").toString());
+        }
+
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
 
         result.setMsg("获取成功");

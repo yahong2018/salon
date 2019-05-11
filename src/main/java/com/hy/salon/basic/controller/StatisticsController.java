@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.Member;
+import com.hy.salon.basic.entity.MemberWallet;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.vo.Result;
@@ -14,6 +15,7 @@ import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,6 +64,10 @@ public class StatisticsController {
 
     @Resource(name = "memberProductRejectDao")
     private MemberProductRejectDao memberProductRejectDao;
+
+
+    @Resource(name = "memberWalletDAO")
+    private MemberWalletDAO MemberWalletDao;
     /**
      * 数据统计
      */
@@ -524,6 +530,42 @@ public class StatisticsController {
         r.setSuccess(true);
         return r;
     }
+
+
+    /**
+     * 给每个顾客添加一个钱包
+     */
+
+    @RequestMapping("addWallet")
+    @ResponseBody
+    public Result auditPass() {
+        Result r= new Result();
+
+        List<Member> memberList=memberDao.getAll();
+        for(Member m:memberList){
+            MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(m.getRecordId());
+            if(null==memberWallet){
+                memberWallet=new MemberWallet();
+                memberWallet.setMemberId(m.getRecordId());
+                memberWallet.setBalanceCash(new Double(0));
+                memberWallet.setBalanceTotal(new Double(0));
+                memberWallet.setIntegral(new Double(0));
+                memberWallet.setDebt(new Double(0));
+                memberWallet.setAmountCharge(new Double(0));
+                memberWallet.setAmountConsumer(new Double(0));
+                memberWallet.setCashCoupon(new Double(0));
+                MemberWalletDao.insert(memberWallet);
+            }
+
+        }
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
 
 
 

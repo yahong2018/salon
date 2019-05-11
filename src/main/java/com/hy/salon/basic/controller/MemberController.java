@@ -238,6 +238,7 @@ public class MemberController extends SimpleCRUDController<Member> {
                 memberWallet.setDebt(new Double(0));
                 memberWallet.setAmountCharge(new Double(0));
                 memberWallet.setAmountConsumer(new Double(0));
+                memberWallet.setCashCoupon(new Double(0));
                 MemberWalletDao.insert(memberWallet);
 
                 MemberTag tag=new MemberTag();
@@ -251,7 +252,7 @@ public class MemberController extends SimpleCRUDController<Member> {
                 userController.setUserName(condition.getMemberName());
                 String passwordMd5 = StringUtilsExt.getMd5("123456");
                 userController.setPassword(passwordMd5);
-                userController.setUserStatus(1);
+                userController.setUserStatus(0);
                 systemUserDAO.insert(userController);
 
 

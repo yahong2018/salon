@@ -1096,7 +1096,7 @@ create table card_purchase
 create table member_gift
 (
   record_id                    bigint               auto_increment               not null,
-  member_id                    bigint                                            not null,  -- 会员Id
+ -
   ref_trans_id                 bigint                                            not null,  -- 参考交易Id，比如 充值/买卡Id
   trans_type                   tinyint                                           not null,  -- 交易类型: 0.购卡/充值交易
   gift_type                    tinyint                                           not null,

@@ -81,10 +81,10 @@ public class WorkSummaryController {
     @ResponseBody
     @RequestMapping(value = "getWorkSummary",method = RequestMethod.GET)
     @ApiOperation(value="查询当月各门店员工已写工作总结数", notes="查询当月各门店员工已写工作总结数")
-    public Result getWorkSummary(){
+    public Result getWorkSummary(Long storeId){
         Result result=new Result();
         try {
-            List<SalonVo> list = workSummaryService.getWorkSummary();
+            List<SalonVo> list = workSummaryService.getWorkSummary(storeId);
             result.setData(list);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
@@ -207,6 +207,7 @@ public class WorkSummaryController {
 
 
             }
+            result.setData(stuffList);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
         }catch (Exception e){
