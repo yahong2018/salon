@@ -78,6 +78,8 @@ public class MemberController extends SimpleCRUDController<Member> {
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
 
+    @Resource(name = "cardPurchaseDao")
+    private CardPurchaseDao cardPurchaseDao;
 
 
     @Override
@@ -537,5 +539,52 @@ public class MemberController extends SimpleCRUDController<Member> {
 
         return r;
     }
+
+
+    @ResponseBody
+    @RequestMapping("/memberWallet")
+    @ApiOperation(value="顾客角色钱包", notes="顾客角色钱包")
+    public Result memberWallet(Long memberId){
+        Result r= new Result();
+            try {
+                MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(memberId);
+
+                r.setData(memberWallet);
+                r.setMsg("");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
+
+
+        return r;
+    }
+
+    @ResponseBody
+    @RequestMapping("/memberRechargeData")
+    @ApiOperation(value="顾客角色充值明细", notes="顾客角色充值明细")
+    public Result memberRechargeData(Long memberId, String rechargeType){
+        Result r= new Result();
+        try {
+            List<CardPurchase> cardPurchaseList=cardPurchaseDao.getCardPurchase(memberId,rechargeType);
+
+            r.setData(cardPurchaseList);
+            r.setMsg("");
+            r.setSuccess(true);
+            r.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+
+        return r;
+    }
+
+
 
 }

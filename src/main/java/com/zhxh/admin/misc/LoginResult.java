@@ -1,6 +1,7 @@
 package com.zhxh.admin.misc;
 
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.Member;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
 import com.zhxh.admin.entity.SystemRole;
@@ -29,6 +30,8 @@ public class LoginResult<T> {
     private Stuff stuff;
 
     private String  salonName;
+
+    private Member member;
 
 
 }

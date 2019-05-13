@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +128,7 @@ public class MemberProductKeepController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "memberId", value = "会员id", required = true, dataType = "Long")
     })
-    public Result getMemberProductKeepList(Long memberId) {
+    public Result getMemberProductKeepList(Long memberId) throws ParseException {
         Result result =    memberProductKeepDao.getMemberProductKeepList(memberId);
         return  result;
     }

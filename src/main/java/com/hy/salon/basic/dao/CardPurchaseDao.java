@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hy.salon.basic.entity.CardBalance;
-import com.hy.salon.basic.entity.CardPurchase;
-import com.hy.salon.basic.entity.Service;
-import com.hy.salon.basic.entity.StuffScoreRecord;
+import com.hy.salon.basic.entity.*;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
@@ -122,6 +119,22 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
         parameters.put("startTime", startTime);
         parameters.put("endTime", endTime);
         return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_AMOUNT_FRO_STUFF, parameters);
+    }
+
+
+    public List<CardPurchase> getCardPurchase(Long memberId, String rechargeType){
+        String where = "member_id=#{memberId} ";
+
+
+        if("0".equals(rechargeType)){
+            where = where+" and recharge_type in(0,1)";
+        }
+
+        Map parameters = new HashMap();
+        parameters.put("memberId", memberId);
+
+
+        return this.getByWhere(where, parameters);
     }
 
 

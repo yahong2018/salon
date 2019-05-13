@@ -137,7 +137,7 @@ public class WorkSummaryController {
 
                         Map<String,Object> summarySize=workSummaryDao.querySummarySize(s.getRecordId());
                         if(null != summarySize){
-                            s.setSummarySize((Integer) summarySize.get("summarySize"));
+                            s.setSummarySize(((Long) summarySize.get("summarySize")).intValue());
                         }else{
                             s.setSummarySize(0);
                         }
@@ -152,7 +152,7 @@ public class WorkSummaryController {
 
                         Map<String,Object> summarySize=workSummaryDao.querySummarySize(s.getRecordId());
                         if(null != summarySize){
-                            s.setSummarySize((Integer) summarySize.get("summarySize"));
+                            s.setSummarySize(((Long) summarySize.get("summarySize")).intValue());
                         }else{
                             s.setSummarySize(0);
                         }

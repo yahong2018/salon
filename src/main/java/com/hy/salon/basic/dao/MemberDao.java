@@ -210,6 +210,13 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
         return this.getOne(where, parameters);
     }
 
+    public Member getMemberForTel(String  tel){
+        String where = "tel=#{tel}";
+        Map parameters = new HashMap();
+        parameters.put("tel", tel);
+        return this.getOne(where, parameters);
+    }
+
 
     public List<Member> getMemberForTime(String startTime,String endTime,Long storeId){
 

@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.common.handler.Authorized;
+import com.hy.salon.basic.dao.MemberDao;
 import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
-import com.hy.salon.basic.entity.Job;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
-import com.hy.salon.basic.entity.StuffJob;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.StuffJobService;
 import com.hy.salon.basic.vo.Result;
@@ -69,6 +67,9 @@ public class LoginController {
     @Resource(name = "roleUserDAO")
     private RoleUserDAO roleUserDAO;
 
+    @Resource(name = "memberDao")
+    private MemberDao memberDao;
+
     @Resource(name = "stuffJobService")
     private StuffJobService stuffJobService;
     @RequestMapping("/login")
@@ -103,6 +104,9 @@ public class LoginController {
 
             if(roleUser.getRoleId()==3){
             //顾客
+
+                Member member=memberDao.getMemberForTel(user.getUserCode());
+                result.setMember(member);
                 result.setAreMember(true);
                 result.setMsg("登录成功！");
                 result.setSuccess(true);
