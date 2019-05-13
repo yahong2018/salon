@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.hy.salon.stock.entity.ProductStock;
+
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -49,6 +51,12 @@ public class MemberProductKeepController {
 
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
+
+    @Resource(name="businessStuffDao")
+    private  BusinessStuffDao businessStuffDao;
+
+    @Resource(name="productStockDAO")
+    private ProductStockDAO  ProductStockDao;
 
     /**
      * 会员退款寄存库产品列表
@@ -145,7 +153,7 @@ public class MemberProductKeepController {
             @ApiImplicitParam(paramType="query", name = "remark", value = "备注", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "memberSignature", value = "客户签名(系统照片ID)", required = true, dataType = "Long"),
     })
-    public Result receiveMemberProductKeep(MemberProductGetRecord memberProductGetRecord) {
+    public Result receiveMemberProductKeep(MemberProductGetRecord memberProductGetRecord,String stuffIdListJson) {
         Result result = new Result();
        long  memberProductKeepItemId = memberProductGetRecord.getMemberProductKeepItem();
         MemberProductKeepItem memberProductKeepItem = memberProductKeepItemDao.getById(memberProductKeepItemId);//获取寄存产品明细
@@ -156,15 +164,37 @@ public class MemberProductKeepController {
 
         double qty  =  memberProductGetRecord.getQty();
         if(temp>=qty){//说明可以领取
+            ProductStock proStock= ProductStockDao.getOneProdectStockForId(memberProductKeepItem.getProductId());
+            if(proStock==null || proStock.getStockQty()<1){
+                result.setSuccess(false);
+                result.setMsgcode("200");
+                result.setMsg("仓库库存不足");
+            }
+
             memberProductKeepItem.setQtyReceived(memberProductKeepItem.getQtyReceived()+qty);
         }else{//不能领取
             result.setSuccess(false);
             result.setMsgcode("200");
             result.setMsg("不能领取");
         }
+
+
         memberProductGetRecordDao.insert(memberProductGetRecord);
 
         memberProductKeepItemDao.update(memberProductKeepItem);
+
+
+
+        net.sf.json.JSONArray stuffListArr=net.sf.json.JSONArray.fromObject(stuffIdListJson);
+        List<Long> stufflist = net.sf.json.JSONArray.toList(stuffListArr, Long.class);// 转换成实体类
+
+        for(Long stuffId:stufflist){
+            BusinessStuff businessStuff  = new BusinessStuff();
+            businessStuff.setStuffId(stuffId);
+            businessStuff.setTransType((byte)0);
+            businessStuff.setRefTransId(memberProductGetRecord.getRecordId());
+            businessStuffDao.insert(businessStuff);//关联员工
+        }
 
         result.setSuccess(true);
         result.setMsgcode("0");

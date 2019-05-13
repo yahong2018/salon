@@ -424,11 +424,20 @@ group by ss.record_id;
         c.card_type as cardType,
         c.amount_market as amountMarket,
         c.amount as amount,
-        m.member_name as memberName
+        m.member_name as memberName,
+        c.create_date as createDate
         from card_purchase c
         left join member m on c.member_id = m.record_id left join  vip_suite v on c.card_id = v.record_id
-        where 1=1 and
-        m.initial_store_id =#{storeId}
+        where 1=1
+
+        <if test="role == 2 ">
+            and m.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
+
         <if test="memberName != null ">
             and
             m.member_name=#{memberName}
@@ -437,6 +446,7 @@ group by ss.record_id;
             and
             c.create_date between  #{timeStart} and #{timeEnd}
         </if>
+        order by c.create_date desc
     </select>
 
 
@@ -572,7 +582,7 @@ group by ss.record_id;
 
 
     <select id="GET_MEMBERPRODUCTKEEP"  parameterType="java.util.Map" resultType="java.util.Map">
-       select m.record_id  as recordId,p.product_name as productName,p.price price ,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
+       select m.record_id  as recordId,p.product_name as productName,p.price price ,p.record_id productId,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
         member_product_keep_item mi on m.record_id = mi.member_product_keep_id
         left join product p on mi.product_id = p.record_id
         where m.member_id = #{memberId}

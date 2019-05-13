@@ -5,8 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.*;
-import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.web.*;
@@ -18,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -93,6 +93,9 @@ public class RechargeController {
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
 
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
+
     @Resource(name = "reservationDao")
     private ReservationDao reservationDao;
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
@@ -123,14 +126,28 @@ public class RechargeController {
     @RequestMapping("/getSystemRechargeList")
     @ApiOperation(value="会员卡充值记录列表", notes="会员卡充值记录列表")
     public ExtJsResult getSystemRechargeList(HttpServletRequest request,String memberId,Long recordId,String toDays){
+        String role="0";
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
             recordId = stuff2.getStoreId();
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberId,recordId, request,toDays);
+        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberId,recordId, request,toDays,role);
         return  VipSuiteList;
     }
 
@@ -292,7 +309,7 @@ public class RechargeController {
                     memberProductKeepItem.setMemberProductKeepId(memberProductKeep.getRecordId());
                     memberProductKeepItem.setProductId(product.getRecordId());
                     memberProductKeepItem.setPrice(balance);
-                    memberProductKeepItem.setQtyPurchased((double)1);
+                    memberProductKeepItem.setQtyPurchased(mg.getQty());
                     memberProductKeepItem.setAmount(1*balance);
                     memberProductKeepItem.setQtyReceived((double)0);
                     memberProductKeepItem.setProductGetType((byte) 1);

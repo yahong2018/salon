@@ -52,6 +52,9 @@ public class WorkSummaryController {
     @Resource(name = "nurseLogDao")
     private NurseLogDao nurseLogDao;
 
+    @Resource(name = "reservationDao")
+    private ReservationDao reservationDao;
+
     /**
      * 按门店查询当天员工已写总结数
      */
@@ -274,13 +277,16 @@ public class WorkSummaryController {
             //护理日志
             List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1");
 
+            //服务次数
+            List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3");
 
+            stuffAmountMap.put("serviceSize",reservationList.size());
             stuffAmountMap.put("returnLogSize",NurseLogList1.size());
             stuffAmountMap.put("nursingLogSize",NurseLogList2.size());
             stuffAmountMap.put("paymentAmount",paymentAmount);
             stuffAmountMap.put("consumptionAmount",consumptionAmount);
 
-
+            result.setData(stuffAmountMap);
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
         }catch (Exception e){

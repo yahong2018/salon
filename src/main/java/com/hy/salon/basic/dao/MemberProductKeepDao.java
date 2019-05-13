@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.entity.MemberProductKeep;
 import com.hy.salon.basic.entity.MemberSalonTag;
+import com.hy.salon.basic.entity.Pictures;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +29,9 @@ public class MemberProductKeepDao  extends BaseDAOWithEntity<MemberProductKeep> 
 
     @Resource(name="memberDao")
     private MemberDao memberDao;
+
+    @Resource(name = "picturesDao")
+    private PicturesDAO picturesDao;
 
 
     protected final static String SQL_GET_MEMBERPRODUCTKEEP = "com.hy.salon.basic.dao.GET_MEMBERPRODUCTKEEP";
@@ -77,10 +82,25 @@ public class MemberProductKeepDao  extends BaseDAOWithEntity<MemberProductKeep> 
             parameters.put("memberId",memberId);
         }
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_MEMBERPRODUCTKEEP, parameters);
-        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
         for(Map m:listMap){
 
             Date date = sDateFormat.parse(m.get("createDate").toString());
+            String first = sDateFormat.format(date);
+            m.put("createDate",first);
+            if(new BigDecimal((Double) m.get("qtyPurchased")).compareTo(new BigDecimal((Double)m.get("qtyReceived")))==0){
+                  m.put("receive","1");
+            }else{
+                m.put("receive","0");
+            }
+            List<Pictures> pic=picturesDao.getPicturesForCondition((Long)m.get("productId"),new Byte("5"),new Byte("0"));
+            if(null!=pic && pic.size()!=0){
+                m.put("picUrl",pic.get(0).getPicUrl());
+            }else{
+                m.put("picUrl","");
+            }
+
+
         }
 
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);

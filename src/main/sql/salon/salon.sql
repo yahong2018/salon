@@ -1081,7 +1081,7 @@ create table card_purchase
   recharge_type                tinyint                                         not null,  -- 充值类型 0 旧卡充值  1 新购卡、2 产品，3余额充值（暂时）
 
   create_date                  datetime                                         not null,  -- 创建时间
-  create_by                    bigint                                           not null,
+  create_by                    bigmember_product_keepint                                           not null,
   update_date                  datetime                                         null,
   update_by                    bigint                                           null,
   opt_lock                     int                                              null,
@@ -1304,7 +1304,9 @@ create table arrearages_record
   arrearages_date            datetime                                          not null,  -- 欠款日期
   arrearages_type            tinyint                                           not null,  -- 欠款产生类型  0  充值  1 划卡 2 消费
   amount_of_real_pay         double(8,2)                                       not null,  -- 实付金额
-  amount_payable             double(8,2)                                       not null,  -- 应付总额
+  amount_payable             double(8,2)
+  primary key (record_id),
+  index idx_arrearages_record_01 (ref_trans_id),  not null,  -- 应付总额
   amount_dept                double(8,2)                                       not null,  -- 欠款金额
   reimbursement              double(8,2)                                       not null,  -- 已还款
   is_paid_off                tinyint                                           not null,  -- 是否还清 0 是 1 否
@@ -1315,8 +1317,6 @@ create table arrearages_record
   update_by                  bigint                                            null,
   opt_lock                   int                                               null,
 
-  primary key (record_id),
-  index idx_arrearages_record_01 (ref_trans_id),
   index idx_arrearages_record_02 (arrearages_date),
 )comment '欠款记录表';
 

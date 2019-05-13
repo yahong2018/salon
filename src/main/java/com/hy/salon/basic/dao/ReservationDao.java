@@ -2,10 +2,7 @@ package com.hy.salon.basic.dao;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hy.salon.basic.entity.Job;
-import com.hy.salon.basic.entity.Pictures;
-import com.hy.salon.basic.entity.Reservation;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.StuffVo;
@@ -35,6 +32,18 @@ public class ReservationDao extends BaseDAOWithEntity<Reservation> {
     private JobService jobService;
     public List<Reservation> getReservationById(){
         return this.getSqlHelper().getSqlSession().selectList(GET_RESERVATION_BYID);
+    }
+
+    public List<Reservation> getReservationForStuffId(Long stuffId,String recordStatus){
+        String where = "stuff_id=#{stuffId}";
+        if(null!=recordStatus && "".equals(recordStatus)){
+            where =where+"record_status=#{recordStatus}";
+        }
+        Map parameters = new HashMap();
+        parameters.put("stuffId", stuffId);
+        parameters.put("recordStatus", recordStatus);
+
+        return this.getByWhere(where, parameters);
     }
 
 
