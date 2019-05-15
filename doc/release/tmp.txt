@@ -51,3 +51,5 @@ INSERT INTO `program_privilege` VALUES (95, 'SYS03_05_02', 'RUN', '系统运行'
 INSERT INTO `program_privilege` VALUES (96, 'SYS03_05_03', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (97, 'SYS03_05_04', 'RUN', '系统运行');
 INSERT INTO `program_privilege` VALUES (98, 'SYS03_05_05', 'RUN', '系统运行');
+
+/hy/basic/statistics/addWallet
