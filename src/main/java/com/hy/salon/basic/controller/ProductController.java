@@ -738,8 +738,10 @@ public class ProductController {
             List<ProductSeries> sonSerList=productSeriesDao.getSonSeriesForId(s.getRecordId());
             JSONObject jsonObj2=new JSONObject();
             JSONArray jsonArr=new JSONArray();
+            Integer i=0;
             for(ProductSeries p:sonSerList){
                 JSONObject jsonObj3=new JSONObject();
+                i=i+productDao.getProdectForCondition(salonId,productClass,p.getRecordId()).size();
                 jsonObj3.put("productCount",productDao.getProdectForCondition(salonId,productClass,p.getRecordId()).size());
                 jsonObj3.put("ServiceRecordId",p.getRecordId());
                 jsonObj3.put("ServiceName",p.getSeriesName());
@@ -747,7 +749,7 @@ public class ProductController {
                 jsonArr.add(jsonObj3);
             }
 
-            jsonObj2.put("productCount",productDao.getCountForProduct(s.getParentId()).size());
+            jsonObj2.put("productCount",i);
             jsonObj2.put("ServiceRecordId",s.getRecordId());
             jsonObj2.put("ServiceName",s.getSeriesName());
             jsonObj2.put("ServiceList",jsonArr);
@@ -773,7 +775,6 @@ public class ProductController {
     @ApiOperation(value="获取单位相关", notes="获取单位相关")
     public Result queryAllProductProperty(Long propertyType){
         Result r= new Result();
-
         try {
             List<ProductProperty> productProperty=productPropertyDAO.getProductProperty(propertyType);
             r.setMsg("获取成功");

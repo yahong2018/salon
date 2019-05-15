@@ -17,16 +17,25 @@ import java.util.Map;
 @Component("repaymentRecordDao")
 public class RepaymentRecordDao extends BaseDAOWithEntity<RepaymentRecord> {
     protected final static String SQL_GET_REPAYMENT = "com.hy.salon.basic.dao.GET_REPAYMENT";
-    public ExtJsResult getSystemRepaymentRecordList(String memberName, Long arrearagesRecord, HttpServletRequest request) {
+    public ExtJsResult getSystemRepaymentRecordList(String memberName, Long arrearagesRecord, HttpServletRequest request,Long storeId,String role,String toDays) {
 
         ExtJsResult extJsResult = new ExtJsResult();
         Map parameters = new HashMap();
+        parameters.put("storeId",storeId);
+        parameters.put("role",role);
         parameters.put("arrearages_record",arrearagesRecord);
         if(StringUtils.isNotEmpty(memberName)){
             parameters.put("memberName",memberName);
         }
+        if(StringUtils.isNotEmpty(toDays)){
+            String days[] =  toDays.split("~");
+            String timeStart = days[0];
+            String  timeEnd = days[1];
+            parameters.put("timeStart", timeStart);
+            parameters.put("timeEnd", timeEnd);
+        }
 
-        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
+//        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_REPAYMENT, parameters);
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         extJsResult.setSuccess(true);

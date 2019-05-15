@@ -269,14 +269,14 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         vipSuitItem.setDiscount(Byte.parseByte(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
-                        String[] str = itemId.split(",");
-                        for(String s :str){
-
-                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
-                            vipRangeCondition.setServiceId(Long.parseLong(s));
-                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
-                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
-                        }
+//                        String[] str = itemId.split(",");
+//                        for(String s :str){
+//
+//                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
+//                            vipRangeCondition.setServiceId(Long.parseLong(s));
+//                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
+//                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
+//                        }
                     }
 
                 }
@@ -360,13 +360,13 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         vipSuitItem.setDiscount(Byte.parseByte(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
-                        String[] str = itemId.split(",");
-                        for(String s :str){
-                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
-                            vipRangeCondition.setServiceId(Long.parseLong(s));
-                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
-                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
-                        }
+//                        String[] str = itemId.split(",");
+//                        for(String s :str){
+//                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
+//                            vipRangeCondition.setServiceId(Long.parseLong(s));
+//                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
+//                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
+//                        }
                     }
                 }
             }
@@ -448,13 +448,13 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         vipSuitItem.setDiscount(Byte.parseByte(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
-                        String[] str = itemId.split(",");
-                        for(String s :str){
-                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
-                            vipRangeCondition.setServiceId(Long.parseLong(s));
-                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
-                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
-                        }
+//                        String[] str = itemId.split(",");
+//                        for(String s :str){
+//                            VipSuiteItemDiscountRange vipRangeCondition=new VipSuiteItemDiscountRange();
+//                            vipRangeCondition.setServiceId(Long.parseLong(s));
+//                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
+//                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
+//                        }
                     }
                 }
             }
@@ -494,26 +494,28 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
         Result r= new Result();
         try {
             JSONObject jsonObj=new JSONObject();
-            JSONArray jsonArr=new JSONArray();
+
             VipSuite vipSuit= vipSuiteDao.getVipSuiteForId(recordId);
             jsonObj.put("vipSuit",vipSuit);
 
-            List<Map<String,String>> service1=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(0));
-            if(service1.size() != 0){
-                jsonArr.add(service1);
-            }
-            List<Map<String,String>> service2=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(1));
-            if(service2.size() != 0){
-                jsonArr.add(service2);
-            }
-            List<Map<String,String>> service3=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(2));
-            if(service3.size() != 0){
-                jsonArr.add(service3);
-            }
+
+            List<VipSuiteItem> vipSuiteItemList=vipSuiteItemDao.queryVipSuitForId(vipSuit.getRecordId());
+//            List<Map<String,String>> service1=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(0));
+//            if(service1.size() != 0){
+//                jsonArr.add(service1);
+//            }
+//            List<Map<String,String>> service2=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(1));
+//            if(service2.size() != 0){
+//                jsonArr.add(service2);
+//            }
+//            List<Map<String,String>> service3=vipSuiteDao.getServiceSeriesForVip(recordId,new Long(2));
+//            if(service3.size() != 0){
+//                jsonArr.add(service3);
+//            }
 
             List<Pictures> pic = picturesDao.getPicturesForCondition(recordId,new Byte("4") , new Byte("0"));
             jsonObj.put("picUrl",pic);
-            jsonObj.put("serviceData",jsonArr);
+            jsonObj.put("vipSuiteItemList",vipSuiteItemList);
 
 
             r.setData(jsonObj);

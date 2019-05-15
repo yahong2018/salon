@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hy.salon.basic.entity.MemberGift;
+import com.hy.salon.basic.util.DateString;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.ExtJsResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +21,25 @@ import java.util.Map;
 @Component("memberGiftDao")
 public class MemberGiftDao extends BaseDAOWithEntity<MemberGift> {
     protected final static String SQL_GET_MEMBERGIFT = "com.hy.salon.basic.dao.GET_MEMBERGIFT";
-    public ExtJsResult getSystemMemberGiftList(String memberName, Long storeId,  Long refTransId,HttpServletRequest request) {
+    public ExtJsResult getSystemMemberGiftList(String memberName, Long storeId,  Long refTransId,HttpServletRequest request,String role,String toDays) {
         ExtJsResult extJsResult = new ExtJsResult();
         Map parameters = new HashMap();
         parameters.put("storeId",storeId);
+        parameters.put("role",role);
         if(StringUtils.isNotEmpty(memberName)){
             parameters.put("memberName",memberName);
         }
+        if(StringUtils.isNotEmpty(toDays)){
+            String days[] =  toDays.split("~");
+            String timeStart = days[0];
+            String  timeEnd = days[1];
+            parameters.put("timeStart", timeStart);
+            parameters.put("timeEnd", timeEnd);
+        }
+
         parameters.put("refTransId",refTransId);
 
-        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),2);
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_MEMBERGIFT, parameters);
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         extJsResult.setSuccess(true);
@@ -59,7 +70,8 @@ public class MemberGiftDao extends BaseDAOWithEntity<MemberGift> {
             jsonObject.put("recordId",map.get("recordId"));
             jsonObject.put("memberName",map.get("memberName"));
             jsonObject.put("qty",map.get("qty"));
-            jsonObject.put("giftExpiredDate",map.get("giftExpiredDate"));
+            Date date = (Date) map.get("giftExpiredDate");
+            jsonObject.put("giftExpiredDate",DateString.DateToString2(date));
             jsonArray.add(jsonObject);
         }
 

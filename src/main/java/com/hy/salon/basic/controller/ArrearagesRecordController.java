@@ -2,6 +2,8 @@ package com.hy.salon.basic.controller;
 
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.web.ExtJsResult;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -41,6 +45,9 @@ public class ArrearagesRecordController  {
 
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
     /**
      * 欠款记录列表
      */
@@ -48,14 +55,28 @@ public class ArrearagesRecordController  {
     @RequestMapping("/getSystemArrearsList")
     @ApiOperation(value="欠款记录列表", notes="欠款记录列表")
     public ExtJsResult getSystemArrearsList(HttpServletRequest request,Long memberId,Long recordId,String toDays){
+        String role="0";
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
             recordId = stuff2.getStoreId();
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberId,recordId, request,toDays);
+        ExtJsResult VipSuiteList=arrearagesRecordDao.getSystemArrearsList(memberId,recordId, request,toDays,role);
 
 
         return  VipSuiteList;
@@ -69,14 +90,29 @@ public class ArrearagesRecordController  {
     @RequestMapping("/getSystemRepaymentRecordList")
     @ApiOperation(value="欠款记录列表", notes="欠款记录列表")
     public ExtJsResult getSystemRepaymentRecordList(HttpServletRequest request,String memberName,Long recordId,String toDays,Long arrearagesRecord){
+        String role="0";
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
             recordId = stuff2.getStoreId();
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=repaymentRecordDao.getSystemRepaymentRecordList(memberName,arrearagesRecord, request);
+        ExtJsResult VipSuiteList=repaymentRecordDao.getSystemRepaymentRecordList(memberName,arrearagesRecord, request,recordId,role,toDays);
 
 
         return  VipSuiteList;

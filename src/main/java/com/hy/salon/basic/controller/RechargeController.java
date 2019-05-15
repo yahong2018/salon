@@ -157,14 +157,29 @@ public class RechargeController {
     @ResponseBody
     @RequestMapping("/getSystemMemberGiftList")
     @ApiOperation(value="会员卡充值记录赠送列表", notes="会员卡充值记录赠送列表")
-    public ExtJsResult getSystemMemberGiftList(HttpServletRequest request,String memberName,Long recordId,Long refTransId){
+    public ExtJsResult getSystemMemberGiftList(HttpServletRequest request,String memberName,Long recordId,Long refTransId,String toDays){
+        String role="2";
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
             recordId = stuff2.getStoreId();
         }
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=memberGiftService.getSystemMemberGiftList(memberName,recordId,refTransId, request);
+        ExtJsResult VipSuiteList=memberGiftService.getSystemMemberGiftList(memberName,recordId,refTransId, request,role,toDays);
         return  VipSuiteList;
     }
 

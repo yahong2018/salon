@@ -34,14 +34,19 @@ public class ReservationDao extends BaseDAOWithEntity<Reservation> {
         return this.getSqlHelper().getSqlSession().selectList(GET_RESERVATION_BYID);
     }
 
-    public List<Reservation> getReservationForStuffId(Long stuffId,String recordStatus){
-        String where = "stuff_id=#{stuffId}";
+    public List<Reservation> getReservationForStuffId(Long stuffId,String recordStatus,String startTime,String endTime){
+        String where = "stuff_id=#{stuffId} ";
         if(null!=recordStatus && "".equals(recordStatus)){
-            where =where+"record_status=#{recordStatus}";
+            where =where+" record_status=#{recordStatus} ";
+        }
+        if(null!=startTime){
+            where =where+" and create_date > #{startTime} and create_date < #{endTime}";
         }
         Map parameters = new HashMap();
         parameters.put("stuffId", stuffId);
         parameters.put("recordStatus", recordStatus);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
 
         return this.getByWhere(where, parameters);
     }

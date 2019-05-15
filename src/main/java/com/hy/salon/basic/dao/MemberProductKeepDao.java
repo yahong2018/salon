@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +40,7 @@ public class MemberProductKeepDao  extends BaseDAOWithEntity<MemberProductKeep> 
     protected final static String SQL_GET_STORWMEMBERPRODUCTKEEP = "com.hy.salon.basic.dao.GET_STORWMEMBERPRODUCTKEEP";
 
 
-    public Result getStoreMemberProductKeepList(Long storeId,Long memberId,String toDays) {
+    public Result getStoreMemberProductKeepList(Long storeId, Long memberId, String toDays, HttpServletRequest request,String role) {
        /* Map parametersS = new HashMap();
         parametersS.put("storeId", storeId);
         Map listMapS = new HashMap();
@@ -49,9 +50,12 @@ public class MemberProductKeepDao  extends BaseDAOWithEntity<MemberProductKeep> 
         for(Stuff stuff:stufflist){
 
         }*/
+
         Result result = new Result();
-        PageHelper.startPage(Integer.parseInt("1"),2);
+        String s=request.getParameter("page");
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
         Map parameters = new HashMap();
+        parameters.put("role",role);
         if(StringUtils.isNotEmpty(memberId+"")){
             parameters.put("memberId",memberId);
         }

@@ -82,6 +82,8 @@ public class MemberController extends SimpleCRUDController<Member> {
     private CardPurchaseDao cardPurchaseDao;
 
 
+
+
     @Override
     protected BaseDAOWithEntity<Member> getCrudDao() {
         return memberDao;
@@ -388,7 +390,6 @@ public class MemberController extends SimpleCRUDController<Member> {
 
             result.setTotal(memberSalonTagDAO.getTag(recordId).size());
             if(null==limit){
-                PageHelper.startPage(page, 50);
             }else{
                 PageHelper.startPage(page, Integer.parseInt(limit));
             }
@@ -408,6 +409,47 @@ public class MemberController extends SimpleCRUDController<Member> {
         }
         return result;
     }
+
+    /**
+     * 获取该标签下已有的顾客
+     */
+    @ResponseBody
+    @RequestMapping("getMemberForTag")
+    public Result getMemberForTag(Long tagId) {
+        Result result = new Result();
+        try {
+            List<MemberTag> memberTagList= memberTagDao.getMemberTagList(tagId);
+            List<Member> memberList=new ArrayList<>();
+            for(MemberTag m:memberTagList){
+                Member member=memberDao.getMemberForId(m.getMemberId());
+                if(null!=member){
+                    List<Pictures> pic=picturesDao.getPicturesForCondition(member.getRecordId(),new Byte("6"),new Byte("0"));
+                    if(pic.size()!=0){
+                        if(null!=member){
+                            member.setPicUrl(pic.get(0).getPicUrl());
+                        }
+
+                    }
+                    memberList.add(member);
+                }
+
+            }
+
+
+            result.setData(memberList);
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
+
+
+
 
 
     /**

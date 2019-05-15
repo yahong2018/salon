@@ -22,10 +22,11 @@ import java.util.Map;
 @Component("arrearagesRecordDao")
 public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
     protected final static String SQL_GET_ARREARSLIST = "com.hy.salon.basic.dao.GET_ARREARSLIST";
-    public ExtJsResult getSystemArrearsList(Long memberId, Long storeId, HttpServletRequest request,String toDays) {
+    public ExtJsResult getSystemArrearsList(Long memberId, Long storeId, HttpServletRequest request,String toDays,String role) {
         ExtJsResult extJsResult = new ExtJsResult();
         Map parameters = new HashMap();
         parameters.put("storeId",storeId);
+        parameters.put("role",role);
         if(memberId!=null){
             parameters.put("memberId",memberId);
         }

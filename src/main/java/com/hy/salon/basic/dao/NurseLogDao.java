@@ -46,11 +46,16 @@ public class NurseLogDao extends BaseDAOWithEntity<NurseLog> {
     protected final static String SQL_GET_LOG_FOR_STORE_ID = "com.hy.salon.basic.dao.GET_LOG_FOR_STORE_ID";
 
 
-    public List<NurseLog> getNurseLogForStuffId(Long stuffId,String logType){
-        String where="stuff_id = #{stuffId} and log_type =#{logType}";
+    public List<NurseLog> getNurseLogForStuffId(Long stuffId,String logType,String startTime,String endTime){
+        String where="stuff_id = #{stuffId} and log_type =#{logType} ";
+        if(null!=startTime){
+            where =where+" and create_date > #{startTime} and create_date < #{endTime}";
+        }
         Map parameters = new HashMap();
         parameters.put("stuffId", stuffId);
         parameters.put("logType", logType);
+        parameters.put("startTime", startTime);
+        parameters.put("endTime", endTime);
 
         return this.getByWhere(where,parameters);
     }

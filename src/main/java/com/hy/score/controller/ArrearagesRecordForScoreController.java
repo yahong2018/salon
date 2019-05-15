@@ -47,7 +47,7 @@ public class ArrearagesRecordForScoreController {
             @ApiImplicitParam(paramType = "query", name = "remark", value = "备注", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "memberSignature", value = "签名id", required = true, dataType = "long"),
     })
-    public ExtJsResult toArrears(HttpServletRequest request, long arrearagesRecordId, long memberId, double amountDebit, byte methodPayed, String remark, long memberSignature){
+    public ExtJsResult toArrears(HttpServletRequest request, Long arrearagesRecordId, Long memberId, Double amountDebit, Byte methodPayed, String remark, Long memberSignature){
 //        Member member = memberDao.getById(memberId);
         //获取顾客钱包
         MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(memberId);

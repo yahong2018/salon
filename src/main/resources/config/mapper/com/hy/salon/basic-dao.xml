@@ -463,14 +463,30 @@ group by ss.record_id;
         c.gift_expired_date as giftExpiredDate
         from member_gift c
         left join member m on c.member_id = m.record_id
-        where 1=1 and
-        m.initial_store_id =#{storeId}
-        and
-        c.ref_trans_id = #{refTransId}
+        where 1=1
+
+        <if test="role == 2 ">
+            and m.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
+        <if test="refTransId != null ">
+            and
+            c.ref_trans_id = #{refTransId}
+        </if>
+
         <if test="memberName != null ">
             and
             m.member_name=#{memberName}
         </if>
+
+        <if test="timeStart != null ">
+            and
+            c.create_date between  #{timeStart} and #{timeEnd}
+        </if>
+
     </select>
 
     <select id="GET_ARREARSLIST"  parameterType="java.util.Map" resultType="java.util.Map">
@@ -487,6 +503,13 @@ group by ss.record_id;
         from arrearages_record c
         left join member m on c.member_id = m.record_id
         where 1=1
+        <if test="role == 2 ">
+            and m.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
 
         <if test="memberId != null">
             and  c.member_id = #{memberId}
@@ -511,8 +534,25 @@ group by ss.record_id;
            c.remark  as remark,
           c.record_id as recordId
         from repayment_record c
-        where 1=1 and
-        c.arrearages_record =#{arrearages_record}
+        left join arrearages_record as a on a.record_id = c.arrearages_record
+        left join member m on a.member_id = m.record_id
+        where 1=1
+        <if test="role == 2 ">
+            and m.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
+        <if test="arrearages_record != null">
+            and
+            c.arrearages_record =#{arrearages_record}
+        </if>
+        <if test="timeStart != null ">
+            and
+            c.create_date between  #{timeStart} and #{timeEnd}
+        </if>
+
     </select>
 
 
@@ -658,7 +698,17 @@ group by ss.record_id;
         select mm.member_name as memberName,m.record_id  as recordId,p.product_name as productName,p.price price ,mi.qty_purchased qtyPurchased ,mi.qty_received as qtyReceived ,mi.create_date as createDate ,mi.record_id as productKeepItemId from member_product_keep m left join
         member_product_keep_item mi on m.record_id = mi.member_product_keep_id
         left join product p on mi.product_id = p.record_id left join  member mm on mm.record_id =m.member_id
-        where mm.initial_store_id = #{storeId}
+        where 1=1
+
+
+        <if test="role == 2 ">
+            and mm.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and mm.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
+
         <if test="memberId != null">
             and  m.member_id = #{memberId}
         </if>
@@ -666,6 +716,31 @@ group by ss.record_id;
         <if test="timeStart != null">
             and p.create_date between #{timeStart} and #{timeEnd}
         </if>
+        order by m.create_date  desc
+    </select>
+
+
+    <select id="GET_PRODUCT_RECORD"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT smpgr.*,p.product_name FROM salon.member_product_get_record as smpgr
+        left join salon.member_product_keep_item as smpki on smpgr.member_product_keep_item=smpki.record_id
+        left join salon.member_product_keep as smpk on smpk.record_id=smpki.member_product_keep_id
+        left join salon.member as m on smpk.member_id=m.record_id
+        left join salon.product as p on p.record_id=smpki.product_id
+
+        <where>
+        <if test="role == 2 ">
+            and m.initial_store_id =#{storeId}
+        </if>
+
+        <if test="role == 3 ">
+            and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+        </if>
+
+        <if test="timeStart != null">
+            and smpgr.create_date &gt;= #{timeStart} and smpgr.create_date &lt;= #{timeEnd}
+        </if>
+        </where>
+        order by smpgr.create_date  desc
     </select>
 
 
@@ -718,6 +793,29 @@ group by ss.record_id;
     <select id="GET_SUMMARY_SIZE_FRO_STORE"  parameterType="java.util.Map" resultType="java.util.Map">
     SELECT count(sws.record_id) as summarySize FROM salon.work_summary as sws
     where sws.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id=#{storeId});
+    </select>
+
+    <select id="GET_PRODUCT_REJECT"  parameterType="java.util.Map" resultType="java.util.Map">
+   SELECT smpri.*,p.product_name,m.member_name FROM salon.member_product_reject_item as smpri
+    left join salon.member_product_keep_item as smpki on smpki.record_id = smpri.product_keep_item_id
+    left join salon.product as p on p.record_id = smpki.product_id
+    left join salon.member_product_reject as smpr on smpr.record_id=smpri.member_product_reject_id
+    left join salon.member as m on m.record_id = smpr.member_id
+        <where>
+            <if test="role == 2 ">
+                and m.initial_store_id =#{storeId}
+            </if>
+
+            <if test="role == 3 ">
+                and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+            </if>
+
+            <if test="timeStart != null">
+                and smpri.create_date &gt;= #{timeStart} and smpri.create_date &lt;= #{timeEnd}
+            </if>
+        </where>
+        order by smpri.create_date  desc
+
     </select>
 
 

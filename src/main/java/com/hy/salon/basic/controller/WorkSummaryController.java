@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/hy/basic/workSummary")
@@ -232,6 +230,57 @@ public class WorkSummaryController {
         Result result=new Result();
         try {
             List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(recordId,null,null,summaryType);
+            for(WorkSummary w:workSummaryList){
+                //该总结当天0点0分
+                SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(w.getCreateDate());
+                calendar.set(Calendar.HOUR_OF_DAY,0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                Date zero = calendar.getTime();
+                String startTime = sDateFormat.format(zero);
+                //该总结当天23点59分
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.setTime(w.getCreateDate());
+                calendar2.set(Calendar.HOUR_OF_DAY,23);
+                calendar2.set(Calendar.MINUTE, 59);
+                calendar2.set(Calendar.SECOND, 59);
+                Date zero2 = calendar2.getTime();
+                String endTime = sDateFormat.format(zero2);
+
+
+                Map<String,Object> stuffAmountMap=new HashMap<>();
+                Double consumptionAmount=new Double(0);
+                Double paymentAmount=new Double(0);
+                //通过该员工的总消费
+                Map<String,Object>  amountMap1=CardPurchaseDao.queryAmountForStuff(recordId,null,startTime,endTime);
+                if(null != amountMap1){
+                    consumptionAmount=(Double) amountMap1.get("amount");
+                }
+
+                //startTime
+                Map<String,Object>  amountMap3=paymentItemDao.queryPaymentAmountForStuff(recordId,startTime,endTime);
+                if(null != amountMap3){
+                    paymentAmount=(Double) amountMap3.get("amount");
+                }
+                //获取护理日志和回访日志的数量
+                //回访日志
+                List<NurseLog> NurseLogList1=nurseLogDao.getNurseLogForStuffId(recordId,"0",startTime,endTime);
+                //护理日志
+                List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1",startTime,endTime);
+
+                //服务次数
+                List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3",startTime,endTime);
+
+                stuffAmountMap.put("serviceSize",reservationList.size());
+                stuffAmountMap.put("paymentAmount",paymentAmount);
+                stuffAmountMap.put("consumptionAmount",consumptionAmount);
+                stuffAmountMap.put("returnLogSize",NurseLogList1.size());
+                stuffAmountMap.put("nursingLogSize",NurseLogList2.size());
+                w.setStuffAmountMap(stuffAmountMap);
+
+            }
 
             result.setData(workSummaryList);
             result.setMsgcode(StatusUtil.OK);
@@ -273,12 +322,12 @@ public class WorkSummaryController {
 
             //获取护理日志和回访日志的数量
             //回访日志
-            List<NurseLog> NurseLogList1=nurseLogDao.getNurseLogForStuffId(recordId,"0");
+            List<NurseLog> NurseLogList1=nurseLogDao.getNurseLogForStuffId(recordId,"0",null,null);
             //护理日志
-            List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1");
+            List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1",null,null);
 
             //服务次数
-            List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3");
+            List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3",null,null);
 
             stuffAmountMap.put("serviceSize",reservationList.size());
             stuffAmountMap.put("returnLogSize",NurseLogList1.size());

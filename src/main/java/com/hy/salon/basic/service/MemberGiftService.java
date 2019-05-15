@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberGiftService {
     @Resource(name="memberGiftDao")
     private MemberGiftDao memberGiftDao;
-    public ExtJsResult getSystemMemberGiftList(String memberName, Long recordId,  Long refTransId,HttpServletRequest request) {
-       return memberGiftDao.getSystemMemberGiftList(memberName,recordId,refTransId,request);
+    public ExtJsResult getSystemMemberGiftList(String memberName, Long recordId,  Long refTransId,HttpServletRequest request,String role,String toDays) {
+       return memberGiftDao.getSystemMemberGiftList(memberName,recordId,refTransId,request,role,toDays);
     }
 }

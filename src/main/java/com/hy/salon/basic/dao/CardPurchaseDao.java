@@ -38,6 +38,7 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
             parameters.put("timeEnd", timeEnd);
         }
         PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        String s=request.getParameter("page");
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_RECHARGE, parameters);
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         extJsResult.setSuccess(true);

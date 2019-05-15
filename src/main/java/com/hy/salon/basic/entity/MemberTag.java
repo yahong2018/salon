@@ -11,4 +11,6 @@ public class MemberTag extends TraceableEntity<Long> {
     private Long recordId ;//
     private Long  memberId ;//
     private Long tagId ;//
+
+    private Member member;
 }

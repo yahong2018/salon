@@ -42,7 +42,7 @@ public class MemberProductRejectDao extends BaseDAOWithEntity<MemberProductRejec
         return  result;
     }
 
-
+    protected final static String SQL_GET_REFUND_AMOUNT_FRO_STUFF = "com.hy.salon.basic.dao.GET_REFUND_AMOUNT_FRO_STUFF";
     public Map<String,Object> queryRefundAmountForStuff(Long storeId) {
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
@@ -50,5 +50,24 @@ public class MemberProductRejectDao extends BaseDAOWithEntity<MemberProductRejec
     }
 
 
-    protected final static String SQL_GET_REFUND_AMOUNT_FRO_STUFF = "com.hy.salon.basic.dao.GET_REFUND_AMOUNT_FRO_STUFF";
+
+
+
+    protected final static String SQL_GET_PRODUCT_REJECT = "com.hy.salon.basic.dao.GET_PRODUCT_REJECT";
+    public List<Map<String,Object>> queryProductReject(Long storeId,String toDays,String role) {
+        Map parameters = new HashMap();
+        if(StringUtils.isNotEmpty(toDays)){
+            String days[] =  toDays.split("~");
+            String timeStart = days[0];
+            String  timeEnd = days[1];
+            parameters.put("timeStart", timeStart);
+            parameters.put("timeEnd", timeEnd);
+        }
+
+        parameters.put("storeId", storeId);
+        parameters.put("role", role);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PRODUCT_REJECT, parameters);
+    }
+
+
 }

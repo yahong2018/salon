@@ -608,4 +608,21 @@
 
     </resultMap>
 
+    <resultMap id="MemberProductReject" type="com.hy.salon.basic.entity.MemberProductReject" extends="com.zhxh.core.data.TraceableEntity">
+
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="member_signature" property="memberSignature" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <resultMap id="MemberProductRejectItem" type="com.hy.salon.basic.entity.MemberProductRejectItem" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="member_product_reject_id" property="memberProductRejectId" jdbcType="BIGINT" />
+        <result column="product_keep_item_id" property="productKeepItemId" jdbcType="BIGINT" />
+        <result column="reject_type" property="rejectType" jdbcType="TINYINT" />
+        <result column="qty_reject" property="qtyReject" jdbcType="DOUBLE" />
+        <result column="amount_reject" property="amountReject" jdbcType="DOUBLE" />
+        <result column="type_amount_return" property="typeAmountReturn" jdbcType="TINYINT" />
+    </resultMap>
+
 </mapper>

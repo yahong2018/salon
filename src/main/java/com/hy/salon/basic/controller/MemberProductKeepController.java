@@ -1,10 +1,14 @@
 package com.hy.salon.basic.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.core.web.ExtJsResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,6 +20,7 @@ import com.hy.salon.stock.entity.ProductStock;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +62,9 @@ public class MemberProductKeepController {
 
     @Resource(name="productStockDAO")
     private ProductStockDAO  ProductStockDao;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
 
     /**
      * 会员退款寄存库产品列表
@@ -103,6 +111,82 @@ public class MemberProductKeepController {
         return  result;
     }
 
+    /**
+     * 会员领取寄存库产品列表(所有)
+     */
+    @ResponseBody
+    @RequestMapping("queryReceiveMemberProductKeepList")
+    @ApiOperation(value="会员领取寄存库产品列表(所有)", notes="会员领取寄存库产品列表(所有)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "memberProductKeepItem", value = "寄存明细表id", required = true, dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "toDays", value = "时间", required = true, dataType = "String")
+    })
+    public ExtJsResult queryReceiveMemberProductKeepList(HttpServletRequest request,Long recordId,String toDays) {
+
+        String role="0";
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
+            recordId = stuff2.getStoreId();
+        }
+
+        ExtJsResult extJsResult=memberProductGetRecordDao.getProductList(recordId,request,toDays,role);
+
+        return  extJsResult;
+    }
+
+
+
+    /**
+     * 退款记录（PC）
+     */
+    @ResponseBody
+    @RequestMapping("queryProductReject")
+    @ApiOperation(value="退款记录（PC）", notes="退款记录（PC）")
+    public ExtJsResult queryProductReject(HttpServletRequest request,Long recordId,String toDays) {
+
+        ExtJsResult extJsResult=new ExtJsResult();
+        String role="0";
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
+            recordId = stuff2.getStoreId();
+        }
+
+        List<Map<String,Object>> productRejectList=memberProductRejectDao.queryProductReject(recordId,toDays,role);
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> productRejectList2=memberProductRejectDao.queryProductReject(recordId,toDays,role);
+        extJsResult.setTotal(productRejectList.size());
+        extJsResult.setData(productRejectList2);
+        return  extJsResult;
+    }
+
 
     /**
      * 获取一个门店的会员寄存库产品列表
@@ -115,13 +199,29 @@ public class MemberProductKeepController {
             @ApiImplicitParam(paramType="query", name = "memberId", value = "会员id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "toDays", value = "时间", required = true, dataType = "String")
     })
-    public Result getStoreMemberProductKeepList(Long storeId,Long memberId,String toDays) {
+    public Result getStoreMemberProductKeepList(Long storeId, Long memberId, String toDays, HttpServletRequest request) {
+
+        String role="0";
         if(storeId==null){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
             storeId = stuff2.getStoreId();
         }
-        Result result =    memberProductKeepDao.getStoreMemberProductKeepList(storeId,memberId,toDays);
+        Result result =    memberProductKeepDao.getStoreMemberProductKeepList(storeId,memberId,toDays,request,role);
 
         return  result;
     }
@@ -238,21 +338,24 @@ public class MemberProductKeepController {
                     "        --     如果是以余额的方式，则要修改member的balance_cash字段*/", required = true, dataType = "byte"),
 
     })
-    public Result refundMemberProductKeep(MemberProductReject memberProductReject, MemberProductRejectItem memberProductRejectItem){
+    public Result refundMemberProductKeep(MemberProductReject memberProductReject, MemberProductRejectItem memberProductRejectItem,String stuffIdListJson){
         Result result = new Result();
-        memberProductRejectDao.insert(memberProductReject);
-        memberProductRejectItem.setMemberProductRejectId(memberProductReject.getRecordId());
+
 
         MemberProductKeepItem memberProductKeepItem = memberProductKeepItemDao.getById(memberProductRejectItem.getProductKeepItemId());
         byte type = memberProductKeepItem.getProductGetType();
 
 
-        if(type==1){//赠送
-
-        }
+//        if(type==1){//赠送
+//            result.setSuccess(false);
+//            result.setMsgcode("200");
+//            result.setMsg("赠送商品不能退款");
+//            return  result;
+//        }
+        memberProductRejectDao.insert(memberProductReject);
+        memberProductRejectItem.setMemberProductRejectId(memberProductReject.getRecordId());
         long memberId =  memberProductReject.getMemberId();
         memberProductRejectItemDao.insert(memberProductRejectItem);
-        Member member = memberDao.getById(memberId);
 
         //获取顾客钱包
         MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(memberId);
@@ -261,8 +364,21 @@ public class MemberProductKeepController {
 //            member.setBalanceCash(member.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
 
             memberWallet.setBalanceCash(memberWallet.getBalanceCash()+memberProductRejectItem.getAmountReject());//如果是以余额的方式，则要修改member的balance_cash字段
+            MemberWalletDao.update(memberWallet);
         }
-        memberDao.update(member);
+
+
+        net.sf.json.JSONArray stuffListArr=net.sf.json.JSONArray.fromObject(stuffIdListJson);
+        List<Long> stufflist = net.sf.json.JSONArray.toList(stuffListArr, Long.class);// 转换成实体类
+
+        for(Long stuffId:stufflist){
+            BusinessStuff businessStuff  = new BusinessStuff();
+            businessStuff.setStuffId(stuffId);
+            businessStuff.setTransType((byte)0);
+            businessStuff.setRefTransId(memberProductReject.getRecordId());
+            businessStuffDao.insert(businessStuff);//关联员工
+        }
+
 
         result.setSuccess(true);
         result.setMsgcode("0");
