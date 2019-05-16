@@ -1428,6 +1428,29 @@ create table approval_record
   index idx_approval_record_02 (approval_status)
 )comment '审批记录表';
 
+
+create table consume_record
+(
+  record_id               bigint                        not null,
+  bill_no                 varchar(50)                   not null,  -- 商城的订单号
+  way                     tinyint                       not null,  -- 消耗方式 0 现金 1 现金+积分  2 代金券
+  amount                  double(10,2)                  not null,  -- 消耗的积分/代金券总数  类型是 0 的时候，这里存现金金额
+  member_id               bigint                        not null,  -- 顾客id
+  --remain_score  账户剩余积分                   界面上需要把账户剩余的积分/代金券数量显示出来，为了对账
+  --remain_cash_coupon  账户剩余代金券
+
+  create_date             datetime                      not null,   -- 记录创建时间
+  create_by               bigint                        not null,
+  update_date             datetime                      null,
+  update_by               bigint                        null,
+  opt_lock                int                           null,
+
+  primary key (record_id),
+  index idx_consume_record_01 (bill_no),
+  index idx_consume_record_02 (way),
+  index idx_consume_record_02 (member_id)
+)comment '积分/代金券消耗记录表';
+
 /*
    五类结算：
        1.会员与店员(门店/美容院)结算
