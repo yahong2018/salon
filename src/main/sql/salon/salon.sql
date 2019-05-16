@@ -1434,7 +1434,8 @@ create table consume_record
   record_id               bigint                        not null,
   bill_no                 varchar(50)                   not null,  -- 商城的订单号
   way                     tinyint                       not null,  -- 消耗方式 0 现金 1 现金+积分  2 代金券
-  amount                  double(10,2)                  not null,  -- 消耗的积分/代金券总数  类型是 0 的时候，这里存现金金额
+  cash                    double(10,2)                  not null,  -- 现金金额    类型是 0 的时候，这里存现金金额
+  amount                  double(10,2)                  not null,  -- 消耗的积分/代金券总数  类型是 0 的时候，这里是0 ,不要插null
   member_id               bigint                        not null,  -- 顾客id
   --remain_score  账户剩余积分                   界面上需要把账户剩余的积分/代金券数量显示出来，为了对账
   --remain_cash_coupon  账户剩余代金券
