@@ -121,8 +121,8 @@
     }
     function productsearch(page,memberId,toDays) {
       var table = layui.table,
-      laydate = layui.laydate,
-      laypage = layui.laypage;
+      laydate = layui.laydate
+
       var form = layui.form;
       table.render({
         elem : '#layui_table_id',
@@ -177,11 +177,10 @@
                 align:'center',
                 toolbar: '#barDemo2'}
         ] ],
-        page : false,
+        page : true,
         where : {
             memberId:memberId,
-            toDays:toDays,
-            page:page
+            toDays:toDays
         },
         responseHandler: function (res, curr,count) {
           $('#pageNum').val(curr);

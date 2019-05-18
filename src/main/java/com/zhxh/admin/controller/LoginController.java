@@ -12,10 +12,12 @@ import com.hy.salon.basic.service.JobService;
 import com.hy.salon.basic.service.StuffJobService;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.misc.LoginResult;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.admin.service.RoleUserService;
 import com.zhxh.admin.service.SystemRoleService;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.annotation.Resources;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +75,10 @@ public class LoginController {
 
     @Resource(name = "stuffJobService")
     private StuffJobService stuffJobService;
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDAO;
+
     @RequestMapping("/login")
     public String login() {
         return LOGIN_URL;
@@ -239,4 +246,71 @@ public class LoginController {
         r.setSuccess(true);
         return r;
     }
+
+
+    @RequestMapping(value = "/weChat/login/doLogin")
+    @ResponseBody
+    @ApiOperation(value="小程序登录", notes="小程序登录")
+    public LoginResult doLoginByWeChat(String tel) {
+        LoginResult result = new LoginResult();
+
+        try {
+
+            List<SystemUser>  systemUserList=systemUserDAO.getUserByRecordTel(tel);
+
+            if(systemUserList.size()==0){
+                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                result.setMsg("该顾客不存在");
+                result.setSuccess(false);
+                result.setData(null);
+                return result;
+            }
+
+
+            //判断账号属于员工还是属于顾客
+            String where = "user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", systemUserList.get(0).getRecordId());
+            RoleUser roleUser = roleUserDAO.getOne(where, parameters);
+
+            if (roleUser.getRoleId() == 3) {
+                //顾客
+
+                Member member = memberDao.getMemberForTel(systemUserList.get(0).getUserCode());
+
+                //2.更新Session
+                setCurrentLogin(systemUserList.get(0));
+                //3.更新数据库
+                systemUserList.get(0).setLastLoginTime(new Timestamp(System.currentTimeMillis()));
+                systemUserList.get(0).setOnline(true);
+
+                systemUserDAO.update(systemUserList.get(0));
+
+
+                result.setMember(member);
+                result.setAreMember(true);
+                result.setMsg("登录成功！");
+                result.setSuccess(true);
+                result.setData(null);
+            } else {
+                result.setAreMember(false);
+                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                result.setMsg("门店员工不允许登录");
+                result.setSuccess(false);
+                result.setData(null);
+            }
+
+
+        } catch (Exception e) {
+            Logger.error(e);
+            result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    public synchronized void setCurrentLogin(SystemUser currentLogin) {
+        SessionManager.getCurrentSession().setAttribute(CURRENT_LOGIN_STORED_ID, currentLogin);
+    }
+    protected static final String CURRENT_LOGIN_STORED_ID = "{9D929EBB-1006-4597-A5E0-F159BB93AA60}";
 }

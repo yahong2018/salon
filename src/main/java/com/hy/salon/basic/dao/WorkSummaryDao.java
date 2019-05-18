@@ -24,7 +24,7 @@ public class WorkSummaryDao extends BaseDAOWithEntity<WorkSummary> {
 
 
 
-    public List<WorkSummary> getSummaryForStuff(Long stuffId,String startTime,String endTime,Long summaryType){
+    public List<WorkSummary> getSummaryForStuff(Long stuffId,String startTime,String endTime,Integer summaryType){
         String where = "stuff_id=#{stuffId} ";
 
         if(null!=startTime){

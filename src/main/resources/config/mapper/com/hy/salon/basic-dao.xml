@@ -819,4 +819,58 @@ group by ss.record_id;
     </select>
 
 
+    <select id="GET_CARD_PURCHASE"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT scp.*,p.product_name,ss1.service_name,sss.suite_name,m.member_name,svs.suite_name as suite_name1,scp.card_type FROM salon.card_purchase as scp
+        left join salon.product as p on scp.card_id=p.record_id
+        left join salon.service as ss1 on ss1.record_id=scp.card_id
+        left join salon.service_suite as sss on sss.record_id=scp.card_id
+        left join salon.member as m on m.record_id = scp.member_id
+        left join salon.vip_suite as svs on svs.record_id = scp.card_id
+        <where>
+            <if test="cardType != null ">
+                and scp.card_type = #{cardType}
+            </if>
+            <if test="role == 2 ">
+                and m.initial_store_id =#{storeId}
+            </if>
+
+            <if test="role == 3 ">
+                and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+            </if>
+
+            <if test="timeStart != null">
+                and scp.create_date &gt;= #{timeStart} and scp.create_date &lt;= #{timeEnd}
+            </if>
+            <if test="memberName != null">
+            and m.member_name=#{memberName}
+            </if>
+        </where>
+        order by scp.create_date  desc
+
+    </select>
+
+
+    <select id="QUERY_CONSUME_RECORD"  parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT scr.*,m.member_name FROM salon.consume_record as scr
+       left join salon.member as m on scr.member_id=m.record_id
+       <where>
+           <if test="role == 2 ">
+               and m.initial_store_id =#{storeId}
+           </if>
+           <if test="role == 3 ">
+               and m.initial_store_id in(select ss.record_id from salon.salon as ss where ss.parent_id = #{storeId})
+           </if>
+           <if test="memberName != null">
+               and m.member_name=#{memberName}
+           </if>
+            order by scr.create_date
+       </where>
+
+
+    </select>
+
+
+
+
+
 </mapper>

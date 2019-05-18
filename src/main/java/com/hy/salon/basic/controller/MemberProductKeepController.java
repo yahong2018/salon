@@ -378,7 +378,8 @@ public class MemberProductKeepController {
             businessStuff.setRefTransId(memberProductReject.getRecordId());
             businessStuffDao.insert(businessStuff);//关联员工
         }
-
+        memberProductKeepDao.deleteById(memberProductKeepItem.getMemberProductKeepId());
+        memberProductKeepItemDao.deleteById(memberProductKeepItem.getRecordId());
 
         result.setSuccess(true);
         result.setMsgcode("0");

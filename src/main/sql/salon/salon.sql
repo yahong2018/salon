@@ -865,10 +865,10 @@ create table stock_transfer_application
   product_stock_movement_id        bigint                                not null,  -- 出库单号
   in_warehouse_product_id          bigint                                not null,  -- 调入仓库产品号
   out_warehouse_id                 bigint                                not null,  -- 调出仓库/门店
-  in_warehouse_id                  bigint                                not null,  -- 调入仓库/门店
+  in_warehouse_id                  bigint                                not null,  -- 调入仓库/门店-- 记录状态： 4.已完成   3.已批准   2.已驳回   1.已撤销  0.已提交(注意，一旦提交，就不可以修改，只能撤销以后重新提交)
   remark_application               varchar(500)                          null,      -- 申请原因
   remark_audit                     varchar(500)                          null,      -- 审批原因
-  record_status                    tinyint                               not null,  -- 记录状态： 4.已完成   3.已批准   2.已驳回   1.已撤销  0.已提交(注意，一旦提交，就不可以修改，只能撤销以后重新提交)
+  record_status                    tinyint                               not null,
   creator                          bigint                                null,  -- 创建人/申请人：调拨必须是调入门店的店长
   approver                         bigint                                null,  -- 审批人/修改人：调拨必须是调出门店的店长
 
@@ -1386,6 +1386,9 @@ create table submit_approval
   remark                   varchar(500)                                         not null, -- 送审说明
   -- 附件图片
   -- 单据类型表id
+  audit_photos             bigint                                               null,    --审核照片
+
+  approval_process_id       bigint                                              not null, --审批流程关联
 
   create_date              datetime                                             not null,   -- 创建时间
   create_by                bigint                                               not null,
@@ -1400,10 +1403,13 @@ create table submit_approval
 create table approval_process
 (
   record_id                bigint                auto_increment                 not null,
-  first                    bigint                                               not null, -- 第一审批人
-  second                   bigint                                               not null, -- 第二审批人
-  third                    bigint                                               not null, -- 第三审批人
-  four                     bigint                                               not null, -- 第四审批人
+  first                    bigint                                                not null, -- 第一审批人
+  second                   bigint                                                null, -- 第二审批人
+  third                    bigint                                                null, -- 第三审批人
+  four                     bigint                                                null, -- 第四审批人
+  store_id                 bigint                                               not null, -- 门店
+  bill_type_id             bigint                                               not null, -- 单据类型id
+
 
   primary key (record_id),
   index idx_approval_process_01 (first)
@@ -1412,10 +1418,18 @@ create table approval_process
 create table approval_record
 (
   record_id                bigint                                               not null,
-  approval_opinion         varchar(100)                                         not null, -- 审批意见
-  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝
+  submit_approval_id       bigint                                               not null, -- 送审号
+  approval_opinion         varchar(100)                                          null, -- 审批意见
+  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝  2 未审批    3 下一个审批
   approval_date            datetime                                             not null, -- 审批日期
   -- 送审表id
+  approval_type            int                                                  not null,--状态 整个审核流程是否已经结束(0  结束 1未结束)
+  several_approvals        int                                                  not null,--  第几个审批(1 2 3 4 )
+  several_approvals_stuff_id  bigint                                             not null,--当前审批人
+  is_last                  int                                                  not null, --是否最后一个（0 是  1不是）
+
+
+
 
   create_date              datetime                                             not null,   -- 记录创建时间
   create_by                bigint                                               not null,

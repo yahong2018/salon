@@ -25,6 +25,13 @@ public class SystemUserDAO extends BaseDAOWithEntity<SystemUser> {
         return this.getOne(where,parameters);
     }
 
+    public List<SystemUser> getUserByRecordTel(String tel){
+        String where = "user_code=#{tel}";
+        Map parameters = new HashMap();
+        parameters.put("tel",tel);
+        return this.getByWhere(where,parameters);
+    }
+
     protected final static String SQL_GET_SYSTEM_USER_BY_TEL = "com.zhxh.admin.dao.GET_SYSTEM_USER_BY_TEL";
     public SystemUser getUserByTel(String tel) {
         Map parameters = new HashMap();

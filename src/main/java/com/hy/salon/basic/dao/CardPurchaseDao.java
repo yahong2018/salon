@@ -138,7 +138,24 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
 
         return this.getByWhere(where, parameters);
     }
+    protected final static String SQL_GET_CARD_PURCHASE = "com.hy.salon.basic.dao.GET_CARD_PURCHASE";
 
+    public List<Map<String,Object>> getCardPurchase(Long storeId,String role,String toDays,String cardType,String memberName) {
+        Map parameters = new HashMap();
+
+        if(StringUtils.isNotEmpty(toDays)){
+            String days[] =  toDays.split("~");
+            String timeStart = days[0];
+            String  timeEnd = days[1];
+            parameters.put("timeStart", timeStart);
+            parameters.put("timeEnd", timeEnd);
+        }
+        parameters.put("cardType", cardType);
+        parameters.put("storeId", storeId);
+        parameters.put("role", role);
+        parameters.put("memberName", memberName);
+        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_CARD_PURCHASE, parameters);
+    }
 
 
     protected final static String SQL_GET_AMOUNT_FRO_STUFF = "com.hy.salon.basic.dao.GET_AMOUNT_FRO_STUFF";
