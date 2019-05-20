@@ -7,9 +7,13 @@ import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.service.CardPurchaseService;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.core.web.ExtJsResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -80,6 +84,15 @@ public class ConsumptionController {
 
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
+
+    @Resource(name="cardPurchaseDao")
+    private CardPurchaseDao cardPurchaseDao;
+
+    @Resource(name="consumeRecordDao")
+    private ConsumeRecordDAO consumeRecordDAO;
 
 
     /**
@@ -772,4 +785,139 @@ public class ConsumptionController {
         r.setMsgcode(StatusUtil.OK);
         return  r;
     }
+
+
+
+    /**
+     * 消费记录
+     */
+    @ResponseBody
+    @RequestMapping("queryProductReject")
+    @ApiOperation(value="消费记录（PC）", notes="消费记录（PC）")
+    public ExtJsResult queryProductReject(HttpServletRequest request, Long recordId, String toDays,String cardType,String memberName) {
+
+        ExtJsResult extJsResult=new ExtJsResult();
+        String role="0";
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
+            recordId = stuff2.getStoreId();
+        }
+
+        List<Map<String,Object>> productRejectList=cardPurchaseDao.getCardPurchase(recordId,role,toDays,cardType,memberName);
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> productRejectList2=cardPurchaseDao.getCardPurchase(recordId,role,toDays,cardType,memberName);
+        extJsResult.setTotal(productRejectList.size());
+        extJsResult.setData(productRejectList2);
+        return  extJsResult;
+    }
+
+
+
+    /**
+     * 消费记录(总)
+     */
+    @ResponseBody
+    @RequestMapping("queryCardPurchase")
+    @ApiOperation(value="消费记录（总）", notes="消费记录（总）")
+    public ExtJsResult queryCardPurchase(HttpServletRequest request, Long recordId, String toDays,String cardType,String memberName,String page) {
+
+        ExtJsResult extJsResult=new ExtJsResult();
+        String role="0";
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
+            recordId = stuff2.getStoreId();
+        }
+
+        List<Map<String,Object>> productRejectList=cardPurchaseDao.getCardPurchase(recordId,role,toDays,cardType,memberName);
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> productRejectList2=cardPurchaseDao.getCardPurchase(recordId,role,toDays,cardType,memberName);
+        for(Map<String,Object> m:productRejectList2){
+                if((int)m.get("card_type")==0){
+                    m.put("name",m.get("suite_name1")==null?"":"(充值卡)"+m.get("suite_name1"));
+                }else if((int)m.get("card_type")==1){
+                    m.put("name",m.get("suite_name")==null?"":"(套卡)"+m.get("suite_name"));
+                }else if((int)m.get("card_type")==2){
+                    m.put("name",m.get("service_name")==null?"":"(次卡)"+m.get("service_name"));
+                }else if((int)m.get("card_type")==3){
+                    m.put("name",m.get("product_name")==null?"":"(产品)"+m.get("product_name"));
+                }
+
+
+        }
+        extJsResult.setTotal(productRejectList.size());
+        extJsResult.setData(productRejectList2);
+        return  extJsResult;
+    }
+
+
+    /**
+     * 订单流水
+     */
+    @ResponseBody
+    @RequestMapping("queryConsumeRecord")
+    @ApiOperation(value="消费记录（PC）", notes="消费记录（PC）")
+    public ExtJsResult queryConsumeRecord(HttpServletRequest request, Long recordId, String toDays,String memberName) {
+
+        ExtJsResult extJsResult=new ExtJsResult();
+        String role="0";
+        if(recordId==null){
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+            String where="user_id=#{userId}";
+            Map parameters = new HashMap();
+            parameters.put("userId", user.getRecordId());
+            RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+            //判断用户角色
+            if(roleUser.getRoleId()==1){
+                role="1";
+            }else if(roleUser.getRoleId()==10){
+                role="2";
+            }else if(roleUser.getRoleId()==11){
+                role="3";
+            }
+
+            recordId = stuff2.getStoreId();
+        }
+
+        List<Map<String,Object>> productRejectList=consumeRecordDAO.getConsumeRecord(recordId,role,toDays,memberName);
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> productRejectList2=consumeRecordDAO.getConsumeRecord(recordId,role,toDays,memberName);
+        extJsResult.setTotal(productRejectList.size());
+        extJsResult.setData(productRejectList2);
+        return  extJsResult;
+    }
+
+
+
+
+
+
 }

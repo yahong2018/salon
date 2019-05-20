@@ -155,7 +155,10 @@ public class ReservationController {
 
                 Member member = memberDao.getById(reservation.getMemberId());
                 Stuff stuff = stuffDao.getById(reservation.getStuffId());
-                jsonObject.put("memberName",member.getMemberName());
+                if(null!=member){
+                    jsonObject.put("memberName",member.getMemberName());
+                }
+
 
                 jsonObject.put("stuffName",stuff.getStuffName());
                 jsonObject.put("memberId",reservation.getMemberId());

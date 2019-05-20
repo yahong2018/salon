@@ -370,6 +370,91 @@ public class PicturesController extends SimpleCRUDController<Pictures> {
     }
 
 
+    /**
+     * 顾客头像上传
+     *
+     * @param file
+     * @param request
+     * @return
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/uploadMemberHeadPic", method = RequestMethod.POST)
+    public Result uploadMemberHeadPic(MultipartFile file, HttpServletRequest request, Pictures condition) throws IllegalStateException, IOException {
+        Result result = new Result();
+
+        Pictures pic=picturesDao.getOnePicturesForCondition(condition.getMasterDataId(),new Byte("6"),new Byte("0"));
+        String newPicUrl = null;// 数据库地址
+
+        if (file != null) {      // 判断上传的文件是否为空
+            String path = null;// 文件路径
+            String type = null;// 文件类型
+            String fileName = file.getOriginalFilename();// 文件原名称
+            System.out.println("上传的文件原名称:" + fileName);
+            // 判断文件类型
+            type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
+            if (type != null) {// 判断文件类型是否为空
+                if ( "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase()) || "JPEG".equals(type.toUpperCase() )|| "BMP".equals(type.toUpperCase())) {
+                    // 项目在容器中实际发布运行的根路径
+                    String realPath = request.getSession().getServletContext().getRealPath("/");
+                    // 自定义的文件名称
+                    String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
+                    // 设置存放图片文件的路径
+                    //path=realPath+/*System.getProperty("file.separator")+*/trueFileName;
+                    UUID uuid = UUID.randomUUID();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+                    System.out.println(df.format(new Date()));
+                    String dir="C:/picture/pic/"+df.format(new Date());
+//                        String dir = request.getServletContext().getRealPath("/pic/"+df.format(new Date()));
+                    java.io.File folder = new java.io.File(dir);
+                    if (!folder.exists()) {
+                        folder.mkdirs();     ///如果不存在，创建目录
+                    }
+                    path = dir+"/"+uuid+"."+type;
+                    System.out.println("地址"+path);
+                    newPicUrl="/pic/"+df.format(new Date())+"/"+uuid+"."+type;
+//                    condition.setPicUrl("/"+df.format(new Date())+"/"+uuid+"."+type);
+                    file.transferTo(new File(path));
+                    System.out.println("文件成功上传到指定目录下");
+                } else {
+                    System.out.println("不是我们想要的文件类型,请按要求重新上传");
+                    return null;
+                }
+            } else {
+                System.out.println("文件类型为空");
+                result.setSuccess(false);
+                result.setMsgcode(StatusUtil.ERROR);
+                result.setMsg("文件类型为空");
+                return result;
+            }
+        } else {
+            System.out.println("没有找到相对应的文件");
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setMsg("没有找到相对应的文件");
+            return null;
+        }
+
+        if(null == pic){
+            condition.setPicUrl(newPicUrl);
+            picturesDao.insert(condition);
+        }else{
+            pic.setPicUrl(newPicUrl);
+            picturesDao.update(pic);
+        }
+
+
+
+
+        result.setSuccess(true);
+        result.setMsgcode(StatusUtil.OK);
+        result.setMsg("上传成功");
+        return result;
+    }
+
+
+
 
 
 

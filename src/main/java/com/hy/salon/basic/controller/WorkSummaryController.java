@@ -107,6 +107,76 @@ public class WorkSummaryController {
     public Result addWorkSummary(WorkSummary condition){
         Result result=new Result();
         try {
+            //该总结当天0点0分
+            SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.set(Calendar.HOUR_OF_DAY,0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            Date zero = calendar.getTime();
+            String startTime = sDateFormat.format(zero);
+            //该总结当天23点59分
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(new Date());
+            calendar2.set(Calendar.HOUR_OF_DAY,23);
+            calendar2.set(Calendar.MINUTE, 59);
+            calendar2.set(Calendar.SECOND, 59);
+            Date zero2 = calendar2.getTime();
+            String endTime = sDateFormat.format(zero2);
+
+            //该总结当月1号
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.MONTH, 0);
+            c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+            c.set(Calendar.HOUR_OF_DAY,0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            String first = sDateFormat.format(c.getTime());
+
+            //该总结当月30号
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(new Date());
+            c2.add(Calendar.MONTH, 0);
+            c2.set(Calendar.DAY_OF_MONTH,30);//设置为1号,当前日期既为本月第一天
+            c2.set(Calendar.HOUR_OF_DAY,23);
+            c2.set(Calendar.MINUTE, 59);
+            c2.set(Calendar.SECOND, 59);
+            String first2 = sDateFormat.format(c2.getTime());
+
+
+            String sTime="";
+            String eTime="";
+            if(condition.getSummaryType()==0){
+                sTime=first;
+                eTime=first2;
+
+                List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(condition.getStuffId(),sTime,eTime,condition.getSummaryType());
+                if(workSummaryList.size()!=0){
+                    result.setMsg("本月已写过总结");
+                    result.setMsgcode(StatusUtil.ERROR);
+                    result.setSuccess(false);
+                    return result;
+                }
+
+
+            }else{
+                sTime=startTime;
+                eTime=endTime;
+                List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(condition.getStuffId(),sTime,eTime,condition.getSummaryType());
+                if(workSummaryList.size()!=0){
+                    result.setMsg("本日已写过总结");
+                    result.setMsgcode(StatusUtil.ERROR);
+                    result.setSuccess(false);
+                    return result;
+                }
+            }
+
+
+
+
+
             condition.setCurMonth(new Date());
             workSummaryDao.insert(condition);
             result.setMsgcode(StatusUtil.OK);
@@ -226,7 +296,7 @@ public class WorkSummaryController {
     @ResponseBody
     @RequestMapping(value = "queryWorkSummary")
     @ApiOperation(value="获取该员工的工作总结", notes="获取该员工的工作总结")
-    public Result queryWorkSummary(Long recordId,Long summaryType){
+    public Result queryWorkSummary(Long recordId,Integer summaryType){
         Result result=new Result();
         try {
             List<WorkSummary> workSummaryList=workSummaryDao.getSummaryForStuff(recordId,null,null,summaryType);
@@ -249,29 +319,61 @@ public class WorkSummaryController {
                 Date zero2 = calendar2.getTime();
                 String endTime = sDateFormat.format(zero2);
 
+                //该总结当月1号
+                Calendar c = Calendar.getInstance();
+                c.setTime(w.getCreateDate());
+                c.add(Calendar.MONTH, 0);
+                c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+                c.set(Calendar.HOUR_OF_DAY,0);
+                c.set(Calendar.MINUTE, 0);
+                c.set(Calendar.SECOND, 0);
+                String first = sDateFormat.format(c.getTime());
+
+                //该总结当月30号
+                Calendar c2 = Calendar.getInstance();
+                c2.setTime(w.getCreateDate());
+                c2.add(Calendar.MONTH, 0);
+                c2.set(Calendar.DAY_OF_MONTH,30);//设置为1号,当前日期既为本月第一天
+                c2.set(Calendar.HOUR_OF_DAY,23);
+                c2.set(Calendar.MINUTE, 59);
+                c2.set(Calendar.SECOND, 59);
+                String first2 = sDateFormat.format(c2.getTime());
+
+
+                String sTime="";
+                String eTime="";
+                if(w.getSummaryType()==0){
+                    sTime=first;
+                    eTime=first2;
+                }else{
+                    sTime=startTime;
+                    eTime=endTime;
+                }
+
+
 
                 Map<String,Object> stuffAmountMap=new HashMap<>();
                 Double consumptionAmount=new Double(0);
                 Double paymentAmount=new Double(0);
                 //通过该员工的总消费
-                Map<String,Object>  amountMap1=CardPurchaseDao.queryAmountForStuff(recordId,null,startTime,endTime);
+                Map<String,Object>  amountMap1=CardPurchaseDao.queryAmountForStuff(recordId,null,sTime,eTime);
                 if(null != amountMap1){
                     consumptionAmount=(Double) amountMap1.get("amount");
                 }
 
                 //startTime
-                Map<String,Object>  amountMap3=paymentItemDao.queryPaymentAmountForStuff(recordId,startTime,endTime);
+                Map<String,Object>  amountMap3=paymentItemDao.queryPaymentAmountForStuff(recordId,sTime,eTime);
                 if(null != amountMap3){
                     paymentAmount=(Double) amountMap3.get("amount");
                 }
                 //获取护理日志和回访日志的数量
                 //回访日志
-                List<NurseLog> NurseLogList1=nurseLogDao.getNurseLogForStuffId(recordId,"0",startTime,endTime);
+                List<NurseLog> NurseLogList1=nurseLogDao.getNurseLogForStuffId(recordId,"0",sTime,eTime);
                 //护理日志
-                List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1",startTime,endTime);
+                List<NurseLog> NurseLogList2=nurseLogDao.getNurseLogForStuffId(recordId,"1",sTime,eTime);
 
                 //服务次数
-                List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3",startTime,endTime);
+                List<Reservation> reservationList=reservationDao.getReservationForStuffId(recordId,"3",sTime,eTime);
 
                 stuffAmountMap.put("serviceSize",reservationList.size());
                 stuffAmountMap.put("paymentAmount",paymentAmount);

@@ -625,4 +625,50 @@
         <result column="type_amount_return" property="typeAmountReturn" jdbcType="TINYINT" />
     </resultMap>
 
+    <resultMap id="ConsumeRecord" type="com.hy.salon.basic.entity.ConsumeRecord" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+        <result column="way" property="way" jdbcType="TINYINT" />
+        <result column="cash" property="cash" jdbcType="DOUBLE" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="ApprovalProcess" type="com.hy.salon.basic.entity.ApprovalProcess" >
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="first" property="first" jdbcType="BIGINT" />
+        <result column="second" property="second" jdbcType="BIGINT" />
+        <result column="third" property="third" jdbcType="BIGINT" />
+        <result column="four" property="four" jdbcType="BIGINT" />
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
+        <result column="bill_type_id" property="billTypeId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <resultMap id="ApprovalRecord" type="com.hy.salon.basic.entity.ApprovalRecord" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="approval_opinion" property="approvalOpinion" jdbcType="VARCHAR" />
+        <result column="approval_status" property="approvalStatus" jdbcType="TINYINT" />
+        <result column="approval_date" property="approvalDate" jdbcType="TIMESTAMP" />
+        <result column="approval_type" property="approvalType" jdbcType="INTEGER" />
+        <result column="several_approvals" property="severalApprovals" jdbcType="INTEGER" />
+        <result column="several_approvals_stuff_id" property="severalApprovalsStuffId" jdbcType="BIGINT" />
+        <result column="is_last" property="isLast" jdbcType="INTEGER" />
+        <result column="submit_approval_id" property="submitApprovalId" jdbcType="BIGINT" />
+    </resultMap>
+
+
+    <resultMap id="BillType" type="com.hy.salon.basic.entity.BillType" >
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="SubmitApproval" type="com.hy.salon.basic.entity.SubmitApproval" extends="com.zhxh.core.data.TraceableEntity">
+        <result column="approval_number" property="approvalNumber" jdbcType="VARCHAR" />
+        <result column="approval_date" property="approvalDate" jdbcType="TIMESTAMP" />
+        <result column="approver" property="approver" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="approval_process_id" property="approvalProcessId" jdbcType="BIGINT" />
+        <result column="audit_photos" property="auditPhotos" jdbcType="BIGINT" />
+
+    </resultMap>
+
 </mapper>

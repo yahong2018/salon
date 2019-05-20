@@ -313,6 +313,7 @@ public class MemberController extends SimpleCRUDController<Member> {
                         tag.setTagId(tagId);
                         memberTagDao.update(tag);
                     }else{
+                        tag=new MemberTag();
                         tag.setTagId(tagId);
                         tag.setMemberId(Long.parseLong(s));
                         memberTagDao.insert(tag);
