@@ -2,6 +2,7 @@ package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
@@ -499,12 +500,17 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
      */
     @ResponseBody
     @RequestMapping(value = "getSalon",method = RequestMethod.GET)
-    public Result getSalon(){
+    public Result getSalon(int page,String  limit){
         SystemUser user = authenticateService.getCurrentLogin();
         Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
         Result result=new Result();
         try {
             List<Salon> list = timeSheetService.getSalon(stuff.getStoreId());
+            if(null==limit){
+                PageHelper.startPage(page, 10);
+            }else{
+                PageHelper.startPage(page, Integer.parseInt(limit));
+            }
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);

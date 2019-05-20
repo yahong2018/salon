@@ -391,6 +391,7 @@ public class MemberController extends SimpleCRUDController<Member> {
 
             result.setTotal(memberSalonTagDAO.getTag(recordId).size());
             if(null==limit){
+                PageHelper.startPage(page, 10);
             }else{
                 PageHelper.startPage(page, Integer.parseInt(limit));
             }
