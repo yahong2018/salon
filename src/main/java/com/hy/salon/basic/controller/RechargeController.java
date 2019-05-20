@@ -125,7 +125,7 @@ public class RechargeController {
     @ResponseBody
     @RequestMapping("/getSystemRechargeList")
     @ApiOperation(value="会员卡充值记录列表", notes="会员卡充值记录列表")
-    public ExtJsResult getSystemRechargeList(HttpServletRequest request,String memberId,Long recordId,String toDays){
+    public ExtJsResult getSystemRechargeList(int page,String  limit,HttpServletRequest request,String memberId,Long recordId,String toDays){
         String role="0";
         if(recordId==null){
             SystemUser user = authenticateService.getCurrentLogin();
@@ -147,7 +147,7 @@ public class RechargeController {
         }
 
         //List<Service> serviceList= serviceDao.queryServiceForId(storeId);
-        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(memberId,recordId, request,toDays,role);
+        ExtJsResult VipSuiteList=cardPurchaseService.getSystemRechargeList(page,limit,memberId,recordId, request,toDays,role);
         return  VipSuiteList;
     }
 

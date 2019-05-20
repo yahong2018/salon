@@ -792,7 +792,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function(exports){
   //获取cssRule
   Class.prototype.getCssRule = function(field, callback){
     var that = this
-    ,style = that.elem.find('style')[0]
+    ,style = that.elem.find('static.css.zTreeStyle.style')[0]
     ,sheet = style.sheet || style.styleSheet || {}
     ,rules = sheet.cssRules || sheet.rules;
     layui.each(rules, function(i, item){

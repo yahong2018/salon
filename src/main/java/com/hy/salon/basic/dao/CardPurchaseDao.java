@@ -22,7 +22,7 @@ import java.util.Map;
 @Component("cardPurchaseDao")
 public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
     protected final static String SQL_GET_RECHARGE = "com.hy.salon.basic.dao.GET_RECHARGE";
-    public ExtJsResult getSystemRechargeList(String memberName, long storeId, HttpServletRequest request,String toDays,String role) {
+    public ExtJsResult getSystemRechargeList(int page,String  limit,String memberName, long storeId, HttpServletRequest request,String toDays,String role) {
         ExtJsResult extJsResult = new ExtJsResult();
         Map parameters = new HashMap();
         parameters.put("storeId",storeId);
@@ -37,13 +37,19 @@ public class CardPurchaseDao extends BaseDAOWithEntity<CardPurchase> {
             parameters.put("timeStart", timeStart);
             parameters.put("timeEnd", timeEnd);
         }
-        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
-        String s=request.getParameter("page");
+
+        if(null==limit){
+            PageHelper.startPage(page, 10);
+        }else{
+            PageHelper.startPage(page, Integer.parseInt(limit));
+        }
         List<Map> listMap = this.getSqlHelper().getSqlSession().selectList(SQL_GET_RECHARGE, parameters);
         PageInfo<Map> pageInfo = new PageInfo<>(listMap);
         extJsResult.setSuccess(true);
         extJsResult.setMsg("获取成功");
+
         extJsResult.setTotal(Integer.parseInt(pageInfo.getTotal()+""));
+
 /*        {
             field : 'recordId',
                     title : 'recordId',

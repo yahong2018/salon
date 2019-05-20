@@ -1405,7 +1405,7 @@ jQuery.support = (function() {
 
 		// Get the style information from getAttribute
 		// (IE uses .cssText instead)
-		style: /top/.test( a.getAttribute("style") ),
+		style: /top/.test( a.getAttribute("static.css.zTreeStyle.style") ),
 
 		// Make sure that URLs aren't manipulated
 		// (IE normalizes it by default)
