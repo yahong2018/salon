@@ -50,6 +50,9 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         interceptorRegistration.addPathPatterns("/hy/basic/vipSuite/**");
         interceptorRegistration.addPathPatterns("/hy/basic/workSummary/**");
 
+        interceptorRegistration.addPathPatterns("/hy/basic/externalCall/memberWallet");
+        interceptorRegistration.addPathPatterns("/hy/basic/externalCall/consumptionIntegral");
+
 
 
 
