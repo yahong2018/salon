@@ -60,6 +60,35 @@ public class GaoDeUtil {
         return flag;
     }
 
+
+    public   static Boolean getBooleanAddressForDistance(String myAddress, String GAddress,Integer distance2){
+        String temp = myAddress+"&destination=" +GAddress+
+                "&output=xml&key=4f071e21116c6cdd1747f67220913890&type=0";
+        String requestUrl = API+temp;
+        Boolean flag  = false;
+        RequestResult requestResult = RequestUtils.getJsonText(requestUrl, null);
+        if (200 != requestResult.getCode()) {
+            return false;
+        }
+        requestUrl = requestResult.getBody();
+        XMLSerializer xmlSerializer = new XMLSerializer();
+        String resutStr = xmlSerializer.read(requestUrl).toString();
+        JSONObject resultJson = JSONObject.fromObject(resutStr);
+        String results = resultJson.getString("results");
+        JSONObject resultStirngs = JSONObject.fromObject(results);
+
+
+        String result = resultStirngs.getString("result");
+        JSONObject resultStirng = JSONObject.fromObject(result);
+
+        int distance = resultStirng.getInt("distance");
+        logger.info("距离大小：{}",distance);
+        if(distance<=distance2){
+            flag = true;
+        }
+        return flag;
+    }
+
     private static double[] getLatAndLonByAddress(String address) {
         try {
             String requestUrl = API;
@@ -95,15 +124,13 @@ public class GaoDeUtil {
     }
 
 
-/*    public static void main(String[] args) {
-        System.out.println(GaoDeUtil.getLatAndLonByAddress("广东省东莞市东城区莞樟路115-3"));
-        double[] aaa = GaoDeUtil.getLatAndLonByAddress("广东省东莞市东城区莞樟路115-3");
-        System.out.println(aaa);
-        for (double cccc : aaa) {
-            System.out.println(cccc);
-        }
-        System.out.println(GaoDeUtil.getLatAndLonByAddress("广东省深圳市福田区天安数码城创业科技大厦一期"));
-
-    }*/
+//    public static void main(String[] args) {
+//        double[] aaa = GaoDeUtil.getLatAndLonByAddress("广东省东莞市东城区莞樟路115-3");
+//        System.out.println(aaa);
+//        for (double cccc : aaa) {
+//            System.out.println(cccc);
+//        }
+//
+//    }
 }
 

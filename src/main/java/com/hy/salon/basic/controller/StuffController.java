@@ -684,5 +684,21 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     }
 
 
+    @ResponseBody
+    @RequestMapping("/getStuffInfo")
+    @ApiOperation(value="获取员工列表", notes="获取员工列表")
+    public JSONObject getStuffInfo(){
+        JSONObject jsonObject = new JSONObject();
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff2 = stuffDao.getStuffForUser(user.getRecordId());
+        String where="store_id=#{storeId}";
+        Map parameters = new HashMap();
+        parameters.put("storeId", stuff2.getStoreId());
+        List<Stuff> list =  stuffDao.getByWhere(where,parameters);
+        jsonObject.put("listMember",list);
+        return  jsonObject;
+    }
+
+
 
 }

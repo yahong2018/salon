@@ -26,7 +26,7 @@ public class ServiceSuiteDAO extends BaseDAOWithEntity<ServiceSuite> {
     }
 
     public List<ServiceSuite> querySuitItemForCreateId(Long storeId){
-        String where="store_id = #{storeId}";
+        String where="store_id = #{storeId} order by create_date  desc";
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
         return this.getByWhere(where,parameters);

@@ -52,4 +52,13 @@ public class MapUtils {
         return null;
     }
 
+    public static void main(String[] args) {
+        double[] aaa = MapUtils.getLatAndLonByAddress("广东省东莞市东城街道主山社区莞樟大道115-3号");
+        System.out.println(aaa);
+        for (double cccc : aaa) {
+            System.out.println(cccc);
+        }
+
+    }
+
 }

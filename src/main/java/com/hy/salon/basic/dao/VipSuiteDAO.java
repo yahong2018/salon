@@ -57,6 +57,11 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
         JSONArray jsonArray = new JSONArray();
         //一个门店的所有充值卡
         for(VipSuite vs:listVipSuite){
+
+//            List<Pictures> piclist= picturesDao.getPicturesForCondition(vs.getRecordId(),new Byte("4"),new Byte("0"));
+//            if(null != piclist && piclist.size()!=0){
+//                vs.setPicUrl(piclist.get(0).getPicUrl());
+//            }
             JSONObject jsonObject =  getVipSuiteJSONObject(vs,memberId);
             jsonArray.add(jsonObject);
      /*       JSONObject jsonObject = new JSONObject();
@@ -152,7 +157,7 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
         }
         Map parameterP = new HashMap();
         parameterP.put("masterDataId", vs.getRecordId());
-        parameterP.put("recordType",1);
+        parameterP.put("recordType",4);
         parameterP.put("picType",0);
         String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
         List<Pictures> picturesList = picturesDao.getByWhere(rwhereP,parameterP);

@@ -5,6 +5,7 @@ import com.zhxh.core.data.BaseDAOWithEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component("approvalProcessDAO")
@@ -20,5 +21,13 @@ public class ApprovalProcessDAO extends BaseDAOWithEntity<ApprovalProcess> {
         return this.getOne(where, parameters);
     }
 
+
+    public List<ApprovalProcess> getApprovalProcessForStore(Long storeId){
+        String where = "store_id=#{storeId} ";
+        Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
+
+        return this.getByWhere(where, parameters);
+    }
 
 }

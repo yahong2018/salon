@@ -222,6 +222,8 @@
         <result column="introducer" property="introducer" jdbcType="VARCHAR" />
         <result column="primary_beautician" property="primaryBeautician" jdbcType="BIGINT" />
         <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="invitation_code" property="invitationCode" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <!--<result column="balance_cash" property="balanceCash" jdbcType="DOUBLE" />-->
         <!--<result column="balance_total" property="balanceTotal" jdbcType="DOUBLE" />-->
         <!--<result column="cash_coupon" property="cashCoupon" jdbcType="DOUBLE" />-->

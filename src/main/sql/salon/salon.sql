@@ -433,7 +433,7 @@ create table member
   member_name                      varchar(50)                     not null,   -- 姓名
   tel                              varchar(50)                     not null,   -- 电话
   gender                           tinyint                         not null,   -- 性别
-  weixin                           varchar(50)                     not null,   -- 微信
+  weixin                           varchar(50)                     null,   -- 微信
   birthday                         datetime                        null,       -- 生日
   zodiac                           tinyint                         null,       -- 星座
   member_grade                     bigint                          not null default 3,   -- 分类 0 A类  1 B类 2 C类 3 D类
@@ -457,6 +457,8 @@ create table member
   introducer                       varchar(50)                     null,       -- 介绍人
   primary_beautician               bigint                          null,       -- 负责美容师
   entry_time                       datetime                        null,       -- 入店时间
+  invitation_code                  varchar(50)                     null,       -- 邀请码
+  parent_id                        bigint                          null,       -- 邀请人
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
