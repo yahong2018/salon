@@ -41,7 +41,7 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
     }
 
     public List<VipSuite> getVipSuiteListForId(Long id){
-        String where = "store_id=#{id}";
+        String where = "store_id=#{id} order by create_date  desc";
         Map parameters = new HashMap();
         parameters.put("id", id);
 
