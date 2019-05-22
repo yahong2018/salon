@@ -217,8 +217,8 @@ public class LoggerAspect {
                 String code = "";
                 if(userCode==null){
                if(args.length>0){
-                   SystemUser su =  (SystemUser)args[0];
-                   code =   su.getUserCode();
+//                   SystemUser su =  (SystemUser)args[0];
+//                   code =   su.getUserCode();
                }
                 }else{
                     code =   userCode[0];
@@ -258,7 +258,7 @@ public class LoggerAspect {
             ol.setOptInfo(helper.getJsonFromString(names, args));
             ol.setOptStatu(200);
             ol.setOptResult(result.toString());
-            operateLogDao.insert(ol);
+//            operateLogDao.insert(ol);
 
         }else {
             result = point.proceed();
