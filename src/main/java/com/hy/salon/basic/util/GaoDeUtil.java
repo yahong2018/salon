@@ -54,7 +54,7 @@ public class GaoDeUtil {
 
         int distance = resultStirng.getInt("distance");
         logger.info("距离大小：{}",distance);
-        if(distance<=200){
+        if(distance<=1000){
             flag = true;
         }
         return flag;
