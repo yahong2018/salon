@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/main.js"></script>
+</head>
+<body>
+<div class="x-body layui-anim layui-anim-up">
+    <div class="layui-fluid">
+        <form class="layui-form layui-form-pane1" lay-filter="first">
+            <div class="layui-form-item">
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>职务名称：</label>
+                <div class="layui-input-inline">
+                    <input name="jobName" id="jobName" placeholder="请输入" value="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="text-error">*</span>职务等级：</label>
+                <div class="layui-input-inline">
+                    <input name="jobLevel" id="jobLevel" placeholder="请输入"  value="" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 140px;">
+                <!--<p id="btnGroup" class="pull-right">-->
+                <button class="layui-btn save"  lay-submit="" lay-filter="*">保存</button>
+                <button class="layui-btn quxiao" >取消</button>
+                <!--</p>-->
+            </div>
+            <input name="recordId" id="recordId"  type="hidden" value="" class="layui-input">
+        </form>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    function child(data) {
+        var $ = layui.jquery;
+        var recordId = data.recordId;
+        if (recordId != undefined) {
+            $("#recordId").val(recordId);
+            var jobName = data.jobName;
+            $("#jobName").val(jobName);
+
+            var jobLevel = data.jobLevel;
+            $("#jobLevel").val(jobLevel);
+        }
+    }
+
+        layui.use(['element', 'layer', 'jquery','form','laydate','upload'], function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+            var laydate=layui.laydate;
+            /* function quxiao(){
+                alert(111);
+            } */
+            var $ = layui.jquery,
+                upload = layui.upload;
+
+            form.on('submit(*)', function(data){
+                console.log(data.field);
+                if(data.field.userStatus=='on'){
+                    data.field.userStatus = 1
+                }else{
+                    data.field.userStatus = 0;
+                }
+
+                $.ajax({
+                    type:'POST',
+                    url:'/hy/basic/job/updateJob',
+                    data: data.field,
+                    success: function(data){
+                        if(data.msgcode=="200"){
+                            alert("操作失败！");
+                        }else{
+                            alert("操作成功！");
+                            window.parent.location.reload(); //刷新父页面
+                            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                            parent.layer.close(index);  // 关闭layer
+                        }
+
+                        //window.location.href="${basePath}ryOrderConfig/queryList";
+                    }
+                })
+                return false;
+            });
+    });
+</script>

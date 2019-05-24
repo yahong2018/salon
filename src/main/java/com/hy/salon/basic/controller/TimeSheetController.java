@@ -382,7 +382,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             @ApiImplicitParam(paramType="query", name = "salonId", value = "門店id", required = true, dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "time", value = "当月日期", required = true, dataType = "String")
     })
-    public Result getTimeSheetBySalonId(HttpServletRequest request){
+    public Result getTimeSheetBySalonId(int page,String limit,HttpServletRequest request){
 
         String salonIdS = request.getParameter("salonId");
         String time = request.getParameter("time");
@@ -396,11 +396,18 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
             salonId=stuff.getStoreId();
         }
+
         MyResult result = new MyResult();
+        result.setTotal(stuffDao.getStuffForStoreId(salonId).size());
         Salon salon = salonDao.getSalonForId(salonId);
         try {
             List<Map> list = timeSheetService.getTimeSheetBySalonId(result,salonId, time);
             result.setData(list);
+          /*  if(null==limit){
+                PageHelper.startPage(page, 10);
+            }else{
+                PageHelper.startPage(page, Integer.parseInt(limit));
+            }*/
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
             result.setSalonId(salonId);
@@ -528,7 +535,7 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
      */
     @ResponseBody
     @RequestMapping(value = "getTimeSheetBySalonIds",method = RequestMethod.GET)
-    public Result getTimeSheetBySalonIds(Long salonId,String time,String name){
+    public Result getTimeSheetBySalonIds(int page,String limit,Long salonId,String time,String name){
         if(StringUtils.isEmpty(salonId)){
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
@@ -549,12 +556,16 @@ public class TimeSheetController extends SimpleCRUDController<TimeSheet> {
             }else{
                 s=sdf.format(new Date());
             }
+
+
             if(name!=null){
                 list = timeSheetService.getTimeSheetBySalonId(0,0,0,salonId, s,name);
             }else{
                 list = timeSheetService.getTimeSheetBySalonId(salonId, s);
             }
+
             result.setTotal(stuffDao.getPageListCount(new HashMap()));
+
             result.setData(list);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);

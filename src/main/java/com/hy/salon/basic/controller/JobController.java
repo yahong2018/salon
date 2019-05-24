@@ -1,8 +1,16 @@
 package com.hy.salon.basic.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.JobDAO;
+import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Job;
+import com.hy.salon.basic.entity.MemberTag;
+import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.util.DateString;
 import com.hy.salon.basic.vo.Result;
+import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -13,6 +21,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +45,12 @@ public class JobController extends SimpleCRUDController<Job> {
     @Resource(name="jobDAO")
     private JobDAO jobDAO;
 
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
+
+    @Resource(name = "stuffDao")
+    private StuffDao stuffDao;
+
     @Override
     protected BaseDAOWithEntity<Job> getCrudDao() {
         return jobDAO;
@@ -51,22 +66,31 @@ public class JobController extends SimpleCRUDController<Job> {
             @ApiImplicitParam(paramType="add", name = "jobLevel", value = "职位等级", required = true, dataType = "int"),
     })
     @RequestMapping(value = "/addJob",method = RequestMethod.POST)
-    public String addJob(Job job){
-        String jobName = job.getJobName();
-        String where="job_name=#{jobName}";
-        Map parameters = new HashMap();
-        parameters.put("jobName", jobName);
-        Job jobData = jobDAO.getOne(where,parameters);
-        String result = "";
-        if(jobData!=null){
-            jobDAO.insert(job);
-            result = "添加成功";
-            return  result;
-        }else{
-            result = "职务名称已经存在！";
-            return result ;
-        }
+    public Result addJob(Job job){
 
+        Result r= new Result();
+            String jobName = job.getJobName();
+            int jobLevel = job.getJobLevel();
+            String where = "job_name = #{jobName} and job_level = #{jobLevel}";
+            Map parameters = new HashMap();
+            parameters.put("jobName", jobName);
+            parameters.put("jobLevel", jobLevel);
+            Job jobData = jobDAO.getOne(where, parameters);
+
+            try {
+                if (jobData == null) {
+                   jobDAO.insert(job);
+                    r.setMsg("请求成功");
+                    r.setMsgcode(StatusUtil.OK);
+                    r.setSuccess(true);
+              }
+         }catch (Exception e){
+                e.printStackTrace();
+                r.setMsg("请求失败");
+                r.setMsgcode(StatusUtil.ERROR);
+                r.setSuccess(false);
+         }
+   return  r;
     }
 
     @ApiOperation(value = "删除职务",notes = "删除职务")
@@ -74,12 +98,30 @@ public class JobController extends SimpleCRUDController<Job> {
             @ApiImplicitParam(paramType="delete", name = "recordId", value = "职位id", required = true, dataType = "long"),
     })
     @RequestMapping(value = "/deleteJob",method = RequestMethod.POST)
-    public String deleteJob(long recordId){
-        if(StringUtils.isNotEmpty(recordId+"")){
+    public Result deleteJob(@RequestBody String[] ids){
+
+        Result result = new Result();
+        try {
+            if(StringUtils.isNotEmpty(ids+"")) {
+                for (String id : ids) {
+                    jobDAO.deleteById(id);
+                }
+            }
+            result.setMsgcode(StatusUtil.OK);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMsgcode(StatusUtil.ERROR);
+            result.setSuccess(false);
+        }
+        return result;
+
+
+        /*if(StringUtils.isNotEmpty(recordId+"")){
             jobDAO.deleteById(recordId);
             return  "Success";
         }
-        return  "";
+        return  "";*/
 
     }
 
@@ -95,6 +137,7 @@ public class JobController extends SimpleCRUDController<Job> {
             Map parameters = new HashMap();
             parameters.put("recordId", recordId);
             list = jobDAO.getByWhere(where,parameters);
+
         }else{
             list =  jobDAO.getAll();
         }
@@ -128,7 +171,56 @@ public class JobController extends SimpleCRUDController<Job> {
      */
     @ResponseBody
     @RequestMapping(value = "getJobs",method = RequestMethod.GET)
-    public Result getJobs(Integer page,Integer limit){
+    public Result getJobs(Integer page,String limit,Long recordId){
+        Result r= new Result();
+        try {
+            if (null == recordId) {
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff = stuffDao.getStuffForUser(user.getRecordId());
+                recordId = stuff.getStoreId();
+            }
+
+            r.setTotal(jobDAO.getSeriesForUser().size());
+            if (null == limit) {
+                PageHelper.startPage(page, 10);
+            } else {
+                PageHelper.startPage(page, Integer.parseInt(limit));
+            }
+            List<Job> jobList = jobDAO.getSeriesForUser();
+
+            r.setData(jobList);
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setMsgcode(StatusUtil.ERROR);
+            r.setSuccess(false);
+        }
+        return r;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("updateJob")
+    @ApiOperation(value="修改职务", notes="修改职务")
+    public Result updateJob( Job job) {
+        Result r= new Result();
+        try {
+            jobDAO.update(job);
+            r.setMsg("修改成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+    /*public Result getJobs(Integer page,Integer limit){
         Result result=new Result();
         try {
             List<Job> list = jobDAO.getAll();
@@ -141,6 +233,6 @@ public class JobController extends SimpleCRUDController<Job> {
             result.setMsgcode("200");
         }
         return  result;
-    }
+    }*/
 
 }
