@@ -147,6 +147,8 @@
         <result column="return_visit" property="returnVisit" jdbcType="INTEGER" />
         <result column="time_total" property="timeTotal" jdbcType="INTEGER" />
         <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="frequency" property="frequency" jdbcType="INTEGER" />
+
     </resultMap>
     <!--产品库存异动-->
     <resultMap id="ProductStockMovement" type="com.hy.salon.basic.entity.ProductStockMovement" extends="com.zhxh.core.data.TraceableEntity">

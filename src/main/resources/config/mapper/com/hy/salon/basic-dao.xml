@@ -871,6 +871,32 @@ group by ss.record_id;
 
 
 
+    <select id="QUERY_SUBMIT_APPROVAL"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT ssa.*,sbt.type_name,ss.stuff_name FROM salon.submit_approval as ssa
+        left join salon.approval_process as sap on ssa.approval_process_id=sap.record_id
+        left join salon.bill_type as sbt on sap.bill_type_id=sbt.record_id
+        left join salon.stuff as ss on ss.record_id=ssa.approver
+        where ssa.approver =#{stuffId}
+
+
+    </select>
+
+    <select id="QUERY_APPROVAL_RECORD"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT spr.*,ssa.*,ss.stuff_name FROM salon.approval_record as spr
+         left join salon.submit_approval as ssa on ssa.record_id=spr.submit_approval_id
+         left join salon.stuff as ss on ss.record_id=ssa.approver
+        where spr.several_approvals_stuff_id=#{stuffId} spr.and approval_status = #{approvalStatus}
+
+
+    </select>
+
+
+
+
+
+
+
+
 
 
 </mapper>
