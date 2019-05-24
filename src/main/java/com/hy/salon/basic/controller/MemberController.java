@@ -167,6 +167,13 @@ public class MemberController extends SimpleCRUDController<Member> {
             //获取顾客钱包
             MemberWallet memberWallet= MemberWalletDao.getMemberWalletForMemberId(member.getRecordId());
 
+            if(null!=member.getParentId()){
+                Member parentMember= memberDao.getMemberForId(member.getParentId());
+                if(null!=parentMember){
+                    member.setParentName(parentMember.getMemberName());
+                }
+            }
+
 
             json.put("memberWallet",memberWallet);
             json.put("salon",salon);

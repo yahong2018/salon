@@ -39,7 +39,10 @@ public class ScheduleService {
                 scheduleDao.deleteById(one.getRecordId());
             }
             if(schedule.getShiftId()==-1){
-                scheduleDao.deleteById(one.getRecordId());
+                if(one!=null){
+                    scheduleDao.deleteById(one.getRecordId());
+                }
+
             }
             scheduleDao.insert(schedule);
         }

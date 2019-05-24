@@ -540,6 +540,84 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         return r;
     }
 
+
+    /**
+     * 获取家人资料
+     */
+    @ResponseBody
+    @RequestMapping("queryStuffData")
+    @ApiOperation(value="获取家人资料", notes="获取家人资料")
+    public Result queryStuffData(Long recordId) {
+        Result r= new Result();
+        try {
+            JSONObject jsonObj=new JSONObject();
+            Stuff stuff=stuffDao.getStuffForRecordId(recordId);
+
+            List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(recordId);
+            for(StuffJob sj:stuffJobList){
+                Job job=jobDao.getJobForId(sj.getJobId());
+                sj.setJob(job);
+            }
+            jsonObj.put("stuffJobList",stuffJobList);
+            jsonObj.put("stuff",stuff);
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+            r.setData(jsonObj);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+        return r;
+    }
+
+
+    /**
+     * 修改员工
+     */
+    @ResponseBody
+    @RequestMapping(value="updateStuff")
+    @ApiOperation(value="添加员工", notes="添加员工")
+    @Transactional(rollbackFor = Exception.class)
+    public Result updateStuff( Stuff condition, String jobLevel) {
+        Result r= new Result();
+        try {
+            stuffDao.update(condition);
+
+
+            List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(condition.getRecordId());
+            for(StuffJob s1:stuffJobList){
+                if(s1.getJobId()!=9 && s1.getJobId()!=2 && s1.getJobId()!=4 && s1.getJobId()!=8){
+                    stuffJobDao.delete(s1);
+                }
+            }
+
+            String[] str = jobLevel.split(",");
+            for(String s :str){
+                StuffJob stuffJobCondition=new StuffJob();
+                stuffJobCondition.setStuffId(condition.getRecordId());
+                Job j=jobDao.getJobForJobLevel(new Byte(s));
+                stuffJobCondition.setJobId(j.getRecordId());
+                stuffJobDao.insert(stuffJobCondition);
+            }
+
+
+
+            r.setMsg("修改成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
+    }
+
+
     /**
      * 搜索家人模糊查询(仅院长角色可调)
      */

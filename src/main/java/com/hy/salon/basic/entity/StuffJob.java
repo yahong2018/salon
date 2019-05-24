@@ -13,4 +13,5 @@ import java.util.Date;
 public class StuffJob extends TraceableEntity<Long> {
     private Long stuffId;
     private Long jobId;
+    private Job job;
 }

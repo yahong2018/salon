@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/hy/basic/submitApproval")
@@ -140,7 +141,14 @@ public class SubmitApprovalController {
             if(approvalProcess.getSecond()==condition.getApprover()){
                 approvalRecord1.setApprovalStatus(new Byte("0"));
                 approvalRecord2.setApprovalStatus(new Byte("0"));
+
             }
+
+            if(approvalProcess.getFirst()==condition.getApprover()){
+                approvalRecord1.setApprovalStatus(new Byte("0"));
+
+            }
+
 
         }else{
             approvalRecord1.setIsLast(0);
@@ -163,6 +171,11 @@ public class SubmitApprovalController {
                 approvalRecord3.setApprovalStatus(new Byte("0"));
 
             }
+            if(approvalProcess.getSecond()==condition.getApprover()){
+                approvalRecord3.setApprovalStatus(new Byte("3"));
+            }
+
+
         }else{
             approvalRecord2.setIsLast(0);
         }
@@ -183,6 +196,11 @@ public class SubmitApprovalController {
                 approvalRecord3.setApprovalStatus(new Byte("0"));
                 approvalRecord4.setApprovalStatus(new Byte("0"));
             }
+
+            if(approvalProcess.getThird()==condition.getApprover()){
+                approvalRecord4.setApprovalStatus(new Byte("3"));
+            }
+
         }else{
             approvalRecord3.setIsLast(0);
         }
@@ -203,6 +221,65 @@ public class SubmitApprovalController {
 
 
 
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
+
+
+    /**
+     * 获取审批列表
+     */
+    @ResponseBody
+    @RequestMapping("/querySubmitApproval")
+    @ApiOperation(value="获取审批列表", notes="获取审批列表")
+    public Result querySubmitApproval(Long stuffId,HttpServletRequest request){
+        Result r=new Result();
+        r.setTotal(submitApprovalDAO.getSubmitApprovalForStuff(stuffId).size());
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> submitApproval=submitApprovalDAO.getSubmitApprovalForStuff(stuffId);
+        r.setData(submitApproval);
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
+
+
+    /**
+     * 获取审批请求列表
+     */
+    @ResponseBody
+    @RequestMapping("/querySubmitRecord")
+    @ApiOperation(value="获取审批请求列表", notes="获取审批请求列表")
+    public Result querySubmitRecord(Long stuffId,String approvalStatus,HttpServletRequest request){
+        Result r=new Result();
+        r.setTotal(approvalRecordDao.getSubmitApprovalForStuff(stuffId,approvalStatus).size());
+        PageHelper.startPage(Integer.parseInt(request.getParameter("page")),10);
+        List<Map<String,Object>> submitApproval=approvalRecordDao.getSubmitApprovalForStuff(stuffId,approvalStatus);
+        r.setData(submitApproval);
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
+
+    /**
+     * 审批
+     */
+    @ResponseBody
+    @RequestMapping("/approval")
+    @ApiOperation(value="获取审批请求列表", notes="获取审批请求列表")
+    public Result approval(ApprovalRecord condition,Long submitApprovalId){
+        Result r=new Result();
+
+        if(condition.getIsLast()==1){
+            ApprovalRecord ApprovalRecord=approvalRecordDao.getApprovalRecordForId(submitApprovalId,condition.getSeveralApprovals()+1,condition.getSeveralApprovalsStuffId());
+
+
+
+        }
+
+
+//        r.setData();
         r.setMsgcode(StatusUtil.OK);
         r.setSuccess(true);
         return  r;

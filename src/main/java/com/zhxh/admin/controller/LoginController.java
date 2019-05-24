@@ -99,8 +99,18 @@ public class LoginController {
         try {
             String userCode = user.getUserCode();
             String password = user.getPassword();
-            authenticateService.authenticate(userCode, password);
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
+            if(null==systemUser){
+                result.setAreMember(false);
+                result.setMsg("该用户未注册！");
+                result.setSuccess(false);
+                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                result.setData(null);
+                return result;
+            }
+
+            authenticateService.authenticate(userCode, password);
+
 
             if(1==systemUser.getUserStatus()){
                 result.setAreMember(false);
@@ -108,6 +118,7 @@ public class LoginController {
                 result.setSuccess(false);
                 result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
                 result.setData(null);
+                return result;
 
             }
 
@@ -129,6 +140,7 @@ public class LoginController {
                 result.setSuccess(true);
                 result.setMsgcode(LoginResult.LOGIN_CODE_OK);
                 result.setData(null);
+                return result;
             }else{
                 Stuff stuff=stuffDao.getStuffForUser(id);
                 List<SystemRole> roleList = systemRoleService.getRoleListById(id);

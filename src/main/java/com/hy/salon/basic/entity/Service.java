@@ -52,4 +52,7 @@ public class Service extends TraceableEntity<Long> {
 
     private String picUrl;
 
+    private Integer frequency;
+
+
 }
