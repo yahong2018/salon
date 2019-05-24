@@ -330,21 +330,65 @@ public class SalonController extends SimpleCRUDController<Salon> {
                 return r;
             }
 
-            Pictures newIdPic1=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic1Code),new Byte("0"),new Byte("2"));
-            Pictures idPic1=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("2"));
-            idPic1.setPicUrl(newIdPic1.getPicUrl());
-            picturesDao.update(idPic1);
+            if(null!= idPic1Code && !"0".equals(idPic1Code)){
+                Pictures newIdPic1=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic1Code),new Byte("0"),new Byte("2"));
+                Pictures idPic1=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("2"));
+                if(null == idPic1){
+                    newIdPic1.setMasterDataId(condition.getRecordId());
+                    picturesDao.update(newIdPic1);
+                }else{
+                    idPic1.setPicUrl(newIdPic1.getPicUrl());
+                    picturesDao.update(idPic1);
+                }
 
-            Pictures newIdPic2=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic2Code),new Byte("0"),new Byte("3"));
-            Pictures idPic2=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("3"));
-            idPic2.setPicUrl(newIdPic2.getPicUrl());
-            picturesDao.update(idPic2);
+            }
 
-            Pictures newBusinessPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(businessPicCode),new Byte("0"),new Byte("1"));
-            Pictures businessPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("1"));
-            businessPic.setPicUrl(newBusinessPic.getPicUrl());
-            picturesDao.update(businessPic);
-            if(null!= permitPicCode && !"".equals(permitPicCode)){
+
+            if(null!= idPic2Code && !"0".equals(idPic2Code)){
+                Pictures newIdPic2=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic2Code),new Byte("0"),new Byte("3"));
+                Pictures idPic2=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("3"));
+                if(null == idPic2){
+                    newIdPic2.setMasterDataId(condition.getRecordId());
+                    picturesDao.update(newIdPic2);
+                }else{
+                    idPic2.setPicUrl(newIdPic2.getPicUrl());
+                    picturesDao.update(idPic2);
+                }
+
+            }
+
+            if(null!= businessPicCode && !"0".equals(businessPicCode)){
+                Pictures newBusinessPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(businessPicCode),new Byte("0"),new Byte("1"));
+                Pictures businessPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("1"));
+                if(null == businessPic){
+                    newBusinessPic.setMasterDataId(condition.getRecordId());
+                    picturesDao.update(newBusinessPic);
+                }else{
+                    businessPic.setPicUrl(newBusinessPic.getPicUrl());
+                    picturesDao.update(businessPic);
+                }
+
+            }
+
+
+
+//            Pictures newIdPic1=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic1Code),new Byte("0"),new Byte("2"));
+//            Pictures idPic1=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("2"));
+//            idPic1.setPicUrl(newIdPic1.getPicUrl());
+//            picturesDao.update(idPic1);
+
+//            Pictures newIdPic2=picturesDao.getOnePicturesForIdCondition(Long.parseLong(idPic2Code),new Byte("0"),new Byte("3"));
+//            Pictures idPic2=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("3"));
+//            idPic2.setPicUrl(newIdPic2.getPicUrl());
+//            picturesDao.update(idPic2);
+
+//            Pictures newBusinessPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(businessPicCode),new Byte("0"),new Byte("1"));
+//            Pictures businessPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("1"));
+//            businessPic.setPicUrl(newBusinessPic.getPicUrl());
+//            picturesDao.update(businessPic);
+
+
+            if(null!= permitPicCode && !"0".equals(permitPicCode)){
                 Pictures newPermitPic=picturesDao.getOnePicturesForIdCondition(Long.parseLong(permitPicCode),new Byte("0"),new Byte("4"));
                 Pictures permitPic=picturesDao.getOnePicturesForCondition(condition.getRecordId(),new Byte("0"),new Byte("4"));
                 if(null == permitPic){

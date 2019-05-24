@@ -217,6 +217,13 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
         return this.getOne(where, parameters);
     }
 
+    public Member getMemberForInvitationCode(String  invitationCode){
+        String where = "invitation_code=#{invitationCode}";
+        Map parameters = new HashMap();
+        parameters.put("invitationCode", invitationCode);
+        return this.getOne(where, parameters);
+    }
+
 
     public List<Member> getMemberForTime(String startTime,String endTime,Long storeId){
 

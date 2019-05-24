@@ -101,6 +101,16 @@ public class LoginController {
             String password = user.getPassword();
             authenticateService.authenticate(userCode, password);
             SystemUser systemUser = authenticateService.getUserByCode(userCode);
+
+            if(1==systemUser.getUserStatus()){
+                result.setAreMember(false);
+                result.setMsg("该用户已被禁用！");
+                result.setSuccess(false);
+                result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                result.setData(null);
+
+            }
+
             long id = systemUser.getRecordId();
 
             //判断账号属于员工还是属于顾客
@@ -117,6 +127,7 @@ public class LoginController {
                 result.setAreMember(true);
                 result.setMsg("登录成功！");
                 result.setSuccess(true);
+                result.setMsgcode(LoginResult.LOGIN_CODE_OK);
                 result.setData(null);
             }else{
                 Stuff stuff=stuffDao.getStuffForUser(id);

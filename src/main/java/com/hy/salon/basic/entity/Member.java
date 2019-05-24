@@ -109,4 +109,8 @@ public class Member extends TraceableEntity<Long> {
 //    private Double amountCharge;
 
     private String  picUrl;
+
+    private String invitationCode;
+
+    private Long parentId;
 }

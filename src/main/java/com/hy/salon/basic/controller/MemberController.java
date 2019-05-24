@@ -6,6 +6,7 @@ import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.MemberService;
+import com.hy.salon.basic.util.UuidUtils;
 import com.hy.salon.basic.vo.MemberVo;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
@@ -231,6 +232,8 @@ public class MemberController extends SimpleCRUDController<Member> {
 //                condition.setDebt(new Double(0));
 //                condition.setAmountCharge(new Double(0));
 //                condition.setAmountConsumer(new Double(0));
+                String invitationCode= UuidUtils.generateShortUuid();
+                condition.setInvitationCode(invitationCode);
                 memberDao.insert(condition);
 
                 //创建钱包
@@ -308,16 +311,24 @@ public class MemberController extends SimpleCRUDController<Member> {
                 //插入照片关联
                 String[] str = binList.split(",");
                 for(String s:str){
-                    MemberTag tag=memberTagDao.getMemberTag(Long.parseLong(s));
-                    if(null != tag){
-                        tag.setTagId(tagId);
-                        memberTagDao.update(tag);
-                    }else{
+                    MemberTag tag=memberTagDao.getMemberTag(Long.parseLong(s),tagId);
+
+                    if(null==tag){
                         tag=new MemberTag();
                         tag.setTagId(tagId);
                         tag.setMemberId(Long.parseLong(s));
                         memberTagDao.insert(tag);
                     }
+
+//                    if(null != tag){
+//                        tag.setTagId(tagId);
+//                        memberTagDao.update(tag);
+//                    }else{
+//                        tag=new MemberTag();
+//                        tag.setTagId(tagId);
+//                        tag.setMemberId(Long.parseLong(s));
+//                        memberTagDao.insert(tag);
+//                    }
                 }
             }
 

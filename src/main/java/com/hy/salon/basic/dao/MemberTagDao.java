@@ -20,6 +20,15 @@ public class MemberTagDao extends BaseDAOWithEntity<MemberTag> {
         return this.getOne(where,parameters);
     }
 
+    public MemberTag getMemberTag(Long memberId,Long tagId){
+        String where="member_id=#{memberId} and tag_id=#{tagId}";
+        Map parameters = new HashMap();
+        parameters.put("memberId", memberId);
+        parameters.put("tagId", tagId);
+
+        return this.getOne(where,parameters);
+    }
+
     public List<MemberTag> getMemberTagList(Long tagId){
         String where="tag_id=#{tagId}";
         Map parameters = new HashMap();
