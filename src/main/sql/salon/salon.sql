@@ -170,6 +170,8 @@ create table service
   card_type                        tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡
   record_status                    tinyint                         not null,    -- 项目状态：0 启用   1 停用
   expired_time                     double(3,1)                     null,        -- 有效期：时效卡专用。自购买之日起，N时间内有效。
+  expiration_date                   datetime                       null,        -- 过期时间
+  frequency                        int                             null,        -- 次数:次卡专用
 
   period_per_time                  int                             not null,    -- 单次时长(分):-1表示无限时长
   price_per_time                   double(8,2)                     not null,    -- 单次价格(次卡专用)
@@ -1371,7 +1373,7 @@ create table stamp_program
 create table bill_type
 (
   record_id                bigint                auto_increment                 not null,
-  type                     tinyint                                              not null, -- 单据类型 0 请假 1 调休 2 离职 等等。。
+  type                     tinyint                                              null, -- 单据类型 0 请假 1 调休 2 离职 等等。。
   type_name                varchar(10)                                          not null, -- 类型名称
   -- 审批流程表id
 
