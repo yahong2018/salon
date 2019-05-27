@@ -57,6 +57,15 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
         return this.getOne(where, parameters);
     }
 
+    public List<RoleUser> getRoleUser(Long roleId) {
+        Map parameters = new HashMap();
+        parameters.put("roleId", roleId);
+
+        String where = "role_id=#{roleId}";
+
+        return this.getByWhere(where, parameters);
+    }
+
 
     public RoleUser getByUserIdAndRoleId(Long userId) {
         Map parameters = new HashMap();

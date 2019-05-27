@@ -4,17 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
-import com.hy.salon.basic.entity.Member;
-import com.hy.salon.basic.entity.MemberWallet;
-import com.hy.salon.basic.entity.Salon;
-import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
+import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,6 +68,17 @@ public class StatisticsController {
 
     @Resource(name = "memberWalletDAO")
     private MemberWalletDAO MemberWalletDao;
+
+    @Resource(name = "systemUserDAO")
+    private SystemUserDAO systemUserDAO;
+
+    @Resource(name = "roleActionDao")
+    private RoleActionDAO roleActionDao;
+
+    @Resource(name = "stuffJobDao")
+    private StuffJobDao stuffJobDao;
+
+
     /**
      * 数据统计
      */
@@ -568,6 +579,85 @@ public class StatisticsController {
 
 
 
+    /**
+     * 删除家人
+     */
+
+    @RequestMapping("deleteStuff")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteStuff() {
+        Result r= new Result();
+        List<RoleUser> roleList=roleUserDAO.getRoleUser(new Long(2));
+        for(RoleUser u:roleList){
+            roleUserDAO.deleteById(u.getRecordId());
+            SystemUser user=systemUserDAO.getUserByRecordId(u.getUserId());
+            if(null!=user){
+               RoleAction roleAction= roleActionDao.getRoleActionByRecordId(user.getRecordId());
+                systemUserDAO.deleteById(user.getRecordId());
+               if(null!=roleAction){
+                   Stuff stuff=stuffDao.getStuffForRecordId(roleAction.getStuffId());
+                   roleActionDao.deleteById(roleAction.getRecordId());
+                   if(null!=stuff){
+                       stuffDao.deleteById(stuff.getRecordId());
+                   }
+               }
+
+            }
+
+            List<StuffJob> stuffJobList= stuffJobDao.getStuffJobListForStuff(u.getUserId());
+            for(StuffJob s:stuffJobList){
+                stuffJobDao.deleteById(s.getRecordId());
+            }
+
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
+
+
+    /**
+     * 删除顾客
+     */
+
+    @RequestMapping("deleteMember")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteMember() {
+        Result r= new Result();
+        List<RoleUser> roleList=roleUserDAO.getRoleUser(new Long(3));
+        for(RoleUser u:roleList){
+            roleUserDAO.deleteById(u.getRecordId());
+            SystemUser user=systemUserDAO.getUserByRecordId(u.getUserId());
+            if(null!=user){
+                systemUserDAO.deleteById(user.getRecordId());
+              Member member =  memberDao.getMemberForTel(user.getUserCode());
+              if(null!=member){
+                  memberDao.deleteById(member.getRecordId());
+                  MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(member.getRecordId());
+                  if(null!=memberWallet){
+                      MemberWalletDao.deleteById(memberWallet.getRecordId());
+                  }
+
+              }
+            }
+
+
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
 
 
 
