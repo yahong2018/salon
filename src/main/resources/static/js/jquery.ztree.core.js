@@ -1179,7 +1179,7 @@
                 if (node.isParent) {
                     node.open = !node.open;
                     if (node.iconOpen && node.iconClose) {
-                        icoObj.attr("style", view.makeNodeIcoStyle(setting, node));
+                        icoObj.attr("static.css.zTreeStyle.style", view.makeNodeIcoStyle(setting, node));
                     }
 
                     if (node.open) {
@@ -1610,8 +1610,8 @@
                 } else {
                     switchObj.attr("disabled", "disabled");
                 }
-                icoObj.removeAttr("style");
-                icoObj.attr("style", view.makeNodeIcoStyle(setting, node));
+                icoObj.removeAttr("static.css.zTreeStyle.style");
+                icoObj.attr("static.css.zTreeStyle.style", view.makeNodeIcoStyle(setting, node));
                 icoObj.attr("class", view.makeNodeIcoClass(setting, node));
             },
             setNodeName: function (setting, node) {

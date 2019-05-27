@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../../layui/layui.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-1.4.4.min.js"></script>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+</head>
+<body>
+
+<div class="layui-fluid layui-form">
+    <div class="layui-form-item">
+        <div class="layui-input-inline " style=" width: 638px;">
+            <button class="layui-btn layui-btn-normal addJob">新增职务</button>
+            <!--<button class="layui-btn updateMember">修改顾客</button>-->
+            <button class="layui-btn updateJob">修改职务</button>
+            <button class="layui-btn layui-btn-danger deleteJob">删除职务</button>
+            <!--      <button class="layui-btn">默认按钮</button>
+                  <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
+        </div>
+    </div>
+
+
+    <!--<label class="layui-form-label">搜索员工</label>
+    <div class="layui-input-inline">
+        <input type="text" name="recordId" class="layui-input stuffKeyValue ">
+    </div>-->
+
+    <div class="layui-inline">
+        <!-- <div class="layui-input-inline">
+             <input type="text" name="userKey" class="layui-input memberName ">
+         </div>-->
+        <div class="layui-input-inline">
+            <button class="layui-btn layuiadmin-btn-admin layui-btn-normal check" lay-submit="" lay-filter="LAY-user-back-search">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button></div>
+    </div>
+
+
+<div id="pTable" >
+        <table id="layui_table_id" class="layui-table" lay-skin="line" lay-filter="test" style="width: 1680px">
+
+        </table>
+    <div id="laypage"></div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    layui.use(['form','laydate','layer','table','laypage','util'],function(){
+        var form = layui.form;
+        var laydate=layui.laydate;
+        var $ = layui.$;
+        productsearch(1);
+
+
+        function productsearch(page,filterExpr) {
+            var table = layui.table,
+                laydate = layui.laydate,
+                laypage = layui.laypage;
+            var form = layui.form;
+            table.render({
+                elem: '#layui_table_id'
+                , url: '/hy/basic/job/getJobs/'
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cols: [[
+                    {
+                        checkbox: true,
+                        filter: 'test'
+                    },{
+                        field: 'recordId',
+                        title: 'id',
+                        sort: true,
+                        align: 'center'
+                    },{
+                        field: 'jobName',
+                        title: '职务名称',
+                        align: 'center'
+                    },{
+                        field: 'jobLevel',
+                        title: '职位等级',
+                        align: 'center'
+                    },{
+                        field: 'createDate',
+                        title: '创建日期',
+                        align: 'center',
+                    },{
+                        field: 'updateDate',
+                        title: '修改日期',
+                        align: 'center'
+                    },{
+                        field: 'optLock',
+                        title: '选择锁',
+                        align: 'center'
+                    }
+                ]],
+                page: true,
+                  where : {
+                      filterExpr:filterExpr,
+            },
+                responseHandler: function (res, curr, count) {
+                    $('#pageNum').val(curr);
+                    return {
+                        "count": res.total,
+                        "data": res.data,
+                        "code": 0,//code值为200表示成功
+                        "msg": ""
+                    }
+                },
+                done: function (res, curr, count) {
+                    console.log(res)
+                    $('#pageNum').val(curr);
+
+                }
+            })
+        }
+
+        //删除
+        $(".deleteJob").on("click",function(){
+            var data = layui.table.checkStatus('layui_table_id').data;
+            if(data.length<1){
+                alert("请选中一条数据");
+                return false;
+            }
+            var deleteList = [];
+            for(var i=0 ;i<data.length;i++){
+                var id = data[i].recordId;
+                var temp =id+"";
+                deleteList.push(temp);
+            }
+            console.log(deleteList);
+            $.ajax({
+                type:'POST',
+                url:'/hy/basic/job/deleteJob',
+                data: JSON.stringify(deleteList),
+                contentType: "application/json",
+                success: function(data){
+                    if(data.msgcode=="200"){
+                        alert("操作失败！");
+                    }else{
+                        alert("操作成功！");
+                        productsearch(1);
+                    }
+                    // window.parent.location.reload(); //刷新父页面
+                    // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    //parent.layer.close(index);  // 关闭layer
+
+                },
+                error:function(data){
+                    alert("操作失败");
+                    console.log(data);
+                }
+            })
+
+        })
+
+        //新增
+        $(".addJob").on("click",function(){
+            layer.open({
+                type:2,
+                //area:[482+'px',355+'px'],
+                area:[600+'px',400+'px'],
+                fix:false,
+                offset: '80px',
+                maxmin:true,
+                shadeClose:true,
+                scrollbar: false,
+                shade:0.4,
+                title:'新增标签',
+                content:['add_job.html'],
+                success:function(layero,index){
+                    console.log("成功");
+                },
+                fail:function(data){
+                    console.log(data);
+                }
+            })
+        })
+
+        $(".updateJob").on("click",function(){
+            console.log(layui.table.checkStatus('layui_table_id'));
+            var data = layui.table.checkStatus('layui_table_id').data;
+            if(data.length>1){
+                alert("请选中一条数据");
+                return false;
+            }
+            layer.open({
+                type:2,
+                area:[482+'px',315+'px'],
+                fix:false,
+                offset: '80px',
+                maxmin:true,
+                shadeClose:true,
+                scrollbar: false,
+                shade:0.4,
+                title:'修改用户',
+                content:['update_job.html'],
+                success:function(layero,index){
+                    // 获取子页面的iframe
+                    var iframe = window['layui-layer-iframe' + index];
+                    // 向子页面的全局函数child传参
+                    var stuff = data[0];
+                    console.log(stuff);
+                    iframe.child(stuff);
+                    console.log("成功");
+                },
+                fail:function(data){
+                    console.log(data);
+                }
+            })
+        })
+
+    })
+</script>

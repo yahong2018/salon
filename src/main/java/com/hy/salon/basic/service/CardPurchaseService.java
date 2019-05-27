@@ -13,8 +13,8 @@ public class CardPurchaseService {
 
     @Resource(name="cardPurchaseDao")
     private CardPurchaseDao cardPurchaseDao;
-    public ExtJsResult getSystemRechargeList(String memberId, long storeId, HttpServletRequest request ,String toDays,String role) {
-        return cardPurchaseDao.getSystemRechargeList(memberId,storeId,request,toDays,role);
+    public ExtJsResult getSystemRechargeList(int page,String  limit,String memberId, long storeId, HttpServletRequest request ,String toDays,String role) {
+        return cardPurchaseDao.getSystemRechargeList(page,limit,memberId,storeId,request,toDays,role);
 
     }
 }

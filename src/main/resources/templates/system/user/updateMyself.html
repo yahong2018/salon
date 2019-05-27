@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+
+    <script src="../../../js/jquery.1.11.1.min.js"></script>
+    <link rel="stylesheet" href="../../../css/zTreeStyle/j-forms.css">
+    <link rel="stylesheet" href="../../../css/zTreeStyle/style.css">
+</head>
+
+<body>
+<div class="content">
+    <div class="main w3l">
+        <div class="im-g">
+            <img src="" alt="">
+        </div>
+        <form class="contact-forms wthree">
+
+            <div class="first-line agileits">
+                <div class="span6 main-row">
+                    <div class="input">
+
+                        <input type="text" id="last_name" name="last_name" placeholder="Last name" required="">
+
+                    </div>
+                </div>
+            </div>
+            <div class="first-line agileits">
+                <div class="span6 main-row">
+                    <div class="input">
+
+                        <input type="email" placeholder="Email" id="email" name="email" required="">
+                    </div>
+                </div>
+                <div class="span6 main-row">
+                    <div class="input">
+                        <input type="text" placeholder="Phone" id="phone" name="phone" required="">
+                    </div>
+                </div>
+            </div>
+            <div class="main-row">
+                <label class="input select">
+                    <select name="position">
+                        <option value="none" selected disabled="">国家</option>
+                        <option value="male">Male</option>
+                        <option value="female"> Female</option>
+                    </select>
+                    <i></i>
+                </label>
+            </div>
+
+            <div class="main-row">
+                <label class="input select">
+                    <select name="country">
+                        <option value="none" selected="" disabled="">省</option>
+
+                        <option value="Australia">Australia</option>
+                        <option value="China">China</option>
+                        <option value="New Jersey">New Jersey</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Switzerland">Switzerland</option>
+                    </select>
+                    <i></i>
+                </label>
+            </div>
+
+            <div class="main-row">
+                <label class="input select">
+                    <select name="position">
+                        <option value="none" selected disabled="">市</option>
+                        <option value="student">Student</option>
+                        <option value="employee"> Employee</option>
+                        <option value="business"> Business</option>
+                    </select>
+                    <i></i>
+                </label>
+            </div>
+            <div class="main-row">
+                <div class="input">
+
+                    <input type="text" id="address" placeholder="Address" name="address" required="">
+                </div>
+            </div>
+
+            <div class="main-row">
+                <div class="input">
+                    <textarea placeholder="Additional info" spellcheck="false" name="message"></textarea>
+                    <span class="tooltip tooltip-right-top">Key Skills</span>
+                </div>
+            </div>
+
+            <div class="footer">
+                <button type="submit" class="primary-btn">Send</button>
+                <button type="reset" class="secondary-btn">Reset</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        // Phone masking
+        $('#phone').mask('(999) 999-9999', {placeholder:'x'});
+
+        // Post code masking
+        $('#post').mask('999-9999', {placeholder:'x'});
+
+    });
+</script>
+</body>
+</html>

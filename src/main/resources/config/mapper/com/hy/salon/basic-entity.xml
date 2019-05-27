@@ -7,6 +7,14 @@
         <result property="jobLevel" column="job_level"/>
     </resultMap>
 
+    <resultMap id="Joba"  type="com.hy.salon.basic.entity.Job" extends="com.zhxh.core.data.TraceableEntity" >
+        <result property="jobName" column="job_name"/>
+        <result property="jobLevel" column="job_level"/>
+    </resultMap>
+
+
+
+
 
     <resultMap id="Stuff" type="com.hy.salon.basic.entity.Stuff"  extends="com.zhxh.core.data.TraceableEntity">
         <result column="store_id" jdbcType="BIGINT" property="storeId" />

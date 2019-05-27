@@ -4,6 +4,8 @@
 <mapper namespace="com.hy.salon.basic.dao" >
 
 
+
+
     <select id="GET_PRODUCT_LIST"  parameterType="java.util.Map" resultMap="com.hy.salon.basic.entity.Product">
 
      SELECT * FROM salon.product WHERE salon_id=#{salonId};
@@ -107,6 +109,21 @@
         LEFT JOIN stuff_job b on a.record_id=b.job_id
         where b.stuff_id=#{stuffId};
     </select>
+
+    <select id="GET_STUFF_NAMEAa"  parameterType="java.util.Map" resultType="java.util.Map">
+        select
+            *
+        from job
+        <where>
+            <if test="recordId != null">
+                and record_id = #{recordId}
+            </if>
+        </where>
+
+
+    </select>
+
+
     <select id="GET_SERVICE_BYRESERVATIONID"  parameterType="java.util.Map" resultType="java.util.Map">
         select s.* from service s LEFT JOIN reservation_item i on s.record_id = i.service_id where i.reservation_id = #{reservationId}
     </select>
