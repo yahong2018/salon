@@ -328,7 +328,7 @@ create table product
   product_class                    tinyint                          not null,   -- 产品类型: 0.客装   1.院装   2.易耗品
   product_series_id                bigint                           not null,   -- 产品品牌/系列
   price_market                     double(8,2)                      not null,   -- 市场价
-  price                            double(8,2)                      not null,   -- 成本价
+  price                            double(8,2)                      not null,   -- 优惠价
   product_code                     varchar(20)                      null,       -- 产品编号
 
   bar_code                         varchar(100)                     null,       -- 二维码/条形码
