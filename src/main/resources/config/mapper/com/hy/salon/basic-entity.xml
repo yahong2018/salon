@@ -30,6 +30,7 @@
         <result column="qq" jdbcType="VARCHAR" property="qq" />
         <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="in_office" jdbcType="TINYINT" property="inOffice" />
+        <result column="is_delete" property="isDelete" />
     </resultMap>
 
 
@@ -156,6 +157,7 @@
         <result column="time_total" property="timeTotal" jdbcType="INTEGER" />
         <result column="description" property="description" jdbcType="VARCHAR" />
         <result column="frequency" property="frequency" jdbcType="INTEGER" />
+        <result column="expiration_date" property="expirationDate"/>
 
     </resultMap>
     <!--产品库存异动-->
@@ -191,7 +193,7 @@
     <resultMap id="VipSuiteItem" type="com.hy.salon.basic.entity.VipSuiteItem" extends="com.zhxh.core.data.TraceableEntity">
         <result column="vip_suite_id" property="vipSuiteId" jdbcType="BIGINT" />
         <result column="record_type" property="recordType" jdbcType="TINYINT" />
-        <result column="discount" property="discount" jdbcType="TINYINT" />
+        <result column="discount" property="discount"  />
 <!--        <result column="discount_time" property="discountTime" jdbcType="TINYINT" />-->
 <!--        <result column="discount_period" property="discountPeriod" jdbcType="TINYINT" />
         <result column="discount_production" property="discountProduction" jdbcType="TINYINT" />-->
@@ -294,6 +296,7 @@
     <resultMap id="NurseLogModel" type="com.hy.salon.basic.entity.NurseLogModel" extends="com.zhxh.core.data.TraceableEntity">
         <result column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="model_content" property="modelContent" jdbcType="VARCHAR" />
+        <result column="store_id" property="storeId" jdbcType="BIGINT" />
     </resultMap>
 
 

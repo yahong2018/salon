@@ -1,5 +1,6 @@
 package com.hy.salon.basic.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
@@ -138,16 +139,16 @@ public class SubmitApprovalController {
             approvalRecord2.setSeveralApprovalsStuffId(approvalProcess.getSecond());
             approvalRecord2.setIsLast(1);
 
-            if(approvalProcess.getSecond()==condition.getApprover()){
-                approvalRecord1.setApprovalStatus(new Byte("0"));
-                approvalRecord2.setApprovalStatus(new Byte("0"));
-
-            }
-
-            if(approvalProcess.getFirst()==condition.getApprover()){
-                approvalRecord1.setApprovalStatus(new Byte("0"));
-
-            }
+//            if(approvalProcess.getSecond()==condition.getApprover()){
+//                approvalRecord1.setApprovalStatus(new Byte("0"));
+//                approvalRecord2.setApprovalStatus(new Byte("0"));
+//
+//            }
+//
+//            if(approvalProcess.getFirst()==condition.getApprover()){
+//                approvalRecord1.setApprovalStatus(new Byte("0"));
+//
+//            }
 
 
         }else{
@@ -165,15 +166,15 @@ public class SubmitApprovalController {
             approvalRecord3.setSeveralApprovals(3);
             approvalRecord3.setSeveralApprovalsStuffId(approvalProcess.getThird());
             approvalRecord3.setIsLast(1);
-            if(approvalProcess.getThird()==condition.getApprover()){
-                approvalRecord1.setApprovalStatus(new Byte("0"));
-                approvalRecord2.setApprovalStatus(new Byte("0"));
-                approvalRecord3.setApprovalStatus(new Byte("0"));
-
-            }
-            if(approvalProcess.getSecond()==condition.getApprover()){
-                approvalRecord3.setApprovalStatus(new Byte("3"));
-            }
+//            if(approvalProcess.getThird()==condition.getApprover()){
+//                approvalRecord1.setApprovalStatus(new Byte("0"));
+//                approvalRecord2.setApprovalStatus(new Byte("0"));
+//                approvalRecord3.setApprovalStatus(new Byte("0"));
+//
+//            }
+//            if(approvalProcess.getSecond()==condition.getApprover()){
+//                approvalRecord3.setApprovalStatus(new Byte("3"));
+//            }
 
 
         }else{
@@ -190,16 +191,16 @@ public class SubmitApprovalController {
             approvalRecord4.setSeveralApprovals(4);
             approvalRecord4.setSeveralApprovalsStuffId(approvalProcess.getFour());
             approvalRecord4.setIsLast(0);
-            if(approvalProcess.getThird()==condition.getApprover()) {
-                approvalRecord1.setApprovalStatus(new Byte("0"));
-                approvalRecord2.setApprovalStatus(new Byte("0"));
-                approvalRecord3.setApprovalStatus(new Byte("0"));
-                approvalRecord4.setApprovalStatus(new Byte("0"));
-            }
-
-            if(approvalProcess.getThird()==condition.getApprover()){
-                approvalRecord4.setApprovalStatus(new Byte("3"));
-            }
+//            if(approvalProcess.getThird()==condition.getApprover()) {
+//                approvalRecord1.setApprovalStatus(new Byte("0"));
+//                approvalRecord2.setApprovalStatus(new Byte("0"));
+//                approvalRecord3.setApprovalStatus(new Byte("0"));
+//                approvalRecord4.setApprovalStatus(new Byte("0"));
+//            }
+//
+//            if(approvalProcess.getThird()==condition.getApprover()){
+//                approvalRecord4.setApprovalStatus(new Byte("3"));
+//            }
 
         }else{
             approvalRecord3.setIsLast(0);
@@ -246,6 +247,28 @@ public class SubmitApprovalController {
 
 
     /**
+     * 获取审批详情（申请人视角）
+     */
+    @ResponseBody
+    @RequestMapping("/querySubmitApprovalData")
+    @ApiOperation(value="获取审批详情（申请人视角）", notes="获取审批详情（申请人视角）")
+    public Result querySubmitApprovalData(Long recordId,HttpServletRequest request){
+        Result r=new Result();
+        JSONObject jsonObj=new JSONObject();
+        SubmitApproval submitApproval=submitApprovalDAO.getSubmitApprovalForId(recordId);
+
+        ApprovalRecord ApprovalRecord=approvalRecordDao.getOneApprovalRecordForId(submitApproval.getRecordId());
+        jsonObj.put("submitApproval",submitApproval);
+        jsonObj.put("ApprovalRecord",ApprovalRecord);
+
+        r.setData(jsonObj);
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
+
+
+    /**
      * 获取审批请求列表
      */
     @ResponseBody
@@ -263,20 +286,64 @@ public class SubmitApprovalController {
     }
 
     /**
+     * 获取审批详情（审批人视角）
+     */
+    @ResponseBody
+    @RequestMapping("/getSubmitApprovalData")
+    @ApiOperation(value="获取审批详情（申请人视角）", notes="获取审批详情（申请人视角）")
+    public Result getSubmitApprovalData(Long recordId,HttpServletRequest request){
+        Result r=new Result();
+        JSONObject jsonObj=new JSONObject();
+        SubmitApproval submitApproval=submitApprovalDAO.getSubmitApprovalForId(recordId);
+
+        ApprovalRecord ApprovalRecord=approvalRecordDao.getOneApprovalRecordForId(submitApproval.getRecordId());
+        jsonObj.put("submitApproval",submitApproval);
+        jsonObj.put("ApprovalRecord",ApprovalRecord);
+
+        r.setData(jsonObj);
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return  r;
+    }
+
+
+    /**
      * 审批
      */
     @ResponseBody
     @RequestMapping("/approval")
-    @ApiOperation(value="获取审批请求列表", notes="获取审批请求列表")
+    @ApiOperation(value="审批", notes="审批")
     public Result approval(ApprovalRecord condition,Long submitApprovalId){
         Result r=new Result();
 
-        if(condition.getIsLast()==1){
-            ApprovalRecord ApprovalRecord=approvalRecordDao.getApprovalRecordForId(submitApprovalId,condition.getSeveralApprovals()+1,condition.getSeveralApprovalsStuffId());
 
+        if(condition.getApprovalStatus()==0){
+            if(condition.getIsLast()==1){
+                ApprovalRecord ApprovalRecord=approvalRecordDao.getApprovalRecordForId(submitApprovalId,condition.getSeveralApprovals()+1);
 
+                if(null!=ApprovalRecord){
+                    ApprovalRecord.setApprovalStatus(new Byte("3"));
+                    approvalRecordDao.update(ApprovalRecord);
+                }
+
+            }else{
+                condition.setApprovalType(0);
+            }
+        }else{
+            List<ApprovalRecord> ApprovalRecordList=approvalRecordDao.getApprovalRecordForId2(submitApprovalId,null);
+            for(ApprovalRecord a:ApprovalRecordList){
+
+                if(a.getSeveralApprovals()==1){
+                    a.setApprovalStatus(new Byte("3"));
+                }else{
+                    a.setApprovalStatus(new Byte("2"));
+                }
+                approvalRecordDao.update(a);
+            }
 
         }
+
+        approvalRecordDao.update(condition);
 
 
 //        r.setData();

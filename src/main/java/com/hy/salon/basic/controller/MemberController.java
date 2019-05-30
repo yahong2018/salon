@@ -15,6 +15,7 @@ import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.utils.StringUtilsExt;
@@ -24,6 +25,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +34,7 @@ import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +84,9 @@ public class MemberController extends SimpleCRUDController<Member> {
 
     @Resource(name = "cardPurchaseDao")
     private CardPurchaseDao cardPurchaseDao;
+
+    @Resource(name = "roleUserDAO")
+    private RoleUserDAO roleUserDAO;
 
 
 
@@ -208,6 +214,7 @@ public class MemberController extends SimpleCRUDController<Member> {
             @ApiImplicitParam(paramType="query", name = "birthday", value = "生日", required = true, dataType = "Date"),
             @ApiImplicitParam(paramType="query", name = "remarkOfMenses", value = "备注", required = true, dataType = "String")
     })
+    @Transactional(rollbackFor = Exception.class)
     public Result addMember(Member condition,String comeFrom,HttpServletRequest request,Long tagId,String picIdList) {
 
         if("PC".equals(comeFrom)){
@@ -218,80 +225,85 @@ public class MemberController extends SimpleCRUDController<Member> {
         try {
             SystemUser user = authenticateService.getCurrentLogin();
             Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+            HttpSession session= SessionManager.getCurrentSession();
+            synchronized (session){
+                if(condition.getRecordId()==null){
 
-            if(condition.getRecordId()==null){
+                    //检查该手机号是否被使用
+                    SystemUser user2=systemUserDAO.getUserByCode(condition.getTel());
+                    if(null != user2){
+                        result.setMsg("该账号已被使用");
+                        result.setSuccess(false);
+                        result.setMsgcode(StatusUtil.ERROR);
+                        return result;
+                    }
 
-                //检查该手机号是否被使用
-                SystemUser user2=systemUserDAO.getUserByCode(condition.getTel());
-                if(null != user2){
-                    result.setMsg("该账号已被使用");
-                    result.setSuccess(false);
-                    result.setMsgcode(StatusUtil.ERROR);
-                    return result;
-                }
+                    condition.setPrimaryBeautician(stuff.getRecordId());
 
-                condition.setPrimaryBeautician(stuff.getRecordId());
-
-                condition.setInitialStoreId(stuff.getStoreId());
+                    condition.setInitialStoreId(stuff.getStoreId());
 //                condition.setBalanceCash(new Double(0));
 //                condition.setBalanceTotal(new Double(0));
 //                condition.setIntegral(new Double(0));
 //                condition.setDebt(new Double(0));
 //                condition.setAmountCharge(new Double(0));
 //                condition.setAmountConsumer(new Double(0));
-                String invitationCode= UuidUtils.generateShortUuid();
-                condition.setInvitationCode(invitationCode);
-                memberDao.insert(condition);
+                    String invitationCode= UuidUtils.generateShortUuid();
+                    condition.setInvitationCode(invitationCode);
+                    memberDao.insert(condition);
 
-                //创建钱包
-                MemberWallet memberWallet=new MemberWallet();
-                memberWallet.setMemberId(condition.getRecordId());
-                memberWallet.setBalanceCash(new Double(0));
-                memberWallet.setBalanceTotal(new Double(0));
-                memberWallet.setIntegral(new Double(0));
-                memberWallet.setDebt(new Double(0));
-                memberWallet.setAmountCharge(new Double(0));
-                memberWallet.setAmountConsumer(new Double(0));
-                memberWallet.setCashCoupon(new Double(0));
-                MemberWalletDao.insert(memberWallet);
+                    //创建钱包
+                    MemberWallet memberWallet=new MemberWallet();
+                    memberWallet.setMemberId(condition.getRecordId());
+                    memberWallet.setBalanceCash(new Double(0));
+                    memberWallet.setBalanceTotal(new Double(0));
+                    memberWallet.setIntegral(new Double(0));
+                    memberWallet.setDebt(new Double(0));
+                    memberWallet.setAmountCharge(new Double(0));
+                    memberWallet.setAmountConsumer(new Double(0));
+                    memberWallet.setCashCoupon(new Double(0));
+                    MemberWalletDao.insert(memberWallet);
 
-                MemberTag tag=new MemberTag();
-                tag.setMemberId(condition.getRecordId());
-                tag.setTagId(tagId);
-                memberTagDao.insert(tag);
-
-
-                SystemUser userController=new SystemUser();
-                userController.setUserCode(condition.getTel());
-                userController.setUserName(condition.getMemberName());
-                String passwordMd5 = StringUtilsExt.getMd5("123456");
-                userController.setPassword(passwordMd5);
-                userController.setUserStatus(0);
-                systemUserDAO.insert(userController);
+                    MemberTag tag=new MemberTag();
+                    tag.setMemberId(condition.getRecordId());
+                    tag.setTagId(tagId);
+                    memberTagDao.insert(tag);
 
 
-                SystemRole systemRole=systemRoleDAO.getRole("member");
+                    SystemUser userController=new SystemUser();
+                    userController.setUserCode(condition.getTel());
+                    userController.setUserName(condition.getMemberName());
+                    String passwordMd5 = StringUtilsExt.getMd5("123456");
+                    userController.setPassword(passwordMd5);
+                    userController.setUserStatus(0);
+                    systemUserDAO.insert(userController);
 
-                RoleUser roleUser=new RoleUser();
-                roleUser.setRoleId(systemRole.getRecordId());
-                roleUser.setUserId(userController.getRecordId());
-                roleUserDao.insert(roleUser);
 
-                //插入照片关联
-                if(null!=picIdList && !"".equals(picIdList)){
-                    String[] str = picIdList.split(",");
-                    for(String s:str){
-                        Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                        if(null != pic){
-                            pic.setMasterDataId(condition.getRecordId());
-                            picturesDao.update(pic);
+                    SystemRole systemRole=systemRoleDAO.getRole("member");
+
+                    RoleUser roleUser=new RoleUser();
+                    roleUser.setRoleId(systemRole.getRecordId());
+                    roleUser.setUserId(userController.getRecordId());
+                    roleUserDao.insert(roleUser);
+
+                    //插入照片关联
+                    if(null!=picIdList && !"".equals(picIdList)){
+                        String[] str = picIdList.split(",");
+                        for(String s:str){
+                            Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                            if(null != pic){
+                                pic.setMasterDataId(condition.getRecordId());
+                                picturesDao.update(pic);
+                            }
                         }
                     }
-                }
 
-            }else{
-                memberDao.update(condition);
+                }else{
+                    memberDao.update(condition);
+                }
             }
+
+
+
             result.setMsgcode(StatusUtil.OK);
             result.setSuccess(true);
         } catch (Exception e) {
@@ -533,15 +545,27 @@ public class MemberController extends SimpleCRUDController<Member> {
      */
     @ResponseBody
     @RequestMapping("getMember")
-    public Result getMember(int page, HttpServletRequest request,int limit,int jobLevel) {
+    public Result getMember(int page, HttpServletRequest request,Integer limit,Integer jobLevel) {
         Result result = new Result();
-
+        SystemUser user = authenticateService.getCurrentLogin();
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
         try {
+            if(null==jobLevel){
+                String where="user_id=#{userId}";
+                Map parameters = new HashMap();
+                parameters.put("userId", user.getRecordId());
+                RoleUser roleUser =roleUserDAO.getOne(where,parameters);
+                if(roleUser.getRoleId()==10){
+                    jobLevel=1;
+                }else{
+                    jobLevel=0;
+                }
+
+            }
 
             String filterExpr   = request.getParameter("filterExpr");
 
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+
             List<MemberVo> memberList=new ArrayList<>();
 
                 result.setTotal(memberDao.getMember(stuff.getStoreId(),filterExpr,jobLevel).size());

@@ -12,7 +12,7 @@
     <script type="text/javascript" src="../../../js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../../../js/jquery.ztree.excheck.js"></script>
     <script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>
-
+    <script type="text/javascript" src="../../../js/url.js"></script>
 </head>
 <style type="text/css">
  body{
@@ -42,8 +42,13 @@
                           <button class="layui-btn layui-btn-normal">百搭按钮</button>-->
                     <button class="layui-btn layui-btn-primary writeIn">生成省市区文件</button>
 
-                    <input  id="tel" placeholder="请输入手机"  value="" class="layui-input">
-                    <button class="layui-btn layui-btn-primary sendMessage">发送短信验证码</button>
+                    <button class="layui-btn layui-btn-primary writeIn"   onclick="exports()" >导出美容院信息</button>
+
+                    <button class="layui-btn layui-btn-primary writeIn">导出salon信息</button>
+
+
+                    <!--<input  id="tel" placeholder="请输入手机"  value="" class="layui-input">-->
+                    <!--<button class="layui-btn layui-btn-primary sendMessage">发送短信验证码</button>-->
                 </div>
 
             </div>
@@ -109,6 +114,30 @@
             })
 
         })
+
+
+
+        //导出报表
+        function exports(){
+            $.ajax({
+                url:"/hy/basic/salon/exportSalon",
+                type:"post",
+                dataType:"json",
+                success:function(data){
+                    if(data.data.respCode == "0000"){
+
+                        window.location.href = ctx+"/orderData/"+data.data.dataUrl
+                    }else{
+                        alert(data.data.respDesc)
+                    }
+                },
+                error:function(){
+                    alert("导出异常");
+                }
+            });
+
+        }
+
 
     })
 

@@ -11,4 +11,5 @@ import lombok.Setter;
 public class NurseLogModel extends TraceableEntity<Long> {
     private Long recordId ;
     private String modelContent ;//模版内容
+    private Long storeId;
 }

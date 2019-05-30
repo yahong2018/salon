@@ -211,11 +211,31 @@ public class NurseLogController {
     @ResponseBody
     @RequestMapping(value = "queryLogModel")
     @ApiOperation(value="获取日志模板", notes="获取日志模板")
-    public Result queryLogModel(){
+    public Result queryLogModel(Long storeId){
         Result result=new Result();
         try {
-            List<NurseLogModel> nurseLogList=nurseLogModelDao.getLogModel();
+            List<NurseLogModel> nurseLogList=nurseLogModelDao.getLogModel(storeId);
             result.setData(nurseLogList);
+            result.setSuccess(true);
+            result.setMsgcode(StatusUtil.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMsgcode(StatusUtil.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 新镇日志模板
+     */
+    @ResponseBody
+    @RequestMapping(value = "addLogModel")
+    @ApiOperation(value="新镇日志模板", notes="新镇日志模板")
+    public Result addLogModel(NurseLogModel condition){
+        Result result=new Result();
+        try {
+            nurseLogModelDao.insert(condition);
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){

@@ -21,6 +21,7 @@ public class SystemUser extends EntityObject<Long> {
     private String email;
     private boolean online;
     private Timestamp lastLoginTime;
+    private String loginCode;
 
     public boolean isDisabled() {
         return this.userStatus == BCode.STATUS_DISABLED;

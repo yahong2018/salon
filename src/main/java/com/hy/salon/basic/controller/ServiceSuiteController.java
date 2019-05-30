@@ -10,6 +10,7 @@ import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.hy.salon.basic.vo.ServiceVo;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
@@ -74,61 +77,65 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
 
     })
+    @Transactional(rollbackFor = Exception.class)
     public Result addServiceSuite(HttpServletRequest request, ServiceSuite condition, String picIdList, String bindingJson,String comeFrom){
-        Result r= new Result();
-        try {
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            Result r = new Result();
+            try {
 
-            if("PC".equals(comeFrom)){
-                String  vs =  request.getParameter("condition");
-                condition =  JSONObject.parseObject(vs, ServiceSuite.class);
-            }
-            //先写死，后面改
+                if ("PC".equals(comeFrom)) {
+                    String vs = request.getParameter("condition");
+                    condition = JSONObject.parseObject(vs, ServiceSuite.class);
+                }
+                //先写死，后面改
 //            String bindingJson="[{\"serviceId\": 1,\"times\": 10},{\"serviceId\": 5,\"times\": 10},{\"serviceId\": 8,\"times\": 10}]";
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            condition.setStoreId(stuff.getStoreId());
-            condition.setTimeCreate(new Date());
-            int ii=serviceSuiteDao.insert(condition);
-            if(ii!=0){
-                //解析绑定json，绑定关系
-                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
-                if(jsonArr != null){
-                    for(int i=0;i<jsonArr.size();i++){
-                        JSONObject jsonObj=jsonArr.getJSONObject(i);
-                        String serviceId=jsonObj.getString("serviceId");
-                        String times=jsonObj.getString("times");
-                        ServiceSuiteItem serviceSuiteItem=new ServiceSuiteItem();
-                        serviceSuiteItem.setTimes(Integer.parseInt(times));
-                        serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
-                        serviceSuiteItem.setServiceId(Long.parseLong(serviceId));
-                        serviceSuiteItemDao.insert(serviceSuiteItem);
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff = stuffDao.getStuffForUser(user.getRecordId());
+                condition.setStoreId(stuff.getStoreId());
+                condition.setTimeCreate(new Date());
+                int ii = serviceSuiteDao.insert(condition);
+                if (ii != 0) {
+                    //解析绑定json，绑定关系
+                    JSONArray jsonArr = JSONArray.parseArray(bindingJson);
+                    if (jsonArr != null) {
+                        for (int i = 0; i < jsonArr.size(); i++) {
+                            JSONObject jsonObj = jsonArr.getJSONObject(i);
+                            String serviceId = jsonObj.getString("serviceId");
+                            String times = jsonObj.getString("times");
+                            ServiceSuiteItem serviceSuiteItem = new ServiceSuiteItem();
+                            serviceSuiteItem.setTimes(Integer.parseInt(times));
+                            serviceSuiteItem.setServiceSuiteId(condition.getRecordId());
+                            serviceSuiteItem.setServiceId(Long.parseLong(serviceId));
+                            serviceSuiteItemDao.insert(serviceSuiteItem);
 
+                        }
                     }
                 }
-            }
 
-            //插入照片关联
-            if(null!=picIdList && !"".equals(picIdList)) {
-                String[] str = picIdList.split(",");
-                for (String s : str) {
-                    Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
-                    if (null != pic) {
-                        pic.setMasterDataId(condition.getRecordId());
-                        picturesDao.update(pic);
+                //插入照片关联
+                if (null != picIdList && !"".equals(picIdList)) {
+                    String[] str = picIdList.split(",");
+                    for (String s : str) {
+                        Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                        if (null != pic) {
+                            pic.setMasterDataId(condition.getRecordId());
+                            picturesDao.update(pic);
+                        }
                     }
                 }
+                r.setMsg("插入成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
             }
-            r.setMsg("插入成功");
-            r.setSuccess(true);
-            r.setMsgcode(StatusUtil.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
+
+
+            return r;
         }
-
-
-        return r;
     }
 
 

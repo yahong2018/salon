@@ -10,6 +10,7 @@ import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import org.apache.catalina.User;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -658,6 +660,18 @@ public class StatisticsController {
 
 
     }
+
+
+
+    @RequestMapping("getCookis")
+    @ResponseBody
+    public void getCookis(HttpServletRequest req) {
+        SystemUser user = authenticateService.getCurrentLogin();
+
+        String  str = authenticateService.getVerificationCode();
+
+    }
+
 
 
 

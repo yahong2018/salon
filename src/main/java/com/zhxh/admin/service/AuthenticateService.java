@@ -4,6 +4,7 @@ import com.hy.salon.basic.dao.SalonDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Salon;
 import com.hy.salon.basic.entity.Stuff;
+import com.hy.salon.basic.util.UuidUtils;
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
@@ -48,6 +49,15 @@ public class AuthenticateService {
         return result;
     }
 
+    public static String getVerificationCode() {
+        if (SessionManager.getCurrentSession() == null) {
+            return null;
+        }
+        HttpSession session = SessionManager.getCurrentSession();
+        String str = (String) session.getAttribute(VERIFICATION_CODE);
+        return str;
+    }
+
     public void authenticate(String userCode, String password) {
         //1.验证账号和密码
         SystemUser user = new SystemUser();
@@ -64,9 +74,13 @@ public class AuthenticateService {
         if (dbUser.isDisabled()) {
             throwException(ERROR_LOGIN_ACCOUNT_DISABLED);
         }
+        String verificationCode= UuidUtils.generateShortUuid();
+
+
         //2.更新Session
-        setCurrentLogin(dbUser);
+        setCurrentLogin(dbUser,verificationCode);
         //3.更新数据库
+        dbUser.setLoginCode(verificationCode);
         dbUser.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
         dbUser.setOnline(true);
 
@@ -109,13 +123,14 @@ public class AuthenticateService {
                         throwException(ERROR_LOGIN_ACCOUNT);
                     }
                     if (dbUser.isDisabled()) {
-                        throwException(ERROR_LOGIN_ACCOUNT_DISABLED);
                     }
+                    String verificationCode= UuidUtils.generateShortUuid();
                     //2.更新Session
-                    setCurrentLogin(dbUser);
+                    setCurrentLogin(dbUser,verificationCode);
                     //3.更新数据库
                     dbUser.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
                     dbUser.setOnline(true);
+                    dbUser.setLoginCode(verificationCode);
 
                     systemUserDAO.update(dbUser);
                     return  true;
@@ -126,8 +141,9 @@ public class AuthenticateService {
         return  false;
     }
 
-    public synchronized void setCurrentLogin(SystemUser currentLogin) {
+    public synchronized void setCurrentLogin(SystemUser currentLogin,String verificationCode) {
         SessionManager.getCurrentSession().setAttribute(CURRENT_LOGIN_STORED_ID, currentLogin);
+        SessionManager.getCurrentSession().setAttribute("verificationCode", verificationCode);
     }
 
     public synchronized void kickOffUser()  {
@@ -169,7 +185,13 @@ public class AuthenticateService {
         return null;
     }
 
+    public  SystemUser getUser(Long recordId)  {
+        return systemUserDAO.getUserByRecordId(recordId);
+    }
+
     protected static final String CURRENT_LOGIN_STORED_ID = "{9D929EBB-1006-4597-A5E0-F159BB93AA60}";
+
+    protected static final String  VERIFICATION_CODE = "verificationCode";
 
     public SystemUser getUserByCode(String userCode) {
        return systemUserDAO.getUserByCode(userCode);

@@ -105,7 +105,7 @@ public class MemberDao extends BaseDAOWithEntity<Member> {
 
 
 
-    public List<MemberVo> getMember(Long salonId, String filterExpr,int jobLevel){
+    public List<MemberVo> getMember(Long salonId, String filterExpr,Integer jobLevel){
         String startTime="";
         String endTime="";
         String defaultStartDate="";

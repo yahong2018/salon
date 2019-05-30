@@ -13,7 +13,7 @@ public class VipSuiteItem extends TraceableEntity<Long> {
 
     private Byte recordType;
 
-    private Byte discount;
+    private Double discount;
 
 
 

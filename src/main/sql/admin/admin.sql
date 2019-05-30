@@ -8,6 +8,7 @@ CREATE TABLE system_user
   email                     VARCHAR(255)               NULL,
   online                    BIT                        NOT NULL DEFAULT 0, -- 0.离线  1.在线
   last_login_time           DATETIME                   NULL ,              -- 最后登录时间
+  login_code                VARCHAR(50)                NULL,               -- 登录码
 
   PRIMARY KEY (record_id),
   index IDX_SYSTEM_USER_0(user_code),

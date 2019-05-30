@@ -10,6 +10,7 @@ import com.hy.salon.basic.service.VipSuiteService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.basic.vo.ServiceSeriesVo;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.*;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,15 +119,19 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                     VipSuiteItem v1=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("0"));
                     VipSuiteItem v2=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("1"));
                     VipSuiteItem v3=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("2"));
+                    VipSuiteItem v4=vipSuiteItemDao.queryVipSuitForId(v.getRecordId(),new Byte("3"));
                     String str="";
                     if(null!=v1){
-                        str=str+"单次"+v1.getDiscount()+"折   ";
+                        str=str+"项目"+v1.getDiscount()+"折   ";
                     }
                     if(null!=v2){
                         str=str+"疗程"+v2.getDiscount()+"折   ";
                     }
                     if(null!=v3){
                         str=str+"产品"+v3.getDiscount()+"折   ";
+                    }
+                    if(null!=v4){
+                        str=str+"单次"+v4.getDiscount()+"折   ";
                     }
 
                 v.setDiscountData(str);
@@ -187,7 +193,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         VipSuiteItem vipSuitItem=new VipSuiteItem();
                         vipSuitItem.setRecordType(Byte.parseByte(recordType));
                         vipSuitItem.setVipSuiteId(condition.getRecordId());
-                        vipSuitItem.setDiscount(Byte.parseByte(discount));
+                        vipSuitItem.setDiscount(Double.parseDouble(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
 
@@ -244,30 +250,32 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
     })
     @Transactional(rollbackFor = Exception.class)
     public Result addVipSuiteForApp(HttpServletRequest request, VipSuite condition, String bindingJson, String picIdList){
-        Result r= new Result();
-        //先写死，后面改
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            Result r = new Result();
+            //先写死，后面改
 //        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"1,2,3\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"3,4,5\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"6,7,8\"}]";
-        try {
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            condition.setStoreId(stuff.getStoreId());
-            int ii =vipSuiteDao.insert(condition);
-            if(ii != 0){
-                //解析绑定json，绑定关系
-                JSONArray jsonArr=JSONArray.parseArray(bindingJson);
-                if(!jsonArr.isEmpty()){
-                    for(int i=0;i<jsonArr.size();i++){
-                        JSONObject jsonObj=jsonArr.getJSONObject(i);
-                        String recordType=jsonObj.getString("recordType");
-                        String itemId=jsonObj.getString("serviceId");
-                        String discount=jsonObj.getString("discount");
+            try {
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff = stuffDao.getStuffForUser(user.getRecordId());
+                condition.setStoreId(stuff.getStoreId());
+                int ii = vipSuiteDao.insert(condition);
+                if (ii != 0) {
+                    //解析绑定json，绑定关系
+                    JSONArray jsonArr = JSONArray.parseArray(bindingJson);
+                    if (!jsonArr.isEmpty()) {
+                        for (int i = 0; i < jsonArr.size(); i++) {
+                            JSONObject jsonObj = jsonArr.getJSONObject(i);
+                            String recordType = jsonObj.getString("recordType");
+                            String itemId = jsonObj.getString("serviceId");
+                            String discount = jsonObj.getString("discount");
 
-                        //绑定父类
-                        VipSuiteItem vipSuitItem=new VipSuiteItem();
-                        vipSuitItem.setRecordType(Byte.parseByte(recordType));
-                        vipSuitItem.setVipSuiteId(condition.getRecordId());
-                        vipSuitItem.setDiscount(Byte.parseByte(discount));
-                        vipSuiteItemDao.insert(vipSuitItem);
+                            //绑定父类
+                            VipSuiteItem vipSuitItem = new VipSuiteItem();
+                            vipSuitItem.setRecordType(Byte.parseByte(recordType));
+                            vipSuitItem.setVipSuiteId(condition.getRecordId());
+                            vipSuitItem.setDiscount(Double.parseDouble(discount));
+                            vipSuiteItemDao.insert(vipSuitItem);
 
 //                        String[] str = itemId.split(",");
 //                        for(String s :str){
@@ -277,34 +285,35 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
 //                            vipRangeCondition.setVipSuiteItemId(vipSuitItem.getRecordId());
 //                            vipSuiteItemDiscountRangeDAO.insert(vipRangeCondition);
 //                        }
+                        }
+
                     }
 
                 }
-
-            }
-            if(null != picIdList && !"".equals(picIdList)){
-                //插入照片关联
-                String[] str = picIdList.split(",");
-                for(String s:str){
-                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                    if(null != pic){
-                        pic.setMasterDataId(condition.getRecordId());
-                        picturesDao.update(pic);
+                if (null != picIdList && !"".equals(picIdList)) {
+                    //插入照片关联
+                    String[] str = picIdList.split(",");
+                    for (String s : str) {
+                        Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                        if (null != pic) {
+                            pic.setMasterDataId(condition.getRecordId());
+                            picturesDao.update(pic);
+                        }
                     }
                 }
+
+                r.setMsg("插入成功");
+                r.setSuccess(true);
+                r.setMsgcode(StatusUtil.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
             }
 
-            r.setMsg("插入成功");
-            r.setSuccess(true);
-            r.setMsgcode(StatusUtil.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
+
+            return r;
         }
-
-
-        return r;
     }
 
 
@@ -357,7 +366,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         VipSuiteItem vipSuitItem=new VipSuiteItem();
                         vipSuitItem.setRecordType(Byte.parseByte(recordType));
                         vipSuitItem.setVipSuiteId(condition.getRecordId());
-                        vipSuitItem.setDiscount(Byte.parseByte(discount));
+                        vipSuitItem.setDiscount(Double.parseDouble(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
 //                        String[] str = itemId.split(",");
@@ -445,7 +454,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                         VipSuiteItem vipSuitItem=new VipSuiteItem();
                         vipSuitItem.setRecordType(Byte.parseByte(recordType));
                         vipSuitItem.setVipSuiteId(condition.getRecordId());
-                        vipSuitItem.setDiscount(Byte.parseByte(discount));
+                        vipSuitItem.setDiscount(Double.parseDouble(discount));
                         vipSuiteItemDao.insert(vipSuitItem);
 
 //                        String[] str = itemId.split(",");

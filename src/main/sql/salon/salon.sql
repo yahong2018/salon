@@ -84,6 +84,7 @@ create table stuff
   qq                               varchar(50)                     null,      -- QQ
   address                          varchar(120)                    null,      -- 联系地址
   in_office                        tinyint                         not null default 0; -- 0 在职 1 离职
+  is_delete                        int                             not null default 0; -- 0 未删 1 已删
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
@@ -166,7 +167,7 @@ create table service
   store_id                         bigint                          not null,    -- 所属门店
   service_name                     varchar(50)                     not null,    -- 项目名称
   service_series_id                bigint                          not null,    -- 项目类别/系列
-  card_type                        tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡
+  card_type                        tinyint                         not null,    -- 卡类别: 0 次卡   时效卡：1.月卡   2.季卡  3.半年卡   4.年卡 5.自定义
   record_status                    tinyint                         not null,    -- 项目状态：0 启用   1 停用
   expired_time                     double(3,1)                     null,        -- 有效期：时效卡专用。自购买之日起，N时间内有效。
   expiration_date                   datetime                       null,        -- 过期时间
@@ -268,7 +269,7 @@ create table vip_suite_item
 (
   record_id                        bigint     auto_increment         not null,
   vip_suite_id                     bigint                            not null,  -- 充值卡id
-  record_type                      tinyint                           not null,  -- 记录类型:0.单次折扣  1.疗程折扣  2.产品折扣
+  record_type                      tinyint                           not null,  -- 记录类型:0.项目折扣  1.疗程折扣  2.产品折扣  3.单次
   discount                         tinyint                           not null,  -- 折扣
 
   create_date                      datetime                          not null,
@@ -768,6 +769,7 @@ create table nurse_log_model
 (
   record_id                       bigint              auto_increment        not null,
   model_content                   varchar(1000)                             not null, -- 模版内容
+  store_id                        bigint                                    not null,-- 门店号
 
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
@@ -1423,7 +1425,7 @@ create table approval_record
   record_id                bigint                                               not null,
   submit_approval_id       bigint                                               not null, -- 送审号
   approval_opinion         varchar(100)                                          null, -- 审批意见
-  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝  2 未审批    3 下一个审批
+  approval_status          tinyint                                              not null, -- 审批状态 0 同意 1 拒绝  2 未审批    3 下一个审批 4 拒绝且下一个审批
   approval_date            datetime                                             not null, -- 审批日期
   -- 送审表id
   approval_type            int                                                  not null,--状态 整个审核流程是否已经结束(0  结束 1未结束)

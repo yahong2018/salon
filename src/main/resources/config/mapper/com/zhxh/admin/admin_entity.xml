@@ -10,6 +10,7 @@
         <result property="email" column="email"/>
         <result property="online" column="online"/>
         <result property="lastLoginTime" column="last_login_time"/>
+        <result property="loginCode" column="login_code"/>
     </resultMap>
 
     <resultMap id="SystemRole" type="com.zhxh.admin.entity.SystemRole"  extends="com.zhxh.core.data.EntityObject">

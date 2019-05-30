@@ -1,12 +1,20 @@
 package com.hy.salon.basic.util;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
+
+
+    @Bean
+    public HandlerInterceptor getTokenInterceptor(){
+        return new LogCostInterceptor();
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -15,7 +23,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
 
 
-        InterceptorRegistration interceptorRegistration = registry.addInterceptor(new LogCostInterceptor());
+        InterceptorRegistration interceptorRegistration = registry.addInterceptor(getTokenInterceptor());
         interceptorRegistration.excludePathPatterns("/api/login/doLogin");
         interceptorRegistration.excludePathPatterns("/login/doLogin");
         interceptorRegistration.excludePathPatterns("/hy/basic/salon/createStore");

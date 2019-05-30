@@ -26,12 +26,30 @@ public class ApprovalRecordDAO extends BaseDAOWithEntity<ApprovalRecord> {
     }
 
 
-    public ApprovalRecord getApprovalRecordForId(Long submitApprovalId,Integer severalApprovals,Long severalApprovalsStuffId){
-        String where = "submit_approval_id=#{submitApprovalId} and several_approvals=#{severalApprovals} and several_approvals_stuff_id=#{severalApprovalsStuffId}";
+    public ApprovalRecord getApprovalRecordForId(Long submitApprovalId,Integer severalApprovals){
+        String where = "submit_approval_id=#{submitApprovalId} and several_approvals=#{severalApprovals}";
         Map parameters = new HashMap();
         parameters.put("submitApprovalId", submitApprovalId);
         parameters.put("severalApprovals", severalApprovals);
-        parameters.put("severalApprovalsStuffId", severalApprovalsStuffId);
+
+        return this.getOne(where, parameters);
+    }
+
+    public List<ApprovalRecord> getApprovalRecordForId2(Long submitApprovalId ,Integer isLast){
+        String where = "submit_approval_id=#{submitApprovalId} ";
+        if(null!=isLast){
+            where=where+" and  is_last = 0";
+        }
+        Map parameters = new HashMap();
+        parameters.put("submitApprovalId", submitApprovalId);
+
+        return this.getByWhere(where, parameters);
+    }
+
+    public ApprovalRecord getOneApprovalRecordForId(Long submitApprovalId){
+        String where = "submit_approval_id=#{submitApprovalId} and  is_last = 0";
+        Map parameters = new HashMap();
+        parameters.put("submitApprovalId", submitApprovalId);
 
         return this.getOne(where, parameters);
     }

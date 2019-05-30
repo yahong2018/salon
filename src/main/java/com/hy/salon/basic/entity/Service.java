@@ -54,5 +54,7 @@ public class Service extends TraceableEntity<Long> {
 
     private Integer frequency;
 
+    private Date expirationDate;
+
 
 }

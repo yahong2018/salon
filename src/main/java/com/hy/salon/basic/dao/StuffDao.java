@@ -33,7 +33,7 @@ public class StuffDao extends BaseDAOWithEntity<Stuff>{
 //    }
 
     public List<Stuff> getStuffForStoreId(Long storeId){
-        String where="store_id=#{storeId}";
+        String where="store_id=#{storeId} and is_delete = 0";
         Map parameters = new HashMap();
         parameters.put("storeId", storeId);
 

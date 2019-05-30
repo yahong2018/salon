@@ -8,6 +8,7 @@ import com.hy.salon.basic.entity.ServiceSeries;
 import com.hy.salon.basic.entity.Stuff;
 import com.hy.salon.basic.service.ServiceSeriesService;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hy.salon.basic.vo.Result;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,22 +62,25 @@ public class ServiceSeriesController extends SimpleCRUDController<ServiceSeries>
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "状态： 0. 启用   1. 停用", required = true, dataType = "Byte")
     })
     public Result addServiceSeries(ServiceSeries condition){
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
 
-        Result r= new Result();
+            Result r = new Result();
 //        SystemUser user = authenticateService.getCurrentLogin();
 //        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 //        condition.setStoreId(stuff.getStoreId());
-        int i=serviceSeriesDao.insert(condition);
-        if (i == 0) {
-            r.setMsg("插入失败");
-            r.setMsgcode("1");
-            r.setSuccess(false);
+            int i = serviceSeriesDao.insert(condition);
+            if (i == 0) {
+                r.setMsg("插入失败");
+                r.setMsgcode("1");
+                r.setSuccess(false);
+                return r;
+            }
+            r.setMsg("插入成功");
+            r.setMsgcode("0");
+            r.setSuccess(true);
             return r;
         }
-        r.setMsg("插入成功");
-        r.setMsgcode("0");
-        r.setSuccess(true);
-        return r;
 
     }
 

@@ -172,7 +172,7 @@ public class ConsumptionForScoreController {
             String rwhereVI="vip_suite_id=#{vip_suite_id} and record_type=#{record_type}";
             VipSuiteItem vipSuiteItem = vipSuiteItemDao.getOne(rwhereVI,parameterVI);//获取充值卡折扣
 
-            Byte discount = vipSuiteItem.getDiscount();
+            Double discount = vipSuiteItem.getDiscount();
             double temp = balance*discount;//折扣后的价格
             consumptionBalance = temp;//消费掉的钱
             cardBalanceV.setBalance(cardBalanceV.getBalance() - temp);

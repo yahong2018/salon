@@ -14,6 +14,7 @@ import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.utils.StringUtilsExt;
@@ -36,6 +37,7 @@ import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/hy/basic/stuff")
@@ -478,66 +480,68 @@ public class StuffController extends SimpleCRUDController<Stuff> {
     @ApiOperation(value="添加员工", notes="添加员工")
     @Transactional(rollbackFor = Exception.class)
     public Result addStuff( Stuff condition, String jobLevel ) {
-        Result r= new Result();
-        try {
-            //检查该手机号是否被使用
-            SystemUser user=systemUserDAO.getUserByCode(condition.getTel());
-            if(null != user){
-                r.setMsg("该账号已被使用");
-                r.setSuccess(false);
-                r.setMsgcode(StatusUtil.ERROR);
-                return r;
-            }
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            Result r = new Result();
+            try {
+                //检查该手机号是否被使用
+                SystemUser user = systemUserDAO.getUserByCode(condition.getTel());
+                if (null != user) {
+                    r.setMsg("该账号已被使用");
+                    r.setSuccess(false);
+                    r.setMsgcode(StatusUtil.ERROR);
+                    return r;
+                }
 
-            condition.setGender(new Byte("2"));
-            condition.setCreateDate(new Date());
-            stuffDao.insert(condition);
+                condition.setGender(new Byte("2"));
+                condition.setCreateDate(new Date());
+                stuffDao.insert(condition);
 
 
-            String[] str = jobLevel.split(",");
-            for(String s :str){
-                StuffJob stuffJobCondition=new StuffJob();
-                stuffJobCondition.setStuffId(condition.getRecordId());
-                Job j=jobDao.getJobForJobLevel(new Byte(s));
-                stuffJobCondition.setJobId(j.getRecordId());
-                stuffJobDao.insert(stuffJobCondition);
-            }
+                String[] str = jobLevel.split(",");
+                for (String s : str) {
+                    StuffJob stuffJobCondition = new StuffJob();
+                    stuffJobCondition.setStuffId(condition.getRecordId());
+                    Job j = jobDao.getJobForJobLevel(new Byte(s));
+                    stuffJobCondition.setJobId(j.getRecordId());
+                    stuffJobDao.insert(stuffJobCondition);
+                }
 
 //            Job j=jobDao.getJobForJobLevel(jobLevel);
 //            stuffJobCondition.setJobId(j.getRecordId());
 //            stuffJobDao.insert(stuffJobCondition);
 
-            SystemUser userController=new SystemUser();
-            userController.setUserCode(condition.getTel());
-            userController.setUserName(condition.getStuffName());
-            String passwordMd5 =StringUtilsExt.getMd5("123456");
-            userController.setPassword(passwordMd5);
-            userController.setUserStatus(0);
-            systemUserDAO.insert(userController);
+                SystemUser userController = new SystemUser();
+                userController.setUserCode(condition.getTel());
+                userController.setUserName(condition.getStuffName());
+                String passwordMd5 = StringUtilsExt.getMd5("123456");
+                userController.setPassword(passwordMd5);
+                userController.setUserStatus(0);
+                systemUserDAO.insert(userController);
 
-            RoleAction roleAction=new RoleAction();
-            roleAction.setStuffId(condition.getRecordId());
-            roleAction.setSystemUserId(userController.getRecordId());
-            roleActionDao.insert(roleAction);
+                RoleAction roleAction = new RoleAction();
+                roleAction.setStuffId(condition.getRecordId());
+                roleAction.setSystemUserId(userController.getRecordId());
+                roleActionDao.insert(roleAction);
 
-            RoleUser roleUser=new RoleUser();
-            roleUser.setRoleId(new Long(2));
-            roleUser.setUserId(userController.getRecordId());
-            roleUserDao.insert(roleUser);
+                RoleUser roleUser = new RoleUser();
+                roleUser.setRoleId(new Long(2));
+                roleUser.setUserId(userController.getRecordId());
+                roleUserDao.insert(roleUser);
 
 
+                r.setMsg("添加成功");
+                r.setMsgcode(StatusUtil.OK);
+                r.setSuccess(true);
 
-            r.setMsg("添加成功");
-            r.setMsgcode(StatusUtil.OK);
-            r.setSuccess(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+            }
 
-        }catch (Exception e){
-            e.printStackTrace();
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
+            return r;
         }
-
-        return r;
     }
 
 
@@ -578,12 +582,14 @@ public class StuffController extends SimpleCRUDController<Stuff> {
      */
     @ResponseBody
     @RequestMapping(value="updateStuff")
-    @ApiOperation(value="添加员工", notes="添加员工")
+    @ApiOperation(value="修改员工", notes="修改员工")
     @Transactional(rollbackFor = Exception.class)
-    public Result updateStuff( Stuff condition, String jobLevel) {
+    public Result updateStuff(Stuff condition, String jobLevel) {
         Result r= new Result();
         try {
-            stuffDao.update(condition);
+            Stuff stuff=stuffDao.getStuffForRecordId(condition.getRecordId());
+            stuff.setStuffName(condition.getStuffName());
+            stuffDao.update(stuff);
 
 
             List<StuffJob>  stuffJobList =stuffJobDao.getStuffJobListForStuff(condition.getRecordId());
@@ -598,8 +604,11 @@ public class StuffController extends SimpleCRUDController<Stuff> {
                 StuffJob stuffJobCondition=new StuffJob();
                 stuffJobCondition.setStuffId(condition.getRecordId());
                 Job j=jobDao.getJobForJobLevel(new Byte(s));
-                stuffJobCondition.setJobId(j.getRecordId());
-                stuffJobDao.insert(stuffJobCondition);
+                if(j.getRecordId()!=9 && j.getRecordId()!=2 && j.getRecordId()!=4 && j.getRecordId()!=8){
+                    stuffJobCondition.setJobId(j.getRecordId());
+                    stuffJobDao.insert(stuffJobCondition);
+                }
+
             }
 
 
@@ -775,6 +784,34 @@ public class StuffController extends SimpleCRUDController<Stuff> {
         List<Stuff> list =  stuffDao.getByWhere(where,parameters);
         jsonObject.put("listMember",list);
         return  jsonObject;
+    }
+
+    /**
+     * 删除员工
+     */
+    @ResponseBody
+    @RequestMapping("deleteStuffForShopowner")
+    public Result deleteStuffForShopowner(Long recordId) {
+        Result r= new Result();
+        try {
+
+            Stuff stuff=stuffDao.getStuffForRecordId(recordId);
+            if(stuff.getIsDelete() == 0){
+                stuff.setIsDelete(1);
+            }else if(stuff.getIsDelete() == 1){
+                stuff.setIsDelete(0);
+            }
+            stuffDao.update(stuff);
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+        }
+
+        return r;
     }
 
 

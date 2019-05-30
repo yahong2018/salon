@@ -11,6 +11,7 @@ import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
@@ -19,13 +20,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -111,59 +112,66 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @ResponseBody
     @RequestMapping("/addService")
     @ApiOperation(value="添加次卡", notes="添加次卡")
-    public Result addService(HttpServletRequest request, Service condition, String picIdList,String comeFrom){
+    @Transactional(rollbackFor = Exception.class)
+    public Result addService(HttpServletRequest request, Service condition, String picIdList,String comeFrom,String  expirationDate){
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+
+            if ("PC".equals(comeFrom)) {
+                String vs = request.getParameter("condition");
+                condition = JSONObject.parseObject(vs, Service.class);
+            }
+            Date expirationDate2 = new Date(expirationDate);
+            condition.setExpirationDate(expirationDate2);
+
+            Result r = new Result();
+            SystemUser user = authenticateService.getCurrentLogin();
+            Stuff stuff = stuffDao.getStuffForUser(user.getRecordId());
+
+            condition.setStoreId(stuff.getStoreId());
 
 
-        if("PC".equals(comeFrom)){
-            String  vs =  request.getParameter("condition");
-            condition =  JSONObject.parseObject(vs, Service.class);
-        }
+            if (condition.getCardType() == 0) {
+                condition.setPriceMarket(new Double(-1));
+                condition.setTimeTotal(-1);
+            } else {
+                condition.setPricePerTime(new Double(-1));
+            }
 
-        Result r= new Result();
-        SystemUser user = authenticateService.getCurrentLogin();
-        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-
-        condition.setStoreId(stuff.getStoreId());
-
-
-        if(condition.getCardType() == 0){
-            condition.setPriceMarket(new Double(-1));
-            condition.setTimeTotal(-1);
-        }else{
-            condition.setPricePerTime(new Double(-1));
-        }
-
-        int i=serviceDao.insert(condition);
-        if(i!=1){
-            r.setMsg("添加失败");
-            r.setMsgcode("200");
-            r.setSuccess(false);
-            return r;
-        }
-        if(null != picIdList && !"".equals(picIdList)){
-            //插入照片关联
-            String[] str = picIdList.split(",");
-            for(String s:str){
-                Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                if(null != pic){
-                    pic.setMasterDataId(condition.getRecordId());
-                    picturesDao.update(pic);
+            int i = serviceDao.insert(condition);
+            if (i != 1) {
+                r.setMsg("添加失败");
+                r.setMsgcode("200");
+                r.setSuccess(false);
+                return r;
+            }
+            if (null != picIdList && !"".equals(picIdList)) {
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for (String s : str) {
+                    Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if (null != pic) {
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
                 }
             }
+
+
+            r.setMsg("请求成功");
+            r.setMsgcode("0");
+            r.setSuccess(true);
+            return r;
         }
-
-
-
-        r.setMsg("请求成功");
-        r.setMsgcode("0");
-        r.setSuccess(true);
-        return r;
     }
     @ResponseBody
     @RequestMapping("/updateService")
     @ApiOperation(value="修改次卡", notes="修改次卡")
-    public Result updateService(Service condition,String picIdList,String deletePicList){
+    public Result updateService(Service condition, String picIdList, String deletePicList, String  expirationDate){
         Result r= new Result();
+
+        Date expirationDate2=new Date(expirationDate);
+        condition.setExpirationDate(expirationDate2);
         int i=serviceDao.update(condition);
         if(i!=1){
             r.setMsg("修改失败");

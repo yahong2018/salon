@@ -113,7 +113,7 @@ public class WeChatController {
     @ResponseBody
     @RequestMapping(value = "addMember")
     @ApiOperation(value="小程序注册会员", notes="小程序注册会员")
-    public Result addMember(Member condition,String verificationCode) {
+    public Result addMember(Member condition,String verificationCode,String password) {
 
         Result result = new Result();
         try {
@@ -143,6 +143,7 @@ public class WeChatController {
                 if(null!=condition.getInvitationCode() && !"".equals(condition.getInvitationCode())){
                     Member parentMember=memberDao.getMemberForInvitationCode(condition.getInvitationCode());
                     condition.setParentId(parentMember.getRecordId());
+                    condition.setInitialStoreId(parentMember.getInitialStoreId());
                 }else{
                     String invitationCode= UuidUtils.generateShortUuid();
                     condition.setInvitationCode(invitationCode);
@@ -166,7 +167,7 @@ public class WeChatController {
                 SystemUser userController=new SystemUser();
                 userController.setUserCode(condition.getTel());
                 userController.setUserName(condition.getMemberName());
-                String passwordMd5 = StringUtilsExt.getMd5("123456");
+                String passwordMd5 = StringUtilsExt.getMd5(password);
                 userController.setPassword(passwordMd5);
                 userController.setUserStatus(0);
                 systemUserDAO.insert(userController);

@@ -11,12 +11,14 @@ import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.vo.Result;
 import com.hy.salon.stock.entity.ProductStock;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -173,8 +175,10 @@ public class ProductController {
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "记录状态:0.启用  1.停用", required = true, dataType = "byte"),
     })
     public Result addProductSeries(ProductSeries condition){
-        Result result=new Result();
-        try {
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            Result result = new Result();
+            try {
 //            //先查看该品牌是否重名
 //            List<Map> l=productSeriesDao.getSeriesForName(condition.getSeriesName(),salonId);
 //            if(l.size()!=0){
@@ -183,21 +187,22 @@ public class ProductController {
 //                result.setMsg("该品牌名字已经使用");
 //                return result;
 //            }
-            SystemUser user = authenticateService.getCurrentLogin();
-            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
-            condition.setStoreId(stuff.getStoreId());
-            condition.setRecordStatus(new Byte("0"));
-            productSeriesDao.insert(condition);
-            result.setSuccess(true);
-            result.setMsgcode(StatusUtil.OK);
-            result.setMsg("插入成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            result.setSuccess(false);
-            result.setMsgcode(StatusUtil.ERROR);
-            result.setMsg("插入失败");
+                SystemUser user = authenticateService.getCurrentLogin();
+                Stuff stuff = stuffDao.getStuffForUser(user.getRecordId());
+                condition.setStoreId(stuff.getStoreId());
+                condition.setRecordStatus(new Byte("0"));
+                productSeriesDao.insert(condition);
+                result.setSuccess(true);
+                result.setMsgcode(StatusUtil.OK);
+                result.setMsg("插入成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.setSuccess(false);
+                result.setMsgcode(StatusUtil.ERROR);
+                result.setMsg("插入失败");
+            }
+            return result;
         }
-        return result;
     }
 
 
@@ -397,150 +402,149 @@ public class ProductController {
             @ApiImplicitParam(paramType="query", name = "recordStatus", value = "记录状态：0.启用   1. 停用", required = true, dataType = "byte"),
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String")
     })
+    @Transactional(rollbackFor = Exception.class)
     public Result addProduct(Product condition,String specifications,String sompany,String applicableParts,String effect,String picIdList,String deletePicList){
-        Result result=new Result();
-        try {
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            Result result = new Result();
+            try {
 
 //            SystemUser user = authenticateService.getCurrentLogin();
 //            Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
 
 
-
-
-            if(condition.getRecordId() == null){
+                if (condition.getRecordId() == null) {
 //                condition.setStoreId(stuff.getStoreId());
 
-                Product product=productDao.checkName(condition.getStoreId(),condition.getProductName());
-                if(null != product){
-                    result.setSuccess(false);
-                    result.setMsgcode(StatusUtil.ERROR);
-                    result.setMsg("产品名称不能重复");
-                    return result;
-                }
-
-
-                condition.setRecordId(null);
-                productDao.insert(condition);
-                if(null != specifications && !"".equals(specifications)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(specifications));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != sompany && !"".equals(sompany)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(sompany));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != applicableParts && !"".equals(applicableParts)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != effect && !"".equals(effect)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(effect));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-
-                //默认生成一个仓库
-                ProductStock proCondition=new ProductStock();
-                proCondition.setWarehouseId(condition.getStoreId());
-                proCondition.setStockQty(0);
-                proCondition.setProductId(condition.getRecordId());
-                proCondition.setCost(new Double(0));
-                productStockDAO.insert(proCondition);
-
-
-            }else{
-
-                Product product=productDao.checkName(condition.getStoreId(),condition.getProductName());
-                if(null != product){
-                    if(product.getRecordId() != condition.getRecordId()){
+                    Product product = productDao.checkName(condition.getStoreId(), condition.getProductName());
+                    if (null != product) {
                         result.setSuccess(false);
                         result.setMsgcode(StatusUtil.ERROR);
                         result.setMsg("产品名称不能重复");
                         return result;
                     }
-                }
-                productDao.update(condition);
 
-                List<ProductPropertyMap> ppmList =productPropertyMapDAO.getProForId(condition.getRecordId());
-                if(null!=ppmList && ppmList.size()!=0 ){
-                    for(ProductPropertyMap p :ppmList){
-                        productPropertyMapDAO.delete(p);
+
+                    condition.setRecordId(null);
+                    productDao.insert(condition);
+                    if (null != specifications && !"".equals(specifications)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != sompany && !"".equals(sompany)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(sompany));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != applicableParts && !"".equals(applicableParts)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != effect && !"".equals(effect)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(effect));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+
+                    //默认生成一个仓库
+                    ProductStock proCondition = new ProductStock();
+                    proCondition.setWarehouseId(condition.getStoreId());
+                    proCondition.setStockQty(0);
+                    proCondition.setProductId(condition.getRecordId());
+                    proCondition.setCost(new Double(0));
+                    productStockDAO.insert(proCondition);
+
+
+                } else {
+
+                    Product product = productDao.checkName(condition.getStoreId(), condition.getProductName());
+                    if (null != product) {
+                        if (product.getRecordId() != condition.getRecordId()) {
+                            result.setSuccess(false);
+                            result.setMsgcode(StatusUtil.ERROR);
+                            result.setMsg("产品名称不能重复");
+                            return result;
+                        }
+                    }
+                    productDao.update(condition);
+
+                    List<ProductPropertyMap> ppmList = productPropertyMapDAO.getProForId(condition.getRecordId());
+                    if (null != ppmList && ppmList.size() != 0) {
+                        for (ProductPropertyMap p : ppmList) {
+                            productPropertyMapDAO.delete(p);
+                        }
+                    }
+
+
+                    if (null != specifications && !"".equals(specifications)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != sompany && !"".equals(sompany)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(sompany));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != applicableParts && !"".equals(applicableParts)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+                    if (null != effect && !"".equals(effect)) {
+                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+                        productMapCondition.setProductId(condition.getRecordId());
+                        productMapCondition.setProductPropertyId(Long.parseLong(effect));
+                        productPropertyMapDAO.insert(productMapCondition);
+                    }
+
+                }
+
+
+                if (null != picIdList && !"".equals(picIdList)) {
+                    //插入照片关联
+                    String[] str = picIdList.split(",");
+                    for (String s : str) {
+                        Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                        if (null != pic) {
+                            pic.setMasterDataId(condition.getRecordId());
+                            picturesDao.update(pic);
+                        }
+                    }
+                }
+
+                if (null != deletePicList && !"".equals(deletePicList)) {
+                    //删除照片关联
+                    String[] str2 = deletePicList.split(",");
+                    for (String s : str2) {
+                        Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                        if (null != pic) {
+                            picturesDao.delete(pic);
+                        }
                     }
                 }
 
 
-                if(null != specifications && !"".equals(specifications)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(specifications));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != sompany && !"".equals(sompany)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(sompany));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != applicableParts && !"".equals(applicableParts)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(applicableParts));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-                if(null != effect && !"".equals(effect)){
-                    ProductPropertyMap productMapCondition=new ProductPropertyMap();
-                    productMapCondition.setProductId(condition.getRecordId());
-                    productMapCondition.setProductPropertyId(Long.parseLong(effect));
-                    productPropertyMapDAO.insert(productMapCondition);
-                }
-
+                result.setSuccess(true);
+                result.setMsgcode(StatusUtil.OK);
+                result.setMsg("添加成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.setSuccess(false);
+                result.setMsgcode(StatusUtil.ERROR);
+                result.setMsg("添加失败");
             }
-
-
-
-            if(null != picIdList && !"".equals(picIdList)){
-                //插入照片关联
-                String[] str = picIdList.split(",");
-                for(String s:str){
-                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                    if(null != pic){
-                        pic.setMasterDataId(condition.getRecordId());
-                        picturesDao.update(pic);
-                    }
-                }
-            }
-
-            if(null != deletePicList && !"".equals(deletePicList)){
-                //删除照片关联
-                String[] str2=deletePicList.split(",");
-                for(String s:str2){
-                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                    if(null != pic){
-                        picturesDao.delete(pic);
-                    }
-                }
-            }
-
-
-
-
-            result.setSuccess(true);
-            result.setMsgcode(StatusUtil.OK);
-            result.setMsg("添加成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            result.setSuccess(false);
-            result.setMsgcode(StatusUtil.ERROR);
-            result.setMsg("添加失败");
+            return result;
         }
-        return result;
     }
 
     /**

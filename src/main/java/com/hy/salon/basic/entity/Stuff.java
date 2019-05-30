@@ -28,6 +28,7 @@ import java.sql.Timestamp;
     private String address;
     private String picUrl;
     private String jobName;
+    private Integer isDelete;
 
     private String jobLevel;
 
@@ -38,5 +39,7 @@ import java.sql.Timestamp;
     private String storeName;
 
     private Integer workSummarySize;
+
+
 
 }

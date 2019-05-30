@@ -17,6 +17,7 @@ import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.SessionManager;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.utils.Logger;
@@ -26,6 +27,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +40,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -481,142 +490,140 @@ public class SalonController extends SimpleCRUDController<Salon> {
     public Result createStore(Salon condition, String picIdList, String inviteCode, String idPic1Code, String idPic2Code, String businessPicCode, String permitPicCode,String verificationCode) {
         Result r= new Result();
 
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
+            List<VerificationCodeTemporary> verificationCodeTemporaryList = verificationCodeTemporaryDAO.getCode(condition.getTel());
+            if (verificationCodeTemporaryList.size() != 0) {
+                VerificationCodeTemporary verificationCodeTemporary = verificationCodeTemporaryList.get(verificationCodeTemporaryList.size() - 1);
+                if (!verificationCodeTemporary.getVerificationCode().equals(verificationCode)) {
+                    r.setMsg("验证码错误");
+                    r.setSuccess(false);
+                    r.setMsgcode(StatusUtil.ERROR);
+                    return r;
+                }
 
-        List<VerificationCodeTemporary> verificationCodeTemporaryList=verificationCodeTemporaryDAO.getCode(condition.getTel());
-        if(verificationCodeTemporaryList.size()!=0){
-            VerificationCodeTemporary verificationCodeTemporary=verificationCodeTemporaryList.get(verificationCodeTemporaryList.size()-1);
-            if(!verificationCodeTemporary.getVerificationCode().equals(verificationCode)){
-                r.setMsg("验证码错误");
+            }
+
+
+            SalonInviteCode salonInviteCode = salonInviteCodeDAO.getSalonForCode(inviteCode);
+            if (null == salonInviteCode) {
+                r.setMsg("请输入正确的邀请码");
                 r.setSuccess(false);
                 r.setMsgcode(StatusUtil.ERROR);
                 return r;
             }
 
-        }
+            //检查该手机号是否被使用
+            SystemUser user = systemUserDAO.getUserByCode(condition.getTel());
+            if (null != user) {
+                r.setMsg("该账号已被使用");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+
+            condition.setAudit(0);
+            condition.setBedNum(0);
+            condition.setArea(new Double(0));
+            condition.setParentId(salonInviteCode.getSalonId());
+
+            double[] aaa = MapUtils.getLatAndLonByAddress(condition.getAddress());
+            if (null == aaa) {
+                r.setMsg("请输入详细地址");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+            condition.setLongitude(aaa[0]);
+            condition.setLatitude(aaa[1]);
+            salonDao.insert(condition);
+
+            Stuff stuffCondition = new Stuff();
+            stuffCondition.setStoreId(condition.getRecordId());
+            stuffCondition.setStuffName(condition.getTel());
+            stuffCondition.setTel(condition.getTel());
+            stuffCondition.setGender(new Byte("2"));
+            stuffDao.insert(stuffCondition);
+
+            StuffJob stuffJobCondition = new StuffJob();
+            stuffJobCondition.setStuffId(stuffCondition.getRecordId());
+            Job j = jobDao.getJobForJobLevel(new Byte("1"));
+            stuffJobCondition.setJobId(j.getRecordId());
+            stuffJobDao.insert(stuffJobCondition);
 
 
-        SalonInviteCode salonInviteCode=salonInviteCodeDAO.getSalonForCode(inviteCode);
-        if(null == salonInviteCode){
-            r.setMsg("请输入正确的邀请码");
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
-            return r;
-        }
+            SystemUser userController = new SystemUser();
+            userController.setUserCode(stuffCondition.getTel());
+            userController.setUserName(stuffCondition.getStuffName());
+            String passwordMd5 = StringUtilsExt.getMd5("123456");
+            userController.setPassword(passwordMd5);
+            userController.setUserStatus(0);
+            systemUserDAO.insert(userController);
 
-        //检查该手机号是否被使用
-        SystemUser user=systemUserDAO.getUserByCode(condition.getTel());
-        if(null != user){
-            r.setMsg("该账号已被使用");
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
-            return r;
-        }
+            RoleAction roleAction = new RoleAction();
+            roleAction.setStuffId(stuffCondition.getRecordId());
+            roleAction.setSystemUserId(userController.getRecordId());
+            roleActionDao.insert(roleAction);
 
-        condition.setAudit(0);
-        condition.setBedNum(0);
-        condition.setArea(new Double(0));
-        condition.setParentId(salonInviteCode.getSalonId());
+            SystemRole systemRole = systemRoleDAO.getRole("dianzhang");
 
-        double[] aaa = MapUtils.getLatAndLonByAddress(condition.getAddress());
-        if(null == aaa){
-            r.setMsg("请输入详细地址");
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
-            return r;
-        }
-        condition.setLongitude(aaa[0]);
-        condition.setLatitude(aaa[1]);
-        salonDao.insert(condition);
+            RoleUser roleUser = new RoleUser();
+            roleUser.setRoleId(systemRole.getRecordId());
+            roleUser.setUserId(userController.getRecordId());
+            roleUserDao.insert(roleUser);
 
-        Stuff stuffCondition=new Stuff();
-        stuffCondition.setStoreId(condition.getRecordId());
-        stuffCondition.setStuffName(condition.getTel());
-        stuffCondition.setTel(condition.getTel());
-        stuffCondition.setGender(new Byte("2"));
-        stuffDao.insert(stuffCondition);
-
-        StuffJob stuffJobCondition=new StuffJob();
-        stuffJobCondition.setStuffId(stuffCondition.getRecordId());
-        Job j=jobDao.getJobForJobLevel(new Byte("1"));
-        stuffJobCondition.setJobId(j.getRecordId());
-        stuffJobDao.insert(stuffJobCondition);
+            for (int i = 0; i < 4; i++) {
+                Shift shiftCondition = new Shift();
+                shiftCondition.setStoreId(condition.getRecordId());
+                shiftCondition.setShiftType(i);
+                shiftCondition.setTimeStart("9:00");
+                shiftCondition.setTimeEnd("19:00");
+                shiftDao.insert(shiftCondition);
+            }
 
 
-        SystemUser userController=new SystemUser();
-        userController.setUserCode(stuffCondition.getTel());
-        userController.setUserName(stuffCondition.getStuffName());
-        String passwordMd5 = StringUtilsExt.getMd5("123456");
-        userController.setPassword(passwordMd5);
-        userController.setUserStatus(0);
-        systemUserDAO.insert(userController);
-
-        RoleAction roleAction=new RoleAction();
-        roleAction.setStuffId(stuffCondition.getRecordId());
-        roleAction.setSystemUserId(userController.getRecordId());
-        roleActionDao.insert(roleAction);
-
-        SystemRole systemRole=systemRoleDAO.getRole("dianzhang");
-
-        RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(systemRole.getRecordId());
-        roleUser.setUserId(userController.getRecordId());
-        roleUserDao.insert(roleUser);
-
-        for(int i = 0;i<4;i++){
-            Shift shiftCondition=new Shift();
-            shiftCondition.setStoreId(condition.getRecordId());
-            shiftCondition.setShiftType(i);
-            shiftCondition.setTimeStart("9:00");
-            shiftCondition.setTimeEnd("19:00");
-            shiftDao.insert(shiftCondition);
-        }
-
-
-
-        if(null != picIdList && !"".equals(picIdList)){
-            //插入照片关联
-            String[] str = picIdList.split(",");
-            for(String s:str){
-                Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
-                if(null != pic){
-                    pic.setMasterDataId(condition.getRecordId());
-                    picturesDao.update(pic);
+            if (null != picIdList && !"".equals(picIdList)) {
+                //插入照片关联
+                String[] str = picIdList.split(",");
+                for (String s : str) {
+                    Pictures pic = picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if (null != pic) {
+                        pic.setMasterDataId(condition.getRecordId());
+                        picturesDao.update(pic);
+                    }
                 }
             }
+
+
+            Pictures idPic1 = picturesDao.getPicForRecordId(new Long(idPic1Code));
+            idPic1.setMasterDataId(condition.getRecordId());
+            picturesDao.update(idPic1);
+
+            Pictures idPic2 = picturesDao.getPicForRecordId(new Long(idPic2Code));
+            idPic2.setMasterDataId(condition.getRecordId());
+            picturesDao.update(idPic2);
+
+            Pictures businessPic = picturesDao.getPicForRecordId(new Long(businessPicCode));
+            businessPic.setMasterDataId(condition.getRecordId());
+            picturesDao.update(businessPic);
+
+            if (null != permitPicCode && !"".equals(permitPicCode)) {
+                Pictures permitPic = picturesDao.getPicForRecordId(new Long(permitPicCode));
+                permitPic.setMasterDataId(condition.getRecordId());
+                picturesDao.update(permitPic);
+            }
+            r.setMsg("添加成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+
+
+
+            return r;
         }
 
 
 
 
-
-        Pictures idPic1= picturesDao.getPicForRecordId(new Long(idPic1Code));
-        idPic1.setMasterDataId(condition.getRecordId());
-        picturesDao.update(idPic1);
-
-        Pictures idPic2= picturesDao.getPicForRecordId(new Long(idPic2Code));
-        idPic2.setMasterDataId(condition.getRecordId());
-        picturesDao.update(idPic2);
-
-        Pictures businessPic= picturesDao.getPicForRecordId(new Long(businessPicCode));
-        businessPic.setMasterDataId(condition.getRecordId());
-        picturesDao.update(businessPic);
-
-        if(null != permitPicCode && !"".equals(permitPicCode)){
-            Pictures permitPic= picturesDao.getPicForRecordId(new Long(permitPicCode));
-            permitPic.setMasterDataId(condition.getRecordId());
-            picturesDao.update(permitPic);
-        }
-
-
-
-
-        r.setMsg("添加成功");
-        r.setMsgcode(StatusUtil.OK);
-        r.setSuccess(true);
-
-
-
-        return r;
 
 
     }
@@ -633,76 +640,79 @@ public class SalonController extends SimpleCRUDController<Salon> {
     public Result createSalon(Salon condition) {
         Result r= new Result();
 
-        //检查该手机号是否被使用
-        SystemUser user=systemUserDAO.getUserByCode(condition.getTel());
-        if(null != user){
-            r.setMsg("该账号已被使用");
-            r.setSuccess(false);
-            r.setMsgcode(StatusUtil.ERROR);
-            return r;
-        }
-        condition.setAudit(1);
-        condition.setParentId(new Long(-1));
-        condition.setCityId(Long.parseLong("0"));
-        condition.setBedNum(0);
-        condition.setArea(new Double(0));
-        condition.setParentId(new Long(-1));
-        condition.setLatitude(new Double(0));
-        condition.setLongitude(new Double(0));
-        salonDao.insert(condition);
+        HttpSession session= SessionManager.getCurrentSession();
+        synchronized (session) {
 
-        Stuff stuffCondition=new Stuff();
-        stuffCondition.setStoreId(condition.getRecordId());
-        stuffCondition.setStuffName(condition.getTel());
-        stuffCondition.setTel(condition.getTel());
-        stuffCondition.setGender(new Byte("2"));
-        stuffDao.insert(stuffCondition);
+            //检查该手机号是否被使用
+            SystemUser user = systemUserDAO.getUserByCode(condition.getTel());
+            if (null != user) {
+                r.setMsg("该账号已被使用");
+                r.setSuccess(false);
+                r.setMsgcode(StatusUtil.ERROR);
+                return r;
+            }
+            condition.setAudit(1);
+            condition.setParentId(new Long(-1));
+            condition.setCityId(Long.parseLong("0"));
+            condition.setBedNum(0);
+            condition.setArea(new Double(0));
+            condition.setParentId(new Long(-1));
+            condition.setLatitude(new Double(0));
+            condition.setLongitude(new Double(0));
+            salonDao.insert(condition);
 
-        StuffJob stuffJobCondition=new StuffJob();
-        stuffJobCondition.setStuffId(stuffCondition.getRecordId());
-        Job j=jobDao.getJobForJobLevel(new Byte("0"));
-        stuffJobCondition.setJobId(j.getRecordId());
-        stuffJobDao.insert(stuffJobCondition);
+            Stuff stuffCondition = new Stuff();
+            stuffCondition.setStoreId(condition.getRecordId());
+            stuffCondition.setStuffName(condition.getTel());
+            stuffCondition.setTel(condition.getTel());
+            stuffCondition.setGender(new Byte("2"));
+            stuffDao.insert(stuffCondition);
 
-
-        SystemUser userController=new SystemUser();
-        userController.setUserCode(stuffCondition.getTel());
-        userController.setUserName(stuffCondition.getStuffName());
-        String passwordMd5 = StringUtilsExt.getMd5("123456");
-        userController.setPassword(passwordMd5);
-        userController.setUserStatus(1);
-        systemUserDAO.insert(userController);
-
-        RoleAction roleAction=new RoleAction();
-        roleAction.setStuffId(stuffCondition.getRecordId());
-        roleAction.setSystemUserId(userController.getRecordId());
-        roleActionDao.insert(roleAction);
+            StuffJob stuffJobCondition = new StuffJob();
+            stuffJobCondition.setStuffId(stuffCondition.getRecordId());
+            Job j = jobDao.getJobForJobLevel(new Byte("0"));
+            stuffJobCondition.setJobId(j.getRecordId());
+            stuffJobDao.insert(stuffJobCondition);
 
 
-        SystemRole systemRole=systemRoleDAO.getRole("yuanzhang");
+            SystemUser userController = new SystemUser();
+            userController.setUserCode(stuffCondition.getTel());
+            userController.setUserName(stuffCondition.getStuffName());
+            String passwordMd5 = StringUtilsExt.getMd5("123456");
+            userController.setPassword(passwordMd5);
+            userController.setUserStatus(1);
+            systemUserDAO.insert(userController);
 
-        RoleUser roleUser=new RoleUser();
-        roleUser.setRoleId(systemRole.getRecordId());
-        roleUser.setUserId(userController.getRecordId());
-        roleUserDao.insert(roleUser);
-
-        //插入八位随机码数
-        SalonInviteCode salonCode=new SalonInviteCode();
-        salonCode.setSalonId(condition.getRecordId());
-        String s=UuidUtils.generateShortUuid();
-        salonCode.setInviteCode(s);
-        salonInviteCodeDAO.insert(salonCode);
+            RoleAction roleAction = new RoleAction();
+            roleAction.setStuffId(stuffCondition.getRecordId());
+            roleAction.setSystemUserId(userController.getRecordId());
+            roleActionDao.insert(roleAction);
 
 
-        r.setMsg("添加成功");
-        r.setMsgcode(StatusUtil.OK);
-        r.setSuccess(true);
+            SystemRole systemRole = systemRoleDAO.getRole("yuanzhang");
+
+            RoleUser roleUser = new RoleUser();
+            roleUser.setRoleId(systemRole.getRecordId());
+            roleUser.setUserId(userController.getRecordId());
+            roleUserDao.insert(roleUser);
+
+            //插入八位随机码数
+            SalonInviteCode salonCode = new SalonInviteCode();
+            salonCode.setSalonId(condition.getRecordId());
+            String s = UuidUtils.generateShortUuid();
+            salonCode.setInviteCode(s);
+            salonInviteCodeDAO.insert(salonCode);
+
+
+            r.setMsg("添加成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
 
 
 
         return r;
 
-
+        }
     }
 
 
@@ -962,6 +972,129 @@ public class SalonController extends SimpleCRUDController<Salon> {
         return r;
     }
 
+
+
+
+    /**
+     * 导出报表
+     */
+    @SuppressWarnings("deprecation")
+    @RequestMapping("/exportSalon")
+    @ResponseBody
+    public Result ExportAeonOrder(HttpServletRequest req, HttpServletResponse resp) {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST,GET");
+        Result r = new Result();
+        JSONObject jsonObj = new JSONObject();
+
+        List<Salon> salonList = salonDao.getAll();
+
+
+        String dir = req.getServletContext().getRealPath("/orderData");
+        java.io.File folder = new java.io.File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();     ///如果不存在，创建目录
+        }
+
+        // 创建一个webbook，对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        //在webbook中添加一个sheet,对应Excel文件中的sheet
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = new Date();
+        String date1 = sdf1.format(date);
+
+        HSSFSheet sheet = wb.createSheet(" 美容院导出" + date1);
+        // 在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        HSSFRow row = sheet.createRow((int) 0);
+        // 创建单元格，并设置值表头 设置表头居中
+        //设置样式
+        HSSFFont font = wb.createFont();
+        font.setFontName("仿宋_GB2312");
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
+
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setFont(font);
+
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+
+        style.setBorderRight(BorderStyle.THIN);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("美容院/门店名称");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 1);
+        cell.setCellValue("联系电话");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 2);
+        cell.setCellValue("地址");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 3);
+        cell.setCellValue("床位数");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 4);
+        cell.setCellValue("面积");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 5);
+        cell.setCellValue("简介");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 6);
+        cell.setCellValue("创建时间");
+        cell.setCellStyle(style);
+
+
+        for (int i = 0; i < salonList.size(); i++) {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = sdf.format(salonList.get(i).getCreateDate());
+
+            row = sheet.createRow((int) i + 1);
+            // 第四步，创建单元格，并设置值
+            row.createCell((short) 0).setCellValue(salonList.get(i).getSalonName());
+            HSSFCell cell1 = row.createCell((short) 1);
+            cell1.setCellValue(salonList.get(i).getTel());
+            cell1.setCellStyle(style2);
+        	/* HSSFCell cell2=row.createCell((short) 2);
+        	 cell2.setCellValue("商户名称:"+merOrders.get(i).getMerName()+"商户编号:"+merOrders.get(i).getMerCode());
+        	 cell2.setCellStyle(style2);  */
+            row.createCell((short) 2).setCellValue(salonList.get(i).getAddress());
+            row.createCell((short) 3).setCellValue(salonList.get(i).getBedNum());
+            row.createCell((short) 4).setCellValue(salonList.get(i).getArea());
+            row.createCell((short) 5).setCellValue(salonList.get(i).getDescription());
+            row.createCell((short) 6).setCellValue(time);
+
+            //设置单元格宽度
+            sheet.autoSizeColumn((short) 0);
+            sheet.autoSizeColumn((short) 1);
+            sheet.autoSizeColumn((short) 2);
+            sheet.setColumnWidth((short) 3, 6 * 2 * 256);
+            sheet.autoSizeColumn((short) 4);
+            sheet.setColumnWidth((short) 5, 6 * 2 * 256);
+            sheet.autoSizeColumn((short) 6);
+
+
+        }
+        try {
+
+            /* FileOutputStream fout = new FileOutputStream(req.getServletContext().getRealPath("/orderData")+"\\订单导出"+date1+".csv"); */
+            FileOutputStream fout = new FileOutputStream(req.getServletContext().getRealPath("/orderData") + "/美容院信息导出" + date1 + ".csv");
+            wb.write(fout);
+            fout.close();
+            wb.close();
+            jsonObj.put("respCode", "0000");
+            jsonObj.put("dataUrl", "美容院信息导出" + date1 + ".csv");
+            r.setData(jsonObj);
+            r.setMsg("请求成功");
+            r.setMsgcode(StatusUtil.OK);
+            r.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return r;
+    }
 
 
 

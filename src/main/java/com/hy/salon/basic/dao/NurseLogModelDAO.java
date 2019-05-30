@@ -11,9 +11,10 @@ import java.util.Map;
 @Component("nurseLogModelDao")
 public class NurseLogModelDAO extends BaseDAOWithEntity<NurseLogModel> {
 
-    public List<NurseLogModel> getLogModel(){
-        String where = "1=1 ";
+    public List<NurseLogModel> getLogModel(Long storeId){
+        String where = "store_id=#{storeId} ";
         Map parameters = new HashMap();
+        parameters.put("storeId", storeId);
         return this.getByWhere(where, parameters);
     }
 

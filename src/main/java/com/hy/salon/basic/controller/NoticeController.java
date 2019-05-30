@@ -1,5 +1,6 @@
 package com.hy.salon.basic.controller;
 
+import cn.jpush.api.push.PushResult;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hy.salon.basic.common.StatusUtil;
@@ -7,10 +8,8 @@ import com.hy.salon.basic.dao.NoticeDAO;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.dao.VisualRangeDAO;
 import com.hy.salon.basic.dao.VisualRangeMappingDAO;
-import com.hy.salon.basic.entity.Notice;
-import com.hy.salon.basic.entity.Stuff;
-import com.hy.salon.basic.entity.VisualRange;
-import com.hy.salon.basic.entity.VisualRangeMapping;
+import com.hy.salon.basic.entity.*;
+import com.hy.salon.basic.util.JPush;
 import com.hy.salon.basic.util.PinYinUtil;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.core.data.BaseDAOWithEntity;
@@ -18,6 +17,7 @@ import com.zhxh.core.web.SimpleCRUDController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,24 +52,23 @@ public class NoticeController extends SimpleCRUDController<Notice> {
      * 发布公告
      */
     @ResponseBody
-    @RequestMapping(value = "addNotice", method = RequestMethod.POST)
+    @RequestMapping("addNotice")
     @ApiOperation(value = "发布公告", notes = "发布公告")
-    public Result updateSalon(Notice condition) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result updateSalon(Notice condition,String bindingList) {
         Result r = new Result();
         try {
-            //先写死，后面改
-            String bindingJson = "[{\"stuffId\": 1},{\"stuffId\": 2},{\"stuffId\": 3}]";
+            int telSize=0;
 
             int ii = noticeDAO.insert(condition);
+
             if (ii != 0) {
-                //解析绑定json，绑定关系
-                JSONArray jsonArr = JSONArray.parseArray(bindingJson);
-                if (jsonArr != null) {
-                    for (int i = 0; i < jsonArr.size(); i++) {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        String stuffId = jsonObj.getString("stuffId");
+                telSize++;
+                if(null != bindingList && !"".equals(bindingList)){
+                    String[] str = bindingList.split(",");
+                    for(String s:str){
                         VisualRange vr = new VisualRange();
-                        vr.setStuffId(Long.parseLong(stuffId));
+                        vr.setStuffId(Long.parseLong(s));
                         vr.setStatu(0);
                         visualRangeDao.insert(vr);
 
@@ -77,10 +76,38 @@ public class NoticeController extends SimpleCRUDController<Notice> {
                         vrm.setVisualRangeId(vr.getRecordId());
                         vrm.setNoticeId(condition.getRecordId());
                         visualRangeMappingDao.insert(vrm);
+
+
+
+                    }
+                }
+            }
+            Map<String, Object> parm = new HashMap<String, Object>();
+            parm.put("title",condition.getTitle());
+            parm.put("content",condition.getContent());
+            String[] strList=new String[telSize];
+
+            if(null != bindingList && !"".equals(bindingList)){
+                String[] str = bindingList.split(",");
+                for(int i =0;i<str.length;i++){
+                    Stuff stuff=stuffDao.getStuffForRecordId(Long.parseLong(str[i]));
+                    if(null!=stuff){
+                        strList[i]=stuff.getTel();
                     }
                 }
 
 
+
+
+            }
+
+            parm.put("tag",strList);
+
+            PushResult pu=JPush.jpushAllStuff(parm);
+            if(pu.statusCode!=0){
+                r.setMsg("发布失败");
+                r.setMsgcode(StatusUtil.ERROR);
+                r.setSuccess(false);
             }
 
             r.setMsg("发布成功");
