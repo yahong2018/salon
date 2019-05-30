@@ -1471,6 +1471,49 @@ create table consume_record
   index idx_consume_record_02 (member_id)
 )comment '积分/代金券消耗记录表';
 
+create table activity_info
+(
+  record_id               bigint                        not null, --
+  activity_name           varchar(50)                   not null, -- 活动名称
+  url                     varchar(500)                  not null, -- 活动网址
+  frist_originator        bigint                        not null, -- 首个发起人
+  invite_code             varchar(50)                   not null, -- 邀请码
+  activity_date           datetime                      not null, -- 活动时间
+
+  primary key (record_id),
+  index idx_activity_info_01 (activity_name)
+)comment '活动信息表';
+
+create table activity_detail_info
+(
+  record_id               bigint                        not null, --
+  -- 参与人头像 在业务上关联，不加字段
+  nickname                varchar(50)                   not null, -- 参与人昵称
+  real_name               varchar(50)                   null,     -- 参与人真实名称
+  sex                     tinyint                       not null, -- 参与人性别
+  shell_phone             varchar(11)                   null,     -- 参与人手机号码
+  is_top_recommender      tinyint                       not null, -- 是否顶层推荐人
+  last_reference          bigint                        not null, -- 上一推荐人
+  totle_earnings          double(10,2)                  not null, -- 当前总收益
+
+  primary key (record_id),
+  index idx_activity_detail_info_01 (nickname)
+)comment '活动信息明细表';
+
+create table revenue
+(
+  record_id               bigint                      not null,
+  activity_name           varchar(50)                 not null, -- 活动名称
+  top_recommender         bigint                      not null, -- 顶层推荐人
+  top_recommender_cost    double(10,2)                not null, -- 顶层推荐人收益金额
+  last_reference          bigint                      not null, -- 上一推荐人
+  last_reference_cost     double(10,2)                not null, -- 上一推荐人收益金额
+  voucher_cost            double(10,2)                not null, -- 本次推荐收益（这个指代金券）
+
+  primary key (record_id),
+  index idx_revenue_01 (activity_name)
+)comment '收益明细表';
+
 /*
    五类结算：
        1.会员与店员(门店/美容院)结算
