@@ -14,4 +14,6 @@ public class StuffScore extends EntityObject<Long> {
     private Long stuffId;
 
     private Long existing;
+
+    private Long integral;
 }

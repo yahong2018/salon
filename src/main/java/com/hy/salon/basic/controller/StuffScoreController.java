@@ -32,7 +32,6 @@ public class StuffScoreController {
     private JobDAO jobDao;
 
 
-
     @Resource(name = "salonDao")
     private SalonDao salonDao;
 
@@ -54,11 +53,23 @@ public class StuffScoreController {
                 StuffScore sf = new StuffScore();
                 condition.setTotalScore(condition.getScore());
                 sf.setStuffId(condition.getStuffId());
-                sf.setExisting(condition.getScore());
+                if(condition.getStatus()==0){
+                    sf.setExisting(condition.getScore());
+                    sf.setIntegral(new Long(0));
+                }else{
+                    sf.setExisting(new Long(0));
+                    sf.setIntegral(condition.getScore());
+                }
+
                 stuffScoreDao.insert(sf);
             }else{
-                condition.setTotalScore(condition.getScore()+stuffScore.getExisting());
-                stuffScore.setExisting(stuffScore.getExisting()+condition.getScore());
+                if(condition.getStatus()==0){
+                    stuffScore.setExisting(stuffScore.getExisting()+condition.getScore());
+                    condition.setTotalScore(condition.getScore()+stuffScore.getExisting());
+                }else{
+                    stuffScore.setIntegral(stuffScore.getIntegral()+condition.getScore());
+                    condition.setTotalScore(condition.getScore()+stuffScore.getIntegral());
+                }
                 stuffScoreDao.update(stuffScore);
             }
             stuffScoreRecordDao.insert(condition);

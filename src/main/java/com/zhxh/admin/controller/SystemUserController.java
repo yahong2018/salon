@@ -11,6 +11,7 @@ import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
+import com.zhxh.admin.misc.LoginResult;
 import com.zhxh.admin.service.RoleUserService;
 import com.zhxh.admin.service.SystemUserService;
 import com.zhxh.core.utils.StringUtilsExt;
@@ -87,6 +88,23 @@ public class SystemUserController {
     public Result updatePassword(String password,String tel,String verificationCode){
         Result r= new Result();
         SystemUser user = systemUserService.getUserByTel(tel);
+        Stuff stuff=stuffDao.getStuffForUser(user.getRecordId());
+        if(1==stuff.getIsDelete()){
+            r.setMsg("该用户已被删除");
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+            return r;
+
+        }
+
+        if(1==stuff.getInOffice()){
+            r.setMsg("该用户已被离职");
+            r.setSuccess(false);
+            r.setMsgcode(StatusUtil.ERROR);
+            return r;
+
+        }
+
         user.setPassword(password);
         List<VerificationCodeTemporary> verificationCodeTemporaryList=verificationCodeTemporaryDAO.getCode(tel);
         if(verificationCodeTemporaryList.size()!=0){

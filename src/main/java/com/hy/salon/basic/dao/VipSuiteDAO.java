@@ -265,6 +265,7 @@ public class VipSuiteDAO extends BaseDAOWithEntity<VipSuite> {
             List<CardBalance> cardBalanceList = cardBalanceDao.getByWhere(where,parameters);
 
             jsonObject.put("cardBalanceSize",cardBalanceList.size());
+            jsonObject.put("frequency",service.getFrequency());
             jsonArray.add(jsonObject);
         }
         er.setSuccess(true);

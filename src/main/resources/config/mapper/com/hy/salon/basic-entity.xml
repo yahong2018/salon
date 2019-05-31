@@ -105,6 +105,8 @@
         <result column="stock_of_pre_warning" property="stockOfPreWarning" jdbcType="INTEGER" />
         <result column="record_status" property="recordStatus" jdbcType="TINYINT" />
         <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="specifications" property="specifications" jdbcType="VARCHAR" />
+
 
     </resultMap>
     <!--调拨申请单-->
@@ -551,6 +553,7 @@
         <result column="record_id" property="recordId" jdbcType="BIGINT" />
         <result column="stuff_id" property="stuffId" jdbcType="BIGINT" />
         <result column="existing" property="existing" jdbcType="BIGINT" />
+        <result column="integral" property="integral" jdbcType="BIGINT" />
     </resultMap>
 
     <resultMap id="StuffScoreRecord" type="com.hy.salon.basic.entity.StuffScoreRecord"
@@ -561,6 +564,8 @@
         <result column="total_score" property="totalScore" jdbcType="BIGINT" />
         <result column="issued_by" property="issuedBy" jdbcType="BIGINT" />
         <!--<result column="stuff_name" property="stuffName" jdbcType="VARCHAR" />-->
+        <result column="status" property="status"  />
+
     </resultMap>
 
 

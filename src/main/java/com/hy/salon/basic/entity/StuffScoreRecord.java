@@ -34,5 +34,7 @@ public class StuffScoreRecord extends TraceableEntity<Long> {
 
     private String picUrl;
 
+    private Integer status;
+
 
 }

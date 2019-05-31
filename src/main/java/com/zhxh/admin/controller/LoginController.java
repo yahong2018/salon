@@ -143,6 +143,29 @@ public class LoginController {
                 return result;
             }else{
                 Stuff stuff=stuffDao.getStuffForUser(id);
+
+
+                if(1==stuff.getIsDelete()){
+                    result.setAreMember(false);
+                    result.setMsg("该用户已被删除！");
+                    result.setSuccess(false);
+                    result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                    result.setData(null);
+                    return result;
+
+                }
+
+                if(1==stuff.getInOffice()){
+                    result.setAreMember(false);
+                    result.setMsg("该用户已离职！");
+                    result.setSuccess(false);
+                    result.setMsgcode(LoginResult.LOGIN_CODE_ERROR);
+                    result.setData(null);
+                    return result;
+
+                }
+
+
                 List<SystemRole> roleList = systemRoleService.getRoleListById(id);
                 List<Job> listJob = jobService.getJobList(stuff.getRecordId());
 

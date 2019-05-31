@@ -50,4 +50,6 @@ public class Product extends TraceableEntity<Long> {
 
     private String stockQty;
 
+    private String specifications;
+
 }

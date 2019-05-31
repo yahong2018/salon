@@ -336,6 +336,8 @@ create table product
   day_of_pre_warning               int                              not null,   -- 产品有效期预警（天）
   stock_of_pre_warning             int                              not null,   -- 库存预警数量
 
+  specifications                   varchar(50)                      null,       -- 规格
+
   record_status                    tinyint                          not null,   -- 记录状态：0.启用   1. 停用
   description                      varchar(500)                     null,
 
@@ -911,6 +913,8 @@ create table stuff_score
   record_id                     bigint       auto_increment               not null,
   stuff_id                      bigint                                    not null, -- 哪个员工
   existing                      bigint                                    not null, -- 现有的积分
+  integral                      bigint                                    not null, -- 现有的代金券
+
 
   primary key (record_id),
   index idx_stuff_score_01(stuff_id)
@@ -922,9 +926,10 @@ create table stuff_score_record
   record_id                     bigint        auto_increment              not null,
   stuff_id                      bigint                                    not null, -- 哪个员工
   matter                        varchar(500)                              not null, -- 在哪里，做了些什么事
-  score                         bigint                                    not null, -- 得到的积分总数
-  total_score                   bigint                                    not null, -- 当次积分总额
+  score                         bigint                                    not null, -- 得到的总数
+  total_score                   bigint                                    not null, -- 总共得到的总额
   issued_by                     bigint                                    not null, -- 谁给的 ,这个id来源于员工表， 一般是店长或者院长给的
+  status                        int                                       not null default 0, -- 状态 0 积分   1 代金券
 
   create_date                   datetime                                  not null,--  在什么时候
   create_by                     bigint                                    not null,--

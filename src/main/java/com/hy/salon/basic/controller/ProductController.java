@@ -427,12 +427,12 @@ public class ProductController {
 
                     condition.setRecordId(null);
                     productDao.insert(condition);
-                    if (null != specifications && !"".equals(specifications)) {
-                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
-                        productMapCondition.setProductId(condition.getRecordId());
-                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
-                        productPropertyMapDAO.insert(productMapCondition);
-                    }
+//                    if (null != specifications && !"".equals(specifications)) {
+//                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+//                        productMapCondition.setProductId(condition.getRecordId());
+//                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
+//                        productPropertyMapDAO.insert(productMapCondition);
+//                    }
                     if (null != sompany && !"".equals(sompany)) {
                         ProductPropertyMap productMapCondition = new ProductPropertyMap();
                         productMapCondition.setProductId(condition.getRecordId());
@@ -482,12 +482,12 @@ public class ProductController {
                     }
 
 
-                    if (null != specifications && !"".equals(specifications)) {
-                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
-                        productMapCondition.setProductId(condition.getRecordId());
-                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
-                        productPropertyMapDAO.insert(productMapCondition);
-                    }
+//                    if (null != specifications && !"".equals(specifications)) {
+//                        ProductPropertyMap productMapCondition = new ProductPropertyMap();
+//                        productMapCondition.setProductId(condition.getRecordId());
+//                        productMapCondition.setProductPropertyId(Long.parseLong(specifications));
+//                        productPropertyMapDAO.insert(productMapCondition);
+//                    }
                     if (null != sompany && !"".equals(sompany)) {
                         ProductPropertyMap productMapCondition = new ProductPropertyMap();
                         productMapCondition.setProductId(condition.getRecordId());
