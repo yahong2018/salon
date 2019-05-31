@@ -495,6 +495,7 @@ public class StuffController extends SimpleCRUDController<Stuff> {
 
                 condition.setGender(new Byte("2"));
                 condition.setCreateDate(new Date());
+                condition.setIsDelete(0);
                 stuffDao.insert(condition);
 
 

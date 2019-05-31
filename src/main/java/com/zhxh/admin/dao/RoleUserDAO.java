@@ -90,6 +90,14 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
         return this.sqlHelper.getSqlSession().selectList(SQL_GET_ROLE_USERS, map);
     }
 
+    public List<RoleUser> getUserRolesForTel(String tel) {
+        Map map = new HashMap();
+        map.put("tel", tel);
+
+        return this.sqlHelper.getSqlSession().selectList(SQL_GET_ROLE_USER, map);
+    }
+    protected final static String SQL_GET_ROLE_USER = "com.zhxh.admin.dao.GET_ROLE_USER";
+
     protected final static String SQL_GET_ROLE_USERS = "com.zhxh.admin.dao.GET_ROLE_USERS";
     protected final static String SQL_GET_USER_ROLES = "com.zhxh.admin.dao.GET_USER_ROLES";
     protected final static String SQL_INSERT_ROLE_USER = "com.zhxh.admin.dao.INSERT_ROLE_USER";

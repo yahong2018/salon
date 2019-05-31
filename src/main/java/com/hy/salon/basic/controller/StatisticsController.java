@@ -622,6 +622,47 @@ public class StatisticsController {
 
     }
 
+    /**
+     * 删除家人（通过手机号）
+     */
+
+    @RequestMapping("deleteStuffForTel")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteStuffForTel(String tel) {
+        Result r= new Result();
+        List<RoleUser> roleList=roleUserDAO.getUserRolesForTel(tel);
+        for(RoleUser u:roleList){
+            roleUserDAO.deleteById(u.getRecordId());
+            SystemUser user=systemUserDAO.getUserByRecordId(u.getUserId());
+            if(null!=user){
+                RoleAction roleAction= roleActionDao.getRoleActionByRecordId(user.getRecordId());
+                systemUserDAO.deleteById(user.getRecordId());
+                if(null!=roleAction){
+                    Stuff stuff=stuffDao.getStuffForRecordId(roleAction.getStuffId());
+                    roleActionDao.deleteById(roleAction.getRecordId());
+                    if(null!=stuff){
+                        stuffDao.deleteById(stuff.getRecordId());
+                    }
+                }
+
+            }
+
+            List<StuffJob> stuffJobList= stuffJobDao.getStuffJobListForStuff(u.getUserId());
+            for(StuffJob s:stuffJobList){
+                stuffJobDao.deleteById(s.getRecordId());
+            }
+
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
 
 
     /**
@@ -660,6 +701,47 @@ public class StatisticsController {
 
 
     }
+
+    /**
+     * 删除顾客(通过手机)
+     */
+
+    @RequestMapping("deleteMemberForTel")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteMemberForTel(String tel) {
+        Result r= new Result();
+        List<RoleUser> roleList=roleUserDAO.getUserRolesForTel(tel);
+        for(RoleUser u:roleList){
+            roleUserDAO.deleteById(u.getRecordId());
+            SystemUser user=systemUserDAO.getUserByRecordId(u.getUserId());
+            if(null!=user){
+                systemUserDAO.deleteById(user.getRecordId());
+                List<Member> member =  memberDao.getMemberListForTel(user.getUserCode());
+                for(Member m:member){
+                    memberDao.deleteById(m.getRecordId());
+                    MemberWallet memberWallet=MemberWalletDao.getMemberWalletForMemberId(m.getRecordId());
+                    if(null!=memberWallet){
+                        MemberWalletDao.deleteById(memberWallet.getRecordId());
+                    }
+                }
+
+
+
+
+            }
+
+
+        }
+
+        r.setMsg("请求成功");
+        r.setMsgcode(StatusUtil.OK);
+        r.setSuccess(true);
+        return r;
+
+
+    }
+
 
 
 

@@ -125,4 +125,14 @@
     </select>
 
 
+    <select id="GET_ROLE_USER"  parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.RoleUser">
+
+      SELECT sru.* FROM salon.system_user as ssu
+      left join salon.role_user as sru on ssu.record_id=sru.user_id
+      where ssu.user_code=#{tel} ;
+
+
+    </select>
+
+
 </mapper>

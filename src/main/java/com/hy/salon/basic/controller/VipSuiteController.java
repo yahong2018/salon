@@ -419,7 +419,7 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定json", required = true, dataType = "String"),
 
     })
-    public Result updateVipSuiteForApp(VipSuite condition,String bindingJson,String picIdList,HttpServletRequest request){
+    public Result updateVipSuiteForApp(VipSuite condition,String bindingJson,String picIdList,String deletePicList,HttpServletRequest request){
         Result r= new Result();
         //先写死，后面改
 //        String  bindingJson="[{\"recordType\": 0,\"discount\": 8,\"itemId\": \"12,13,14\"}, {\"recordType\": 1,\"discount\": 8,\"itemId\": \"20,24,25\"}, {\"recordType\": 2,\"discount\": 8,\"itemId\": \"36,30,31\"}]";
@@ -476,6 +476,17 @@ public class VipSuiteController extends SimpleCRUDController<VipSuite> {
                     if(null != pic){
                         pic.setMasterDataId(condition.getRecordId());
                         picturesDao.update(pic);
+                    }
+                }
+            }
+
+            if(null != deletePicList && !"".equals(deletePicList)){
+                //删除照片关联
+                String[] str2=deletePicList.split(",");
+                for(String s:str2){
+                    Pictures pic= picturesDao.getPicForRecordId(Long.parseLong(s));
+                    if(null != pic){
+                        picturesDao.delete(pic);
                     }
                 }
             }

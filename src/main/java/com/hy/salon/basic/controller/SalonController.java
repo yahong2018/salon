@@ -424,7 +424,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
                 }
             }
 
-            if(null != picIdList && !"".equals(deletePicList)){
+            if(null != deletePicList && !"".equals(deletePicList)){
                 //删除照片关联
                 String[] str2=deletePicList.split(",");
                 for(String s:str2){
@@ -981,13 +981,19 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @SuppressWarnings("deprecation")
     @RequestMapping("/exportSalon")
     @ResponseBody
-    public Result ExportAeonOrder(HttpServletRequest req, HttpServletResponse resp) {
+    public Result ExportAeonOrder(HttpServletRequest req, HttpServletResponse resp,String type) {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "POST,GET");
         Result r = new Result();
         JSONObject jsonObj = new JSONObject();
 
         List<Salon> salonList = salonDao.getAll();
+
+        if("1".equals(type)){
+            salonList = salonDao.getSalonForStoreId2(new Long(-1));
+        }else{
+            salonList = salonDao.getAll();
+        }
 
 
         String dir = req.getServletContext().getRealPath("/orderData");
@@ -1080,6 +1086,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
 
             /* FileOutputStream fout = new FileOutputStream(req.getServletContext().getRealPath("/orderData")+"\\订单导出"+date1+".csv"); */
             FileOutputStream fout = new FileOutputStream(req.getServletContext().getRealPath("/orderData") + "/美容院信息导出" + date1 + ".csv");
+            System.out.println("/美容院信息导出" + date1 + ".csv");
             wb.write(fout);
             fout.close();
             wb.close();
