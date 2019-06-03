@@ -8,6 +8,7 @@ import com.hy.salon.basic.common.StatusUtil;
 import com.hy.salon.basic.dao.*;
 import com.hy.salon.basic.entity.*;
 import com.hy.salon.basic.service.CardPurchaseService;
+import com.hy.salon.basic.service.ReservationService;
 import com.hy.salon.basic.vo.Result;
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.entity.RoleUser;
@@ -93,6 +94,9 @@ public class ConsumptionController {
 
     @Resource(name="consumeRecordDao")
     private ConsumeRecordDAO consumeRecordDAO;
+
+    @Resource(name = "reservationService")
+    private ReservationService reservationService;
 
 
     /**
@@ -453,66 +457,74 @@ public class ConsumptionController {
      */
     @ResponseBody
     @RequestMapping(value = "getOneStuffItem",method = RequestMethod.GET)
-    @ApiOperation(value="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）", notes="查询当天个人一个预约具体详情--员工（具体到几点，什么项目）")
+    @ApiOperation(value="查询当天个人全部预约具体详情--员工（具体到几点，什么项目）", notes="查询当天个人全部预约具体详情--员工（具体到几点，什么项目）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "recordId", value = "预约id", required = true, dataType = "Long")
+            @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long")
     })
-    public Result getOneStuffItem(Long recordId){
+    public Result getOneStuffItem(Long stuffId){
         Result result=new Result();
+        Map Map = new HashMap();
+        String where="stuff_id=#{stuff_id} and record_status!=3 ";
+        Map.put("stuff_id", stuffId);
+        List<Reservation> list = reservationDao.getByWhere(where,Map);
         try {
-            Map rMap = new HashMap();
-            String rwhere="record_id=#{record_id} ";
-            rMap.put("record_id", recordId);
-            Reservation reservation = reservationDao.getOne(rwhere, rMap);
-            List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
-            JSONObject jsonObject  = new JSONObject();
-            String serviceIds = "";
-            JSONArray jsonArray = new JSONArray();
-            for(Map map :mapService){
-                JSONObject jsonObject1 = new JSONObject();
-                long serviceId =  (long) map.get("record_id");
-                String serviceName =  (String) map.get("service_name");
-                //serviceIds=serviceIds+serviceId+",";
+            JSONArray jsonArrayR = new JSONArray();
+            for(Reservation r:list){
+                Map rMap = new HashMap();
+                String rwhere="record_id=#{record_id} ";
+                rMap.put("record_id", r.getRecordId());
+                Reservation reservation = reservationDao.getOne(rwhere, rMap);
+                List<Map>  mapService =  reservationDao.getServiceByReservationId(reservation.getRecordId());
+                JSONObject jsonObject  = new JSONObject();
+                String serviceIds = "";
+                JSONArray jsonArray = new JSONArray();
+                for(Map map :mapService){
+                    JSONObject jsonObject1 = new JSONObject();
+                    long serviceId =  (long) map.get("record_id");
+                    String serviceName =  (String) map.get("service_name");
+                    //serviceIds=serviceIds+serviceId+",";
+                    Map parameterP = new HashMap();
+                    parameterP.put("memberId", reservation.getMemberId());
+                    parameterP.put("cardId",serviceId);
+                    String rwhereP="card_id=#{cardId} and member_id=#{memberId}";
+                    CardBalance cardBalance = cardBalanceDao.getOne(rwhereP,parameterP);
+                    jsonObject1.put("balance",cardBalance.getBalance());
+                    jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
+                    jsonObject1.put("serviceName",serviceName);
+                    jsonObject1.put("serviceId",serviceId);
+                    jsonArray.add(jsonObject1);
+                }
+
+
+
+                jsonObject.put("service",jsonArray);//预约项目
+
                 Map parameterP = new HashMap();
-                parameterP.put("memberId", reservation.getMemberId());
-                parameterP.put("cardId",serviceId);
-                String rwhereP="card_id=#{cardId} and member_id=#{memberId}";
-                CardBalance cardBalance = cardBalanceDao.getOne(rwhereP,parameterP);
-                jsonObject1.put("balance",cardBalance.getBalance());
-                jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
-                jsonObject1.put("serviceName",serviceName);
-                jsonObject1.put("serviceId",serviceId);
-                jsonArray.add(jsonObject1);
+                parameterP.put("masterDataId", reservation.getMemberId());
+                parameterP.put("recordType",1);
+                parameterP.put("picType",0);
+                String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
+                Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
+                jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
+                jsonObject.put("memberId",reservation.getMemberId());
+                jsonObject.put("stuffId",reservation.getStuffId());
+                StoreRoom storeRoom = storeRoomDao.getById(reservation.getRoomId());
+                jsonObject.put("roomId",reservation.getRoomId());
+                jsonObject.put("roomName",storeRoom.getRoomName());
+                jsonObject.put("timeStart",reservation.getTimeStart());
+                jsonObject.put("timeEnd",reservation.getTimeEnd());
+                jsonObject.put("recordStatus",reservation.getRecordStatus());
+                jsonObject.put("remark",reservation.getRemark());
+                jsonObject.put("date_",reservation.getDate_());
+                jsonObject.put("duration",reservation.getDuration());
+                jsonObject.put("memberSourc",reservation.getMemberSourc());
+                jsonObject.put("serviceId",serviceIds);
+                jsonObject.put("serviceNum",mapService.size());
+                jsonArrayR.add(jsonObject);
             }
-
-
-
-            jsonObject.put("service",jsonArray);//预约项目
-
-            Map parameterP = new HashMap();
-            parameterP.put("masterDataId", reservation.getMemberId());
-            parameterP.put("recordType",1);
-            parameterP.put("picType",0);
-            String rwhereP="master_data_id=#{masterDataId} and record_type = #{recordType} and pic_type=#{picType}";
-            Pictures pictures = picturesDao.getOne(rwhereP,parameterP);
-            jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
-            jsonObject.put("memberId",reservation.getMemberId());
-            jsonObject.put("stuffId",reservation.getStuffId());
-            StoreRoom storeRoom = storeRoomDao.getById(reservation.getRoomId());
-            jsonObject.put("roomId",reservation.getRoomId());
-            jsonObject.put("roomName",storeRoom.getRoomName());
-            jsonObject.put("timeStart",reservation.getTimeStart());
-            jsonObject.put("timeEnd",reservation.getTimeEnd());
-            jsonObject.put("recordStatus",reservation.getRecordStatus());
-            jsonObject.put("remark",reservation.getRemark());
-            jsonObject.put("date_",reservation.getDate_());
-            jsonObject.put("duration",reservation.getDuration());
-            jsonObject.put("memberSourc",reservation.getMemberSourc());
-            jsonObject.put("serviceId",serviceIds);
-            jsonObject.put("serviceNum",mapService.size());
             result.setMsgcode("0");
             result.setSuccess(true);
-            result.setData(jsonObject);
+            result.setData(jsonArrayR);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
