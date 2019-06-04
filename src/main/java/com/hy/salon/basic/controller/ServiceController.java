@@ -167,6 +167,7 @@ public class ServiceController extends SimpleCRUDController<Service> {
     @ResponseBody
     @RequestMapping("/updateService")
     @ApiOperation(value="修改次卡", notes="修改次卡")
+    @Transactional(rollbackFor = Exception.class)
     public Result updateService(Service condition, String picIdList, String deletePicList, String  expirationDate){
         Result r= new Result();
 

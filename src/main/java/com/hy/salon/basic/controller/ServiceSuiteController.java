@@ -154,6 +154,7 @@ public class ServiceSuiteController extends SimpleCRUDController<ServiceSuite> {
             @ApiImplicitParam(paramType="query", name = "description", value = "简介", required = true, dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "bindingJson", value = "绑定JSON", required = true, dataType = "String")
     })
+    @Transactional(rollbackFor = Exception.class)
     public Result updateServiceSuite(ServiceSuite condition,String picIdList,String deletePicList,String comeFrom, String bindingJson,HttpServletRequest request){
         Result r= new Result();
         try {

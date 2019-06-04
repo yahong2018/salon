@@ -134,6 +134,7 @@ public class ArrearagesRecordController  {
             @ApiImplicitParam(paramType = "query", name = "remark", value = "备注", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "memberSignature", value = "签名id", required = true, dataType = "long"),
     })
+    @Transactional(rollbackFor = Exception.class)
     public ExtJsResult toArrears(HttpServletRequest request,long arrearagesRecordId,long memberId,double amountDebit,byte methodPayed,String remark,long memberSignature){
 //        Member member = memberDao.getById(memberId);
         //获取顾客钱包
