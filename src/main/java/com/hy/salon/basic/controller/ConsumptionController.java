@@ -99,6 +99,8 @@ public class ConsumptionController {
     private ReservationService reservationService;
 
 
+
+
     /**
      * 划卡记录PC
      */
@@ -270,6 +272,47 @@ public class ConsumptionController {
         result.setMsgcode("0");
         return  result;
     }
+
+    /**
+     * 获取项目卡户余额
+     */
+    @ResponseBody
+    @RequestMapping(value="getServiceData")
+    @ApiOperation(value="单次消费页面", notes="单次消费页面")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "serviceId", value = "项目id", required = true, dataType = "Long")
+    })
+    public Result getServiceData(Long serviceId,Long memberId){
+        Service service =   serviceDao.getById(serviceId);
+        Result result= new Result();
+
+        CardBalance cardBalance= cardBalanceDao.getCardForMemberId(memberId,serviceId,new Long(1));
+
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("recordId",service.getRecordId());
+        jsonObject.put("serviceName",service.getServiceName());
+        jsonObject.put("pricePerTime",service.getPeriodPerTime());//原价
+        jsonObject.put("price",service.getPrice());//优惠价
+        jsonObject.put("discount",(service.getPeriodPerTime()/service.getPrice())*10);//优惠价
+        jsonObject.put("balanceTotal",cardBalance==null?"0":cardBalance.getBalanceTotal());
+        jsonObject.put("balance",cardBalance==null?"0":cardBalance.getBalance());
+        List<Pictures> piclist= picturesDao.getPicturesForCondition(service.getRecordId(),new Byte("2"),new Byte("0"));
+        if(null != piclist && piclist.size()!=0){
+            jsonObject.put("picUrl",piclist.get(0).getPicUrl());//优惠价();
+        }
+        result.setData(jsonObject);
+        result.setSuccess(true);
+        result.setMsg("获取成功");
+        result.setMsgcode("0");
+
+
+        return  result;
+    }
+
+
+
+
     /**
      * 单次消费页面
      */
@@ -461,11 +504,11 @@ public class ConsumptionController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "stuffId", value = "员工id", required = true, dataType = "Long")
     })
-    public Result getOneStuffItem(Long stuffId){
+    public Result getOneStuffItem(Long memberId){
         Result result=new Result();
         Map Map = new HashMap();
-        String where="stuff_id=#{stuff_id} and record_status!=3 ";
-        Map.put("stuff_id", stuffId);
+        String where="member_id=#{memberId} and record_status!=3 ";
+        Map.put("memberId", memberId);
         List<Reservation> list = reservationDao.getByWhere(where,Map);
         try {
             JSONArray jsonArrayR = new JSONArray();
@@ -488,10 +531,11 @@ public class ConsumptionController {
                     parameterP.put("cardId",serviceId);
                     String rwhereP="card_id=#{cardId} and member_id=#{memberId}";
                     CardBalance cardBalance = cardBalanceDao.getOne(rwhereP,parameterP);
-                    jsonObject1.put("balance",cardBalance.getBalance());
-                    jsonObject1.put("balanceTotal",cardBalance.getBalanceTotal());
+                    jsonObject1.put("balance",cardBalance==null?0:cardBalance.getBalance());
+                    jsonObject1.put("balanceTotal",cardBalance==null?0:cardBalance.getBalanceTotal());
                     jsonObject1.put("serviceName",serviceName);
                     jsonObject1.put("serviceId",serviceId);
+
                     jsonArray.add(jsonObject1);
                 }
 
@@ -508,6 +552,12 @@ public class ConsumptionController {
                 jsonObject.put("picturesUrl",pictures==null?"":pictures.getPicUrl());
                 jsonObject.put("memberId",reservation.getMemberId());
                 jsonObject.put("stuffId",reservation.getStuffId());
+
+                Stuff stuff=stuffDao.getStuffForRecordId(reservation.getStuffId());
+                Member member=memberDao.getMemberForId(reservation.getMemberId());
+                jsonObject.put("memberName",member==null?"":member.getMemberName());
+                jsonObject.put("stuffName",stuff==null?"":stuff.getStuffName());
+
                 StoreRoom storeRoom = storeRoomDao.getById(reservation.getRoomId());
                 jsonObject.put("roomId",reservation.getRoomId());
                 jsonObject.put("roomName",storeRoom.getRoomName());
@@ -520,6 +570,7 @@ public class ConsumptionController {
                 jsonObject.put("memberSourc",reservation.getMemberSourc());
                 jsonObject.put("serviceId",serviceIds);
                 jsonObject.put("serviceNum",mapService.size());
+                jsonObject.put("reservationId",reservation.getRecordId());
                 jsonArrayR.add(jsonObject);
             }
             result.setMsgcode("0");

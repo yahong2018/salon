@@ -260,6 +260,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @ResponseBody
     @RequestMapping("updateSalon")
     @ApiOperation(value="修改美容院/门店信息", notes="修改美容院/门店信息")
+    @Transactional(rollbackFor = Exception.class)
     public Result updateSalon(Salon condition,String idPic1Code,String idPic2Code,String businessPicCode,String permitPicCode){
         Result r= new Result();
 
@@ -314,6 +315,7 @@ public class SalonController extends SimpleCRUDController<Salon> {
     @ResponseBody
     @RequestMapping("updateStore")
     @ApiOperation(value="门店信息", notes="门店信息")
+    @Transactional(rollbackFor = Exception.class)
     public Result updateStore(Salon condition,String picIdList,String deletePicList,String idPic1Code,String idPic2Code,String businessPicCode,String permitPicCode){
         Result r= new Result();
 

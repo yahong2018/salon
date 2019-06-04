@@ -624,7 +624,7 @@ group by ss.record_id;
     </select>
 
     <select id="GET_EXISTING_FOR_STORE"  parameterType="java.util.Map" resultType="java.util.Map">
-         SELECT sum(sss.existing) as Existing FROM salon.stuff_score as sss  where sss.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id = #{storeId})
+         SELECT sum(sss.existing) as Existing ,sum(sss.integral) as  Integral FROM salon.stuff_score as sss  where sss.stuff_id in(select ss.record_id from salon.stuff as ss where ss.store_id = #{storeId})
     </select>
 
     <select id="GET_EXISTING_COUNT_FOR_STORE"  parameterType="java.util.Map" resultType="java.util.Map">

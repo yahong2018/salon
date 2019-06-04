@@ -102,11 +102,13 @@ public class StuffScoreController {
             for(Salon s:salonList){
                 Long existing=new Long(0);
                 Long existingCount=new Long(0);
+                Long integral=new Long(0);
                 List<Map<String,Object>> existingList=stuffScoreRecordDao.queryExisting(salonId);
                 if(!existingList.isEmpty()){
                     for(Map<String,Object> m:existingList){
                         if(null!=m){
                             existing=existing+(Long)m.get("Existing");
+                            integral=integral+(Long)m.get("Integral");
                         }
 
                     }
@@ -148,8 +150,10 @@ public class StuffScoreController {
             StuffScore stuffScore=stuffScoreDao.getStuffScore(stuffId);
             if(null==stuffScore){
                 jsonObj.put("existing","0");
+                jsonObj.put("integral","0");
             }else{
                 jsonObj.put("existing",stuffScore.getExisting());
+                jsonObj.put("integral",stuffScore.getIntegral());
             }
             Salon salon=salonDao.getSalonForId(stuff.getStoreId());
 
@@ -224,7 +228,6 @@ public class StuffScoreController {
 
             List<StuffScoreRecord> stuffScoreRecordList=stuffScoreRecordDao.getForStuffId(stuffId);
             jsonObj.put("stuffScore",stuffScore);
-
             jsonObj.put("stuffScoreRecordList",stuffScoreRecordList);
             r.setData(jsonObj);
             r.setMsg("获取成功");
