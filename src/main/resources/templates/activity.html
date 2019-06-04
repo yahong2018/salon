@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+<html style="width: max-content;">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>活动</title>
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <script src="../../../layui/layui.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+</head>
+
+<body onload="countTime()">
+<div id="test">
+
+
+    <div id="Main">
+        <div class="center" style="align-content: center; height: 2169px;">
+            <div id="audio_btn" class="rotate" style="
+        position:fixed;
+            right: 35px;
+    top: 37px;
+       ">
+                <audio loop src="陈牧耶 - 我喜欢你.mp3" id="media" autoplay="" preload=""></audio>
+            </div>
+            <div style="align-content: center;" >
+                <img style="width:100%;" src="http://127.0.0.1:8080/pic/20190530145515.jpg">
+            </div>
+            <div style="background-color: #dcddef;border: 1px solid blue;height: 51px;">
+                <div style="float: left;font-size: 22px;margin-top: 11px;"><span style="font-size: 33px;color: red;">3049 </span>人感兴趣</div>
+                <div style="float: right;font-size: 22px;margin-top: 11px;"><span  style="font-size: 33px;color: red;">208 </span>人报名</div>
+            </div>
+            <div style="border: 1px solid #1a237e;height: 150px;width: 636px;">
+                <h1 style="font-size: 25px;">【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭</h1>
+                <h2 style="margin-left: 17px;
+font-size: 17px;">价值6844元套餐项目地址一折抢！更怂698元康佳电器豪礼！</h2>
+            </div>
+            <div style="border: 1px solid red;
+    height: 70px;">
+                <ul class="ulFloat" style="margin-left: -17px;">
+                    <li style="font-size: 33px;
+    margin-top: 8px;
+    color: #ec8602;">
+                        <span>￥ 498元</span>
+                    </li>
+
+                    <li style="border-radius: 30px;border: 1px solid #e6de21;
+    background-color: #d4cd39;">
+                        <span>店内价：6844.00元</span>
+                    </li>
+
+                    <li style="border-radius: 30px;
+    border: 1px solid #e6de21;
+    background-color: #f36a0d;">
+                        <span>实体店活动</span>
+                    </li>
+                    <li style="border-radius: 30px;
+    border: 1px solid #e6de21;
+    background-color: #469cf3;">
+                        <span>2019年</span>
+                    </li>
+                </ul>
+
+            </div>
+            <div>
+                <div style="text-align: center;
+    margin-top: 15px;
+    height: 35px;
+    border: 1px solid red;
+    padding-top: 11px;">
+                    距活动结束仅
+                    <span id="_d" style="border: 1px solid red;
+    width: 40px;
+    padding: 5px;">00</span>天
+                    <span id="_h" style="border: 1px solid red;
+    width: 40px;
+    padding: 5px;">00</span>时
+                    <span id="_m" style="border: 1px solid red;
+    width: 40px;
+    padding: 5px;">00</span>分
+                    <span id="_s" style="border: 1px solid red;
+    width: 40px;
+    padding: 5px;">00</span>秒
+                </div>
+            </div>
+
+            <div style="    border: 1px solid red;
+    height: 141px;">
+                <div style="float: left ;margin-left: 23px;" ><img  style="width: 134px;" src="http://127.0.0.1:8080/pic/hua.jpg"/></div>
+                <div  style="float: right;  margin-right: 75px;">
+                    <h2 style="margin-top: 11px;letter-spacing: 3px;">您通过本店代言人 【湛丰源】的推荐</h2>
+                    <h2 style="margin-top: 11px;letter-spacing: 3px;">支付时可立减 ￥ 100.0 元</h2>
+                    <h2 style="margin-top: 11px;letter-spacing: 3px;">现在下单购买  仅需 ￥ 398.00 元</h2>
+                </div>
+            </div>
+            <div style="    margin-top: 11px;">
+                <img style="width:100%;" src="http://127.0.0.1:8080/pic/center.jpg">
+
+            </div>
+            <div class="rankingList" style="border: 1px solid red">
+                <h2 style="text-align: center;">赏金排行榜</h2>
+                <div class="layui-row" style="    border-bottom: 1px dashed #000;padding: 10px;margin-top: 11px;">
+                    <div class="layui-col-xs6">
+                        <div class="grid-demo grid-demo-bg1">你已推荐人数 0 人</div>
+                    </div>
+                    <div class="layui-col-xs6">
+                        <div class="grid-demo">您已获得：111110.00元赏金 0 人</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="a">
+                        <ul>
+                            <li>粉丝</li>
+                            <li>推荐</li>
+                            <li>赏金（元）</li>
+                        </ul>
+                    </div>
+                    <!-- <marquee direction=down scrollamount="5" width=100% height=195>-->
+                    <div class="scrollNews">
+                        <ul class="down">
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目1111111111</li>
+                                        <li>栏目1111111</li>
+                                        <li>栏目111111111111</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目22222</li>
+                                        <li>栏目222222</li>
+                                        <li>栏目22222222</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="a">
+                                    <ul>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                        <li>栏目33333333</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- </marquee>-->
+                    </div>
+                </div>
+
+            </div>
+            <h1 style="border: 1px solid red; width: auto"></h1>
+            <div class="signUp">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="ToolBar">
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <button class="layui-btn layui-btn-primary" style="width:-webkit-fill-available;height: 59px;    font-size: 22px;">我的推广二维码</button>
+            </div>
+            <div class="layui-col-xs6">
+                <button class="layui-btn" style="width:-webkit-fill-available;height: 59px;    font-size: 22px;">立即抢购</button>
+            </div>
+        </div>
+
+
+    </div>
+    <span style="font-size:14px"><p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p></span>
+</div>
+<style type="text/css">
+    .a{
+        margin:5px auto 0 auto;
+        width:100%;
+        text-align:center;
+        height: 25px;
+    }
+    .a ul{margin:0;padding:0;} /*注意 一定要清空 默认是有的*/
+    .a li{
+        float:left;
+        width:33%;
+        overflow:hidden;
+        height:21px;
+        line-height:21px;
+        padding:0px 0px 0px 0px;
+        display:inline;
+        background:url(XXX.gif) no-repeat;
+    }
+    .aa li{
+        width:38%;
+    }
+    .rankingList{
+        border: 1px solid red;
+        /* width: 100%; */
+        height: 350px;
+        margin-top: 33px;
+        border-radius: 22px;
+        margin-left: 11px;
+        margin-right: 11px;
+        margin-bottom: 52px;
+    }
+
+    .signUp{
+        border: 1px solid red;
+        /* width: 100%; */
+        height: 300px;
+        border-radius: 22px;
+        margin-left: 11px;
+        margin-top: 11px;
+        margin-right: 11px;
+        margin-bottom: 26px;
+    }
+    .down li{
+        border: #1a237e;
+    }
+    #test{
+        position:absolute;
+        bottom:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        z-index:1;
+    }
+    #Main {
+        position:absolute;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:100%;
+        overflow:auto;
+        z-index:1;
+    }
+    .title li{
+        float: left;
+        margin-left: 34px;
+        font-size: 19px;
+        margin-top: 18px;
+        border: #1a237e;
+    }
+
+    .title{
+        border: 1px solid red;
+        height: 54px;
+    }
+    @-webkit-keyframes rotating {
+        from { -webkit-transform: rotate(0) }
+        to { -webkit-transform: rotate(360deg) }
+    }
+
+    @keyframes rotating {
+        from { transform: rotate(0) }
+        to { transform: rotate(360deg) }
+    }
+    @-moz-keyframes rotating {
+        from { -moz-transform: rotate(0) }
+        to { -moz-transform: rotate(360deg) }
+    }
+    #audio_btn {
+        width: 30px;
+        height: 30px;
+        background-image: url(http://127.0.0.1:8080/pic/mp3.png);
+        background-size: contain;
+    }
+    .rotate{
+        -webkit-animation: rotating 1.2s linear infinite;
+        -moz-animation: rotating 1.2s linear infinite;
+        -o-animation: rotating 1.2s linear infinite;
+        animation: rotating 1.2s linear infinite
+    }
+    .ulFloat li{
+        float: left;
+        margin-left: 34px;
+        font-size: 19px;
+        margin-top: 18px;
+    }
+    #ToolBar {
+        position:absolute;
+        bottom:0px;
+        width:100%;
+        height:auto;
+        text-align:center;
+        background:#ccc;
+        z-index:2;
+        overflow:hidden;
+    }
+    p#back-to-top{
+        position:fixed;
+        z-index:3;
+        display:none;
+        bottom:100px;
+        right:10px;
+    }
+    p#back-to-top a{
+        text-align:center;
+        text-decoration:none;
+        color:#d1d1d1;
+        display:block;
+        width:64px;
+        /*使用CSS3中的transition属性给跳转链接中的文字添加渐变效果*/
+        -moz-transition:color 1s;
+        -webkit-transition:color 1s;
+        -o-transition:color 1s;
+    }
+    p#back-to-top a:hover{
+        color:#979797;
+    }
+    p#back-to-top a span{
+        background:transparent url(http://outofmemory.cn/ugc/upload/00/07/20121202/Actions-arrow-up-top-icon.png);
+        border-radius:6px;
+        display:block;
+        height:64px;
+        width:56px;
+        margin-bottom:5px;
+        /*使用CSS3中的transition属性给<span>标签背景颜色添加渐变效果*/
+        -moz-transition:background 1s;
+        -webkit-transition:background 1s;
+        -o-transition:background 1s;
+    }
+    #back-to-top a:hover span{
+        background:transparent url(http://outofmemory.cn/ugc/upload/00/07/20121202/Actions-arrow-up-top-icon.png);
+    }
+    .scrollNews{
+        height:200px;
+        overflow: hidden;
+    }
+</style>
+
+</body>
+</html>
+<script src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+<script>
+    $(function(){
+
+        //数据进行滚动
+        var $this=$('.scrollNews');
+        var scrollTimer=setInterval(function(){
+            scrollNews($this);
+        },2000);
+        $this.hover(function(){
+            clearInterval(scrollTimer);
+        },function(){
+            scrollTimer=setInterval(function(){
+                scrollNews($this);
+            },1000);
+        });
+    });
+
+    function scrollNews(obj){
+        var $self=obj.find('ul:first');
+        var lineHeight=$self.find('li:first').height();
+        $self.animate({
+            'marginTop':-lineHeight+'px'
+        },200,function(){
+            $self.css({marginTop:0}).find('li:first').appendTo($self);
+        });
+    }
+</script>
+<script>
+    layui.use(['form','laydate','layer','table','laypage','util'],function() {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var $ = layui.$;
+        var x = document.getElementById("media");
+        $(function(){
+            $("#audio_btn").click(function(){
+                $(this).toggleClass("rotate"); //控制音乐图标 自转或暂停
+
+                //控制背景音乐 播放或暂停
+                if($(this).hasClass("rotate")){
+                    x.play();
+                }else{
+                    x.pause();
+                }
+            })
+
+            $("#Main").scroll(function(){
+                if ($("#Main").scrollTop()>100){
+                    $("#back-to-top").fadeIn(1500);
+                }
+                else
+                {
+                    $("#back-to-top").fadeOut(1500);
+                }
+            });
+
+            //当点击跳转链接后，回到页面顶部位置
+            $("#back-to-top").click(function(){
+                //$('body,html').animate({scrollTop:0},1000);
+                if ($("#Main").scrollTop()) {
+                    $("#Main").animate({ scrollTop: 0 }, 1000);
+                    return false;
+                }
+                $("#Main").animate({ scrollTop: 0 }, 1000);
+                return false;
+            });
+        });
+
+
+    })
+    function countTime() {
+        //获取当前时间
+        var date = new Date();
+        var now = date.getTime();
+        //设置截止时间
+        var str="2019/05/30 21:00:00";
+        var endDate = new Date(str);
+        var end = endDate.getTime();
+
+        //时间差
+        var leftTime = end-now;
+        //定义变量 d,h,m,s保存倒计时的时间
+        var d,h,m,s;
+        if (leftTime>=0) {
+            d = Math.floor(leftTime/1000/60/60/24);
+            h = Math.floor(leftTime/1000/60/60%24);
+            m = Math.floor(leftTime/1000/60%60);
+            s = Math.floor(leftTime/1000%60);
+        }
+        //将倒计时赋值到div中
+        document.getElementById("_d").innerHTML = d;
+        document.getElementById("_h").innerHTML = h;
+        document.getElementById("_m").innerHTML = m;
+        document.getElementById("_s").innerHTML = s;
+        //递归每秒调用countTime方法，显示动态时间效果
+        setTimeout(countTime,1000);
+
+    }
+</script>
+
+<script>
+
+    $(window).scroll(function(){
+        if ($(window).scrollTop()>100){
+            $("#back-to-top").fadeIn(1500);
+        }
+        else
+        {
+            $("#back-to-top").fadeOut(1500);
+        }
+    });
+
+    //当点击跳转链接后，回到页面顶部位置
+    $("#back-to-top").click(function(){
+        //$('body,html').animate({scrollTop:0},1000);
+        if ($('html').scrollTop()) {
+            $('html').animate({ scrollTop: 0 }, 1000);
+            return false;
+        }
+        $('body').animate({ scrollTop: 0 }, 1000);
+        return false;
+    });
+</script>

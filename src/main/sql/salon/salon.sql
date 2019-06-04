@@ -464,6 +464,9 @@ create table member
   invitation_code                  varchar(50)                     null,       -- 邀请码
   parent_id                        bigint                          null,       -- 邀请人
 
+  openid                           varchar (200)                   null,       --openid
+  nick_name                        varchar(50)                     null,       --微信昵称
+
   create_date                      datetime                        not null,
   create_by                        bigint                          not null,
   update_date                      datetime                        null,
@@ -1493,32 +1496,40 @@ create table activity_detail_info
 (
   record_id               bigint                        not null, --
   -- 参与人头像 在业务上关联，不加字段
-  nickname                varchar(50)                   not null, -- 参与人昵称
-  real_name               varchar(50)                   null,     -- 参与人真实名称
-  sex                     tinyint                       not null, -- 参与人性别
-  shell_phone             varchar(11)                   null,     -- 参与人手机号码
+  activity_info_id        bigint                        not null,
+  member_id               bigint                        not null, -- 参与人id
   is_top_recommender      tinyint                       not null, -- 是否顶层推荐人
   last_reference          bigint                        not null, -- 上一推荐人
   totle_earnings          double(10,2)                  not null, -- 当前总收益
+  totle_recommender       tinyint                     null,     -- 当前推荐人数
 
   primary key (record_id),
-  index idx_activity_detail_info_01 (nickname)
+  index idx_activity_detail_info_01 (member_id)
 )comment '活动信息明细表';
 
 create table revenue
 (
   record_id               bigint                      not null,
-  activity_name           varchar(50)                 not null, -- 活动名称
-  top_recommender         bigint                      not null, -- 顶层推荐人
-  top_recommender_cost    double(10,2)                not null, -- 顶层推荐人收益金额
-  last_reference          bigint                      not null, -- 上一推荐人
-  last_reference_cost     double(10,2)                not null, -- 上一推荐人收益金额
-  voucher_cost            double(10,2)                not null, -- 本次推荐收益（这个指代金券）
+  activity_detail_info_id bigint                      not null, -- 活动参与人信息明细表
+  top_recommender         bigint                      not null, -- 收益人（顶层推荐人，上级推荐人）
+  top_recommender_cost    double(10,2)                not null, -- 收益金额（顶层推荐人收益金额，上级推荐人收益金额）
+  profit_type             tinyint                     not null, -- 收益类型（0：一级，1：二级）
 
   primary key (record_id),
-  index idx_revenue_01 (activity_name)
+  index idx_revenue_01 (activity_detail_info_id)
 )comment '收益明细表';
 
+
+create table activity_order
+(
+   record_id               bigint                      not null,
+   order_no                varchar (100)               not null, --订单号（商城返回）
+   activity_detail_info_id bigint                      not null, --活动参与人信息id
+   order_money             double  (10,2)              not null, --订单交易金额
+
+    primary key (record_id),
+    index idx_activity_order_01 (order_no)
+)comment '活动订单表';
 /*
    五类结算：
        1.会员与店员(门店/美容院)结算

@@ -690,5 +690,38 @@
         <result column="audit_photos" property="auditPhotos" jdbcType="BIGINT" />
 
     </resultMap>
+    <resultMap id="revenue" type="com.hy.salon.basic.entity.revenue"  extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="activity_detail_info_id" property="activityDetailInfoId" jdbcType="BIGINT" />
+        <result column="top_recommender" property="topRecommender" jdbcType="BIGINT" />
+        <result column="top_recommender_cost" property="topRecommenderCost" jdbcType="DOUBLE" />
+        <result column="profit_type" property="profitType" jdbcType="TINYINT" />
+    </resultMap>
 
+    <resultMap id="ActivityInfo" type="com.hy.salon.basic.entity.ActivityInfo" extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="frist_originator" property="fristOriginator" jdbcType="BIGINT" />
+        <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+        <result column="activity_date" property="activityDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="ActivityDetailInfo" type="com.hy.salon.basic.entity.ActivityDetailInfo"  extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="member_id" property="memberId" jdbcType="BIGINT" />
+        <result column="activity_info_id" property="activityInfoId" jdbcType="BIGINT" />
+        <result column="is_top_recommender" property="isTopRecommender" jdbcType="TINYINT" />
+        <result column="last_reference" property="lastReference" jdbcType="BIGINT" />
+        <result column="totle_earnings" property="totleEarnings" jdbcType="DOUBLE" />
+        <result column="totle_recommender" property="totleRecommender" jdbcType="TINYINT" />
+
+    </resultMap>
+
+    <resultMap id="ActivityOrder" type="com.hy.salon.basic.entity.ActivityOrder"  extends="com.zhxh.core.data.TraceableEntity">
+        <id column="record_id" property="recordId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="activity_detail_info_id" property="activityDetailInfoId" jdbcType="BIGINT" />
+        <result column="order_money" property="orderMoney" jdbcType="DOUBLE" />
+    </resultMap>
 </mapper>

@@ -143,12 +143,12 @@ layui.use(['layer', 'form', 'jquery', 'laydate'], function () {
     form.on('submit(*)', function(data){
         var list= $(".dayListInsert").val();
         console.log(list);
-        var url ='/hy/basic/schedule/updateStuffSchedule';
+        var url ='/hy/basic/schedule/updateStuffScheduleApp';
         $.ajax({
             type:'POST',
             url:url,
-            data: list,
-            contentType: "application/json",
+            data: {"list":list},
+            //contentType: "application/json",
             success: function(data){
                 alert("操作成功！");
                 window.parent.location.reload(); //刷新父页面
@@ -170,6 +170,7 @@ layui.use(['layer', 'form', 'jquery', 'laydate'], function () {
         var radioClass = "";
         if(data.value=='休'){
             $("#"+dayClass).addClass("xiu");
+            radioClass = "xiu";
         }else if(data.value=='早'){
             $("#"+dayClass).addClass("zao");
             radioClass = "zaoban";

@@ -2,6 +2,8 @@ package com.hy.salon.basic.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.hy.salon.basic.common.StatusUtil;
+import com.hy.salon.basic.common.handler.CommonExceptionAdvice;
+import com.hy.salon.basic.common.handler.CommonUtil;
 import com.hy.salon.basic.dao.ScheduleDao;
 import com.hy.salon.basic.dao.StuffDao;
 import com.hy.salon.basic.entity.Schedule;
@@ -22,6 +24,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +47,7 @@ public class ScheduleController  {
     private ScheduleDao scheduleDao;
     @Resource(name = "authenticateService")
     private AuthenticateService authenticateService;
+    private static  Logger logger = LoggerFactory.getLogger(CommonUtil.class);
     /**
      * 获取一个店有排班信息的所有员工
      * recordId ,门店id
@@ -229,7 +234,7 @@ public class ScheduleController  {
             result.setSuccess(true);
             result.setMsgcode(StatusUtil.OK);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("通用异常", e);
             result.setSuccess(false);
             result.setMsgcode(StatusUtil.ERROR);
         }
@@ -237,6 +242,8 @@ public class ScheduleController  {
     }
 
 
+
+    
     @ResponseBody
     @RequestMapping(value = "updateStuffScheduleApp2",method = RequestMethod.GET)
     public Result updateStuffScheduleApp2(HttpServletRequest request){
@@ -256,6 +263,15 @@ public class ScheduleController  {
         }*/
         return result;
     }
+/*    public static void main(String[] args) {
 
+        System.out.println("Hello World!");
+
+        logger.info("logger info...");
+
+        logger.debug("logger debug...");
+
+        logger.error("logger error...");
+    }*/
 
 }

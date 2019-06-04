@@ -1,0 +1,68 @@
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>活动</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+
+<style>
+    #audio_btn {
+        width: 30px;
+        height: 30px;
+        background-image: url(https://images2015.cnblogs.com/blog/595688/201607/595688-20160729181050575-559137759.png);
+        background-size: contain;
+    }
+
+    .rotate {
+        -webkit-animation: rotating 1.2s linear infinite;
+        -moz-animation: rotating 1.2s linear infinite;
+        -o-animation: rotating 1.2s linear infinite;
+        animation: rotating 1.2s linear infinite
+    }
+
+    @-webkit-keyframes rotating {
+        from { -webkit-transform: rotate(0) }
+        to { -webkit-transform: rotate(360deg) }
+    }
+
+    @keyframes rotating {
+        from { transform: rotate(0) }
+        to { transform: rotate(360deg) }
+    }
+    @-moz-keyframes rotating {
+        from { -moz-transform: rotate(0) }
+        to { -moz-transform: rotate(360deg) }
+    }
+</style>
+<body>
+<div class="layui-layout">
+    <div class="header">
+        <img src="http://127.0.0.1:8080/20190530145515.jpg">
+    </div>
+
+</div>
+
+
+
+
+</body>
+</html>
+<script>
+    var x = document.getElementById("media");
+    $(function(){
+        $("#audio_btn").click(function(){
+            $(this).toggleClass("rotate"); //控制音乐图标 自转或暂停
+
+            //控制背景音乐 播放或暂停
+            if($(this).hasClass("rotate")){
+                x.play();
+            }else{
+                x.pause();
+            }
+        })
+    });
+</script>

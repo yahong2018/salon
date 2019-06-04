@@ -95,4 +95,10 @@ public class ArrearagesRecordDao extends BaseDAOWithEntity<ArrearagesRecord> {
     protected final static String SQL_GET_ARREARAGES_RECORD = "com.hy.salon.basic.dao.GET_ARREARAGES_RECORD";
 
 
+    public void test(ArrearagesRecord arrearagesRecord) {
+        double AmountDept = arrearagesRecord.getAmountPayable();
+        arrearagesRecord.setAmountPayable(AmountDept+100);
+        this.update(arrearagesRecord);
+
+    }
 }

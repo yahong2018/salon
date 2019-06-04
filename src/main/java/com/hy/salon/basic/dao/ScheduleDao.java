@@ -181,7 +181,9 @@ public class ScheduleDao extends BaseDAOWithEntity<Schedule> {
                     if(dateString.equals(tempDateString)){
                         Integer type = (Integer)map.get("shiftType");
                         String typeString = "";
-                        if(type==0){
+                        if(type==null){
+                            typeString = "休";
+                        }else if(type==0){
                             typeString = "全班";
                         }else if(type==1){
                             typeString = "早班";

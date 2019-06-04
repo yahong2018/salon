@@ -24,6 +24,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ import java.util.Map;
 @Aspect    //该标签把LoggerAspect类声明为一个切面
 @Order(1)  //设置切面的优先级：如果有多个切面，可通过设置优先级控制切面的执行顺序（数值越小，优先级越高）
 @Component //该标签把LoggerAspect类放到IOC容器中
+@EnableAspectJAutoProxy(exposeProxy=true, proxyTargetClass=true)
 public class LoggerAspect {
 
     @Autowired
@@ -64,7 +66,7 @@ public class LoggerAspect {
     @Resource(name = "systemUserDAO")
     private SystemUserDAO systemUserDAO;
 
-    private Logger logger = LoggerFactory.getLogger(LoggerAspect.class);
+    private Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 
 
     private static final String MAPPING_PATH = "映射路径：{}";
@@ -175,15 +177,15 @@ public class LoggerAspect {
     /**
      * 异常通知（方法发生异常执行的代码）
      * 可以访问到异常对象；且可以指定在出现特定异常时执行的代码
-     * @param joinPoint
+     * @param ex
      * @param ex
      */
-    @AfterThrowing(value="declareJoinPointExpression()",throwing="ex")
-    public void afterThrowingMethod(JoinPoint joinPoint,Exception ex) throws Throwable {
+    @AfterThrowing(throwing = "ex", pointcut = "declareJoinPointExpression()")
+    public void afterThrowingMethod(Throwable ex)  {
         //ex.printStackTrace();
-        logger.error(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() +
-                " 方法返回异常：{}", ex.getMessage());
-        throw ex;
+//        logger.error(joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() +
+//                " 方法返回异常：{}", ex.getMessage());
+        logger.error("发生异常：{}", ex.toString());
     }
     /**
      * 环绕通知(需要携带类型为ProceedingJoinPoint类型的参数)

@@ -237,10 +237,10 @@ public class LoginController {
     public String doLogin(Model model, String userCode, String password
             ,String randomCode, HttpServletRequest req) {
         try {
-            String code= (String) req.getSession().getAttribute("code");
+           /* String code= (String) req.getSession().getAttribute("code");
             if(!code.equalsIgnoreCase(randomCode)){
                 return  "验证码错误";
-            }
+            }*/
 
 
             boolean flag =   authenticateService.adminAuthenticate(userCode,password);

@@ -11,6 +11,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -83,8 +84,13 @@ public class DataConfig {
             String mapperLocation = dataSource.getMyBatisMapperFileLocations();
             Resource[] mapperLocations = resolver.getResources(mapperLocation);
             sqlSessionFactoryBean.setMapperLocations(mapperLocations);
+//                       Resource[] mapperLocations = resolver.getResources(mapperLocation);
+//            sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:config/mapper/**/*.xml"));
+
 
             Resource configLocation = resolver.getResource(dataSource.getMyBatisConfigLocation());
+
+            //Resource configLocation =  resolver.getResource("classpath:config/mybatis.xml");
             sqlSessionFactoryBean.setConfigLocation(configLocation);
         } catch (Exception e) {
             Logger.info("配置 DataSource的 mapperLocation/configLocation出现问题:" + e.getMessage());
@@ -100,7 +106,7 @@ public class DataConfig {
         Interceptor[] interceptors = new Interceptor[]{pageHelper,this.resultTypeInterceptor, this.callableConvertInterceptor,this.updateInterceptor};
         sqlSessionFactoryBean.setPlugins(interceptors);
         sqlSessionFactoryBean.setTypeAliasesPackage(dataSource.getMyBatisTypeAliasesPackage());
-
+        //sqlSessionFactoryBean.setTypeAliasesPackage("com.zhxh.**.entity");
         return sqlSessionFactoryBean;
     }
 

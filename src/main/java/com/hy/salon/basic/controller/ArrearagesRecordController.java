@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -170,6 +171,25 @@ public class ArrearagesRecordController  {
     }
 
 
+
+    @RequestMapping("/test")
+    @Transactional(rollbackFor = Exception.class)
+    public  void test (long arrearagesRecordId){
+        ArrearagesRecord arrearagesRecord = arrearagesRecordDao.getById(arrearagesRecordId);//要还款的记录
+        arrearagesRecordDao.test(arrearagesRecord);
+        String[] string = new String[2];
+        string[0] = "test0";
+        string[1] = "test1";
+        string[2] = "test2";
+    }
+/*    public static void main(String[] args) {
+		String[] string = new String[2];
+		string[0] = "test0";
+		string[1] = "test1";
+		string[2] = "test2";
+    	
+    	
+	}*/
 
 
 

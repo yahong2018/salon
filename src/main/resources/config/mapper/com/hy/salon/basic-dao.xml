@@ -908,6 +908,17 @@ group by ss.record_id;
     </select>
 
 
+    <select id="GET_REWARDLISTACTIVITY"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT act.*,mem.nick_name as nick_name,p.pic_url as pic_url FROM salon.activity_detail_info as act
+         left join salon.member as mem on act.member_id=mem.record_id
+        left join  pictures as p on mem.record_id = p.master_data_id
+        where act.activity_info_id=#{activityId} and p.record_type = 6 and p.pic_type = 0
+         <if test="totleRecommender!=null">
+            and totle_recommender = #{totleRecommender}
+         </if>
+         order by act.totle_earnings
+    </select>
+
 
 
 

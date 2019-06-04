@@ -204,6 +204,7 @@
                     $.ajax({
                         type:'get',
                         url:'/hy/basic/timeSheet/getSalon',
+                        data:{page:1,limit:20},
                         success: function(data){
                             var dataList =data.data;
                             var html="<option value=''>请选择门店</option>";
