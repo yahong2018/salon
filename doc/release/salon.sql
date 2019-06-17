@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 13/06/2019 09:34:06
+ Date: 17/06/2019 18:43:39
 */
 
 SET NAMES utf8mb4;
@@ -24,14 +24,9 @@ DROP TABLE IF EXISTS `activity_detail_info`;
 CREATE TABLE `activity_detail_info`  (
   `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `activity_info_id` bigint(20) NOT NULL,
-  `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `real_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `sex` tinyint(4) NOT NULL,
-  `shell_phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `is_top_recommender` tinyint(4) NOT NULL,
-  `last_reference` bigint(20) NOT NULL,
+  `is_top_recommender` tinyint(4) NULL DEFAULT NULL,
+  `last_reference` bigint(20) NULL DEFAULT NULL,
   `participants_id` bigint(20) NOT NULL,
-  `participants_type` tinyint(4) NOT NULL,
   `totle_earnings` double(10, 2) NOT NULL,
   `totle_recommender` int(11) NOT NULL,
   `create_date` datetime(0) NOT NULL,
@@ -40,14 +35,13 @@ CREATE TABLE `activity_detail_info`  (
   `update_by` bigint(20) NULL DEFAULT NULL,
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
-  INDEX `idx_activity_detail_info_01`(`nickname`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息明细表' ROW_FORMAT = Dynamic;
+  INDEX `idx_activity_detail_info_01`(`activity_info_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_detail_info
 -- ----------------------------
-INSERT INTO `activity_detail_info` VALUES (1, 1, '222', '333', 4, '55555', 6, 7, 8, 9, 10.00, 4564, '2019-06-12 10:30:06', 1, NULL, NULL, NULL);
-INSERT INTO `activity_detail_info` VALUES (2, 1, '222', '333', 4, '55555', 6, 7, 8, 9, 10.00, 4564, '2019-06-12 10:30:06', 1, NULL, NULL, NULL);
+INSERT INTO `activity_detail_info` VALUES (1, 1, 1, 444, 232, 0.00, 0, '2019-06-17 15:48:41', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for activity_info
@@ -68,12 +62,14 @@ CREATE TABLE `activity_info`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_activity_info_01`(`activity_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_info
 -- ----------------------------
 INSERT INTO `activity_info` VALUES (1, '【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭！', '价值6844元套餐项目地址一折抢！更怂698元康佳电器豪礼！！！', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-06-11 00:00:00', 0, '2019-06-12 10:30:06', 1, '2019-06-12 10:32:56', 1, 0);
+INSERT INTO `activity_info` VALUES (2, '阴影', '222', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-10-11 00:00:00', 1, '2019-06-13 10:35:05', 1, NULL, NULL, 0);
+INSERT INTO `activity_info` VALUES (3, '哈哈', '222', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-10-11 00:00:00', 1, '2019-06-13 10:36:09', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for activity_order
@@ -81,12 +77,27 @@ INSERT INTO `activity_info` VALUES (1, '【亿美客活动】一年一度庆典�
 DROP TABLE IF EXISTS `activity_order`;
 CREATE TABLE `activity_order`  (
   `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `order_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `activity_detail_info_id` bigint(20) NOT NULL,
-  `order_money` double(10, 2) NOT NULL,
+  `activity_order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `purchase_quantity` int(11) NOT NULL,
+  `order_price` double(10, 2) NOT NULL,
+  `payment_price` double(10, 2) NULL DEFAULT NULL,
+  `payment_state` tinyint(4) NOT NULL,
+  `activity_info_id` bigint(20) NOT NULL,
+  `participants_id` bigint(20) NOT NULL,
+  `invitation_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `create_date` datetime(0) NOT NULL,
+  `create_by` bigint(20) NOT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL,
+  `update_by` bigint(20) NULL DEFAULT NULL,
+  `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
-  INDEX `idx_activity_order_01`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动订单表' ROW_FORMAT = Dynamic;
+  INDEX `idx_activity_order_01`(`activity_order_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动订单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of activity_order
+-- ----------------------------
+INSERT INTO `activity_order` VALUES (1, 'ACTP13213241346', 1, 399.00, 398.00, 1, 1, 232, 'yui9RKgL', '2019-06-17 15:34:59', 0, '2019-06-17 15:47:34', 1, 0);
 
 -- ----------------------------
 -- Table structure for activity_relation_info
@@ -104,7 +115,7 @@ CREATE TABLE `activity_relation_info`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_activity_relation_info_01`(`activity_info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动项目关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动项目关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_relation_info
@@ -112,6 +123,8 @@ CREATE TABLE `activity_relation_info`  (
 INSERT INTO `activity_relation_info` VALUES (3, 5, 333, 999.00, '2019-06-11 14:42:19', 1, '2019-06-11 15:12:21', 1, 0);
 INSERT INTO `activity_relation_info` VALUES (4, 6, 333, 657.00, '2019-06-11 16:11:19', 1, NULL, NULL, 0);
 INSERT INTO `activity_relation_info` VALUES (5, 1, 1, 499.00, '2019-06-12 10:30:06', 1, '2019-06-12 10:32:56', 1, 0);
+INSERT INTO `activity_relation_info` VALUES (6, 2, 1, 599.00, '2019-06-13 10:35:05', 1, NULL, NULL, 0);
+INSERT INTO `activity_relation_info` VALUES (7, 3, 1, 599.00, '2019-06-13 10:36:09', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for approval_process
@@ -158,14 +171,50 @@ CREATE TABLE `approval_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_approval_record_01`(`approval_date`) USING BTREE,
   INDEX `idx_approval_record_02`(`approval_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '审批记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '审批记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of approval_record
 -- ----------------------------
-INSERT INTO `approval_record` VALUES (1, NULL, 3, '2019-06-12 11:33:46', '2019-06-12 11:33:46', 106, NULL, NULL, 0, 1, 1, 1113, 1, 5);
-INSERT INTO `approval_record` VALUES (2, NULL, 3, '2019-06-12 11:33:46', '2019-06-12 11:33:46', 106, '2019-06-13 09:31:11', 86, 0, 1, 2, 1121, 1, 5);
-INSERT INTO `approval_record` VALUES (3, NULL, 2, '2019-06-12 11:33:46', '2019-06-12 11:33:47', 106, NULL, NULL, 0, 1, 3, 1112, 0, 5);
+INSERT INTO `approval_record` VALUES (1, '但是发的撒发', 0, '2019-06-13 09:40:29', '2019-06-12 11:33:46', 106, '2019-06-13 09:40:29', 86, 0, 1, 1, 1113, 1, 5);
+INSERT INTO `approval_record` VALUES (2, '啊范德萨发上的', 0, '2019-06-13 09:54:25', '2019-06-12 11:33:46', 106, '2019-06-13 09:54:25', 94, 0, 1, 2, 1121, 1, 5);
+INSERT INTO `approval_record` VALUES (3, '撒发撒发的', 0, '2019-06-13 09:55:15', '2019-06-12 11:33:47', 106, '2019-06-13 09:55:15', 85, 0, 0, 3, 1112, 0, 5);
+INSERT INTO `approval_record` VALUES (4, '人性不想皮', 1, '2019-06-13 09:58:49', '2019-06-13 09:57:49', 106, '2019-06-13 09:58:49', 86, 0, 0, 1, 1113, 0, 6);
+INSERT INTO `approval_record` VALUES (5, NULL, 2, '2019-06-13 09:57:49', '2019-06-13 09:57:49', 106, NULL, NULL, 0, 1, 2, 1121, 1, 6);
+INSERT INTO `approval_record` VALUES (6, NULL, 2, '2019-06-13 09:57:49', '2019-06-13 09:57:49', 106, '2019-06-13 09:58:49', 86, 0, 1, 3, 1112, 1, 6);
+INSERT INTO `approval_record` VALUES (7, '的发送给', 0, '2019-06-14 19:27:40', '2019-06-13 10:41:18', 106, '2019-06-14 19:27:40', 86, 0, 1, 1, 1113, 1, 7);
+INSERT INTO `approval_record` VALUES (8, NULL, 3, '2019-06-13 10:41:18', '2019-06-13 10:41:18', 106, '2019-06-14 19:27:40', 86, 0, 1, 2, 1121, 1, 7);
+INSERT INTO `approval_record` VALUES (9, NULL, 2, '2019-06-13 10:41:18', '2019-06-13 10:41:18', 106, NULL, NULL, 0, 1, 3, 1112, 0, 7);
+INSERT INTO `approval_record` VALUES (10, '撒电风扇答复', 0, '2019-06-13 18:36:02', '2019-06-13 10:44:32', 106, '2019-06-13 18:36:02', 86, 0, 1, 1, 1113, 1, 10);
+INSERT INTO `approval_record` VALUES (11, NULL, 3, '2019-06-13 10:44:32', '2019-06-13 10:44:32', 106, '2019-06-13 17:20:19', 86, 0, 1, 2, 1121, 1, 8);
+INSERT INTO `approval_record` VALUES (12, 'test', 0, '2019-06-15 13:37:07', '2019-06-13 10:44:32', 106, '2019-06-15 13:37:07', 1, 0, 1, 1, 1, 1, 12);
+INSERT INTO `approval_record` VALUES (13, '测试测试', 0, '2019-06-14 19:06:00', '2019-06-13 10:49:41', 106, '2019-06-14 19:06:00', 86, 0, 1, 1, 1113, 1, 9);
+INSERT INTO `approval_record` VALUES (14, 'test', 0, '2019-06-15 14:05:41', '2019-06-13 10:49:41', 106, '2019-06-15 14:05:41', 86, 0, 1, 1, 1113, 1, 14);
+INSERT INTO `approval_record` VALUES (15, NULL, 2, '2019-06-13 10:49:41', '2019-06-13 10:49:41', 106, NULL, NULL, 0, 1, 3, 1112, 0, 9);
+INSERT INTO `approval_record` VALUES (16, 'test', 0, '2019-06-15 14:03:05', '2019-06-13 10:56:27', 106, '2019-06-15 14:03:05', 86, 0, 1, 1, 1113, 1, 16);
+INSERT INTO `approval_record` VALUES (17, NULL, 3, '2019-06-13 10:56:27', '2019-06-13 10:56:28', 106, '2019-06-13 18:40:28', 86, 0, 1, 2, 1121, 1, 10);
+INSERT INTO `approval_record` VALUES (18, NULL, 2, '2019-06-13 10:56:27', '2019-06-13 10:56:28', 106, NULL, NULL, 0, 1, 3, 1112, 0, 10);
+INSERT INTO `approval_record` VALUES (19, NULL, 3, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 1, 6, 1, 11);
+INSERT INTO `approval_record` VALUES (20, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 2, 5, 1, 11);
+INSERT INTO `approval_record` VALUES (21, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 3, 1, 1, 11);
+INSERT INTO `approval_record` VALUES (22, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 4, 2, 0, 11);
+INSERT INTO `approval_record` VALUES (23, NULL, 3, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 1, 1, 1, 12);
+INSERT INTO `approval_record` VALUES (24, NULL, 3, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, '2019-06-15 13:37:07', 1, 0, 1, 2, 5, 1, 12);
+INSERT INTO `approval_record` VALUES (25, NULL, 2, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 3, 6, 1, 12);
+INSERT INTO `approval_record` VALUES (26, NULL, 2, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 4, 15, 0, 12);
+INSERT INTO `approval_record` VALUES (27, '范德萨发上的发', 0, '2019-06-14 19:08:43', '2019-06-14 15:42:30', 106, '2019-06-14 19:08:43', 86, 0, 1, 1, 1113, 1, 13);
+INSERT INTO `approval_record` VALUES (28, NULL, 3, '2019-06-14 15:42:30', '2019-06-14 15:42:30', 106, '2019-06-14 19:08:43', 86, 0, 1, 2, 1121, 1, 13);
+INSERT INTO `approval_record` VALUES (29, NULL, 2, '2019-06-14 15:42:30', '2019-06-14 15:42:30', 106, NULL, NULL, 0, 1, 3, 1112, 0, 13);
+INSERT INTO `approval_record` VALUES (30, NULL, 3, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 1, 1, 1113, 1, 14);
+INSERT INTO `approval_record` VALUES (31, NULL, 3, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, '2019-06-15 14:05:41', 86, 0, 1, 2, 1121, 1, 14);
+INSERT INTO `approval_record` VALUES (32, NULL, 2, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 1, 3, 1112, 0, 14);
+INSERT INTO `approval_record` VALUES (33, NULL, 3, '2019-06-15 13:37:31', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 1, 6, 1, 15);
+INSERT INTO `approval_record` VALUES (34, NULL, 2, '2019-06-15 13:37:31', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 2, 5, 1, 15);
+INSERT INTO `approval_record` VALUES (35, NULL, 2, '2019-06-15 13:37:31', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 3, 1, 1, 15);
+INSERT INTO `approval_record` VALUES (36, NULL, 2, '2019-06-15 13:37:31', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 4, 2, 0, 15);
+INSERT INTO `approval_record` VALUES (37, 'test', 0, '2019-06-15 14:07:38', '2019-06-15 13:47:54', 85, '2019-06-15 14:07:38', 86, 0, 1, 1, 1113, 1, 16);
+INSERT INTO `approval_record` VALUES (38, NULL, 3, '2019-06-15 13:47:54', '2019-06-15 13:47:54', 85, '2019-06-15 14:07:38', 86, 0, 1, 2, 1121, 1, 16);
+INSERT INTO `approval_record` VALUES (39, NULL, 2, '2019-06-15 13:47:54', '2019-06-15 13:47:54', 85, NULL, NULL, 0, 1, 3, 1112, 0, 16);
 
 -- ----------------------------
 -- Table structure for arrearages_record
@@ -190,7 +239,7 @@ CREATE TABLE `arrearages_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_arrearages_record_01`(`ref_trans_id`) USING BTREE,
   INDEX `idx_arrearages_record_02`(`arrearages_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '欠款记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '欠款记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of arrearages_record
@@ -215,6 +264,33 @@ INSERT INTO `arrearages_record` VALUES (17, 266, 26, '2019-06-05 18:43:12', 0, 1
 INSERT INTO `arrearages_record` VALUES (18, 267, 26, '2019-06-05 18:49:01', 0, 140.00, 120.00, 20, 20, 0, '2019-06-05 18:49:01', 85, '2019-06-05 19:01:08', 85, 0);
 INSERT INTO `arrearages_record` VALUES (19, 269, 26, '2019-06-05 19:22:31', 0, 140.00, 140.00, 0, NULL, 1, '2019-06-05 19:22:31', 85, NULL, NULL, 0);
 INSERT INTO `arrearages_record` VALUES (20, 271, 26, '2019-06-05 19:27:42', 0, 70.00, 60.00, 10, 0, 1, '2019-06-05 19:27:42', 85, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (21, 316, 26, '2019-06-15 10:14:41', 0, 360.00, 0.00, 360, 0, 1, '2019-06-15 10:14:41', 85, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (22, 317, 26, '2019-06-15 10:15:19', 0, 360.00, 0.00, 360, 0, 1, '2019-06-15 10:15:19', 85, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (23, 318, 26, '2019-06-15 10:18:59', 0, 360.00, 10.00, 350, 0, 1, '2019-06-15 10:18:59', 1, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (24, 320, 26, '2019-06-15 10:34:15', 0, 180.00, 0.00, 180, 0, 1, '2019-06-15 10:34:15', 85, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (25, 329, 85, '2019-06-15 11:02:24', 0, 72.00, 10.00, 62, 0, 1, '2019-06-15 11:02:24', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (26, 330, 85, '2019-06-15 11:08:28', 0, 72.00, 5.00, 67, 0, 1, '2019-06-15 11:08:28', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (27, 331, 85, '2019-06-15 11:11:40', 0, 55.00, 0.10, 55, 0, 1, '2019-06-15 11:11:40', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (28, 332, 85, '2019-06-15 11:12:20', 0, 550.00, 1.00, 549, 0, 1, '2019-06-15 11:12:20', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (29, 333, 85, '2019-06-15 11:15:03', 0, 165.00, 8.00, 157, 0, 1, '2019-06-15 11:15:03', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (30, 334, 85, '2019-06-15 11:16:17', 0, 25.00, 5.00, 20, 0, 1, '2019-06-15 11:16:17', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (31, 335, 85, '2019-06-15 11:18:26', 0, 25.00, 5.00, 20, 0, 1, '2019-06-15 11:18:26', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (32, 336, 85, '2019-06-15 11:19:34', 0, 25.00, 5.00, 20, 0, 1, '2019-06-15 11:19:34', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (33, 337, 85, '2019-06-15 11:21:59', 0, 25.00, 8.00, 17, 0, 1, '2019-06-15 11:22:01', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (34, 338, 85, '2019-06-15 11:23:55', 0, 45.00, 8.00, 37, 0, 1, '2019-06-15 11:23:55', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (35, 339, 85, '2019-06-15 11:25:10', 0, 45.00, 5.00, 40, 0, 1, '2019-06-15 11:25:10', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (36, 340, 85, '2019-06-15 11:26:35', 0, 40.00, 8.00, 32, 0, 1, '2019-06-15 11:26:35', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (37, 341, 113, '2019-06-15 11:26:48', 0, 10.00, 5.00, 5, 6, 1, '2019-06-15 11:26:48', 219, '2019-06-17 11:17:59', 219, 0);
+INSERT INTO `arrearages_record` VALUES (38, 342, 113, '2019-06-15 11:28:33', 0, 10.00, 5.00, 5, 5, 0, '2019-06-15 11:28:33', 219, '2019-06-17 11:25:25', 219, 0);
+INSERT INTO `arrearages_record` VALUES (39, 343, 85, '2019-06-15 11:30:17', 0, 40.00, 5.00, 35, 0, 1, '2019-06-15 11:30:17', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (40, 344, 85, '2019-06-15 11:31:05', 0, 60.00, 0.20, 60, 0, 1, '2019-06-15 11:31:05', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (41, 345, 113, '2019-06-15 11:32:08', 0, 10.00, 7.00, 3, 3, 0, '2019-06-15 11:32:08', 219, '2019-06-17 11:29:19', 219, 0);
+INSERT INTO `arrearages_record` VALUES (42, 346, 113, '2019-06-15 11:32:09', 0, 10.00, 7.00, 3, 4, 1, '2019-06-15 11:32:09', 219, '2019-06-17 14:37:32', 219, 0);
+INSERT INTO `arrearages_record` VALUES (43, 350, 85, '2019-06-15 13:22:42', 0, 440.00, 352.00, 342, 0, 1, '2019-06-15 13:22:42', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (44, 352, 85, '2019-06-15 13:31:33', 0, 55.00, 44.00, -64, 0, 1, '2019-06-15 13:31:33', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (45, 367, 113, '2019-06-17 11:04:00', 0, 450.00, 50.00, 400, 392, 1, '2019-06-17 11:04:00', 219, '2019-06-17 15:19:39', 219, 0);
+INSERT INTO `arrearages_record` VALUES (46, 370, 113, '2019-06-17 11:52:19', 0, 225.00, 40.00, 185, 185, 0, '2019-06-17 11:52:19', 219, '2019-06-17 14:30:22', 219, 0);
+INSERT INTO `arrearages_record` VALUES (47, 374, 113, '2019-06-17 14:26:29', 0, 225.00, 0.00, 225, 225, 0, '2019-06-17 14:26:29', 219, '2019-06-17 14:34:15', 219, 0);
 
 -- ----------------------------
 -- Table structure for attendance_sheet
@@ -293,7 +369,7 @@ CREATE TABLE `bill_type`  (
 -- Records of bill_type
 -- ----------------------------
 INSERT INTO `bill_type` VALUES (1, NULL, '调休');
-INSERT INTO `bill_type` VALUES (4, NULL, '3');
+INSERT INTO `bill_type` VALUES (4, NULL, '事假');
 
 -- ----------------------------
 -- Table structure for body_part
@@ -329,7 +405,7 @@ CREATE TABLE `business_stuff`  (
   INDEX `idx_business_stuff_01`(`stuff_id`) USING BTREE,
   INDEX `idx_business_stuff_02`(`ref_trans_id`) USING BTREE,
   INDEX `idx_business_stuff_03`(`trans_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 248 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关联员工' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 325 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关联员工' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of business_stuff
@@ -578,6 +654,83 @@ INSERT INTO `business_stuff` VALUES (244, 294, 0, 1225, '2019-06-12 17:32:20', 2
 INSERT INTO `business_stuff` VALUES (245, 295, 0, 1226, '2019-06-12 17:35:14', 216, NULL, NULL, 0);
 INSERT INTO `business_stuff` VALUES (246, 296, 0, 1226, '2019-06-12 17:36:19', 216, NULL, NULL, 0);
 INSERT INTO `business_stuff` VALUES (247, 299, 0, 1224, '2019-06-12 18:56:21', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (248, 307, 0, 1128, '2019-06-13 10:31:37', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (249, 308, 0, 1128, '2019-06-13 10:32:59', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (250, 309, 0, 5, '2019-06-13 10:34:43', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (251, 310, 0, 1227, '2019-06-13 15:01:42', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (252, 311, 0, 1128, '2019-06-13 16:40:34', 106, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (253, 312, 0, 1128, '2019-06-14 17:24:06', 106, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (254, 313, 0, 38, '2019-06-14 18:33:01', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (255, 1, 1, 1213, '2019-06-14 20:22:34', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (256, 314, 0, 1128, '2019-06-15 09:37:28', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (257, 315, 0, 1128, '2019-06-15 10:02:03', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (258, 316, 0, 1223, '2019-06-15 10:14:41', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (259, 317, 0, 1223, '2019-06-15 10:15:19', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (260, 318, 0, 1128, '2019-06-15 10:18:59', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (261, 319, 0, 1226, '2019-06-15 10:27:40', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (262, 320, 0, 1223, '2019-06-15 10:34:15', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (263, 321, 0, 1225, '2019-06-15 10:34:47', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (264, 322, 0, 1226, '2019-06-15 10:39:02', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (265, 323, 0, 1226, '2019-06-15 10:45:19', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (266, 324, 0, 1226, '2019-06-15 10:46:25', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (267, 325, 0, 1226, '2019-06-15 10:46:26', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (268, 326, 0, 1226, '2019-06-15 10:46:26', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (269, 327, 0, 1226, '2019-06-15 10:48:04', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (270, 328, 0, 1225, '2019-06-15 10:53:17', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (271, 329, 0, 1224, '2019-06-15 11:02:25', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (272, 330, 0, 1224, '2019-06-15 11:08:28', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (273, 331, 0, 1, '2019-06-15 11:11:40', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (274, 332, 0, 6, '2019-06-15 11:12:20', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (275, 333, 0, 1224, '2019-06-15 11:15:03', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (276, 334, 0, 1213, '2019-06-15 11:16:17', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (277, 335, 0, 1224, '2019-06-15 11:18:27', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (278, 336, 0, 8, '2019-06-15 11:19:34', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (279, 337, 0, 7, '2019-06-15 11:22:03', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (280, 338, 0, 16, '2019-06-15 11:23:55', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (281, 339, 0, 8, '2019-06-15 11:25:11', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (282, 340, 0, 7, '2019-06-15 11:26:35', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (283, 341, 0, 1225, '2019-06-15 11:26:48', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (284, 342, 0, 1225, '2019-06-15 11:28:33', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (285, 343, 0, 7, '2019-06-15 11:30:17', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (286, 344, 0, 1, '2019-06-15 11:31:05', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (287, 345, 0, 1226, '2019-06-15 11:32:09', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (288, 346, 0, 1226, '2019-06-15 11:32:09', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (289, 347, 0, 1128, '2019-06-15 12:12:32', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (290, 1, 1, 1226, '2019-06-15 13:06:52', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (291, 1, 1, 1226, '2019-06-15 13:11:19', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (292, 348, 0, 1226, '2019-06-15 13:21:32', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (293, 349, 0, 1226, '2019-06-15 13:22:38', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (294, 350, 0, 17, '2019-06-15 13:22:42', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (295, 351, 0, 1, '2019-06-15 13:24:29', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (296, 352, 0, 1213, '2019-06-15 13:31:33', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (297, 20, 0, 1226, '2019-06-15 13:33:32', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (298, 1, 1, 11, '2019-06-15 13:53:04', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (299, 1, 1, 5, '2019-06-15 13:55:05', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (300, 1, 1, 1213, '2019-06-15 13:56:56', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (301, 1, 1, 5, '2019-06-15 14:07:31', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (302, 353, 0, 1225, '2019-06-17 10:10:30', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (303, 354, 0, 1225, '2019-06-17 10:24:58', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (304, 355, 0, 1225, '2019-06-17 10:36:09', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (305, 356, 0, 1225, '2019-06-17 10:37:14', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (306, 357, 0, 1225, '2019-06-17 10:39:29', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (307, 358, 0, 1225, '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (308, 359, 0, 5, '2019-06-17 10:47:28', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (309, 360, 0, 9, '2019-06-17 10:48:31', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (310, 361, 0, 8, '2019-06-17 10:49:04', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (311, 362, 0, 9, '2019-06-17 10:50:01', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (312, 363, 0, 8, '2019-06-17 10:50:36', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (313, 364, 0, 9, '2019-06-17 10:51:06', 215, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (314, 365, 0, 1225, '2019-06-17 10:52:38', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (315, 366, 0, 1225, '2019-06-17 11:01:54', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (316, 367, 0, 1225, '2019-06-17 11:04:00', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (317, 368, 0, 1226, '2019-06-17 11:45:16', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (318, 369, 0, 1226, '2019-06-17 11:49:52', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (319, 370, 0, 1226, '2019-06-17 11:52:19', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (320, 371, 0, 1226, '2019-06-17 11:53:13', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (321, 1, 1, 1226, '2019-06-17 12:00:38', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (322, 372, 0, 1226, '2019-06-17 12:04:21', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (323, 373, 0, 1225, '2019-06-17 14:19:34', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (324, 374, 0, 1226, '2019-06-17 14:26:30', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for card_balance
@@ -602,7 +755,7 @@ CREATE TABLE `card_balance`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_card_balance_01`(`member_id`) USING BTREE,
   INDEX `idx_card_balance_02`(`card_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '卡户余额' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '卡户余额' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of card_balance
@@ -660,9 +813,9 @@ INSERT INTO `card_balance` VALUES (67, 80, 9, 0, 10.00, 10, 0, NULL, 0, '', '201
 INSERT INTO `card_balance` VALUES (68, 26, 52, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (69, 26, 53, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (70, 26, 55, 1, 14.00, 25, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-10 11:46:33', 85, 0);
-INSERT INTO `card_balance` VALUES (71, 26, 56, 1, 4.00, 5, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-10 11:46:33', 85, 0);
-INSERT INTO `card_balance` VALUES (72, 26, 63, 1, 0.00, 4, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-10 11:03:15', 85, 0);
-INSERT INTO `card_balance` VALUES (73, 26, 64, 1, 0.00, 1, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-10 11:07:40', 85, 0);
+INSERT INTO `card_balance` VALUES (71, 26, 56, 1, 22.00, 23, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-15 12:12:31', 85, 0);
+INSERT INTO `card_balance` VALUES (72, 26, 63, 1, 4.00, 8, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-15 10:02:03', 85, 0);
+INSERT INTO `card_balance` VALUES (73, 26, 64, 1, 10.00, 11, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-14 17:24:05', 106, 0);
 INSERT INTO `card_balance` VALUES (74, 26, 71, 3, 7.00, 7, 0, NULL, 0, NULL, '2019-06-04 16:48:49', 85, '2019-06-05 10:03:18', 85, 0);
 INSERT INTO `card_balance` VALUES (75, 26, 68, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-04 17:26:35', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (76, 26, 44, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-04 17:53:17', 85, NULL, NULL, 0);
@@ -677,8 +830,25 @@ INSERT INTO `card_balance` VALUES (84, 95, 89, 0, 10.00, 10, 0, NULL, 0, '不知
 INSERT INTO `card_balance` VALUES (85, 95, 69, 1, 2.00, 2, 0, NULL, 0, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (86, 95, 71, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (87, 91, 96, 0, 10.00, 10, 0, NULL, 0, '', '2019-06-12 16:36:03', 216, NULL, NULL, 0);
-INSERT INTO `card_balance` VALUES (90, 85, 13, 0, 10.00, 10, 0, NULL, 0, '', '2019-06-12 18:56:21', 215, NULL, NULL, 0);
-INSERT INTO `card_balance` VALUES (91, 85, 12, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-12 18:56:21', 215, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (90, 85, 13, 0, -342.00, 10, 0, NULL, 0, '', '2019-06-12 18:56:21', 215, '2019-06-15 13:22:42', 215, 0);
+INSERT INTO `card_balance` VALUES (91, 85, 12, 1, 3.00, 14, 0, NULL, 0, NULL, '2019-06-12 18:56:21', 215, '2019-06-15 14:07:31', 215, 0);
+INSERT INTO `card_balance` VALUES (98, 85, 4, 0, 64.00, 108, 0, NULL, 0, '', '2019-06-14 18:33:01', 215, '2019-06-15 13:31:33', 215, 0);
+INSERT INTO `card_balance` VALUES (99, 85, 61, 1, 4.00, 4, 0, NULL, 0, NULL, '2019-06-15 11:02:24', 215, '2019-06-15 11:08:28', 215, 0);
+INSERT INTO `card_balance` VALUES (100, 85, 62, 1, 17.00, 23, 0, NULL, 0, NULL, '2019-06-15 11:11:40', 215, '2019-06-15 13:53:03', 215, 0);
+INSERT INTO `card_balance` VALUES (101, 113, 75, 1, 397.00, 400, 0, NULL, 0, NULL, '2019-06-15 11:26:48', 219, '2019-06-17 12:00:38', 219, 0);
+INSERT INTO `card_balance` VALUES (102, 113, 77, 3, 2.00, 2, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-15 13:22:38', 219, 0);
+INSERT INTO `card_balance` VALUES (103, 113, 69, 1, 10.00, 10, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
+INSERT INTO `card_balance` VALUES (104, 113, 71, 1, 21.00, 21, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
+INSERT INTO `card_balance` VALUES (105, 113, 73, 1, 60.00, 60, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
+INSERT INTO `card_balance` VALUES (106, 113, 74, 1, 60.00, 60, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
+INSERT INTO `card_balance` VALUES (107, 97, 89, 0, 5.00, 5, 0, NULL, 0, '', '2019-06-17 10:39:29', 219, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (108, 97, 96, 0, 50.00, 50, 0, NULL, 0, '备注备注备足', '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (109, 97, 73, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (110, 68, 88, 0, 1.00, 1, 0, NULL, 0, '', '2019-06-17 10:48:31', 215, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (111, 68, 12, 1, 2.00, 2, 0, NULL, 0, NULL, '2019-06-17 10:48:31', 215, '2019-06-17 10:49:04', 215, 0);
+INSERT INTO `card_balance` VALUES (112, 68, 12, 0, 80.00, 80, 0, NULL, 0, '', '2019-06-17 10:49:04', 215, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (113, 113, 96, 0, 0.00, 50, 0, NULL, 0, '备注备注备注', '2019-06-17 11:45:16', 219, '2019-06-17 14:26:29', 219, 0);
+INSERT INTO `card_balance` VALUES (114, 113, 76, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-17 11:53:13', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for card_purchase
@@ -706,7 +876,7 @@ CREATE TABLE `card_purchase`  (
   INDEX `idx_card_purchase_01`(`member_id`) USING BTREE,
   INDEX `idx_card_purchase_02`(`card_id`) USING BTREE,
   INDEX `idx_card_purchase_03`(`card_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 304 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购卡记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 375 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购卡记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of card_purchase
@@ -973,6 +1143,74 @@ INSERT INTO `card_purchase` VALUES (294, 93, 0, 0, NULL, 20.00, NULL, 20.00, 2, 
 INSERT INTO `card_purchase` VALUES (295, 98, 0, 0, NULL, 20.00, NULL, 20.00, 2, '', '1722', 3, '2019-06-12 17:35:14', 216, NULL, NULL, 0);
 INSERT INTO `card_purchase` VALUES (296, 98, 0, 0, NULL, 20.00, NULL, 20.00, 3, '', '1723', 3, '2019-06-12 17:36:19', 216, NULL, NULL, 0);
 INSERT INTO `card_purchase` VALUES (299, 85, 13, 0, NULL, 10.00, NULL, 10.00, 0, '', '1725', 1, '2019-06-12 18:56:21', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (307, 26, 0, 0, NULL, 100.00, NULL, 100.00, 3, '', '1750', 3, '2019-06-13 10:31:37', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (308, 26, 0, 0, NULL, 500.00, NULL, 500.00, 2, '', '1751', 3, '2019-06-13 10:32:59', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (309, 85, 0, 0, NULL, 1000.00, NULL, 1000.00, 3, '', '1752', 3, '2019-06-13 10:34:43', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (310, 113, 0, 0, NULL, 0.00, NULL, 0.00, 2, '', '1764', 3, '2019-06-13 15:01:42', 216, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (311, 26, 63, 1, NULL, 240.00, 0.00, 240.00, 3, NULL, '1765', 0, '2019-06-13 16:40:34', 106, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (312, 26, 64, 1, NULL, 500.00, 0.00, 500.00, 3, NULL, '1781', 0, '2019-06-14 17:24:05', 106, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (313, 85, 4, 0, NULL, 8.00, NULL, 8.00, 0, '', '1783', 1, '2019-06-14 18:33:01', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (314, 26, 56, 1, NULL, 180.00, 0.00, 180.00, 2, NULL, '1805', 0, '2019-06-15 09:37:28', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (315, 26, 63, 1, NULL, 80.00, 0.00, 80.00, 3, NULL, '1808', 0, '2019-06-15 10:02:03', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (316, 26, 56, 1, NULL, 360.00, 360.00, 0.00, 0, NULL, '1813', 0, '2019-06-15 10:14:41', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (317, 26, 56, 1, NULL, 360.00, 360.00, 0.00, 0, NULL, '1813', 0, '2019-06-15 10:15:19', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (318, 26, 56, 1, NULL, 360.00, 350.00, 10.00, 0, NULL, '1814', 0, '2019-06-15 10:18:59', 1, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (319, 113, 0, 0, NULL, 300.00, NULL, 300.00, 0, '备注备注备注', '1817', 3, '2019-06-15 10:27:40', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (320, 26, 56, 1, NULL, 180.00, 180.00, 0.00, 0, NULL, '1820', 0, '2019-06-15 10:34:15', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (321, 113, 0, 0, NULL, 100.00, NULL, 100.00, 3, '', '1822', 3, '2019-06-15 10:34:47', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (322, 113, 0, 0, NULL, 100.00, NULL, 100.00, 0, '无', '1824', 3, '2019-06-15 10:39:02', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (323, 113, 0, 0, NULL, 10.00, NULL, 10.00, 0, '', '1825', 3, '2019-06-15 10:45:19', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (324, 113, 0, 0, NULL, 100.00, NULL, 100.00, 0, '', '1827', 3, '2019-06-15 10:46:25', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (325, 113, 0, 0, NULL, 100.00, NULL, 100.00, 0, '', '1829', 3, '2019-06-15 10:46:26', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (326, 113, 0, 0, NULL, 100.00, NULL, 100.00, 0, '', '1830', 3, '2019-06-15 10:46:26', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (327, 113, 0, 0, NULL, 100.00, NULL, 100.00, 3, '', '1831', 3, '2019-06-15 10:47:38', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (328, 113, 58, 5, NULL, 280.00, 0.00, 280.00, 10, NULL, '1833', 1, '2019-06-15 10:53:17', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (329, 85, 61, 1, NULL, 72.00, 62.00, 10.00, 0, NULL, '1837', 1, '2019-06-15 11:02:24', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (330, 85, 61, 1, NULL, 72.00, 67.00, 5.00, 0, NULL, '1838', 0, '2019-06-15 11:08:28', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (331, 85, 62, 1, NULL, 55.00, 54.90, 0.10, 0, NULL, '1839', 1, '2019-06-15 11:11:40', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (332, 85, 62, 1, NULL, 550.00, 549.00, 1.00, 0, NULL, '1840', 0, '2019-06-15 11:12:20', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (333, 85, 62, 1, NULL, 165.00, 157.00, 8.00, 10, NULL, '1841', 0, '2019-06-15 11:15:03', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (334, 85, 12, 1, NULL, 25.00, 20.00, 5.00, 10, NULL, '1842', 0, '2019-06-15 11:16:17', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (335, 85, 12, 1, NULL, 25.00, 20.00, 5.00, 10, NULL, '1843', 0, '2019-06-15 11:18:26', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (336, 85, 12, 1, NULL, 25.00, 20.00, 5.00, 0, NULL, '1844', 0, '2019-06-15 11:19:34', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (337, 85, 12, 1, NULL, 25.00, 17.00, 8.00, 0, NULL, '1845', 0, '2019-06-15 11:21:55', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (338, 85, 12, 1, NULL, 45.00, 37.00, 8.00, 0, NULL, '1846', 0, '2019-06-15 11:23:55', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (339, 85, 12, 1, NULL, 45.00, 40.00, 5.00, 0, NULL, '1847', 0, '2019-06-15 11:25:10', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (340, 85, 12, 1, NULL, 40.00, 32.00, 8.00, 0, NULL, '1848', 0, '2019-06-15 11:26:35', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (341, 113, 75, 1, NULL, 10.00, 5.00, 5.00, 3, NULL, '1849', 1, '2019-06-15 11:26:48', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (342, 113, 75, 1, NULL, 10.00, 5.00, 5.00, 3, NULL, '1850', 0, '2019-06-15 11:28:33', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (343, 85, 12, 1, NULL, 40.00, 35.00, 5.00, 0, NULL, '1851', 0, '2019-06-15 11:30:17', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (344, 85, 12, 1, NULL, 60.00, 59.80, 0.20, 0, NULL, '1852', 0, '2019-06-15 11:31:05', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (345, 113, 75, 1, NULL, 10.00, 3.00, 7.00, 1, NULL, '1853', 0, '2019-06-15 11:32:08', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (346, 113, 75, 1, NULL, 10.00, 3.00, 7.00, 3, NULL, '1854', 0, '2019-06-15 11:32:09', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (347, 26, 56, 1, NULL, 180.00, 0.00, 180.00, 3, NULL, '1855', 0, '2019-06-15 12:12:31', 85, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (348, 113, 77, 3, NULL, 320.00, 0.00, 320.00, 3, NULL, '1867', 1, '2019-06-15 13:21:31', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (349, 113, 77, 3, NULL, 320.00, 0.00, 320.00, 3, NULL, '1869', 0, '2019-06-15 13:22:38', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (350, 85, 62, 1, NULL, 440.00, 342.00, 352.00, 11, NULL, '1868', 0, '2019-06-15 13:22:42', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (351, 85, 4, 0, NULL, 100.00, NULL, 100.00, 0, '', '1871', 0, '2019-06-15 13:24:29', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (352, 85, 62, 1, NULL, 55.00, -64.00, 44.00, 11, NULL, '1873', 0, '2019-06-15 13:31:33', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (353, 96, 0, 0, NULL, 2.00, NULL, 2.00, 0, '', '1878', 3, '2019-06-17 10:10:30', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (354, 97, 0, 0, NULL, 50.00, NULL, 50.00, 0, '备注备注备注备注', '1879', 3, '2019-06-17 10:24:58', 216, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (355, 97, 0, 0, NULL, 30.00, NULL, 30.00, 0, '', '1880', 3, '2019-06-17 10:36:09', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (356, 97, 0, 0, NULL, 30.00, NULL, 30.00, 0, '', '1881', 3, '2019-06-17 10:37:14', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (357, 97, 89, 0, NULL, 5.00, NULL, 5.00, 0, '', '1882', 1, '2019-06-17 10:39:29', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (358, 97, 96, 0, NULL, 50.00, NULL, 50.00, 0, '备注备注备足', '1884', 1, '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (359, 80, 0, 0, NULL, 10.00, NULL, 10.00, 0, '', '1885', 3, '2019-06-17 10:47:28', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (360, 68, 88, 0, NULL, 1.00, NULL, 1.00, 0, '', '1886', 1, '2019-06-17 10:48:31', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (361, 68, 12, 0, NULL, 80.00, NULL, 80.00, 0, '', '1887', 1, '2019-06-17 10:49:04', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (362, 68, 0, 0, NULL, 8.00, NULL, 8.00, 0, '', '1888', 3, '2019-06-17 10:50:01', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (363, 11, 0, 0, NULL, 100.00, NULL, 100.00, 0, '', '1889', 3, '2019-06-17 10:50:36', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (364, 11, 0, 0, NULL, 1896.00, NULL, 1896.00, 0, '', '1890', 3, '2019-06-17 10:51:06', 215, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (365, 92, 0, 0, NULL, 20.00, NULL, 20.00, 0, '备注备注备注备注备注', '1891', 3, '2019-06-17 10:52:38', 216, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (366, 113, 71, 1, NULL, 30.00, 0.00, 30.00, 3, NULL, '1892', 0, '2019-06-17 11:01:54', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (367, 113, 55, 5, NULL, 450.00, 400.00, 50.00, 10, NULL, '1893', 1, '2019-06-17 11:04:00', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (368, 113, 96, 0, NULL, 50.00, NULL, 50.00, 0, '备注备注备注', '1928', 1, '2019-06-17 11:45:16', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (369, 113, 74, 1, NULL, 10.00, 0.00, 10.00, 11, NULL, '1929', 0, '2019-06-17 11:49:52', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (370, 113, 55, 5, NULL, 225.00, 185.00, 40.00, 11, NULL, '1930', 1, '2019-06-17 11:52:19', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (371, 113, 76, 3, NULL, 350.00, 0.00, 350.00, 2, NULL, '1931', 1, '2019-06-17 11:53:13', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (372, 96, 0, 0, NULL, 30.00, NULL, 30.00, 0, '', '1932', 3, '2019-06-17 12:04:21', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (373, 113, 0, 0, NULL, 2.00, NULL, 2.00, 0, '', '1933', 3, '2019-06-17 14:19:34', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (374, 113, 55, 5, NULL, 225.00, 225.00, 0.00, 11, NULL, '1934', 1, '2019-06-17 14:26:29', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for city
@@ -4576,6 +4814,7 @@ CREATE TABLE `consume_record`  (
   `cash` double(10, 2) NOT NULL,
   `amount` double(10, 2) NOT NULL,
   `member_id` bigint(20) NOT NULL,
+  `stuff_status` int(11) NOT NULL DEFAULT 1,
   `create_date` datetime(0) NOT NULL,
   `create_by` bigint(20) NOT NULL,
   `update_date` datetime(0) NULL DEFAULT NULL,
@@ -4585,12 +4824,19 @@ CREATE TABLE `consume_record`  (
   INDEX `idx_consume_record_01`(`bill_no`) USING BTREE,
   INDEX `idx_consume_record_02`(`way`) USING BTREE,
   INDEX `idx_consume_record_03`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '积分/代金券消耗记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '积分/代金券消耗记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of consume_record
 -- ----------------------------
-INSERT INTO `consume_record` VALUES (1, '1', 0, 10.00, 100.00, 71, '2019-05-03 14:09:29', 1, NULL, NULL, 1);
+INSERT INTO `consume_record` VALUES (1, '1', 0, 10.00, 100.00, 71, 1, '2019-05-03 14:09:29', 1, NULL, NULL, 1);
+INSERT INTO `consume_record` VALUES (2, '8t1kQiuH', 1, 10.00, 1.00, 1231, 1, '2019-06-15 09:11:52', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (3, 'dFHW4N6E', 2, 0.00, 1.00, 1231, 0, '2019-06-15 09:15:34', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (4, 'Wk0eZtCn', 1, 10.00, 1.00, 1231, 0, '2019-06-15 09:17:23', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (5, 'dSbagJwq', 0, 10.00, 0.00, 1231, 0, '2019-06-15 09:30:53', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (6, 'r0Unz4wQ', 2, 0.00, 10.00, 1231, 0, '2019-06-15 09:37:47', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (7, 'duSSVXhc', 2, 0.00, 10.00, 113, 1, '2019-06-15 09:47:12', 1, NULL, NULL, 0);
+INSERT INTO `consume_record` VALUES (8, 'R7agls8D', 0, 11.00, 0.00, 113, 1, '2019-06-15 09:51:38', 63, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for holiday
@@ -4694,7 +4940,7 @@ CREATE TABLE `member`  (
   INDEX `idx_member_04`(`tel`) USING BTREE,
   INDEX `idx_member_05`(`primary_beautician`) USING BTREE,
   INDEX `idx_member_06`(`introducer`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 119 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member
@@ -4758,6 +5004,14 @@ INSERT INTO `member` VALUES (96, 119, '是手机号', '52555', 1, '52693', '2016
 INSERT INTO `member` VALUES (97, 119, '门口', '15963365454', 1, '2587', '2019-06-12 00:00:00', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, '不知道', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SkSw6dLS', NULL, '2019-06-12 09:09:19', 216, NULL, NULL, 0);
 INSERT INTO `member` VALUES (98, 119, '无阿', '123456789', 1, '', '2018-06-10 00:00:00', 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, '不知道', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'g9jlj21y', NULL, '2019-06-12 14:16:27', 216, NULL, NULL, 0);
 INSERT INTO `member` VALUES (99, 36, '发放', '13686527856', 2, '', NULL, 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 1112, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ScLZD8rx', NULL, '2019-06-12 14:18:43', 85, NULL, NULL, 0);
+INSERT INTO `member` VALUES (106, 118, '测试', '17328482931', 0, '123456', '1985-06-13 00:00:00', 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, '上的发的撒发', NULL, NULL, NULL, NULL, NULL, NULL, 1222, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-13 10:14:11', 213, NULL, NULL, 0);
+INSERT INTO `member` VALUES (107, 118, '测试上的发', '17328482931', 0, '123456', '1985-06-13 00:00:00', 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, '上的发的撒发', NULL, NULL, NULL, NULL, NULL, NULL, 1222, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-13 10:14:34', 213, NULL, NULL, 0);
+INSERT INTO `member` VALUES (113, 119, '东东', '23456789', 1, '123465698', '2018-06-13 00:00:00', 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, '无', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Wd3S6y50', NULL, '2019-06-13 14:32:47', 216, NULL, NULL, 0);
+INSERT INTO `member` VALUES (114, -1, '13790538888', '13790538888', 3, '', NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-14 14:25:43', 1, NULL, NULL, 0);
+INSERT INTO `member` VALUES (115, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:25:17', 216, NULL, NULL, 0);
+INSERT INTO `member` VALUES (116, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:25:22', 216, NULL, NULL, 0);
+INSERT INTO `member` VALUES (117, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:29:11', 216, NULL, NULL, 0);
+INSERT INTO `member` VALUES (118, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:30:06', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_gift
@@ -4784,7 +5038,7 @@ CREATE TABLE `member_gift`  (
   INDEX `idx_member_gift_02`(`ref_trans_id`) USING BTREE,
   INDEX `idx_member_gift_03`(`gift_type`) USING BTREE,
   INDEX `idx_member_gift_04`(`git_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 174 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '赠送明细表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 182 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '赠送明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_gift
@@ -4959,6 +5213,34 @@ INSERT INTO `member_gift` VALUES (170, 26, 283, 0, 2, -2, 60.00, 0, NULL, '2019-
 INSERT INTO `member_gift` VALUES (171, 95, 288, 0, 0, 69, 2.00, NULL, NULL, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
 INSERT INTO `member_gift` VALUES (172, 95, 288, 0, 0, 71, 1.00, NULL, NULL, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
 INSERT INTO `member_gift` VALUES (173, 85, 299, 0, 0, 12, 1.00, NULL, NULL, NULL, '2019-06-12 18:56:21', 215, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (174, 26, 307, 0, 2, -2, 1000.00, 0, NULL, '2019-06-13 10:31:37', '2019-06-13 10:31:37', 85, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (175, 26, 308, 0, 2, -2, 500.00, 0, NULL, '2019-06-13 10:32:59', '2019-06-13 10:32:59', 85, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (176, 85, 309, 0, 2, -2, 1000.00, 0, NULL, '2019-06-13 10:34:43', '2019-06-13 10:34:43', 215, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (177, 85, 313, 0, 0, 12, 1.00, NULL, NULL, NULL, '2019-06-14 18:33:01', 215, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (178, 96, 353, 0, 3, -1, 1.00, NULL, 0, NULL, '2019-06-17 10:10:30', 219, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (179, 97, 358, 0, 0, 73, 1.00, NULL, NULL, NULL, '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (180, 68, 360, 0, 0, 12, 1.00, NULL, NULL, NULL, '2019-06-17 10:48:31', 215, NULL, NULL, 0);
+INSERT INTO `member_gift` VALUES (181, 68, 361, 0, 0, 12, 1.00, NULL, NULL, NULL, '2019-06-17 10:49:04', 215, NULL, NULL, 0);
+
+-- ----------------------------
+-- Table structure for member_invitation_code
+-- ----------------------------
+DROP TABLE IF EXISTS `member_invitation_code`;
+CREATE TABLE `member_invitation_code`  (
+  `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `system_user_id` bigint(20) NOT NULL,
+  `system_user_type` tinyint(4) NOT NULL,
+  `invitation_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`record_id`) USING BTREE,
+  INDEX `idx_menber_invitation_code_01`(`system_user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动会员/员工邀请码管理表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of member_invitation_code
+-- ----------------------------
+INSERT INTO `member_invitation_code` VALUES (1, 112, 0, 'kem3RFmR');
+INSERT INTO `member_invitation_code` VALUES (2, 232, 0, 'lon3RFyR');
+INSERT INTO `member_invitation_code` VALUES (3, 444, 1, 'yui9RKgL');
 
 -- ----------------------------
 -- Table structure for member_product_get_record
@@ -4977,7 +5259,7 @@ CREATE TABLE `member_product_get_record`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_get_record`(`create_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存领取表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存领取表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_get_record
@@ -5001,6 +5283,7 @@ INSERT INTO `member_product_get_record` VALUES (16, 26, 1.00, '规划局', 978, 
 INSERT INTO `member_product_get_record` VALUES (17, 27, 1.00, '规划局', 981, '2019-05-15 16:30:00', 1, NULL, NULL, 0);
 INSERT INTO `member_product_get_record` VALUES (18, 28, 1.00, '', 991, '2019-05-15 17:53:34', 1, NULL, NULL, 0);
 INSERT INTO `member_product_get_record` VALUES (19, 29, 1.00, '', 1008, '2019-05-17 12:30:35', 1, NULL, NULL, 0);
+INSERT INTO `member_product_get_record` VALUES (20, 35, 1.00, '备注备注备注', 1874, '2019-06-15 13:33:32', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_product_keep
@@ -5018,7 +5301,7 @@ CREATE TABLE `member_product_keep`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_keep`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_keep
@@ -5043,6 +5326,10 @@ INSERT INTO `member_product_keep` VALUES (32, 26, NULL, 1575, '2019-06-04 17:34:
 INSERT INTO `member_product_keep` VALUES (33, 26, NULL, 1578, '2019-06-04 19:31:23', 85, NULL, NULL, 0);
 INSERT INTO `member_product_keep` VALUES (34, 26, NULL, 1582, '2019-06-05 09:18:23', 85, NULL, NULL, 0);
 INSERT INTO `member_product_keep` VALUES (35, 26, NULL, 1640, '2019-06-05 19:43:34', 85, NULL, NULL, 0);
+INSERT INTO `member_product_keep` VALUES (36, 113, NULL, 1833, '2019-06-15 10:53:17', 219, NULL, NULL, 0);
+INSERT INTO `member_product_keep` VALUES (37, 113, NULL, 1893, '2019-06-17 11:04:00', 219, NULL, NULL, 0);
+INSERT INTO `member_product_keep` VALUES (38, 113, NULL, 1930, '2019-06-17 11:52:19', 219, NULL, NULL, 0);
+INSERT INTO `member_product_keep` VALUES (39, 113, NULL, 1934, '2019-06-17 14:26:29', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_product_keep_item
@@ -5065,7 +5352,7 @@ CREATE TABLE `member_product_keep_item`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_keep_item_01`(`member_product_keep_id`) USING BTREE,
   INDEX `idx_member_product_keep_item_02`(`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_keep_item
@@ -5090,6 +5377,10 @@ INSERT INTO `member_product_keep_item` VALUES (31, 32, 31, 25.00, 1.00, 25.00, 0
 INSERT INTO `member_product_keep_item` VALUES (32, 33, 31, 25.00, 1.00, 25.00, 0.00, '2019-06-04 19:31:23', 85, NULL, NULL, 0, 0);
 INSERT INTO `member_product_keep_item` VALUES (33, 34, 17, 520.00, 1.00, 520.00, 0.00, '2019-06-05 09:18:23', 85, NULL, NULL, 0, 0);
 INSERT INTO `member_product_keep_item` VALUES (34, 35, 17, 520.00, 1.00, 520.00, 0.00, '2019-06-05 19:43:34', 85, NULL, NULL, 0, 0);
+INSERT INTO `member_product_keep_item` VALUES (35, 36, 58, 280.00, 1.00, 280.00, 1.00, '2019-06-15 10:53:17', 219, '2019-06-15 13:33:32', 219, 0, 0);
+INSERT INTO `member_product_keep_item` VALUES (36, 37, 55, 50.00, 1.00, 50.00, 0.00, '2019-06-17 11:04:00', 219, NULL, NULL, 0, 0);
+INSERT INTO `member_product_keep_item` VALUES (37, 38, 55, 40.00, 1.00, 40.00, 0.00, '2019-06-17 11:52:19', 219, NULL, NULL, 0, 0);
+INSERT INTO `member_product_keep_item` VALUES (38, 39, 55, 0.00, 1.00, 0.00, 0.00, '2019-06-17 14:26:29', 219, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for member_product_reject
@@ -5191,7 +5482,7 @@ CREATE TABLE `member_salon_tag`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_salon_tag_01`(`salon_id`) USING BTREE,
   INDEX `idx_member_salon_tag_02`(`tag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员标签-按美容院分' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员标签-按美容院分' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_salon_tag
@@ -5230,6 +5521,9 @@ INSERT INTO `member_salon_tag` VALUES (39, 1, 34, '2019-05-16 20:27:16', 32, NUL
 INSERT INTO `member_salon_tag` VALUES (40, 2, 35, '2019-05-22 17:02:38', 1, NULL, NULL, 0);
 INSERT INTO `member_salon_tag` VALUES (41, 119, 36, '2019-06-11 09:34:05', 216, NULL, NULL, 0);
 INSERT INTO `member_salon_tag` VALUES (42, 119, 37, '2019-06-12 09:13:40', 216, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (43, 118, 38, '2019-06-13 10:13:05', 213, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (44, 119, 39, '2019-06-17 17:17:04', 216, NULL, NULL, 0);
+INSERT INTO `member_salon_tag` VALUES (45, 119, 40, '2019-06-17 17:17:15', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_tag
@@ -5247,7 +5541,7 @@ CREATE TABLE `member_tag`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_tag_01`(`member_id`) USING BTREE,
   INDEX `idx_member_tag_02`(`tag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员标签' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员标签' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_tag
@@ -5333,6 +5627,8 @@ INSERT INTO `member_tag` VALUES (79, 97, 37, '2019-06-12 09:20:05', 216, NULL, N
 INSERT INTO `member_tag` VALUES (80, 92, 37, '2019-06-12 09:22:38', 216, NULL, NULL, 0);
 INSERT INTO `member_tag` VALUES (81, 98, 37, '2019-06-12 14:16:27', 216, NULL, NULL, 0);
 INSERT INTO `member_tag` VALUES (82, 99, 0, '2019-06-12 14:18:44', 85, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (83, 112, 38, '2019-06-13 10:19:22', 213, NULL, NULL, 0);
+INSERT INTO `member_tag` VALUES (84, 113, 37, '2019-06-13 14:32:47', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_wallet
@@ -5355,7 +5651,7 @@ CREATE TABLE `member_wallet`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_wallet_01`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员钱包表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员钱包表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_wallet
@@ -5369,7 +5665,7 @@ INSERT INTO `member_wallet` VALUES (6, 7, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.
 INSERT INTO `member_wallet` VALUES (7, 8, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (8, 9, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (9, 10, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (10, 11, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (10, 11, 1996.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1996.00, '2019-05-10 18:22:17', 1, '2019-06-17 10:51:06', 215, 0);
 INSERT INTO `member_wallet` VALUES (11, 12, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (12, 14, 0.00, 0.00, 10.00, 0.00, 0.00, 0.00, 10.00, '2019-05-10 18:22:17', 1, '2019-05-17 10:16:05', 1, 0);
 INSERT INTO `member_wallet` VALUES (13, 15, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:17', 1, NULL, NULL, 0);
@@ -5383,7 +5679,7 @@ INSERT INTO `member_wallet` VALUES (20, 22, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
 INSERT INTO `member_wallet` VALUES (21, 23, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (22, 24, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (23, 25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (24, 26, 790.00, 0.00, 3796.00, 0.00, 10.00, 2876.00, 2280.00, '2019-05-10 18:22:18', 1, '2019-06-10 14:39:08', 85, 0);
+INSERT INTO `member_wallet` VALUES (24, 26, 790.00, 0.00, 5586.00, 0.00, 1260.00, 4066.00, 2880.00, '2019-05-10 18:22:18', 1, '2019-06-15 12:12:32', 85, 0);
 INSERT INTO `member_wallet` VALUES (25, 27, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (26, 28, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (27, 29, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
@@ -5393,7 +5689,7 @@ INSERT INTO `member_wallet` VALUES (30, 32, 0.00, 0.00, 250.00, 0.00, 0.00, 0.00
 INSERT INTO `member_wallet` VALUES (31, 65, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (32, 66, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (33, 67, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (34, 68, 0.00, 0.00, 1064.00, 0.00, 0.00, 0.00, 1020.00, '2019-05-10 18:22:18', 1, '2019-05-12 17:40:52', 1, 0);
+INSERT INTO `member_wallet` VALUES (34, 68, 8.00, 0.00, 1155.00, 0.00, 0.00, 0.00, 1109.00, '2019-05-10 18:22:18', 1, '2019-06-17 10:50:01', 215, 0);
 INSERT INTO `member_wallet` VALUES (35, 69, 0.00, 1000.00, 468.00, 0.00, 0.00, 0.00, 98.00, '2019-05-10 18:22:18', 1, '2019-05-13 09:07:10', 1, 0);
 INSERT INTO `member_wallet` VALUES (36, 70, 0.00, 30.00, 263.00, 110.00, 0.00, 0.00, 263.00, '2019-05-10 18:22:18', 1, '2019-05-16 13:29:14', 115, 0);
 INSERT INTO `member_wallet` VALUES (37, 71, 200.00, 10.00, 1516.00, 10.00, -480.00, 0.00, 419.00, '2019-05-10 18:22:18', 1, '2019-05-17 16:31:47', 1, 0);
@@ -5402,37 +5698,27 @@ INSERT INTO `member_wallet` VALUES (39, 73, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 
 INSERT INTO `member_wallet` VALUES (40, 78, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-11 09:09:46', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (41, 75, 0.00, 0.00, 991.00, 0.00, 0.00, 0.00, 862.00, '2019-05-13 16:14:43', 1, '2019-05-14 18:43:53', 77, 0);
 INSERT INTO `member_wallet` VALUES (42, 79, 0.00, 0.00, 556.00, 0.00, 0.00, 0.00, 500.00, '2019-05-14 15:56:37', 77, '2019-05-14 19:57:47', 77, 0);
-INSERT INTO `member_wallet` VALUES (43, 80, 77.00, 0.00, 178.00, 0.00, 0.00, 0.00, 50.00, '2019-05-15 12:03:19', 1, '2019-05-17 12:30:16', 1, 0);
+INSERT INTO `member_wallet` VALUES (43, 80, 87.00, 0.00, 178.00, 0.00, 0.00, 0.00, 60.00, '2019-05-15 12:03:19', 1, '2019-06-17 10:47:28', 215, 0);
 INSERT INTO `member_wallet` VALUES (44, 81, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-15 13:07:00', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (47, 84, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-16 14:56:02', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (48, 85, 0.00, 0.00, 15.00, 0.00, 0.00, 0.00, 10.00, '2019-05-18 09:33:42', 1, '2019-06-12 18:56:21', 215, 0);
+INSERT INTO `member_wallet` VALUES (48, 85, -18.00, 0.00, 1212.30, 0.00, 1448.70, 469.30, 1118.00, '2019-05-18 09:33:42', 1, '2019-06-15 14:07:31', 215, 0);
 INSERT INTO `member_wallet` VALUES (49, 86, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-22 19:37:26', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (51, 88, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-24 19:09:09', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (52, 89, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-25 08:51:09', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (53, 90, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-27 17:27:40', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (54, 90, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-29 11:11:10', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (55, 91, 0.00, 0.00, 23.00, 0.00, 0.00, 0.00, 23.00, '2019-06-11 09:34:24', 216, '2019-06-12 16:36:03', 216, 0);
-INSERT INTO `member_wallet` VALUES (56, 92, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-11 09:36:00', 216, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (56, 92, 20.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20.00, '2019-06-11 09:36:00', 216, '2019-06-17 10:52:38', 216, 0);
 INSERT INTO `member_wallet` VALUES (57, 93, 0.00, 0.00, 30.00, 0.00, 0.00, 0.00, 30.00, '2019-06-11 17:03:24', 216, '2019-06-12 17:32:20', 216, 0);
 INSERT INTO `member_wallet` VALUES (58, 94, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-11 17:11:14', 216, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (59, 95, 0.00, 0.00, 180.00, 0.00, 0.00, 0.00, 10.00, '2019-06-11 17:18:03', 216, '2019-06-12 09:06:18', 216, 0);
-INSERT INTO `member_wallet` VALUES (60, 96, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-11 17:59:57', 216, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (61, 97, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-12 09:09:19', 216, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (60, 96, 32.00, 1.00, 0.00, 0.00, 0.00, 0.00, 32.00, '2019-06-11 17:59:57', 216, '2019-06-17 12:04:21', 219, 0);
+INSERT INTO `member_wallet` VALUES (61, 97, 110.00, 0.00, 75.00, 0.00, 0.00, 0.00, 165.00, '2019-06-12 09:09:19', 216, '2019-06-17 10:40:38', 219, 0);
 INSERT INTO `member_wallet` VALUES (62, 98, 0.00, 0.00, 40.00, 0.00, 0.00, 0.00, 40.00, '2019-06-12 14:16:27', 216, '2019-06-12 17:36:19', 216, 0);
 INSERT INTO `member_wallet` VALUES (63, 99, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-12 14:18:44', 85, NULL, NULL, 0);
-
--- ----------------------------
--- Table structure for menber_invitation_code
--- ----------------------------
-DROP TABLE IF EXISTS `menber_invitation_code`;
-CREATE TABLE `menber_invitation_code`  (
-  `record_id` bigint(20) NOT NULL,
-  `member_id` bigint(20) NOT NULL,
-  `member_type` tinyint(4) NOT NULL,
-  `invitation_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`record_id`) USING BTREE,
-  INDEX `idx_menber_invitation_code_01`(`member_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动会员/员工邀请码管理表' ROW_FORMAT = Dynamic;
+INSERT INTO `member_wallet` VALUES (64, 112, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-13 10:19:22', 213, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (65, 113, -70.00, 408.00, 1987.00, 0.00, 6.00, 1424.00, 962.00, '2019-06-13 14:32:47', 216, '2019-06-17 15:49:48', 1, 0);
+INSERT INTO `member_wallet` VALUES (66, 114, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-14 14:25:43', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for notice
@@ -5451,7 +5737,7 @@ CREATE TABLE `notice`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_notice_01`(`salon_id`) USING BTREE,
   INDEX `idx_notice_02`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -5535,6 +5821,12 @@ INSERT INTO `notice` VALUES (77, 119, '工具舍友说', '好哦是绝配您', '
 INSERT INTO `notice` VALUES (78, 119, '是肯德基是看得见', '阿萨德哈萨克d', '2019-06-11 16:57:42', 216, 0, NULL, NULL);
 INSERT INTO `notice` VALUES (79, 119, '山东矿机', '速度快几十块', '2019-06-11 17:00:33', 216, 0, NULL, NULL);
 INSERT INTO `notice` VALUES (80, 119, '山东矿机', '速度快几十块', '2019-06-11 17:00:35', 216, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (81, 36, '上的发发放', '但是发是答复', '2019-06-13 19:00:27', 85, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (82, 36, '测试', '测试哦', '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (83, 36, '测试', '测试哦', '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (84, 36, '测试', '测试哦', '2019-06-13 19:42:42', 85, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (85, 2, '123', 'Rrr', '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (86, 2, '123', 'Rrra', '2019-06-17 18:01:43', 1, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for nurse
@@ -6739,7 +7031,7 @@ CREATE TABLE `payment`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_payment_01`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of payment
@@ -6772,6 +7064,21 @@ INSERT INTO `payment` VALUES (25, 26, 1, '', '1670', '2019-06-06 17:29:31', 85, 
 INSERT INTO `payment` VALUES (26, 26, 1, '', '1671', '2019-06-06 17:43:45', 85, NULL, NULL, 0);
 INSERT INTO `payment` VALUES (27, 26, 0, '', NULL, '2019-06-10 11:03:15', 85, NULL, NULL, 0);
 INSERT INTO `payment` VALUES (28, 26, 0, '', NULL, '2019-06-10 11:07:40', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (29, 85, 0, '', NULL, '2019-06-14 20:10:04', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (30, 85, 1, '', '1800', '2019-06-14 20:22:34', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (31, 85, 0, '', NULL, '2019-06-14 20:29:03', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (32, 113, 0, '备注备注备注', NULL, '2019-06-15 13:06:52', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (33, 113, 0, '备注备注备注', NULL, '2019-06-15 13:11:18', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (34, 85, 0, '', NULL, '2019-06-15 13:33:35', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (35, 85, 0, '', NULL, '2019-06-15 13:37:25', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (36, 85, 0, '', NULL, '2019-06-15 13:38:05', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (37, 85, 0, '', NULL, '2019-06-15 13:38:32', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (38, 85, 0, '', NULL, '2019-06-15 13:40:02', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (39, 85, 0, '', NULL, '2019-06-15 13:53:03', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (40, 85, 0, '', NULL, '2019-06-15 13:55:05', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (41, 85, 0, '', NULL, '2019-06-15 13:56:55', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (42, 85, 0, '', NULL, '2019-06-15 14:07:31', 215, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (43, 113, 0, '备注备注', NULL, '2019-06-17 12:00:38', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for payment_item
@@ -6813,7 +7120,7 @@ CREATE TABLE `pictures`  (
   `master_data_id` bigint(20) NULL DEFAULT NULL,
   `record_type` tinyint(4) NOT NULL,
   `pic_type` tinyint(4) NOT NULL,
-  `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pic_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `create_date` datetime(0) NOT NULL,
   `create_by` bigint(20) NOT NULL,
   `update_date` datetime(0) NULL DEFAULT NULL,
@@ -6823,7 +7130,7 @@ CREATE TABLE `pictures`  (
   INDEX `idx_pictures_01`(`master_data_id`) USING BTREE,
   INDEX `idx_pictures_02`(`record_type`) USING BTREE,
   INDEX `idx_pictures_03`(`pic_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1729 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统照片' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1955 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统照片' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pictures
@@ -7254,32 +7561,31 @@ INSERT INTO `pictures` VALUES (537, NULL, 2, 0, '/20190409/5d0c365d-ad24-4c3b-97
 INSERT INTO `pictures` VALUES (538, NULL, 2, 0, '/20190409/c5a0986f-e359-4127-a956-c0f3e832dc8f.jpg', '2019-04-09 16:12:53', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (539, NULL, 2, 0, '/20190409/e70bc759-c776-4fb4-bd03-fe2455f732cf.jpg', '2019-04-09 16:15:28', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (540, NULL, 2, 0, '/20190409/acd5409f-b8f1-45d5-9798-12c583f3c3e0.jpg', '2019-04-09 16:18:45', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (541, NULL, 2, 0, '/pic/20190410/40fc5489-97bd-4d57-8ce3-85879b5273d9.jpg', '2019-04-10 16:04:33', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (542, NULL, 2, 0, '/pic/20190410/839224d3-3c98-42c9-a2ca-dc02d521c84d.jpg', '2019-04-10 16:04:41', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (543, 6, 0, 1, '/pic/20190411/713626b3-9b15-4caa-bc24-747500f165f9.jpg', '2019-04-11 09:56:42', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (544, 6, 0, 2, '/pic/20190411/024c8167-a36a-425a-9118-908480fb4ee2.jpg', '2019-04-11 09:56:45', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (545, 6, 0, 3, '/pic/20190411/51c47211-1956-4b8a-bb7b-12681462f2eb.jpg', '2019-04-11 10:00:54', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (546, 6, 0, 4, '/pic/20190411/e813c5c6-9b53-4057-9d73-882fc3ad5b3b.jpg', '2019-04-11 10:00:58', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (547, 8, 5, 0, '/pic/20190411/73a5a9f9-9aaa-4e11-b159-2a383b6d11a4.jpg', '2019-04-11 10:06:06', 1, '2019-04-11 10:06:59', 1, 0);
-INSERT INTO `pictures` VALUES (548, 9, 5, 0, '/pic/20190411/38a246c9-c249-4bf6-882d-a21c4bb3fe5e.jpg', '2019-04-11 10:09:09', 1, '2019-04-11 10:09:26', 1, 0);
-INSERT INTO `pictures` VALUES (549, 9, 5, 0, '/pic/20190411/8494de81-f93a-4f27-bfb4-6d3f3a46ee8c.jpg', '2019-04-11 10:09:12', 1, '2019-04-11 10:09:26', 1, 0);
-INSERT INTO `pictures` VALUES (550, 10, 5, 0, '/pic/20190411/eabd1eb4-6766-44ff-be24-35fa50cd8473.jpg', '2019-04-11 10:12:48', 1, '2019-04-11 10:13:27', 1, 0);
-INSERT INTO `pictures` VALUES (551, 11, 5, 0, '/pic/20190411/fbdd6f29-f87c-4cd0-b72f-6850bf6d4c49.jpg', '2019-04-11 10:27:36', 1, '2019-04-11 10:27:46', 1, 0);
-INSERT INTO `pictures` VALUES (552, NULL, 5, 0, '/pic/20190411/a23b3cc5-62b2-4f12-8bbe-b64fa808a706.jpg', '2019-04-11 10:34:52', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (553, 12, 5, 0, '/pic/20190411/8602ef8e-b25a-475e-a500-0d6d6742bc77.jpg', '2019-04-11 10:44:53', 1, '2019-04-11 10:46:14', 1, 0);
-INSERT INTO `pictures` VALUES (554, 12, 5, 0, '/pic/20190411/e3ddd5db-c414-452b-8f16-ddb9a24f44e0.jpg', '2019-04-11 11:22:32', 1, '2019-04-11 11:22:39', 1, 0);
-INSERT INTO `pictures` VALUES (555, NULL, 5, 0, '/pic/20190411/9e04b705-0592-42cd-836d-9ed9413f249d.jpg', '2019-04-11 11:34:53', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (556, NULL, 5, 0, '/pic/20190411/57c094a5-7b25-4817-afec-20cefa81fe16.jpg', '2019-04-11 11:34:56', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (557, 13, 5, 0, '/pic/20190411/f0399e80-9d1f-4dd6-8130-24bb702568a0.jpg', '2019-04-11 11:40:18', 1, '2019-04-11 11:40:23', 1, 0);
-INSERT INTO `pictures` VALUES (558, 13, 5, 0, '/pic/20190411/14f165d9-5693-4665-ba81-069da599df9a.jpg', '2019-04-11 11:40:21', 1, '2019-04-11 11:40:23', 1, 0);
-INSERT INTO `pictures` VALUES (559, NULL, 0, 2, '/pic/20190411/931deb01-71be-4993-8683-85b8164c2803.jpg', '2019-04-11 14:21:38', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (560, NULL, 0, 3, '/pic/20190411/4938f2d5-9b84-4092-af5d-6fe03c906a9d.jpg', '2019-04-11 14:21:41', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (561, NULL, 0, 1, '/pic/20190411/99c29872-3480-4492-9c92-8cc5c8323540.jpg', '2019-04-11 14:21:44', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (562, NULL, 0, 4, '/pic/20190411/e4ab4b74-33db-40ee-b3ef-2ca32fed4bab.jpg', '2019-04-11 14:21:49', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (563, NULL, 0, 4, '/pic/20190411/c24d5486-12ad-4089-9d5e-558a38e088c0.jpg', '2019-04-11 14:39:13', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (568, 1112, 1, 0, '/pic/20190412/d8eb4686-6654-4230-aa19-9bd46733cf7d.jpg', '2019-04-11 14:56:40', 85, '2019-04-12 10:21:15', 85, 0);
-INSERT INTO `pictures` VALUES (569, NULL, 0, 2, '/pic/20190411/e2d8093b-25d6-452f-8354-5c70b72f8774.jpg', '2019-04-11 14:57:17', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (570, NULL, 0, 3, '/pic/20190411/21089ca0-4ae2-447e-b2d7-6de6a6f0b835.jpg', '2019-04-11 14:57:23', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (541, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190410/807d6ac8-a501-4592-ba7d-e875e3940009.jpg?Expires=1560395109&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=CEt%2BTjFaIvWv1bcq3UmebkfcBWw%3D', '2019-04-10 16:04:33', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (542, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190410/853cf71d-4dcf-470d-9da6-594b337c4581.jpg?Expires=1560395109&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=fxBEjmZVTK8H7t5918tKwsxl6jI%3D', '2019-04-10 16:04:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (543, 6, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/0b860f70-f716-4f5f-a770-3b3b5e962f45.jpg?Expires=1560395121&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4rm%2BD2f10ohH%2FQ7KR5ywY4o0ZfA%3D', '2019-04-11 09:56:42', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (544, 6, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/2c0c10ed-d565-43c3-9b51-31d9c42625a8.jpg?Expires=1560395121&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=iLcoJP2qUbi%2FY6tObipOe6Q3MPs%3D', '2019-04-11 09:56:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (545, 6, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/2f57c2f2-8faa-4689-92f6-6860fbac6c14.jpg?Expires=1560395121&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=iSgAknNSvIFXpRQVjmQrkQKvaJ4%3D', '2019-04-11 10:00:54', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (546, 6, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/34204e3c-1060-425a-b54b-cebd682c4211.jpg?Expires=1560395121&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=pDlwncyclKtzoeeuu75%2FETK56WU%3D', '2019-04-11 10:00:58', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (548, 9, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/345432c4-56b3-4c5e-b62a-6c77bf3193a6.jpg?Expires=1560395121&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=WCM0q%2B%2FlTiC2KLPI%2FLa6IJdt83I%3D', '2019-04-11 10:09:09', 1, '2019-04-11 10:09:26', 1, 0);
+INSERT INTO `pictures` VALUES (549, 9, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/47240526-f248-4d18-9dcc-dd5ebab597cf.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=sSzWrJkCsj69a2b%2B6jtXchNcK8E%3D', '2019-04-11 10:09:12', 1, '2019-04-11 10:09:26', 1, 0);
+INSERT INTO `pictures` VALUES (550, 10, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/5664a262-c886-482b-a9c9-7dfa258b0e26.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=2qI1vKjmpduOGs1OE4PYeB9SuTo%3D', '2019-04-11 10:12:48', 1, '2019-04-11 10:13:27', 1, 0);
+INSERT INTO `pictures` VALUES (551, 11, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/5926c6e7-b28b-4bd4-8379-98bf4046d2be.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=N06zrwpJBDv05y8z1FTi3gHuDZk%3D', '2019-04-11 10:27:36', 1, '2019-04-11 10:27:46', 1, 0);
+INSERT INTO `pictures` VALUES (552, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/5b25df5e-2213-4319-9440-cf373a2eecb5.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=z8%2FShVPedrqOsN06t%2Bai4HvqeIA%3D', '2019-04-11 10:34:52', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (553, 12, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/69a40ced-1c65-4e0c-b4e1-319b059cd040.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=3nKk1DmiXL4C0uuW4bjjHxxfBkc%3D', '2019-04-11 10:44:53', 1, '2019-04-11 10:46:14', 1, 0);
+INSERT INTO `pictures` VALUES (554, 12, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/70bc0564-ea7e-4526-bec5-d8fa5852ca80.png?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=kb8HG%2F8eHCI7QC5%2BO64xFbRaW%2FQ%3D', '2019-04-11 11:22:32', 1, '2019-04-11 11:22:39', 1, 0);
+INSERT INTO `pictures` VALUES (555, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/7c0640ed-1668-4049-b81b-02b23feb174f.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=1kl4EPHjqblF1skGyhnG2ah4bAI%3D', '2019-04-11 11:34:53', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (556, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/7c103302-89e9-42da-86e2-e032a867cb69.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=hzjRe%2B8A4ynxzVsuvn1%2F42PNaGQ%3D', '2019-04-11 11:34:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (557, 13, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/98467c25-ace5-48f3-95dd-c05dbd15d043.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=2%2FpsU9wOsPqVWkuLt7E0fFeXFJs%3D', '2019-04-11 11:40:18', 1, '2019-04-11 11:40:23', 1, 0);
+INSERT INTO `pictures` VALUES (558, 13, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/9be7b9a1-152f-4666-a3e8-ae196a45a78f.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=OqLSjMemT60UIiya1fsP652%2Bsfg%3D', '2019-04-11 11:40:21', 1, '2019-04-11 11:40:23', 1, 0);
+INSERT INTO `pictures` VALUES (559, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/be75a375-7244-4c46-87b1-f663518c2bea.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=9e%2BCYm2TlpK8OAIGaWkPw1viBJc%3D', '2019-04-11 14:21:38', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (560, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/c0916e42-c233-4fe8-bdbc-faed8579914e.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MZwpckK3jG75il1Z6yn93rIfg0M%3D', '2019-04-11 14:21:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (561, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/cd8e5ae2-c0f2-47d0-ac04-380232152b15.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=o1yEkaFFZBDvD4LZmqI6%2BmTWCJo%3D', '2019-04-11 14:21:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (562, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/d0b8ec3e-ab05-45b4-b0fa-012cdf0c90b3.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=IDQ%2FbND427luPqI%2Fv6YmEybeulQ%3D', '2019-04-11 14:21:49', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (563, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/e603de19-bb63-431f-8b91-2ebe8ad5128a.jpg?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MjU3wb%2BscYZHhR4sy5Ez709Yuik%3D', '2019-04-11 14:39:13', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (568, 1112, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/458d92f2-e84e-4517-abac-b629c62ac30c.png?Expires=3031795063&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BYq7wu0Dhj%2B%2BJM4O5Q4afx0NCpE%3D', '2019-04-11 14:56:40', 85, '2019-06-15 10:35:01', 85, 0);
+INSERT INTO `pictures` VALUES (569, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/e9d4690c-a024-4a21-b7c4-53ae7e4c0a5b.jpg?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=91L%2FvxzH0V7Uw3eSeg7CnHM8%2FEw%3D', '2019-04-11 14:57:17', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (570, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/fc752719-b50d-46a1-a8c7-32832db8e737.png?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=k1bzojgn8nP2Pwta%2FZLDsy4vEfY%3D', '2019-04-11 14:57:23', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (571, NULL, 0, 1, '/pic/20190411/857d76e8-984b-43de-b214-890986aa4acc.jpg', '2019-04-11 14:57:32', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (572, NULL, 0, 4, '/pic/20190411/6ca9f054-99d3-4e28-92f6-fdda15c1c132.jpg', '2019-04-11 14:57:44', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (573, NULL, 0, 2, '/pic/20190411/a5103e2d-e526-485b-84b6-80bfad2b1665.jpg', '2019-04-11 15:05:44', 1, NULL, NULL, 0);
@@ -7303,48 +7609,48 @@ INSERT INTO `pictures` VALUES (595, NULL, 2, 0, '/pic/20190411/123bf85a-cf59-48e
 INSERT INTO `pictures` VALUES (597, NULL, 0, 4, '/pic/20190411/6dc158b2-5626-448d-9db5-a4e147fb8f55.jpg', '2019-04-11 17:54:01', 87, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (599, 14, 5, 0, '/pic/20190411/51c74aaf-ab55-4247-aec3-3a241735ff6a.jpg', '2019-04-11 19:06:53', 85, '2019-04-11 19:06:55', 85, 0);
 INSERT INTO `pictures` VALUES (600, 26, 1, 0, '/pic/20190411/52b24509-cc56-4234-9894-78731f600873.jpg', '2019-04-11 19:25:54', 85, '2019-04-11 19:25:54', 85, 0);
-INSERT INTO `pictures` VALUES (601, 27, 1, 0, '/pic/20190412/1b973067-9ef7-41c0-ba01-e054e4a20e17.jpg', '2019-04-12 09:43:42', 85, '2019-04-12 09:44:15', 85, 0);
-INSERT INTO `pictures` VALUES (602, 28, 1, 0, '/pic/20190412/cee26095-d471-4040-aa7f-56ff95415c65.jpg', '2019-04-12 10:01:51', 85, '2019-04-12 10:01:58', 85, 0);
-INSERT INTO `pictures` VALUES (603, NULL, 0, 2, '/pic/20190412/4783fb00-8448-465c-86d3-58fe9626b678.jpg', '2019-04-12 11:09:48', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (604, NULL, 0, 3, '/pic/20190412/b189609d-f58a-41c9-b460-cc3fde782d0e.jpg', '2019-04-12 11:09:52', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (605, NULL, 0, 1, '/pic/20190412/fa7ffbce-3450-45c5-901c-a964796ab368.jpg', '2019-04-12 11:09:55', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (606, 40, 0, 2, '/pic/20190412/8802bef5-5f78-4ccd-a146-1141701b89ee.jpg', '2019-04-12 11:19:33', 85, '2019-04-12 11:19:55', 85, 0);
-INSERT INTO `pictures` VALUES (607, 40, 0, 3, '/pic/20190412/2fe28eaf-54d4-4d1d-bd70-06172600b297.jpg', '2019-04-12 11:19:36', 85, '2019-04-12 11:19:55', 85, 0);
-INSERT INTO `pictures` VALUES (608, 40, 0, 1, '/pic/20190412/5f3ee077-4771-43c6-a448-6563eb9318fc.jpg', '2019-04-12 11:19:39', 85, '2019-04-12 11:19:55', 85, 0);
-INSERT INTO `pictures` VALUES (609, 46, 3, 0, '/pic/20190412/0012fe0e-991f-4095-adcf-ae173b680a18.jpg', '2019-04-12 15:04:31', 85, '2019-04-12 15:04:36', 85, 0);
-INSERT INTO `pictures` VALUES (610, 46, 3, 0, '/pic/20190412/75bb3851-abcf-4b2a-90cd-9cd85cc48564.jpg', '2019-04-12 15:04:34', 85, '2019-04-12 15:04:36', 85, 0);
-INSERT INTO `pictures` VALUES (611, 17, 5, 0, '/pic/20190412/c7f0cb90-048a-4660-b522-8ff9acd400ad.jpg', '2019-04-12 15:37:56', 85, '2019-04-12 15:37:58', 85, 0);
-INSERT INTO `pictures` VALUES (612, NULL, 3, 0, '/pic/20190412/5571f45d-dbed-4c5a-9fb7-e1ca1e7f4aa5.jpg', '2019-04-12 17:35:24', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (613, NULL, 2, 0, '/pic/20190412/3cc1056f-825b-41e3-bd8a-04e90ada9fa3.jpg', '2019-04-12 17:35:41', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (614, NULL, 3, 0, '/pic/20190412/d03d2a3a-6958-4e50-8e55-8effa1f7a652.jpg', '2019-04-12 17:36:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (615, NULL, 3, 0, '/pic/20190412/c53d2497-a865-4a06-b459-49d42a8d0653.jpg', '2019-04-12 17:36:35', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (616, NULL, 3, 0, '/pic/20190412/3e5a3620-03c4-48bd-84ba-92df8ad03ef8.jpg', '2019-04-12 18:07:24', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (617, NULL, 3, 0, '/pic/20190412/afb96876-07d1-4490-b275-7adfb25ba0ae.jpg', '2019-04-12 18:10:26', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (618, 48, 3, 0, '/pic/20190412/f08e0960-9355-4476-8d92-8d1bbe6087d6.jpg', '2019-04-12 18:14:14', 1, '2019-04-12 18:15:00', 1, 0);
-INSERT INTO `pictures` VALUES (619, NULL, 3, 0, '/pic/20190412/dd19281b-34db-4d9d-814f-33214490179c.jpg', '2019-04-12 18:21:39', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (620, NULL, 3, 0, '/pic/20190412/e35abad6-c8ac-45a8-988a-b165a0bc3f00.jpg', '2019-04-12 19:10:22', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (621, NULL, 3, 0, '/pic/20190412/6ebd6873-9475-4d47-a297-629c34e9e562.jpg', '2019-04-12 19:10:25', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (622, 50, 3, 0, '/pic/20190412/8b522236-e0d2-4acc-ae1c-89c63f52172c.jpg', '2019-04-12 19:14:37', 1, '2019-04-12 19:15:13', 1, 0);
-INSERT INTO `pictures` VALUES (623, 50, 3, 0, '/pic/20190412/cb4bbc56-cc71-4794-a88b-ffd519062d4c.jpg', '2019-04-12 19:14:40', 1, '2019-04-12 19:15:13', 1, 0);
-INSERT INTO `pictures` VALUES (624, 51, 3, 0, '/pic/20190412/172cc40a-49a5-4d73-8a7e-aecbb36ec8a4.jpg', '2019-04-12 19:18:31', 1, '2019-04-12 19:18:37', 1, 0);
-INSERT INTO `pictures` VALUES (625, 52, 3, 0, '/pic/20190412/a4688342-0255-4100-a8fa-b27858db0c49.jpg', '2019-04-12 19:21:00', 1, '2019-04-12 19:21:07', 1, 0);
-INSERT INTO `pictures` VALUES (626, 52, 3, 0, '/pic/20190412/5ef86988-196b-4a6b-814a-7f7ce9f1ce83.jpg', '2019-04-12 19:21:04', 1, '2019-04-12 19:21:07', 1, 0);
-INSERT INTO `pictures` VALUES (630, 32, 1, 0, '/pic/20190413/c8c777df-932d-479d-9ae5-e3e03fafc722.jpg', '2019-04-13 09:35:31', 85, '2019-04-13 09:35:37', 85, 0);
-INSERT INTO `pictures` VALUES (631, 41, 0, 2, '/pic/20190413/b4e4a8a0-e60a-446e-91a2-006cff989e5a.jpg', '2019-04-13 10:04:25', 1, '2019-04-13 10:04:56', 1, 0);
-INSERT INTO `pictures` VALUES (632, 41, 0, 3, '/pic/20190413/77c78e60-408f-491e-9f0c-3776ecb67d7f.jpg', '2019-04-13 10:04:31', 1, '2019-04-13 10:04:56', 1, 0);
-INSERT INTO `pictures` VALUES (633, 41, 0, 1, '/pic/20190413/f4812848-91ee-47ce-bd15-bd5888f6e825.jpg', '2019-04-13 10:04:38', 1, '2019-04-13 10:04:56', 1, 0);
-INSERT INTO `pictures` VALUES (634, 41, 0, 4, '/pic/20190413/35c13ba8-fffb-4645-b4ff-bccc09bf27db.jpg', '2019-04-13 10:04:44', 1, '2019-04-13 10:04:56', 1, 0);
-INSERT INTO `pictures` VALUES (635, 42, 0, 2, '/pic/20190413/66be70dd-ae05-4ed8-9f80-8eddf01ddfd0.jpg', '2019-04-13 10:24:42', 1, '2019-04-13 10:25:01', 1, 0);
-INSERT INTO `pictures` VALUES (636, 42, 0, 3, '/pic/20190413/7e3dc91d-4306-48c8-8564-7df7553364da.jpg', '2019-04-13 10:24:47', 1, '2019-04-13 10:25:01', 1, 0);
-INSERT INTO `pictures` VALUES (637, 42, 0, 1, '/pic/20190413/e1b51160-60ce-4cf7-907e-7f3d35e0ca55.jpg', '2019-04-13 10:24:53', 1, '2019-04-13 10:25:01', 1, 0);
-INSERT INTO `pictures` VALUES (638, 42, 0, 4, '/pic/20190413/b24f67eb-482f-412e-a8b5-a0db47c3e201.jpg', '2019-04-13 10:24:59', 1, '2019-04-13 10:25:01', 1, 0);
-INSERT INTO `pictures` VALUES (639, NULL, 1, 0, '/pic/20190417/5999349f-4258-447d-8f91-528125553fe8.jpg', '2019-04-17 16:37:18', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (640, NULL, 4, 0, '/pic/20190418/d20a4e6e-5ef7-48af-8cbf-e57ad9d3ddf5.jpg', '2019-04-18 18:44:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (641, NULL, 4, 0, '/pic/20190418/0ce943cd-1066-48dd-9dce-dac68487afdb.jpg', '2019-04-18 19:22:56', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (642, NULL, 4, 0, '/pic/20190418/6289155e-b295-4c7d-99a3-0e726ef6d9db.jpg', '2019-04-18 19:25:26', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (643, NULL, 4, 0, '/pic/20190418/ec450a44-ec84-4924-adf6-2d90f4f8615d.jpg', '2019-04-18 19:27:18', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (644, NULL, 4, 0, '/pic/20190418/3e211daa-5354-42e9-8a14-b5230bcdc7ea.jpg', '2019-04-18 19:29:59', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (645, NULL, 4, 0, '/pic/20190418/2242d71c-df01-407b-a001-1d3917b628c2.jpg', '2019-04-18 19:36:03', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (601, 27, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/04a55efd-ee00-4162-ac80-f89d800512e5.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=an7JNhBJRcek1yCga2L2rJdERL4%3D', '2019-04-12 09:43:42', 85, '2019-04-12 09:44:15', 85, 0);
+INSERT INTO `pictures` VALUES (602, 28, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/0823cf67-a84f-47ce-8453-506791cd5eeb.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Zduoyr29aEvYP9%2FEa5DTrHPJqrk%3D', '2019-04-12 10:01:51', 85, '2019-04-12 10:01:58', 85, 0);
+INSERT INTO `pictures` VALUES (603, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/1134ba78-4b2d-4122-9517-e3915a22493a.png?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2FEM685Z7KUIJMkY5j5bkXPIdk8k%3D', '2019-04-12 11:09:48', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (604, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/180786ab-76a9-4612-b9b1-798f93b4cc11.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=CK0qX83MzrkSSKcbmInxakn1AB4%3D', '2019-04-12 11:09:52', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (605, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/23427d67-98a7-4bef-8a1b-8a607ea967c0.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=a2AxVAOmc4fGtGC7pwrtCKYq%2FVE%3D', '2019-04-12 11:09:55', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (606, 40, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/30b816c2-46f4-4259-aa2e-084d4b7405c2.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=vLnKTbc2pqrkwUHevBF%2Bb%2Fft0j4%3D', '2019-04-12 11:19:33', 85, '2019-04-12 11:19:55', 85, 0);
+INSERT INTO `pictures` VALUES (607, 40, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/3467af09-8d37-4247-92a8-57e80bb2050b.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=qL00TmBk9XO%2FwqgGnb0C3VuX81k%3D', '2019-04-12 11:19:36', 85, '2019-04-12 11:19:55', 85, 0);
+INSERT INTO `pictures` VALUES (608, 40, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/36b87039-6963-40ba-bc4b-04c335f253ab.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=qMbV9d62N9XZRB8o85N9fbFfstQ%3D', '2019-04-12 11:19:39', 85, '2019-04-12 11:19:55', 85, 0);
+INSERT INTO `pictures` VALUES (609, 46, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/38288635-0d0a-417e-9b73-ffe0546b4b0b.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=wLM4uKzvv%2BtLo6j5xtj92kg1Nas%3D', '2019-04-12 15:04:31', 85, '2019-04-12 15:04:36', 85, 0);
+INSERT INTO `pictures` VALUES (610, 46, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/3bacc609-9baa-4143-9c3d-2fd487f0e0fa.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=jpnlLeZzrt5kDiIujnew2i8AYxo%3D', '2019-04-12 15:04:34', 85, '2019-04-12 15:04:36', 85, 0);
+INSERT INTO `pictures` VALUES (611, 17, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/3d378f09-11b6-4e56-ae62-a25a10786821.jpg?Expires=1560395164&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Y5oBhDfQawrQhOExwAdS1K2%2BEAU%3D', '2019-04-12 15:37:56', 85, '2019-04-12 15:37:58', 85, 0);
+INSERT INTO `pictures` VALUES (612, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/3f119465-3872-4b0f-87c5-c3f3f2c7f7c5.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=f%2B%2BSD7W2AscncUYr4Fm7BYC6ezw%3D', '2019-04-12 17:35:24', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (613, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/3f18bb0f-65c7-40dc-b87f-5e7a7841d427.png?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=QIsK6h1X5UP91faK8%2BBJgcpaK9A%3D', '2019-04-12 17:35:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (614, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/43ac8593-d92e-4e23-8fd1-e0831d48a8e7.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Ba%2F%2F%2FHocbrGk24mj1ZTiWZCuclM%3D', '2019-04-12 17:36:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (615, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/51d52f0c-e717-4cc9-a354-984b7ab2c2c4.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=FruzRCohqbivt%2Fs8tKxKG2%2BT9Ac%3D', '2019-04-12 17:36:35', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (616, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/53bdd4ad-f51a-42c4-9f96-271ba5388f73.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=SZ7NWjmyeDTXh0X9RfTm8QMqX78%3D', '2019-04-12 18:07:24', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (617, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/55f34e58-419f-4781-bab7-3c180b1f7c58.png?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MZW8oBwi3h38V8PKOr%2BPsx017jE%3D', '2019-04-12 18:10:26', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (618, 48, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/6003e04c-5ab8-4d9d-b7ec-4a3da18c99ba.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=lQXOfiTxWPSZmEMZDqvFQBr2zRs%3D', '2019-04-12 18:14:14', 1, '2019-04-12 18:15:00', 1, 0);
+INSERT INTO `pictures` VALUES (619, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/6c44ed68-6c31-4dde-aae8-786fd9f5ca45.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=lu3So219NNkKdtE7JRxVSKcqLWA%3D', '2019-04-12 18:21:39', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (620, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/6eb9d783-e4c2-4776-86b7-31bdb4d13155.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JQ3V3l88m55M6MTNuXOVyZ5yeh4%3D', '2019-04-12 19:10:22', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (621, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/6f594513-f6fd-4cbf-a8ea-80469c474427.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=xQa%2BtAV5T%2FlAb%2B9pZdCZkBUZ9lU%3D', '2019-04-12 19:10:25', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (622, 50, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/79365745-5937-4c35-9728-8fa790a72727.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=whJF8Ei3aGm48Ahp0JCaG4zXSQs%3D', '2019-04-12 19:14:37', 1, '2019-04-12 19:15:13', 1, 0);
+INSERT INTO `pictures` VALUES (623, 50, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/932433ce-0d44-4dc4-845a-cdff3c5c2928.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=I3m%2BXCxEL8NlQ4YooRIRFfzw9UM%3D', '2019-04-12 19:14:40', 1, '2019-04-12 19:15:13', 1, 0);
+INSERT INTO `pictures` VALUES (624, 51, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/b192e9ea-9bc6-4418-a30e-b39348884986.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=xBZ37%2F0Hk8RldQwp66LQvqXbsec%3D', '2019-04-12 19:18:31', 1, '2019-04-12 19:18:37', 1, 0);
+INSERT INTO `pictures` VALUES (625, 52, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/b86b4d5f-75cd-441b-a707-da0ec7ad85d9.jpg?Expires=1560395165&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=CFFyCkIhA0Bu7XH3IH2WkpgN90U%3D', '2019-04-12 19:21:00', 1, '2019-04-12 19:21:07', 1, 0);
+INSERT INTO `pictures` VALUES (626, 52, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/bc1de610-06d9-45e8-9ade-5a2c5e3ea526.png?Expires=1560395166&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=6H68BLAwzRR8iTYFVlLGxAcsrKs%3D', '2019-04-12 19:21:04', 1, '2019-04-12 19:21:07', 1, 0);
+INSERT INTO `pictures` VALUES (630, 32, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/06953576-5e6d-4340-8b5f-04f61e2c6519.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0PEqG9RJl6uOvoFsye7mVNUt%2FeM%3D', '2019-04-13 09:35:31', 85, '2019-04-13 09:35:37', 85, 0);
+INSERT INTO `pictures` VALUES (631, 41, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/19a0b8f1-44bd-4eb2-8d80-8ea550015acd.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=WSvrADbZR5j%2FpT%2FdqnYGKJSIZPQ%3D', '2019-04-13 10:04:25', 1, '2019-04-13 10:04:56', 1, 0);
+INSERT INTO `pictures` VALUES (632, 41, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/1c886065-ab31-44e7-9b81-36bc759a7c6e.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ftSbj4evQQt%2BfY4MIWyBwcoT4LM%3D', '2019-04-13 10:04:31', 1, '2019-04-13 10:04:56', 1, 0);
+INSERT INTO `pictures` VALUES (633, 41, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/422a5fba-c831-4840-a389-2fde4a7a304e.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=fnp4znYzAhfizlBkecQFIlOCfUc%3D', '2019-04-13 10:04:38', 1, '2019-04-13 10:04:56', 1, 0);
+INSERT INTO `pictures` VALUES (634, 41, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/45b60eee-c0ae-4498-9563-d2c9336badfc.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=cDi9bCFbVoKbW3m07f1yaXDYYlk%3D', '2019-04-13 10:04:44', 1, '2019-04-13 10:04:56', 1, 0);
+INSERT INTO `pictures` VALUES (635, 42, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/59e32a7f-cddc-4f8f-99de-0edf54fe167a.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=rjyxMp2B4b9EEAqoFTfNDKeScTI%3D', '2019-04-13 10:24:42', 1, '2019-04-13 10:25:01', 1, 0);
+INSERT INTO `pictures` VALUES (636, 42, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/5ace792f-696a-4453-8efd-a7e5b51f4ad6.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Onil9X6q3O0YHSIDC1bDVw7NLag%3D', '2019-04-13 10:24:47', 1, '2019-04-13 10:25:01', 1, 0);
+INSERT INTO `pictures` VALUES (637, 42, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/65e636f8-7580-4b36-be51-68d3ccb4bd56.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=xRWCXKv%2B6BB0O%2Fs2bk6stDxSyLc%3D', '2019-04-13 10:24:53', 1, '2019-04-13 10:25:01', 1, 0);
+INSERT INTO `pictures` VALUES (638, 42, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190413/70778efa-d714-46b3-8b4d-720cd1dc51ff.jpg?Expires=1560395176&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=kXLIDORVpm%2BPmrXOK8X4BYVxiwQ%3D', '2019-04-13 10:24:59', 1, '2019-04-13 10:25:01', 1, 0);
+INSERT INTO `pictures` VALUES (639, NULL, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190417/2644598f-6d6f-496f-9e31-1373a7ff5158.jpg?Expires=1560395210&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=k08fB8DnOjrFY4IfXMev%2FS9JKGY%3D', '2019-04-17 16:37:18', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (640, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/001d86a1-4d68-44fc-bbe3-15167fd38ff2.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Lq9%2FQ%2FOzSVMjDTCglnHjokhGd0c%3D', '2019-04-18 18:44:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (641, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/105014e5-ec0a-4714-84c7-0b122da5261b.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=HBmHR7%2Fnz%2BoGL5F7UlTY2vWr2eI%3D', '2019-04-18 19:22:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (642, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/3a30211e-2337-44d2-ab59-d5e2f4f4d12c.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=aJd2TE0SdGbTjxm9bgfemyfnI28%3D', '2019-04-18 19:25:26', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (643, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/3dcb91ff-f3b6-4fcf-869e-acfb492b3f31.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=vCNFhxY3TXuXuC8qtY0e9U8csbs%3D', '2019-04-18 19:27:18', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (644, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/6236fa65-87a0-4e7b-b2e3-e7e36b3a5f35.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ZDdkS%2F%2F%2F15oAD%2F9wjoyXDLMNh3w%3D', '2019-04-18 19:29:59', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (645, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190418/98ca55cf-a78b-402d-b45f-4fe0e07da4ae.jpg?Expires=1560395306&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=jLBzohwOhdAB4YpKgeZXMva5D6I%3D', '2019-04-18 19:36:03', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (646, NULL, 4, 0, '/pic/20190418/4c4444fc-7bc7-4ff7-83d9-3e1402de1283.jpg', '2019-04-18 19:39:10', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (647, NULL, 4, 0, '/pic/20190418/2a1ed298-991a-4ed6-9edf-b0b0f545189c.jpg', '2019-04-18 19:42:15', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (648, NULL, 4, 0, '/pic/20190418/d034fc67-887e-44b9-8639-53633617ba7f.jpg', '2019-04-18 19:48:48', 1, NULL, NULL, 0);
@@ -7354,7 +7660,7 @@ INSERT INTO `pictures` VALUES (651, NULL, 4, 0, '/pic/20190418/41b62947-931b-442
 INSERT INTO `pictures` VALUES (652, NULL, 4, 0, '/pic/20190418/c7e96f73-ae34-4405-a63b-d209bb31f984.jpg', '2019-04-18 20:10:51', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (653, NULL, 4, 0, '/pic/20190418/05629871-1405-42da-9715-ca61b19de106.jpg', '2019-04-18 20:16:02', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (654, NULL, 4, 0, '/pic/20190418/35afdee6-5836-4b5c-9e4e-a23f5a8593e5.jpg', '2019-04-18 20:17:26', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (655, 38, 4, 0, '/pic/20190419/f4679566-50bc-4fe3-9a02-c1307ccf4cc5.jpg', '2019-04-19 09:33:12', 85, '2019-04-19 09:33:15', 85, 0);
+INSERT INTO `pictures` VALUES (655, 38, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190419/b7ae2894-9f5f-4cfb-aefe-8a15e3f3f8b5.jpg?Expires=1560395313&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=SoD6lovPwSLq3SiPgY43NSftKwE%3D', '2019-04-19 09:33:12', 85, '2019-04-19 09:33:15', 85, 0);
 INSERT INTO `pictures` VALUES (656, NULL, 4, 0, '/pic/20190419/bac54d26-006d-457b-9689-a2e3f977fa0f.jpg', '2019-04-19 15:02:47', 95, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (657, NULL, 4, 0, '/pic/20190419/067b358e-40de-49a2-8ff7-0f79c4d151bd.jpg', '2019-04-19 15:06:42', 95, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (658, NULL, 4, 0, '/pic/20190419/f3957c31-22ed-4c99-a9c8-b0230ce60a61.jpg', '2019-04-19 15:13:04', 95, NULL, NULL, 0);
@@ -7363,33 +7669,32 @@ INSERT INTO `pictures` VALUES (660, 42, 4, 0, '/pic/20190419/1b343389-7cf6-42f7-
 INSERT INTO `pictures` VALUES (661, 43, 4, 0, '/pic/20190419/e0230229-37f7-42a4-884b-b9ac3c7666d0.jpg', '2019-04-19 16:10:32', 95, '2019-04-19 16:11:32', 95, 0);
 INSERT INTO `pictures` VALUES (662, NULL, 4, 0, '/pic/20190419/ae7ae36d-367e-4fa0-97e1-d0398edf0b73.jpg', '2019-04-19 16:12:17', 95, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (663, NULL, 4, 0, '/pic/20190419/6e26d92c-18a6-408c-90de-1465c0a8b36e.jpg', '2019-04-19 16:17:36', 95, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (664, NULL, 5, 0, '/pic/20190420/621a0f9c-51a8-4a23-85c1-5929c429ba5d.jpg', '2019-04-20 11:20:38', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (665, NULL, 5, 0, '/pic/20190420/c0258bb2-e7e0-4236-ab48-81063b59d1b3.jpg', '2019-04-20 11:26:56', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (666, NULL, 5, 0, '/pic/20190420/763211cc-46ce-4f96-8b4a-a9aa7c6f9f1c.jpg', '2019-04-20 11:30:51', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (667, NULL, 5, 0, '/pic/20190420/974b9149-eb79-4417-bb2a-5bfc53beeed8.jpg', '2019-04-20 11:32:40', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (668, NULL, 5, 0, '/pic/20190420/ac2f1db7-0158-405c-b7a9-09160962a0c8.jpg', '2019-04-20 11:33:39', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (664, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190420/09d6782c-c31d-48dc-8f71-d414c37555c4.jpg?Expires=1560395323&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=SQ%2B2a4j2YrwP61Yz41a3Gep0Q%2Bw%3D', '2019-04-20 11:20:38', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (665, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190420/351ac944-b154-4436-9b44-b73af14e5781.JPEG?Expires=1560395323&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ut0XkpBk2GC4ZEkhpebdxAcIBlI%3D', '2019-04-20 11:26:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (666, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190420/7891fe2a-f8bb-4973-bf4f-0692e4d1a096.jpg?Expires=1560395323&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2FpasJF7xInuFO5nVm6lnh1Lt71E%3D', '2019-04-20 11:30:51', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (667, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190420/82f232f2-910a-483c-8b6d-81b9633f1997.JPEG?Expires=1560395323&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=y2knJyUNCVoy3L2tp4RjTTQ1kjY%3D', '2019-04-20 11:32:40', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (668, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190420/cab2fac8-1830-4ab7-846d-6b5ee15d4448.jpg?Expires=1560395323&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=c7ElvaQez0H9uRHODdvZw7HgECU%3D', '2019-04-20 11:33:39', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (669, 1, 1, 0, '/pic/20190530/f7c13a73-80c7-49db-a227-8e1094091905.jpg', '2019-04-21 10:39:47', 1, '2019-05-30 19:57:23', 1, 0);
-INSERT INTO `pictures` VALUES (670, 21, 5, 0, '/pic/20190422/6b8d809a-da22-4ed1-a085-fc5d35a8b2b7.jpg', '2019-04-22 10:12:26', 85, '2019-04-22 10:12:28', 85, 0);
-INSERT INTO `pictures` VALUES (671, NULL, 6, 0, '/pic/20190422/5b8ed202-8b02-411a-8c0a-5ab9684dd158.jpg', '2019-04-22 11:57:58', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (672, NULL, 6, 0, '/pic/20190422/3225d0b8-7581-4240-ae0d-8f1dc8bab56b.jpg', '2019-04-22 15:10:13', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (673, NULL, 6, 0, '/pic/20190422/f5b0ff0b-965c-47e6-a52a-e4405a1873fc.jpg', '2019-04-22 15:30:22', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (674, NULL, 6, 0, '/pic/20190422/86e84d46-22e2-4071-b56a-58dbd7f65fc7.jpg', '2019-04-22 15:33:37', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (675, NULL, 6, 0, '/pic/20190422/a3a31c31-9330-4b66-a27a-4a84501ee0b8.jpg', '2019-04-22 15:55:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (676, 66, 6, 0, '/pic/20190422/fe655c85-119c-4f09-83f4-23dab1c20c1a.jpg', '2019-04-22 15:58:13', 1, '2019-04-22 15:59:12', 1, 0);
-INSERT INTO `pictures` VALUES (678, NULL, 6, 0, '/pic/20190423/0ccc1e4d-f447-4a43-a08a-0dbec912c356.jpg', '2019-04-23 14:18:39', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (679, NULL, 6, 0, '/pic/20190423/0ce16746-563d-4c21-ada6-f81715da4c98.jpg', '2019-04-23 14:31:40', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (680, 70, 6, 0, '/pic/20190423/9d87c04b-2930-411c-b766-27f9b2139378.jpg', '2019-04-23 14:35:48', 1, '2019-04-23 14:36:17', 1, 0);
-INSERT INTO `pictures` VALUES (681, NULL, 6, 0, '/pic/20190423/bc68662f-e13e-48fb-801f-1eb8fc04f494.jpg', '2019-04-23 14:38:05', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (682, NULL, 6, 0, '/pic/20190423/624dee63-a808-45b8-a101-686f0be36ac0.jpg', '2019-04-23 14:39:42', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (683, NULL, 6, 0, '/pic/20190423/bf38018d-4058-44c5-b8b5-cc69d25ba974.jpg', '2019-04-23 14:41:47', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (685, 72, 6, 0, '/pic/20190423/2d657c2b-705c-4c48-a687-7a4b55ceb576.jpg', '2019-04-23 15:37:27', 1, '2019-04-23 15:38:35', 1, 0);
-INSERT INTO `pictures` VALUES (686, 27, 5, 0, '/pic/20190424/27a9065f-d44a-48b1-aedc-d104c609b945.jpg', '2019-04-24 16:50:07', 85, '2019-04-24 16:50:09', 85, 0);
-INSERT INTO `pictures` VALUES (689, 32, 5, 0, '/pic/20190424/d2a6ee83-da97-44c3-8311-6ab6d53c833c.jpg', '2019-04-24 17:25:17', 85, '2019-04-24 17:23:35', 85, 0);
+INSERT INTO `pictures` VALUES (670, 21, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/025ee409-312b-4e7e-89a9-1066943725fd.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=LhF580dngx7E6u%2FfDwk7%2BW0mKao%3D', '2019-04-22 10:12:26', 85, '2019-04-22 10:12:28', 85, 0);
+INSERT INTO `pictures` VALUES (671, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/100151da-c944-43fe-b7f9-a6830d16dedd.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ODoCoFEEC3ddXxJXBBJfRNb2xSQ%3D', '2019-04-22 11:57:58', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (672, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/1d484e18-3f27-4188-96ea-8cc8e1e36953.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ThA6IjabKbLAA0fYuf1QZdWFn8g%3D', '2019-04-22 15:10:13', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (673, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/25be60d8-8b3b-4367-bb04-79d8e2d90f9b.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=NTuBNByzxLVXWqWmnZ6cbiLQJyY%3D', '2019-04-22 15:30:22', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (674, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/2831ce0e-7e26-4e3b-81ab-19c27bafb8e9.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Ke5PVFX7BExNDnPY2a7r73qVsXk%3D', '2019-04-22 15:33:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (675, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/3bb9ed8a-883d-41e0-89bb-012687e61b07.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=IO4m8vtQmSQUx0GqwSCTBQsJkdE%3D', '2019-04-22 15:55:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (676, 66, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190422/4542f38d-90f2-468f-ab0b-6054c8d44a3b.jpg?Expires=1560395342&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=XigVKW1Xovj55jyWhrfKsUH2Xts%3D', '2019-04-22 15:58:13', 1, '2019-04-22 15:59:12', 1, 0);
+INSERT INTO `pictures` VALUES (678, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/02a217d2-d594-4591-a40a-ac1aa3729e6e.JPEG?Expires=1560395355&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=biJRUObk9e%2FaTSmjz5NoryDG3XE%3D', '2019-04-23 14:18:39', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (679, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/1d3ef7fa-6373-46dd-9f05-9d6075f71fde.JPEG?Expires=1560395355&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=S49qRm4E8z8VMtnyXRAKURAHSjA%3D', '2019-04-23 14:31:40', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (680, 70, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/28146612-dfe7-43f5-b259-b0aa73c9d428.jpg?Expires=1560395355&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=K80Y71g1xG9YBlcomF%2FWjoaTdho%3D', '2019-04-23 14:35:48', 1, '2019-04-23 14:36:17', 1, 0);
+INSERT INTO `pictures` VALUES (681, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/35f7c1c7-e971-4df5-89d6-befafb0c94d0.jpg?Expires=1560395356&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=oP6XelsBCwdLLom9AKprJs%2Bcj5Q%3D', '2019-04-23 14:38:05', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (682, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/3afcc404-91ff-4a5a-97ff-82182ab3d0c2.jpg?Expires=1560395356&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=8ilgQGHIoK78HfsZ4bnFO0CUHKU%3D', '2019-04-23 14:39:42', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (683, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/70d29213-905f-4852-8348-cc4a3c7df7c2.jpg?Expires=1560395356&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=p8xyN%2BPb%2BQHpYY02YqxH6jId%2FtI%3D', '2019-04-23 14:41:47', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (685, 72, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190423/87868d14-9533-4979-8a1d-4af06505aa6e.jpg?Expires=1560395356&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2FfPHQ%2BUPF%2BfHLw08nxKnwwxfb0k%3D', '2019-04-23 15:37:27', 1, '2019-04-23 15:38:35', 1, 0);
+INSERT INTO `pictures` VALUES (686, 27, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190424/111cb3a1-1ec5-4641-9fa8-b420ee2e3b4a.jpg?Expires=1560395370&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=PBGC34G9GRaRh%2Fkt0LT3h94Av7M%3D', '2019-04-24 16:50:07', 85, '2019-04-24 16:50:09', 85, 0);
+INSERT INTO `pictures` VALUES (689, 32, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190424/34629f40-9f46-42f4-984c-00464fdba7e1.jpg?Expires=1560395370&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Qn4nexrcPcirPeNzhStX41XshT4%3D', '2019-04-24 17:25:17', 85, '2019-04-24 17:23:35', 85, 0);
 INSERT INTO `pictures` VALUES (690, 73, 6, 0, '/pic/20190425/474bab09-f10e-47ce-9a13-b9e7b4d5e302.jpg', '2019-04-25 16:12:35', 1, '2019-04-25 16:13:54', 1, 0);
-INSERT INTO `pictures` VALUES (691, 56, 2, 0, '/pic/20190426/d31ef0e9-e5d1-4a52-ac9b-2b057ffdfca0.jpg', '2019-04-26 17:06:50', 85, '2019-04-26 17:06:51', 85, 0);
 INSERT INTO `pictures` VALUES (693, NULL, 6, 0, '/pic/20190503/72566c81-bf6f-4b20-926b-2d4de3803d8d.jpg', '2019-05-03 18:19:58', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (695, 1129, 1, 0, '/pic/20190517/9134cab6-e43c-4594-97e9-a8474eaa39b5.jpg', '2019-05-09 18:57:18', 107, '2019-05-17 09:33:48', 107, 0);
-INSERT INTO `pictures` VALUES (696, NULL, 9, 0, '/pic/20190510/0b0fa220-8356-438d-84e1-6460d10e7853.jpg', '2019-05-10 09:44:11', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (696, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190510/79520df6-8ea3-48fa-8b86-512126a5e788.jpg?Expires=1560395426&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=qxaxJ0p6tkgZODvuF5hA%2FOO%2BuM0%3D', '2019-05-10 09:44:11', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (697, NULL, 9, 0, '/pic/20190510/44ace5ce-18a1-4579-8128-f00fca75d2d9.jpg', '2019-05-10 10:57:39', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (698, NULL, 9, 0, '/pic/20190510/a82f81ed-719c-4bc5-aaeb-13c8323e215a.jpg', '2019-05-10 10:57:47', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (699, NULL, 9, 0, '/pic/20190510/ec52e5ea-4633-4aad-b66e-3967ba8207b8.jpg', '2019-05-10 11:02:48', 85, NULL, NULL, 0);
@@ -7576,12 +7881,12 @@ INSERT INTO `pictures` VALUES (879, NULL, 9, 0, '/pic/20190513/5bcff9ca-122c-4ae
 INSERT INTO `pictures` VALUES (880, NULL, 9, 0, '/pic/20190513/561f12f6-4fbb-4e3f-85c5-1f1e30be554b.jpg', '2019-05-13 19:45:35', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (881, NULL, 9, 0, '/pic/20190513/2b5e9470-b628-4be2-b458-c2b4775f2650.jpg', '2019-05-13 19:46:54', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (882, NULL, 9, 0, '/pic/20190513/b6edfc04-6c7a-4140-a7d9-e9798354196f.jpg', '2019-05-13 19:46:55', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (883, NULL, 9, 0, '/pic/20190514/eb0c179f-5f7b-43db-ac44-9ead4a62945b.jpg', '2019-05-14 10:26:52', 81, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (884, NULL, 9, 0, '/pic/20190514/db099828-8c1b-46aa-8e81-cd40bdcdd37c.jpg', '2019-05-14 10:42:10', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (885, NULL, 9, 0, '/pic/20190514/a4d5c793-35e8-404d-a3ad-476c9b74c371.jpg', '2019-05-14 10:42:20', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (886, NULL, 9, 0, '/pic/20190514/554f24af-0a66-484a-a9a5-d957257236a7.jpg', '2019-05-14 10:42:28', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (887, NULL, 9, 0, '/pic/20190514/4af69c65-2e79-4429-b785-c763551ff64a.jpg', '2019-05-14 10:44:53', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (888, NULL, 9, 0, '/pic/20190514/1f3ad72d-1efc-4d5d-8773-655d29767721.jpg', '2019-05-14 10:46:43', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (883, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/227aac17-8568-41d5-89c5-93d0a1a68680.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=PJ7A9m4nh0Qir3%2B%2FKvpqUq6N9v4%3D', '2019-05-14 10:26:52', 81, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (884, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/4cfebbc7-2b9b-428f-a713-5457226cac25.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=K1OjNntCfGBw37qxwDH%2BHZvqRXU%3D', '2019-05-14 10:42:10', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (885, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/7fd2a17a-de58-456b-bcdd-66041fddaa8c.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=EkxCTu81U4M3q8K8iWABUDedC9E%3D', '2019-05-14 10:42:20', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (886, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/7ff03ed9-d863-4801-b2f6-4873c567e268.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=C04r5mSEHlqAVaEj7mVNGmsLGRM%3D', '2019-05-14 10:42:28', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (887, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/83c0ebdd-7e4b-45be-af36-3bcbc6eaa670.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=RZ6XoteWjXagjxfGQYpnS%2BeDqE8%3D', '2019-05-14 10:44:53', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (888, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190514/e52e43fc-0fe9-475e-9928-0dd59d2e925b.jpg?Expires=1560395435&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=9oSBpiaqJC0jaJIER3hPtssHdH8%3D', '2019-05-14 10:46:43', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (889, NULL, 9, 0, '/pic/20190514/81d3027b-d72c-433b-9db0-9466e26cc5a2.jpg', '2019-05-14 10:47:08', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (890, NULL, 9, 0, '/pic/20190514/bc1b1a90-bf43-4217-b992-92f325cf8b16.jpg', '2019-05-14 10:47:24', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (891, NULL, 9, 0, '/pic/20190514/9dabb3b8-b70c-453a-8517-22b558bcb0ae.jpg', '2019-05-14 10:54:08', 85, NULL, NULL, 0);
@@ -7684,13 +7989,13 @@ INSERT INTO `pictures` VALUES (988, NULL, 9, 0, '/pic/20190515/d3152147-8094-4cf
 INSERT INTO `pictures` VALUES (989, NULL, 9, 0, '/pic/20190515/8df3aeef-a1cf-4c40-8609-9ebb65a7c1bc.jpg', '2019-05-15 17:51:48', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (990, NULL, 9, 0, '/pic/20190515/f10a7088-5994-4e1d-854a-c14f015990f5.jpg', '2019-05-15 17:52:53', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (991, NULL, 9, 0, '/pic/20190515/ec1e8c81-e457-4898-bccf-a15f0420f349.jpg', '2019-05-15 17:53:30', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (999, 78, 6, 0, '/pic/20190515/0ac702d9-3caf-4c93-8113-1f6da0a417c0.JPEG', '2019-05-15 19:32:10', 108, '2019-05-15 19:50:37', 108, 0);
-INSERT INTO `pictures` VALUES (1000, 1128, 1, 0, '/pic/20190515/f9dd5f00-928d-4e3f-a256-1229ba6893f2.JPEG', '2019-05-15 19:52:14', 106, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1001, NULL, 9, 0, '/pic/20190516/ec5596d3-ee02-405a-b80a-ae8e7907335d.jpg', '2019-05-16 08:53:50', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (999, 78, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190614/22bd1ad3-4c85-47f4-a840-b0fce7bbfe34.png?Expires=3031741152&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BEh6YpwZaHJweZYo9xLKTvWvPA0%3D', '2019-05-15 19:32:10', 108, '2019-06-14 19:36:36', 108, 0);
+INSERT INTO `pictures` VALUES (1000, 1128, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190614/a1a2a3fc-af7b-4719-be3b-e47402314974.jpg?Expires=3031738847&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ZaZe5OWx3NwpwEwJ3PS4vqO3QgQ%3D', '2019-05-15 19:52:14', 106, '2019-06-14 18:58:11', 106, 0);
+INSERT INTO `pictures` VALUES (1001, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190516/8310db38-cdf1-4a53-911c-ec5480a1955a.jpg?Expires=1560395550&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JJouiXRD3WF1kAogCq8LoD2NsFM%3D', '2019-05-16 08:53:50', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1002, NULL, 9, 0, '/pic/20190516/6ce3b4ba-2ac7-4294-a366-48f6f181257a.jpg', '2019-05-16 10:14:33', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1003, NULL, 9, 0, '/pic/20190516/5d3adab9-8cac-4736-9dbe-4787f255a1b0.jpg', '2019-05-16 13:29:10', 115, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1004, NULL, 6, 0, '/pic/20190516/11f87fa7-d01e-459b-840f-e089ea82978c.jpg', '2019-05-16 14:38:26', 111, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1006, NULL, 9, 0, '/pic/20190517/bcb9b213-56c1-4802-8a78-aaa9b2341028.jpg', '2019-05-17 10:16:04', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1006, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190517/c2ad6f5d-d97b-4205-8f6e-8f1254eafa01.jpg?Expires=1560395606&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=eBOtlV%2BImGQvomiJCCEnM2bb4wE%3D', '2019-05-17 10:16:04', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1007, NULL, 9, 0, '/pic/20190517/24f9ed4d-5c9d-4d14-96b6-587594bd4e1a.jpg', '2019-05-17 12:30:10', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1008, NULL, 9, 0, '/pic/20190517/6397d8b8-cba3-4ec5-90a3-64029696f45e.jpg', '2019-05-17 12:30:34', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1009, NULL, 4, 0, '/pic/20190517/34a40d1b-6692-42bb-9018-de967b4a08ef.jpg', '2019-05-17 15:06:42', 1, NULL, NULL, 0);
@@ -7775,7 +8080,7 @@ INSERT INTO `pictures` VALUES (1088, NULL, 0, 0, '/pic/20190518/11f31bec-5206-4a
 INSERT INTO `pictures` VALUES (1089, NULL, 0, 0, '/pic/20190518/5c70cd1f-8a6c-43aa-b3c3-ca742fdbce4f.jpg', '2019-05-18 11:41:45', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1090, NULL, 0, 0, '/pic/20190518/46ccbff2-d792-476d-be97-75b0dd0f5f60.jpg', '2019-05-18 11:41:45', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1091, NULL, 0, 0, '/pic/20190518/107f6145-c7bb-4f4b-b967-891e73b02549.jpg', '2019-05-18 11:41:45', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1093, NULL, 0, 0, '/pic/20190520/ce33afd8-644c-4a3f-a02d-2c40a869e59d.jpg', '2019-05-20 09:01:36', 63, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1093, NULL, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190520/e878ff2e-e999-4d04-9952-e57732088f88.jpg?Expires=1560395635&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=wyRMRCELTJzoOS0%2FwIvsymF42a0%3D', '2019-05-20 09:01:36', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1094, NULL, 0, 0, '/pic/20190520/4969b83b-9e50-47cd-a5f4-9b23a550c574.jpg', '2019-05-20 09:01:36', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1095, NULL, 0, 0, '/pic/20190520/19fec3c5-4867-49a6-9a9e-b5ae9e8c8d65.jpg', '2019-05-20 09:01:36', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1096, NULL, 0, 0, '/pic/20190520/adcad85d-2329-4838-a8d2-355bd2cae9af.jpg', '2019-05-20 09:16:29', 63, NULL, NULL, 0);
@@ -7895,9 +8200,9 @@ INSERT INTO `pictures` VALUES (1227, 97, 0, 0, '/pic/20190520/b7b4e808-ebb1-4484
 INSERT INTO `pictures` VALUES (1228, 97, 0, 0, '/pic/20190520/b7b4e808-ebb1-4484-85f9-56578cd43187.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
 INSERT INTO `pictures` VALUES (1229, 1, 0, 0, '/pic/20190513/230509f4-aea7-476f-90c0-ee1c4d1fa766.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
 INSERT INTO `pictures` VALUES (1230, 1, 0, 0, '/pic/20190515/d1f91155-75a7-400a-9379-ae8891e380e0.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
-INSERT INTO `pictures` VALUES (1231, NULL, 0, 0, '/pic/20190521/3fdcdefc-a4b2-4eb0-9b77-4b14deab924c.jpg', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1232, NULL, 0, 0, '/pic/20190521/20862da4-5c9e-4231-80b8-599c0f030ffe.jpg', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1233, NULL, 0, 0, '/pic/20190521/507dae8e-612b-4940-b864-b16f934c6990.jpg', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1231, NULL, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190521/d9c95286-5e0c-4214-8d8b-bedc95e82212.jpg?Expires=1560395643&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Sy9Cwe3hbg3Oq2TZn9VeA9FEqlI%3D', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1232, NULL, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190521/fd020998-5582-46a5-8446-b66d08264a69.jpg?Expires=1560395643&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4iLkqa7JymlO1IwZI85yRfiybC4%3D', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1233, NULL, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190521/feb39783-3b2c-448e-8274-4d39d76586c7.jpg?Expires=1560395643&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ch%2Bd1hGSKk7FrLvoVOZDJHauGGA%3D', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1234, NULL, 0, 0, '/pic/20190521/c9d96b53-ddb5-4fa0-894e-6986093b002a.jpg', '2019-05-21 14:03:20', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1235, NULL, 0, 0, '/pic/20190521/c5dcd847-252f-46e3-a273-3bd7004a8bd6.jpg', '2019-05-21 14:03:20', 63, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1236, NULL, 0, 0, '/pic/20190521/b109697b-51ae-4b75-b511-0764181f7b36.jpg', '2019-05-21 14:03:20', 63, NULL, NULL, 0);
@@ -8018,40 +8323,40 @@ INSERT INTO `pictures` VALUES (1350, 55, 3, 0, '/pic/20190521/bd76f70c-e994-4c0b
 INSERT INTO `pictures` VALUES (1351, 69, 4, 0, '/pic/20190521/9578ec54-980f-4d2e-ae53-cebcf7f8d117.jpg', '2019-05-21 19:55:42', 1, '2019-05-21 19:55:54', 1, 0);
 INSERT INTO `pictures` VALUES (1352, 70, 4, 0, '/pic/20190521/fe4077df-da3b-4215-ade8-48f89c6709f8.jpg', '2019-05-21 20:22:32', 1, '2019-05-21 20:22:40', 1, 0);
 INSERT INTO `pictures` VALUES (1353, 70, 4, 0, '/pic/20190521/1fae92ae-b218-486a-9724-33d014f829f7.jpg', '2019-05-21 20:22:37', 1, '2019-05-21 20:22:40', 1, 0);
-INSERT INTO `pictures` VALUES (1354, NULL, 9, 0, '/pic/20190522/5e073895-72a5-4d8c-8e59-096db8893f66.jpg', '2019-05-22 09:34:28', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1355, 113, 0, 2, '/pic/20190522/abcf8c08-bc2d-4573-9bc2-7eda1456475e.png', '2019-05-22 10:49:16', 1, '2019-05-22 10:51:40', 1, 0);
-INSERT INTO `pictures` VALUES (1356, 113, 0, 3, '/pic/20190522/ccf86a49-dd70-49e8-907b-3ad13dca57b6.png', '2019-05-22 10:49:20', 1, '2019-05-22 10:51:40', 1, 0);
-INSERT INTO `pictures` VALUES (1357, 113, 0, 1, '/pic/20190522/1ec63f02-f6c6-432d-8583-6628de9c78fc.jpg', '2019-05-22 10:49:23', 1, '2019-05-22 10:51:40', 1, 0);
-INSERT INTO `pictures` VALUES (1358, 113, 0, 4, '/pic/20190522/bd541ac4-a697-470f-8d86-769b9f5063ad.jpg', '2019-05-22 10:49:28', 1, '2019-05-22 10:51:40', 1, 0);
-INSERT INTO `pictures` VALUES (1359, 114, 0, 2, '/pic/20190522/f4bb8d34-e377-4229-8679-01b907ea5e0c.JPEG', '2019-05-22 11:27:50', 85, '2019-05-22 11:28:06', 85, 0);
-INSERT INTO `pictures` VALUES (1360, 114, 0, 3, '/pic/20190522/3c1fa7c4-3566-4e84-887c-7aa0824102b5.jpg', '2019-05-22 11:27:55', 85, '2019-05-22 11:28:06', 85, 0);
-INSERT INTO `pictures` VALUES (1361, 114, 0, 1, '/pic/20190522/4fdcaa47-b516-4d54-82f4-67c5368ab87a.JPEG', '2019-05-22 11:27:59', 85, '2019-05-22 11:28:06', 85, 0);
-INSERT INTO `pictures` VALUES (1362, 114, 0, 4, '/pic/20190522/b44b0674-aaae-4fbf-9b3f-c48cd17d81c3.jpg', '2019-05-22 11:28:02', 85, '2019-05-22 11:28:06', 85, 0);
-INSERT INTO `pictures` VALUES (1363, NULL, 0, 1, '/pic/20190522/3e7ec2fd-8ff1-40e7-9d43-f5285c906604.png', '2019-05-22 11:53:58', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1364, NULL, 0, 4, '/pic/20190522/273a3713-90ce-40ff-b1c7-da1d000fe2cb.png', '2019-05-22 11:54:02', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1365, NULL, 0, 3, '/pic/20190522/edfbfaf7-412c-4282-b069-9815d5352fb3.JPEG', '2019-05-22 11:54:05', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1366, NULL, 0, 2, '/pic/20190522/26d7fdeb-aa8c-4778-b786-9de6c6e1c7bf.JPEG', '2019-05-22 11:54:10', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1367, 115, 0, 2, '/pic/20190522/b56cb4e1-c751-45d9-af3a-64d11c5793e7.JPEG', '2019-05-22 12:46:19', 108, '2019-05-22 12:46:32', 108, 0);
-INSERT INTO `pictures` VALUES (1368, 115, 0, 3, '/pic/20190522/deaf3287-3294-4f77-8e16-30682e25ad5d.jpg', '2019-05-22 12:46:23', 108, '2019-05-22 12:46:32', 108, 0);
-INSERT INTO `pictures` VALUES (1369, 115, 0, 1, '/pic/20190522/1d6c1006-04ea-4448-9f2c-4bf087c3cbf3.jpg', '2019-05-22 12:46:28', 108, '2019-05-22 12:46:32', 108, 0);
-INSERT INTO `pictures` VALUES (1370, NULL, 0, 2, '/pic/20190522/94e46a18-0c75-4459-94c5-0775d330f724.JPEG', '2019-05-22 12:49:45', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1371, NULL, 0, 3, '/pic/20190522/6efb5588-0799-4115-ad5d-9df7317859ad.jpg', '2019-05-22 12:49:50', 108, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1372, NULL, 0, 2, '/pic/20190522/8fcbaf78-9b14-4822-8aea-b0638d95d577.jpg', '2019-05-22 13:04:48', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1373, NULL, 0, 3, '/pic/20190522/86ae4d67-cff7-4d43-bba3-b5b8d0e0715c.jpg', '2019-05-22 13:04:55', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1374, NULL, 0, 1, '/pic/20190522/9b8a4b74-0b78-43b8-b086-0f64def835e6.jpg', '2019-05-22 13:05:02', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1375, 59, 2, 0, '/pic/20190522/07af8e5a-8f3a-4182-9e59-d5eabadc69d5.jpg', '2019-05-22 18:54:18', 85, '2019-05-22 18:54:20', 85, 0);
-INSERT INTO `pictures` VALUES (1376, 60, 2, 0, '/pic/20190523/7c1a40f1-814e-4d27-831d-594b97d90997.jpg', '2019-05-23 17:27:59', 1, '2019-05-23 17:28:10', 1, 0);
-INSERT INTO `pictures` VALUES (1377, 61, 2, 0, '/pic/20190523/c60ad642-5808-4011-8890-5b48478f3370.jpg', '2019-05-23 17:32:28', 1, '2019-05-23 17:32:36', 1, 0);
-INSERT INTO `pictures` VALUES (1378, 61, 2, 0, '/pic/20190523/0e4ae3e0-cd2f-4d12-ae9d-e93d952ca174.jpg', '2019-05-23 17:32:33', 1, '2019-05-23 17:32:36', 1, 0);
-INSERT INTO `pictures` VALUES (1379, 62, 2, 0, '/pic/20190523/b46d408f-0104-4798-9beb-4118ef542003.jpg', '2019-05-23 17:39:06', 1, '2019-05-23 17:39:30', 1, 0);
-INSERT INTO `pictures` VALUES (1380, 62, 2, 0, '/pic/20190523/fdddcad5-1823-481c-9991-dedf5bcc9fd6.jpg', '2019-05-23 17:39:13', 1, '2019-05-23 17:39:30', 1, 0);
-INSERT INTO `pictures` VALUES (1381, 62, 2, 0, '/pic/20190523/7e75cbfd-329c-421d-9c2d-87fbb466a36c.jpg', '2019-05-23 17:39:19', 1, '2019-05-23 17:39:30', 1, 0);
-INSERT INTO `pictures` VALUES (1382, 62, 2, 0, '/pic/20190523/8f286340-864b-4eab-b741-cdcaf138d0e3.jpg', '2019-05-23 17:39:26', 1, '2019-05-23 17:39:30', 1, 0);
-INSERT INTO `pictures` VALUES (1384, 20, 5, 0, '/pic/20190523/a9f0e87a-e488-4672-a4ea-662e16afa0ff.jpg', '2019-05-23 18:01:39', 1, '2019-05-23 18:01:48', 1, 0);
-INSERT INTO `pictures` VALUES (1386, 20, 5, 0, '/pic/20190523/a120557b-a888-43c9-adb8-b2cc2e55c9fe.jpg', '2019-05-23 18:07:56', 1, '2019-05-23 18:08:14', 1, 0);
-INSERT INTO `pictures` VALUES (1387, 1209, 1, 0, '/pic/20190524/f1473625-588a-4f5d-9c7a-0141b628f890.jpg', '2019-05-24 08:59:41', 196, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1388, NULL, 3, 0, '/pic/20190524/33c2d4c9-7489-496d-b29f-ec9daa095ccb.jpg', '2019-05-24 14:33:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1389, NULL, 3, 0, '/pic/20190524/41cc4d32-e8e3-474b-aabe-502e1fb48637.jpg', '2019-05-24 14:33:19', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1354, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0018d2cd-b028-4db2-848d-0df2094a2a17.png?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=XyaHIrjerUvqxx319Y%2BmAZ9Rmmo%3D', '2019-05-22 09:34:28', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1355, 113, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0108268e-5a14-4320-ba22-787de2ad60e0.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=5Tln7msC7dGG6K2RBpOseJY6wCo%3D', '2019-05-22 10:49:16', 1, '2019-05-22 10:51:40', 1, 0);
+INSERT INTO `pictures` VALUES (1356, 113, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0161f8b4-fdba-4ee8-ae82-8f187368c0a4.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Kn7rCN04KecBAErXWIMEGAMKToQ%3D', '2019-05-22 10:49:20', 1, '2019-05-22 10:51:40', 1, 0);
+INSERT INTO `pictures` VALUES (1357, 113, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/01eeb60e-e68c-416d-a17c-8de8502d14d6.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=OGFQysvwyiuxAI7uZgECuTUHKvE%3D', '2019-05-22 10:49:23', 1, '2019-05-22 10:51:40', 1, 0);
+INSERT INTO `pictures` VALUES (1358, 113, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/03e0f57b-c280-4929-a4b3-41fa29d360be.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=mjsIT%2Fb7lMOxIxFx0a7qAsO3VOU%3D', '2019-05-22 10:49:28', 1, '2019-05-22 10:51:40', 1, 0);
+INSERT INTO `pictures` VALUES (1359, 114, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/04d6c9da-9ff2-4119-b9a2-488d2e30f9db.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=2aaC1%2B3eUxXZ%2FOMzCq7%2BA%2BsRtAI%3D', '2019-05-22 11:27:50', 85, '2019-05-22 11:28:06', 85, 0);
+INSERT INTO `pictures` VALUES (1360, 114, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/053f83f4-85f7-4c8f-8e30-3d1fbd1e6405.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=wDbYlNG%2FhvGeerG01bYMfYqkvHg%3D', '2019-05-22 11:27:55', 85, '2019-05-22 11:28:06', 85, 0);
+INSERT INTO `pictures` VALUES (1361, 114, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/060687c2-f01c-4c71-97b4-f1601619a1a8.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=TjTDiv782aIlomuIi5nInNtEX3M%3D', '2019-05-22 11:27:59', 85, '2019-05-22 11:28:06', 85, 0);
+INSERT INTO `pictures` VALUES (1362, 114, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/068272e6-9b8b-41b3-b486-0c0e3c61caa7.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=5D1%2B0vKA2Ies%2FuARYqxsZ1yqBrA%3D', '2019-05-22 11:28:02', 85, '2019-05-22 11:28:06', 85, 0);
+INSERT INTO `pictures` VALUES (1363, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/07aeb940-81cc-44cd-a888-7c9f84024305.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ZUA%2FcbV45HIL4HiL547pjOYI9cw%3D', '2019-05-22 11:53:58', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1364, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0855f3e8-5dcb-477a-96bf-7c9469a8a6b0.jpg?Expires=1560395654&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JB8dUrORjxhy33Mnwfo1midTYrg%3D', '2019-05-22 11:54:02', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1365, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/08d15110-7828-47bc-bfe7-cddd62e8e4e5.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=drHeLT85tGZI9f2UtkzO34QlCUE%3D', '2019-05-22 11:54:05', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1366, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/094765fd-4af3-4c56-86e5-0d48614d268b.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4EsxUJ4nzNp3liEYz7uH0vuxiHM%3D', '2019-05-22 11:54:10', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1367, 115, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0a04eef6-55d7-454f-a5bf-43faa13c1897.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=bfb%2BPNUW2WLn4Iu95HN6vFbCBE8%3D', '2019-05-22 12:46:19', 108, '2019-05-22 12:46:32', 108, 0);
+INSERT INTO `pictures` VALUES (1368, 115, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0a0c4c30-d6e4-48e7-a6ef-29888c3c9603.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=kt7uIvUWslJBL1EiQIDzACG3xqY%3D', '2019-05-22 12:46:23', 108, '2019-05-22 12:46:32', 108, 0);
+INSERT INTO `pictures` VALUES (1369, 115, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0a190dd8-c3ef-40f6-97a5-145eac7d629b.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=w2vWzSu8BtURu%2F3zQ1jUMgNyIzM%3D', '2019-05-22 12:46:28', 108, '2019-05-22 12:46:32', 108, 0);
+INSERT INTO `pictures` VALUES (1370, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0a8011be-fcbb-415a-a7e4-de2940994111.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=5AK%2F9mHmYICquTBhlwXucRjHmLo%3D', '2019-05-22 12:49:45', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1371, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0ac0d86a-1369-450a-8a96-405933a9b042.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=yQSr6zagKJtekBBb5NUfzSgSAAs%3D', '2019-05-22 12:49:50', 108, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1372, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0c4debc3-3097-48cb-ad1a-ab91a34e4a60.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=UCYnkEjGaB8vdxarpZfhuw7eBl0%3D', '2019-05-22 13:04:48', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1373, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0c8e3e32-4e7e-4e43-8e11-4aed62d79d88.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=jQGPnba%2F5byQVZhmj5qCeD%2BUNlg%3D', '2019-05-22 13:04:55', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1374, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0cc7ee3d-3600-495e-b0dd-0d21c527ad0d.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JLJksUmJA%2BhnH1nC7hvNC2%2FXxIw%3D', '2019-05-22 13:05:02', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1375, 59, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190522/0ce5332a-afab-4717-8fe1-4e3c2dbf0dbb.jpg?Expires=1560395655&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Z%2BifFf9yx4LTokZrFqx2jueFXzE%3D', '2019-05-22 18:54:18', 85, '2019-05-22 18:54:20', 85, 0);
+INSERT INTO `pictures` VALUES (1376, 60, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/1a6fbaa2-6489-49b9-8378-3a659dc3e5b9.png?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=zZOEDeboF69jBHsb4iIm8LXWx3Q%3D', '2019-05-23 17:27:59', 1, '2019-05-23 17:28:10', 1, 0);
+INSERT INTO `pictures` VALUES (1377, 61, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/1fe72023-9bbe-4482-8ae5-1f4fd30ada3b.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=VJK1nk0MVd3lS2iSBMplX0aRAWU%3D', '2019-05-23 17:32:28', 1, '2019-05-23 17:32:36', 1, 0);
+INSERT INTO `pictures` VALUES (1378, 61, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/231e3736-b88a-4538-94fd-8a936126bbe9.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=b0ZeWL4m3jSEW5S33F7eKmQSt60%3D', '2019-05-23 17:32:33', 1, '2019-05-23 17:32:36', 1, 0);
+INSERT INTO `pictures` VALUES (1379, 62, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/23d1f722-804b-4198-9e23-1ab1856f507b.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=W1a5CyAQsRI86WX%2F4oAYyRH9fR8%3D', '2019-05-23 17:39:06', 1, '2019-05-23 17:39:30', 1, 0);
+INSERT INTO `pictures` VALUES (1380, 62, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/25006433-c2d7-4ab7-a0bf-de6763d21a28.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=iHPznemUKuQTxjUZ39Gamkx%2F9x4%3D', '2019-05-23 17:39:13', 1, '2019-05-23 17:39:30', 1, 0);
+INSERT INTO `pictures` VALUES (1381, 62, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/2509d128-d704-40b9-8f02-9baf4fb0319f.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=AKXS6yRxHSS4bceq5Rq7NzHABc4%3D', '2019-05-23 17:39:19', 1, '2019-05-23 17:39:30', 1, 0);
+INSERT INTO `pictures` VALUES (1382, 62, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/2c856bf6-fd19-42b8-b36e-58efbd0d91e8.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=41YAJ2olk1foyodQ1vAUkyXZacg%3D', '2019-05-23 17:39:26', 1, '2019-05-23 17:39:30', 1, 0);
+INSERT INTO `pictures` VALUES (1384, 20, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/2f1b46f8-f641-4120-8630-980cf517d60c.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=iSco95v4zcQGamtD1Hp7qD1dW00%3D', '2019-05-23 18:01:39', 1, '2019-05-23 18:01:48', 1, 0);
+INSERT INTO `pictures` VALUES (1386, 20, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190523/302898dc-9744-49f2-a2f4-cfb54bcf9007.jpg?Expires=1560395676&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=QrJ4Od0wsTGafimrV0li3UCMrao%3D', '2019-05-23 18:07:56', 1, '2019-05-23 18:08:14', 1, 0);
+INSERT INTO `pictures` VALUES (1387, 1209, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190524/01b025e9-1c15-4f89-a136-14d8b9150cd3.jpg?Expires=1560395688&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=C5ZxIU7fTyjCEm1tBhiVU5yKOlc%3D', '2019-05-24 08:59:41', 196, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1388, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190524/c6c1a47c-99d7-4b12-abac-c660e0c2143a.jpg?Expires=1560395689&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=21iuZTCKASZfYdt%2Fh3X3reuox%2B0%3D', '2019-05-24 14:33:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1389, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190524/cc5daa31-de4a-4e71-bafe-7e86d00cc08b.jpg?Expires=1560395689&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=h4CQQNs0OQP8C14XnS8sdjnAJ7c%3D', '2019-05-24 14:33:19', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1390, NULL, 3, 0, '/pic/20190524/94807dda-0c75-409d-a1e0-18bf0f50aca3.jpg', '2019-05-24 14:33:24', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1391, 57, 3, 0, '/pic/20190524/0722e4e4-c17d-45c5-b0a3-3daccd472988.jpg', '2019-05-24 14:56:22', 1, '2019-05-24 14:56:42', 1, 0);
 INSERT INTO `pictures` VALUES (1392, 57, 3, 0, '/pic/20190524/760e089f-adb8-479f-8806-70256782e3f0.jpg', '2019-05-24 14:56:24', 1, '2019-05-24 14:56:42', 1, 0);
@@ -8073,105 +8378,105 @@ INSERT INTO `pictures` VALUES (1407, NULL, 0, 1, '/pic/20190525/da64e689-ae43-4b
 INSERT INTO `pictures` VALUES (1408, NULL, 0, 2, '/pic/20190525/a603dffe-b669-4633-bfe5-69c73126833a.png', '2019-05-25 10:22:06', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1409, NULL, 0, 3, '/pic/20190525/677a3e3a-e0fd-4e79-8a48-5a29e8e27bde.png', '2019-05-25 10:22:10', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1410, NULL, 0, 1, '/pic/20190525/cdc937e4-cfd8-4c2b-8dff-0c652f31abf7.jpg', '2019-05-25 10:22:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1411, 20, 5, 0, '/pic/20190528/32f62d58-c2fa-427f-97f9-f0a6c6e1b614.jpg', '2019-05-28 15:32:44', 1, '2019-05-28 15:32:49', 1, 0);
-INSERT INTO `pictures` VALUES (1413, NULL, 5, 0, '/pic/20190528/0d8d995f-b786-48b2-a3ce-3dd5ba714800.jpg', '2019-05-28 15:43:43', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1414, NULL, 5, 0, '/pic/20190528/60a297d2-7a75-4cdb-92a6-4a89a7002a53.jpg', '2019-05-28 15:43:49', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1415, NULL, 5, 0, '/pic/20190528/63442a30-bd17-4755-90b7-96d8c66079c7.jpg', '2019-05-28 15:44:08', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1416, NULL, 5, 0, '/pic/20190528/643d9d1a-292a-4792-88f3-a28a0874009c.jpg', '2019-05-28 15:44:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1417, NULL, 0, 2, '/pic/20190528/a88a7371-9351-4d40-a16b-8ccff0554b58.jpg', '2019-05-28 15:49:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1418, 117, 0, 2, '/pic/20190528/1e1ae1d0-8377-49ad-95d1-6ddf447340cc.jpg', '2019-05-28 15:58:09', 1, '2019-05-28 16:06:42', 1, 0);
-INSERT INTO `pictures` VALUES (1419, 117, 0, 3, '/pic/20190528/bd5c209e-b39d-4376-ba5b-2da52b69d932.jpg', '2019-05-28 15:58:23', 1, '2019-05-28 16:06:42', 1, 0);
-INSERT INTO `pictures` VALUES (1420, 117, 0, 1, '/pic/20190528/a9e5ea7f-6f64-4e34-9058-91a83cb06397.jpg', '2019-05-28 15:58:31', 1, '2019-05-28 16:06:42', 1, 0);
-INSERT INTO `pictures` VALUES (1421, 117, 0, 4, '/pic/20190528/ac2bb625-3ef5-4692-9aa7-866d66b3d5a7.jpg', '2019-05-28 15:58:39', 1, '2019-05-28 16:06:42', 1, 0);
-INSERT INTO `pictures` VALUES (1422, 64, 4, 0, '/pic/20190528/0e5b3ee0-7fa2-4036-8dae-159e146bd75e.png', '2019-05-28 16:08:21', 85, '2019-05-28 16:08:23', 85, 0);
-INSERT INTO `pictures` VALUES (1423, 72, 4, 0, '/pic/20190528/48f7ff49-e66d-4b26-a746-5bab6970b611.jpg', '2019-05-28 16:08:32', 85, '2019-05-28 16:08:35', 85, 0);
-INSERT INTO `pictures` VALUES (1424, NULL, 4, 0, '/pic/20190528/51b8ca5e-bec1-4e7a-9f5d-79189b570ced.jpg', '2019-05-28 17:32:10', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1425, NULL, 4, 0, '/pic/20190528/1b2893b3-cfc3-4ecc-9596-22f7930707f9.jpg', '2019-05-28 17:34:46', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1426, NULL, 4, 0, '/pic/20190528/d4ad75ca-0914-41ec-ae83-f1a286c9bcc7.jpg', '2019-05-28 17:36:56', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1427, NULL, 4, 0, '/pic/20190528/b53cd40b-0a2e-4756-be26-6db68e1d683a.jpg', '2019-05-28 17:41:11', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1411, 20, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/09036803-38d3-4f5a-8455-2164c863a2d9.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=YVddJqiN2NcWJpudZTKARbLxEHY%3D', '2019-05-28 15:32:44', 1, '2019-05-28 15:32:49', 1, 0);
+INSERT INTO `pictures` VALUES (1413, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/1a96ca29-c146-4c87-a9fe-655e71f6974e.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=b6Mou%2BLc17Y7AUMtN1AH7wpJlFE%3D', '2019-05-28 15:43:43', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1414, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/265d7e94-a305-47cd-a77e-7d31be20f513.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=tzmwysxMSsVfHkBdfLBA8Sq46lE%3D', '2019-05-28 15:43:49', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1415, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/29e29159-710f-41f0-9ca6-7291c0e0f1d2.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=qy7FdZllXvRvxjkvmxOIvqNTHYk%3D', '2019-05-28 15:44:08', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1416, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/30e8d048-a937-4c4b-97f1-732371351aa1.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=YBAdzHZdYQBUnQz3NygM1lCfwyo%3D', '2019-05-28 15:44:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1417, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/3ef52c69-2e3b-4370-a918-0a64bf66c53c.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=i1LkFFO2dTB2L1BMjsANJ2nyiFc%3D', '2019-05-28 15:49:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1418, 117, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/44af2183-2d4c-45ab-8fc1-c609812f63d8.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=gC3JdHCm1gFFVMXZZZaRVCFYB1c%3D', '2019-05-28 15:58:09', 1, '2019-05-28 16:06:42', 1, 0);
+INSERT INTO `pictures` VALUES (1419, 117, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/54eb9cbb-26e0-4aeb-8a34-e275a3125ffd.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Or9QSWlmFyGJRMIdkfKplM9G80M%3D', '2019-05-28 15:58:23', 1, '2019-05-28 16:06:42', 1, 0);
+INSERT INTO `pictures` VALUES (1420, 117, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/58044451-ca96-408e-bc99-40131b20b0fc.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=kibxhH1qXA5uW6jMznnCPEkAmsQ%3D', '2019-05-28 15:58:31', 1, '2019-05-28 16:06:42', 1, 0);
+INSERT INTO `pictures` VALUES (1421, 117, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/71f0ac0d-ec4c-487a-8c90-82b2963fabed.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=DmCrFVTpOhWpP8OZpLfCZGBNPZ8%3D', '2019-05-28 15:58:39', 1, '2019-05-28 16:06:42', 1, 0);
+INSERT INTO `pictures` VALUES (1422, 64, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/8f54757b-1639-4ab9-b5e6-0dd852971edf.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=9u7ROif%2B5FSkU6A5BmflFceIvPo%3D', '2019-05-28 16:08:21', 85, '2019-05-28 16:08:23', 85, 0);
+INSERT INTO `pictures` VALUES (1423, 72, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/95630338-dacd-42dc-95e6-709f92354793.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=UsDVK3RvQnHAAuTWivFk2Cl2%2FHc%3D', '2019-05-28 16:08:32', 85, '2019-05-28 16:08:35', 85, 0);
+INSERT INTO `pictures` VALUES (1424, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/a0efaa23-5eaa-4ae3-9a4b-7876d8468b44.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=41q%2Bvro2OdWZYI1%2F55ac6nrmb0o%3D', '2019-05-28 17:32:10', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1425, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/aee1a03e-a29b-4274-bf5f-1ba5bcad2d18.jpg?Expires=1560395723&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=25ULs05EXs20a%2Fo59huQ7U3W614%3D', '2019-05-28 17:34:46', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1426, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/bb8391bd-b445-46ed-9744-7a8bd4f6844d.jpg?Expires=1560395724&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=UETj4f9YxMo9A8Bd3Tv48kNVUHM%3D', '2019-05-28 17:36:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1427, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190528/fc59d382-ad46-4b59-802a-c16e3dfb3cc6.jpg?Expires=1560395724&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=8uRHClBPvrgvl4xLxQvlvVrvELc%3D', '2019-05-28 17:41:11', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1428, 63, 2, 0, '/pic/20190528/3d1b729d-8189-4aa4-b629-393c10fe39c2.jpg', '2019-05-28 18:09:07', 85, '2019-05-28 18:09:11', 85, 0);
-INSERT INTO `pictures` VALUES (1429, NULL, 4, 0, '/pic/20190529/867b24dc-803c-4d72-8c52-e51336627ac7.jpg', '2019-05-29 09:29:11', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1430, NULL, 4, 0, '/pic/20190529/01930810-7322-49b9-898b-22aa72400fca.jpg', '2019-05-29 09:29:16', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1431, NULL, 4, 0, '/pic/20190529/85523369-ff81-4d56-8fb7-05d8ead7f696.jpg', '2019-05-29 09:31:00', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1432, NULL, 4, 0, '/pic/20190529/a42ea112-9cea-4c4c-9469-0a7ce5abe23e.jpg', '2019-05-29 09:31:07', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1433, NULL, 4, 0, '/pic/20190529/196c9f9e-03cb-49b4-b38c-cdc82fee7490.jpg', '2019-05-29 09:33:21', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1434, NULL, 4, 0, '/pic/20190529/145e1ce3-afe1-434f-909f-98e7e2b9ff42.jpg', '2019-05-29 09:33:29', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1435, NULL, 4, 0, '/pic/20190529/b8abc7f8-4b6f-48bb-a2ff-b7c774b95547.jpg', '2019-05-29 09:37:18', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1436, NULL, 4, 0, '/pic/20190529/9ef2f572-0c69-4623-bccf-f90460e9432b.jpg', '2019-05-29 09:37:24', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1437, 86, 4, 0, '/pic/20190529/b2791b32-9e58-4571-8035-e01bc957b2d9.jpg', '2019-05-29 09:40:06', 1, '2019-05-29 09:40:10', 1, 0);
-INSERT INTO `pictures` VALUES (1438, NULL, 4, 0, '/pic/20190529/f08691d9-5653-4a88-99c9-d6b026bfa49a.jpg', '2019-05-29 10:36:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1439, 81, 4, 0, '/pic/20190529/36bb19df-f1c1-4a64-96b5-843dcc6a09d7.jpg', '2019-05-29 10:39:09', 1, '2019-05-29 10:39:12', 1, 0);
-INSERT INTO `pictures` VALUES (1441, NULL, 4, 0, '/pic/20190529/9fdb7d5b-cb95-48d2-aeac-41ce2b889dff.jpg', '2019-05-29 10:42:08', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1442, NULL, 4, 0, '/pic/20190529/7f50a6f4-fe06-425f-9fbb-a61bf3175379.jpg', '2019-05-29 10:42:41', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1444, 86, 4, 0, '/pic/20190529/f48b429f-9fd1-4635-ba9d-3e919c640ee3.jpg', '2019-05-29 10:53:09', 1, '2019-05-29 10:53:22', 1, 0);
-INSERT INTO `pictures` VALUES (1445, 61, 3, 0, '/pic/20190529/6abeea2e-1b29-4b60-81f0-9c449adc9e8b.jpg', '2019-05-29 10:57:32', 1, '2019-05-29 10:57:38', 1, 0);
-INSERT INTO `pictures` VALUES (1446, 61, 3, 0, '/pic/20190529/04e9872c-2302-4927-8ac1-2992ec1de2ff.jpg', '2019-05-29 10:57:35', 1, '2019-05-29 10:57:38', 1, 0);
-INSERT INTO `pictures` VALUES (1447, 62, 3, 0, '/pic/20190529/e37bbb14-f3dd-472e-8a5a-c6762588a3c5.jpg', '2019-05-29 11:05:05', 1, '2019-05-29 11:05:31', 1, 0);
-INSERT INTO `pictures` VALUES (1448, 62, 3, 0, '/pic/20190529/71004bd5-7de7-498c-9db1-b489bb3d1a9b.jpg', '2019-05-29 11:05:07', 1, '2019-05-29 11:05:31', 1, 0);
-INSERT INTO `pictures` VALUES (1449, NULL, 6, 0, '/pic/20190529/80ed3430-d1e4-4e3f-8d28-4fa488e63364.png', '2019-05-29 11:08:24', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1450, NULL, 6, 0, '/pic/20190529/7ba01fbf-0a2e-4fd9-bb51-e792e8987bb4.png', '2019-05-29 11:08:51', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1451, NULL, 6, 0, '/pic/20190529/4e68dd44-28f9-474e-9206-69b7ea92a1f3.png', '2019-05-29 11:09:19', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1452, NULL, 6, 0, '/pic/20190529/31c86cff-2efd-4194-854d-a5c82dcafe80.png', '2019-05-29 11:09:28', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1453, NULL, 6, 0, '/pic/20190529/a9a5e03f-0860-4e0b-9509-f5407465f9a8.png', '2019-05-29 11:09:55', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1454, NULL, 6, 0, '/pic/20190529/0c963bf4-8e5b-4821-899c-29d649d83d8d.png', '2019-05-29 11:10:02', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1456, NULL, 6, 0, '/pic/20190529/a880e03d-1297-4b3a-83f2-b3c2605ddd84.png', '2019-05-29 11:13:39', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1458, 64, 3, 0, '/pic/20190529/90f0b478-f564-487a-b152-6323f25855b8.jpg', '2019-05-29 11:14:13', 1, '2019-05-29 11:15:37', 1, 0);
-INSERT INTO `pictures` VALUES (1459, NULL, 3, 0, '/pic/20190529/e25e901b-ccbc-4bae-b55d-8b0805fd58ca.jpg', '2019-05-29 11:25:20', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1463, 66, 3, 0, '/pic/20190529/dca5169f-d5c0-4f79-bc3e-012c3d678048.jpg', '2019-05-29 11:33:47', 1, '2019-05-29 11:34:02', 1, 0);
-INSERT INTO `pictures` VALUES (1464, 118, 0, 2, '/pic/20190529/1773949d-7f22-489b-9360-85ebb91545c9.png', '2019-05-29 11:40:19', 1, '2019-05-29 11:40:38', 1, 0);
-INSERT INTO `pictures` VALUES (1465, 118, 0, 3, '/pic/20190529/8ddb1750-0ea5-4043-a460-060024838171.png', '2019-05-29 11:40:24', 1, '2019-05-29 11:40:38', 1, 0);
-INSERT INTO `pictures` VALUES (1466, 118, 0, 1, '/pic/20190529/ceaf6bef-acf5-44f6-abd5-790db6161aa0.jpg', '2019-05-29 11:40:28', 1, '2019-05-29 11:40:38', 1, 0);
-INSERT INTO `pictures` VALUES (1467, 1222, 1, 0, '/pic/20190529/47974153-3791-4836-bc71-e830f0006f60.jpg', '2019-05-29 11:41:53', 213, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1468, NULL, 3, 0, '/pic/20190529/22a243a3-2325-4fcb-840a-56790c30e8d4.jpg', '2019-05-29 11:51:05', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1469, 66, 3, 0, '/pic/20190529/73b72e8d-275f-40d2-8d50-f0366458a79d.jpg', '2019-05-29 14:19:08', 1, '2019-05-29 14:19:43', 1, 0);
-INSERT INTO `pictures` VALUES (1470, NULL, 0, 2, '/pic/20190529/6f45e6d4-cf43-4629-b98c-614b783650d7.jpg', '2019-05-29 15:20:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1471, NULL, 0, 3, '/pic/20190529/0000d9f3-6a59-42c9-b524-c5e58ab6ed0e.jpg', '2019-05-29 15:20:08', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1472, NULL, 0, 1, '/pic/20190529/08c5c00a-076b-46f6-8038-9d673a5254c5.jpg', '2019-05-29 15:20:14', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1473, NULL, 0, 4, '/pic/20190529/e316a8a9-ce8f-4d2c-a621-86bbfc307bb1.jpg', '2019-05-29 15:20:19', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1474, 36, 0, 2, '/pic/20190529/5456ab15-9749-45cf-9db5-9bab0f7b8d82.png', '2019-05-29 15:20:24', 85, '2019-05-30 11:38:39', 85, 0);
-INSERT INTO `pictures` VALUES (1475, 36, 0, 3, '/pic/20190529/4e593579-5354-4148-8140-f6b0f056de6c.png', '2019-05-29 15:20:28', 85, '2019-05-30 11:38:40', 85, 0);
-INSERT INTO `pictures` VALUES (1476, 36, 0, 1, '/pic/20190529/3c6dde0d-f3a2-43fe-a524-9c1d83878dc4.jpg', '2019-05-29 15:20:33', 85, '2019-05-30 11:38:40', 85, 0);
-INSERT INTO `pictures` VALUES (1478, 36, 0, 0, '/pic/20190529/3eec28fa-09c9-49e2-9b5c-10f33ba1b134.png', '2019-05-29 15:22:25', 85, '2019-05-29 15:22:31', 85, 0);
-INSERT INTO `pictures` VALUES (1479, 36, 0, 0, '/pic/20190529/645603af-0c1b-4f37-b9e8-e582950e7b35.jpg', '2019-05-29 15:22:29', 85, '2019-05-29 15:22:31', 85, 0);
-INSERT INTO `pictures` VALUES (1480, NULL, 3, 0, '/pic/20190529/1ccdfbe8-4d83-45cd-adb5-ebeeb4c346a1.jpg', '2019-05-29 15:38:52', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1481, NULL, 3, 0, '/pic/20190529/c5aa3850-a9d8-47c7-8105-cf5ad64b94e4.jpg', '2019-05-29 15:39:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1482, NULL, 3, 0, '/pic/20190529/83f7ac02-0a32-4e83-84c1-82bff16d5d99.jpg', '2019-05-29 15:39:08', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1483, NULL, 3, 0, '/pic/20190529/ff81d0ec-871b-4da6-b279-a86138de654c.jpg', '2019-05-29 15:40:06', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1484, NULL, 0, 4, '/pic/20190529/b1866d40-f193-4051-8818-bc03aaa0bdcd.jpg', '2019-05-29 15:50:39', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1485, NULL, 0, 2, '/pic/20190529/a506ff95-2acb-4c54-9c92-9669fe31f25e.jpg', '2019-05-29 15:50:51', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1486, NULL, 0, 3, '/pic/20190529/6d284795-8ef0-406c-8bbe-486ed778bc43.jpg', '2019-05-29 15:50:57', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1487, NULL, 0, 1, '/pic/20190529/013104b7-9483-484e-9135-37ef05f2d20e.jpg', '2019-05-29 15:51:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1488, NULL, 0, 4, '/pic/20190529/37f5d5e0-82f0-4ab9-9e8a-2d3d1de3d20b.jpg', '2019-05-29 15:51:07', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1489, NULL, 0, 4, '/pic/20190529/587159ff-195e-4c16-a456-452a9b052fac.jpg', '2019-05-29 15:51:26', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1490, NULL, 0, 4, '/pic/20190529/ef1ee145-6dfc-451b-836e-c97b4dc817de.jpg', '2019-05-29 16:03:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1491, NULL, 2, 0, '/pic/20190529/79d07d33-f8f5-4411-a7e1-f55a9866e979.jpg', '2019-05-29 16:14:19', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1492, NULL, 2, 0, '/pic/20190529/865fa615-8b18-4d4c-a3cd-47922c940638.jpg', '2019-05-29 17:05:31', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1493, NULL, 2, 0, '/pic/20190529/63e6ff30-4aad-4478-ad82-ec238a9e0db2.jpg', '2019-05-29 17:05:38', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1494, NULL, 2, 0, '/pic/20190529/86140850-d4c6-4597-9ab3-b45bfb3068a5.jpg', '2019-05-29 17:05:44', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1495, NULL, 2, 0, '/pic/20190529/fc9a6c56-bb7c-4e15-8718-87cc8b140e9e.jpg', '2019-05-29 17:05:49', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1496, NULL, 0, 2, '/pic/20190529/247d3749-e791-4a64-b371-be5e94289b9d.jpg', '2019-05-29 17:23:16', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1497, 66, 3, 0, '/pic/20190529/4f7c39e2-59d3-4b15-9fb8-d6f7ad25793d.jpg', '2019-05-29 17:26:29', 1, '2019-05-29 17:26:36', 1, 0);
-INSERT INTO `pictures` VALUES (1499, 2, 4, 0, '/pic/20190529/59a34b19-af55-4977-bc73-430b88728b6d.jpg', '2019-05-29 18:13:41', 1, '2019-05-29 18:13:43', 1, 0);
-INSERT INTO `pictures` VALUES (1500, 2, 4, 0, '/pic/20190529/3afe33ba-526a-41be-b522-fa95a13ade26.jpg', '2019-05-29 18:23:52', 1, '2019-05-29 18:23:53', 1, 0);
-INSERT INTO `pictures` VALUES (1501, 2, 4, 0, '/pic/20190529/d115b423-3d06-409c-927b-dd2e8363e183.jpg', '2019-05-29 18:24:40', 1, '2019-05-29 18:24:42', 1, 0);
-INSERT INTO `pictures` VALUES (1502, NULL, 4, 0, '/pic/20190529/4be6c1b7-ea3d-43d0-87e6-efc32637a0ec.jpg', '2019-05-29 18:51:33', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1503, 2, 4, 0, '/pic/20190529/d397de3b-c8e9-4c7b-bccf-7d9736be839b.jpg', '2019-05-29 18:53:27', 1, '2019-05-29 18:54:18', 1, 0);
-INSERT INTO `pictures` VALUES (1504, 2, 4, 0, '/pic/20190529/1d440ac8-d36c-4e79-8aa1-900d5280181b.jpg', '2019-05-29 18:56:17', 1, '2019-05-29 19:01:17', 1, 0);
-INSERT INTO `pictures` VALUES (1505, 66, 3, 0, '/pic/20190530/37353f55-b559-427c-a7ef-ed82547c5cd0.jpg', '2019-05-30 09:15:32', 1, '2019-05-30 09:15:41', 1, 0);
-INSERT INTO `pictures` VALUES (1506, 66, 3, 0, '/pic/20190530/4351401d-bba5-4b5d-83a2-699095b9cb63.jpg', '2019-05-30 09:28:47', 1, '2019-05-30 09:28:49', 1, 0);
-INSERT INTO `pictures` VALUES (1508, 65, 3, 0, '/pic/20190530/625ac3a7-11ab-48f8-9127-7ac96636e517.jpg', '2019-05-30 09:52:00', 1, '2019-05-30 09:52:12', 1, 0);
-INSERT INTO `pictures` VALUES (1509, 65, 3, 0, '/pic/20190530/1901a968-3980-4d52-aa7e-3f65bdd700ae.jpg', '2019-05-30 09:52:07', 1, '2019-05-30 09:52:12', 1, 0);
-INSERT INTO `pictures` VALUES (1510, 88, 4, 0, '/pic/20190530/9ea6df91-d29a-4713-b25c-3ae5977cf797.jpg', '2019-05-30 09:54:17', 1, '2019-05-30 09:54:38', 1, 0);
-INSERT INTO `pictures` VALUES (1511, 88, 4, 0, '/pic/20190530/a43ab8e7-7f3c-407d-b183-1710d1e1b25c.jpg', '2019-05-30 09:54:25', 1, '2019-05-30 09:54:38', 1, 0);
-INSERT INTO `pictures` VALUES (1512, 88, 4, 0, '/pic/20190530/fee0d82a-d3bd-4034-997d-442f5f0699f0.jpg', '2019-05-30 09:54:36', 1, '2019-05-30 09:54:38', 1, 0);
-INSERT INTO `pictures` VALUES (1513, NULL, 4, 0, '/pic/20190530/2f7eab91-989a-4b3c-9bee-7afe071601ca.jpg', '2019-05-30 10:01:30', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1514, 88, 4, 0, '/pic/20190530/88cef3ee-192a-4a61-938c-15176e7359f8.jpg', '2019-05-30 10:03:45', 1, '2019-05-30 10:03:50', 1, 0);
-INSERT INTO `pictures` VALUES (1515, 88, 4, 0, '/pic/20190530/79d3f0d7-a1f2-4eba-bce9-c94943cd8982.jpg', '2019-05-30 10:05:30', 1, '2019-05-30 10:05:33', 1, 0);
-INSERT INTO `pictures` VALUES (1516, 35, 5, 0, '/pic/20190530/0c52c434-9632-4a83-b3f5-e451609537bb.jpg', '2019-05-30 10:19:17', 1, '2019-05-30 10:19:31', 1, 0);
-INSERT INTO `pictures` VALUES (1517, 35, 5, 0, '/pic/20190530/50e4810a-20ab-4a32-9657-6ef06487ac69.jpg', '2019-05-30 10:19:23', 1, '2019-05-30 10:19:31', 1, 0);
-INSERT INTO `pictures` VALUES (1523, 36, 5, 0, '/pic/20190530/efea48f4-f2f6-4176-a649-3cbdc9b3de20.jpg', '2019-05-30 10:47:52', 1, '2019-05-30 10:47:59', 1, 0);
-INSERT INTO `pictures` VALUES (1524, NULL, 5, 0, '/pic/20190530/20124e42-fcb7-497b-b147-3d822a1611c1.jpg', '2019-05-30 11:06:35', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1525, NULL, 5, 0, '/pic/20190530/4413b319-fcc3-421e-86d0-ed53f4f7f4e9.jpg', '2019-05-30 11:06:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1429, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/019218b6-73bd-4879-b3c3-c387724a7e68.jpg?Expires=1560395735&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=6wDum0rGt8XHBFZQTU54q3Yg0MU%3D', '2019-05-29 09:29:11', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1430, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/033fc560-8b97-471f-be26-2ba43b88dcda.jpg?Expires=1560395735&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=t%2BLWT%2BPxVHE9ujbejOitg0ERM10%3D', '2019-05-29 09:29:16', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1431, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/035a73aa-4bd3-48d6-af41-0c1a3c198cf6.jpg?Expires=1560395735&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JmdO7cE6C7mtyZzaR3nh87%2FSLcI%3D', '2019-05-29 09:31:00', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1432, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/0391e23b-fb73-4a47-bf9e-3db384e8afd6.jpg?Expires=1560395735&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=M7QF3Cj35OALYZfh6L55BMgtMCY%3D', '2019-05-29 09:31:07', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1433, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/052d2c36-423b-41f0-a01a-05ecd729d196.jpg?Expires=1560395735&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=k2cQx4QcXRDmPbmnN1NwxrgmLvg%3D', '2019-05-29 09:33:21', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1434, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/067807b4-b6a0-455c-9641-8e048c6a0441.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=sVrnah2gbM5QW5NQtsu4M3e7Ick%3D', '2019-05-29 09:33:29', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1435, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/0888c730-157a-47d1-bd2a-ee7151fa3506.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=BzZtu0omTt2Nh%2BVqu3GBDKkN5hA%3D', '2019-05-29 09:37:18', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1436, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/0cdc8f70-19b1-481c-a646-86b803d297a8.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=P0fj6OUgOvZjBC5KyaX8sOUdDbM%3D', '2019-05-29 09:37:24', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1437, 86, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/0ebeea57-7670-4218-a167-917dd4bb7496.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2BqJ65X%2FVA%2FiomfqZYfw%2BALwNnUA%3D', '2019-05-29 09:40:06', 1, '2019-05-29 09:40:10', 1, 0);
+INSERT INTO `pictures` VALUES (1438, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/10aefbe1-c1a7-4924-a049-c770e1a165c2.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2Fu278myTzJ6GjU6GKjFjCXp3518%3D', '2019-05-29 10:36:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1439, 81, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/12e7e00b-9549-420d-ad0e-c710ed4c4136.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=BZq7WdPAPaSi2vgAVwq05xNPKrE%3D', '2019-05-29 10:39:09', 1, '2019-05-29 10:39:12', 1, 0);
+INSERT INTO `pictures` VALUES (1441, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/148e0d25-27a7-4ebb-b63b-0956e96bc388.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ZwPjYL8zxktFIMTl9dnzlEyokH8%3D', '2019-05-29 10:42:08', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1442, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/17208248-45ae-444f-b15e-2df62d25f965.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=FJppywUM%2BcYA8FVB%2F0pzYk%2FMB%2Fg%3D', '2019-05-29 10:42:41', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1444, 86, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/19a454d4-84bd-43a8-81ab-1ac7db9462b1.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=SWzsxYCybOF5yqcDr9n08%2FA8Cd8%3D', '2019-05-29 10:53:09', 1, '2019-05-29 10:53:22', 1, 0);
+INSERT INTO `pictures` VALUES (1445, 61, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/1f007736-54aa-422b-a34d-5c5b15adfc99.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=hqwPUZaR%2Fo1r6AW7pzjfHSKjoiw%3D', '2019-05-29 10:57:32', 1, '2019-05-29 10:57:38', 1, 0);
+INSERT INTO `pictures` VALUES (1446, 61, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/1fed4cc5-72bb-4962-b300-dac8d029f667.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=hjkHaAe3sJLFkuNM%2BrD9NHs2aVU%3D', '2019-05-29 10:57:35', 1, '2019-05-29 10:57:38', 1, 0);
+INSERT INTO `pictures` VALUES (1447, 62, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/20496ae8-ee46-4ffe-9369-7fa85383ac14.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0ueKK696olhhVe1XWbmTYH0ftuE%3D', '2019-05-29 11:05:05', 1, '2019-05-29 11:05:31', 1, 0);
+INSERT INTO `pictures` VALUES (1448, 62, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/22e84833-9d37-43e7-af21-ac20492cfe85.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=OK%2BkDND4HHr0WZOq6vKLR3X2rx4%3D', '2019-05-29 11:05:07', 1, '2019-05-29 11:05:31', 1, 0);
+INSERT INTO `pictures` VALUES (1449, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/2464fc7c-138c-43b3-9114-0a3f923941ef.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4mCsIeubgMB6ksnztVfrtAos%2FR4%3D', '2019-05-29 11:08:24', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1450, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/2520fe26-ea4a-4730-b854-ac21f5b38f00.jpg?Expires=1560395736&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=qbCpnrauj2gV2sVr%2B7c84QWLmdU%3D', '2019-05-29 11:08:51', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1451, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/267bf794-cba4-40f7-982d-137f04ce14f9.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=sjX2c%2F3G5ob0Ayzes7aZ9m5M8%2BM%3D', '2019-05-29 11:09:19', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1452, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/297c7d9f-ed32-4069-9ec9-e3118c2de2c5.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=A7WTyGZUf3nVFhraJMR23yl0qRg%3D', '2019-05-29 11:09:28', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1453, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/29b3ef0e-6855-4d89-9cd0-33f2d7c0a1ba.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=mgCPeob%2FqTjRireVMW52%2FP4nT50%3D', '2019-05-29 11:09:55', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1454, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/2e81f1ce-5ab0-4336-a7a6-a829c9105149.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Mz1ajV0xuusiDsE1H%2F2jyXGVxKc%3D', '2019-05-29 11:10:02', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1456, NULL, 6, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/2f3a6d3f-659f-4df4-aaa3-2f6611330ae1.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=n1VRy9Qqbt%2BgxsR5bEC8yHoYdO8%3D', '2019-05-29 11:13:39', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1458, 64, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/38f289df-c530-4b91-84cc-0c5f40760951.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=cRNdKe%2Fkl9Q5e9qjsVmAHrLOP2U%3D', '2019-05-29 11:14:13', 1, '2019-05-29 11:15:37', 1, 0);
+INSERT INTO `pictures` VALUES (1459, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/396cfa47-4905-43fc-8b68-79a9d7993e84.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=iaV5xZEbwnYKgwqcRWU334S7MfA%3D', '2019-05-29 11:25:20', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1463, 66, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/3dccfffc-f44e-40b6-9100-b138788f82b5.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=FZwaDvkPz9P3gX234xb88RbTLrM%3D', '2019-05-29 11:33:47', 1, '2019-05-29 11:34:02', 1, 0);
+INSERT INTO `pictures` VALUES (1464, 118, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/3e415d9a-a544-401f-a9e8-c333a5637b16.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=k3tUZGH5qG%2F5CT0OuYUwPiuM5sw%3D', '2019-05-29 11:40:19', 1, '2019-05-29 11:40:38', 1, 0);
+INSERT INTO `pictures` VALUES (1465, 118, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/3e484c2b-c770-4644-9224-07f49021ea4b.jpg?Expires=1560395737&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=yftrY1mnazRyX4K2mhHfNm%2B67i0%3D', '2019-05-29 11:40:24', 1, '2019-05-29 11:40:38', 1, 0);
+INSERT INTO `pictures` VALUES (1466, 118, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/3e73c04b-2ef8-41cd-9f5c-d12345de58fd.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Vf3s7hXa%2F9H4BwR0VQ7TJxjyNmU%3D', '2019-05-29 11:40:28', 1, '2019-05-29 11:40:38', 1, 0);
+INSERT INTO `pictures` VALUES (1467, 1222, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4081fed7-9b21-4b60-8156-149f2a5b3ea3.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=9wFcnIi3QED8aocuHJeYYheGngM%3D', '2019-05-29 11:41:53', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1468, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/41a1823b-311c-488e-a2fe-a7791dd62de2.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=f4EKrNfbwofe5el7nulSXmCSQ%2Fg%3D', '2019-05-29 11:51:05', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1469, 66, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/426a363d-8553-40ac-ace9-b0e127c8b821.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=eIku0ZzS6Od2U4%2B4XjbyEq0umMI%3D', '2019-05-29 14:19:08', 1, '2019-05-29 14:19:43', 1, 0);
+INSERT INTO `pictures` VALUES (1470, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/42c1a187-af9a-4b50-b1cc-26eadd4e62d4.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=KTJLVKR4sfA0CE4BxGJyYO%2FrWc0%3D', '2019-05-29 15:20:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1471, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/42c8ae40-c76e-49c8-b5ad-1d6f0c648b95.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4SptWEzhmGzOgIvM%2Bk%2FJZnE%2FOvU%3D', '2019-05-29 15:20:08', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1472, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/435fd9f2-5948-484e-b3f2-3d17ba176f75.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0KVJ0s3iyj1JvTx2nzTnOivIdcw%3D', '2019-05-29 15:20:14', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1473, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/44f1d47b-e3be-40e2-af33-a6270314c0b1.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=C1MCIjO0WF%2FkkNRrTom%2BMUbR%2F%2F4%3D', '2019-05-29 15:20:19', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1474, 36, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/492921b2-9ab4-4e96-a569-2078afe4b8a2.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=PsqbnCmcmicKoMbfzNz97NOdpDY%3D', '2019-05-29 15:20:24', 85, '2019-05-30 11:38:39', 85, 0);
+INSERT INTO `pictures` VALUES (1475, 36, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/49a46154-4dff-4d9c-accb-99475d6acadc.jpg?Expires=1560395738&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=oL9f%2FgY64meyEknUc8bjaeHTuX0%3D', '2019-05-29 15:20:28', 85, '2019-05-30 11:38:40', 85, 0);
+INSERT INTO `pictures` VALUES (1476, 36, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4a5fd518-2cf9-45a1-bfb0-e98fcce3e803.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=tKQNqS%2BkQCfwzxftbYfJN7uvBpQ%3D', '2019-05-29 15:20:33', 85, '2019-05-30 11:38:40', 85, 0);
+INSERT INTO `pictures` VALUES (1478, 36, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4a784a54-b459-4ec1-befe-da5e0104632e.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=V8RYnVQFPr81OW37Q3%2FwMNGV1YM%3D', '2019-05-29 15:22:25', 85, '2019-05-29 15:22:31', 85, 0);
+INSERT INTO `pictures` VALUES (1479, 36, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4ba59197-84d3-4581-b347-383fc6993054.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=gZhe0Gx618ya3xsO3vNk6Wgh2SY%3D', '2019-05-29 15:22:29', 85, '2019-05-29 15:22:31', 85, 0);
+INSERT INTO `pictures` VALUES (1480, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4c18a6ab-30ca-4916-960b-7c0f77bc9667.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=7C8V5%2FUUNm2oZLDrWw1NsUDF0Ew%3D', '2019-05-29 15:38:52', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1481, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4ea7fdaa-63a8-4eb7-a18a-580109d4cfa4.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=cAlXo%2BcbeoINWCqQy9N0nM3KY6M%3D', '2019-05-29 15:39:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1482, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4fbb267f-7e81-4e63-81b2-9cdd72d5c8db.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=x3WYGThkZCDLGSIyx00cJLkncBw%3D', '2019-05-29 15:39:08', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1483, NULL, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/4fff4bf3-68f2-4234-9ec8-74ff8d12d627.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=sk2UK4dM3V24gZsncslwPPgetaU%3D', '2019-05-29 15:40:06', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1484, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/50d8c586-ba9a-4181-8c8d-8702e2911785.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Hxn9Y%2FEJ7UcXYW3r2gQPtAwH5EI%3D', '2019-05-29 15:50:39', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1485, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/537d4e59-04d2-4c1f-b727-e891613caa4d.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=9RKOUczIhIVtJ6LM4X%2BmAh6YQec%3D', '2019-05-29 15:50:51', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1486, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/5602a919-c07b-4aae-befc-9b0ec2e92be8.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=H5nhSuATMOlMvZYEAtYP%2FrDnnXg%3D', '2019-05-29 15:50:57', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1487, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/57adc995-e9fc-49a8-a554-64b33bf2ded1.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=71kXUXMlnLzlg%2FypN%2FLKDKYm5HU%3D', '2019-05-29 15:51:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1488, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/5b2cc72b-dbe4-474f-9c51-12c4c77c8ea3.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=X65r4mmTFcGDKHSGgKd47GqWiEI%3D', '2019-05-29 15:51:07', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1489, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/5cf3516e-6747-441d-b6aa-71c9d11e2ee0.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=sqnIXgXPmJystERhQe9fHW1hYkA%3D', '2019-05-29 15:51:26', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1490, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/5e116d02-e873-4a28-9855-47e4f4fab5dc.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=5iE4R2Q0OjhcMCuFiWI5K8UqlDA%3D', '2019-05-29 16:03:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1491, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/5ef1d019-5715-4d55-b6f7-c7882d5e0e47.jpg?Expires=1560395739&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=uwXGij2XZAOkhXc3yUjZZiMMdm4%3D', '2019-05-29 16:14:19', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1492, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/61448df4-74de-41ca-9b6f-e0f8c3cd983b.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=w9hNoYDLid3Y%2FBCdNYtxVR8dGPk%3D', '2019-05-29 17:05:31', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1493, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/62e4ef25-7a0c-4be9-9b65-23a40dab57e8.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=FSIilSJZJFpTK9upyGnD3DEH3Tk%3D', '2019-05-29 17:05:38', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1494, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/66599ce2-1eb0-42b1-a967-884636ce2f3c.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Hdk3HV9hERQ3ig7qMZZ57%2F7Ri0s%3D', '2019-05-29 17:05:44', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1495, NULL, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/6928603f-dc3f-48f9-815a-6c14b4cd95e7.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Y4DPjxyPBWeSI2dGv3O%2BrQfts3s%3D', '2019-05-29 17:05:49', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1496, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/6994fef0-18fc-43f4-a999-106222166b33.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=oKnc1WpDKs2DsEHABeUsTMbtHvc%3D', '2019-05-29 17:23:16', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1497, 66, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/6ef81d87-b78b-4389-b18e-73f1d426c840.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=x5XzR2zDocYv9PyASJl53WuJTkk%3D', '2019-05-29 17:26:29', 1, '2019-05-29 17:26:36', 1, 0);
+INSERT INTO `pictures` VALUES (1499, 2, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/709fde4f-0fcf-48db-86f3-03288ece6f56.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=khTPj4welBFYuQnavXbnsslaX7o%3D', '2019-05-29 18:13:41', 1, '2019-05-29 18:13:43', 1, 0);
+INSERT INTO `pictures` VALUES (1500, 2, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/70acf368-d768-4a84-8a8b-4761933a92d9.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0rgbewiUbiOAZcCpdXHmINwODUI%3D', '2019-05-29 18:23:52', 1, '2019-05-29 18:23:53', 1, 0);
+INSERT INTO `pictures` VALUES (1501, 2, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/778f562f-b82f-427a-be9a-7fb3d0002a62.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=IzhFOU3uZHMyPm%2FP6YKVT8fpmDw%3D', '2019-05-29 18:24:40', 1, '2019-05-29 18:24:42', 1, 0);
+INSERT INTO `pictures` VALUES (1502, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/791c0d2e-f796-4db7-be54-c7de81893e13.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ztJJhSv0%2FyMpSzFbLB3b7%2BRXO0Y%3D', '2019-05-29 18:51:33', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1503, 2, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/7b3ba77c-359c-451f-81be-26a097be095b.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=7CyDAz8YFsg1OCDSlFj%2BAxkrd6c%3D', '2019-05-29 18:53:27', 1, '2019-05-29 18:54:18', 1, 0);
+INSERT INTO `pictures` VALUES (1504, 2, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190529/7bdd0ac0-6178-46a0-b344-d17c00c975b7.jpg?Expires=1560395740&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=frxhksgvhFtnoTNhl0nPrYossN4%3D', '2019-05-29 18:56:17', 1, '2019-05-29 19:01:17', 1, 0);
+INSERT INTO `pictures` VALUES (1505, 66, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/1036a902-11f7-46f3-b1cb-b60813b1ccdf.jpg?Expires=1560395752&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Z4hhpPSfw6LvkrR7MTLjA1MaOXo%3D', '2019-05-30 09:15:32', 1, '2019-05-30 09:15:41', 1, 0);
+INSERT INTO `pictures` VALUES (1506, 66, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/14c44b75-fb17-4ab0-b3d3-dd0351366af6.jpg?Expires=1560395752&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=JDBhd7xY09YhsGa8CL%2FMMt2jPz4%3D', '2019-05-30 09:28:47', 1, '2019-05-30 09:28:49', 1, 0);
+INSERT INTO `pictures` VALUES (1508, 65, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/1c22d20f-ad94-4597-90a7-fcfa2be4ff38.jpg?Expires=1560395752&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MNWnEV%2FQ3JJrn9iCKhMaIBUEvSk%3D', '2019-05-30 09:52:00', 1, '2019-05-30 09:52:12', 1, 0);
+INSERT INTO `pictures` VALUES (1509, 65, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/24ac2a96-98ef-4965-80ce-463c80aea5c0.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=pO3shtC%2F2ueY5pXoJl0fRBtPPX0%3D', '2019-05-30 09:52:07', 1, '2019-05-30 09:52:12', 1, 0);
+INSERT INTO `pictures` VALUES (1510, 88, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/3ea7929f-5f3e-446c-856e-3e2f0ca554a0.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Rtk41j7UOUoSTqGBMm7FUcLBKIM%3D', '2019-05-30 09:54:17', 1, '2019-05-30 09:54:38', 1, 0);
+INSERT INTO `pictures` VALUES (1511, 88, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/55635de9-65f3-444d-a2ae-a8d12c6e84a4.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=aq8UwVXEb1oTtQv2sHEddoWXILc%3D', '2019-05-30 09:54:25', 1, '2019-05-30 09:54:38', 1, 0);
+INSERT INTO `pictures` VALUES (1512, 88, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/5dc19be5-794d-4adb-9841-ed759c561cff.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Dj2h3a%2F5Ujh8l2RXJk3V0MCWUOA%3D', '2019-05-30 09:54:36', 1, '2019-05-30 09:54:38', 1, 0);
+INSERT INTO `pictures` VALUES (1513, NULL, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/6af05325-9839-456a-9ef5-2e518885e32c.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=UKREsi8Rax%2FqpmlS1vO8VbcZzwE%3D', '2019-05-30 10:01:30', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1514, 88, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/91282ca4-e548-4026-9725-58d22203a259.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0JUg7ZB%2F%2B7i3LxmOMN7dHDZtHJ0%3D', '2019-05-30 10:03:45', 1, '2019-05-30 10:03:50', 1, 0);
+INSERT INTO `pictures` VALUES (1515, 88, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/9e97610c-1d0e-4dbe-94d9-76a8e1c356b7.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=zJ0f%2BEksKU8jOtw6hdOUEYwaF2M%3D', '2019-05-30 10:05:30', 1, '2019-05-30 10:05:33', 1, 0);
+INSERT INTO `pictures` VALUES (1516, 35, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/9f78d331-ed43-47c7-9793-5eaad5958052.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=bzixJ3iIO2xDI0p92PN%2B8Sdr22o%3D', '2019-05-30 10:19:17', 1, '2019-05-30 10:19:31', 1, 0);
+INSERT INTO `pictures` VALUES (1517, 35, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/c30dc5d6-2ef9-4860-b31a-eeb991ae8331.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=V7w10C805D%2BhRhwZ4rgqad5giwE%3D', '2019-05-30 10:19:23', 1, '2019-05-30 10:19:31', 1, 0);
+INSERT INTO `pictures` VALUES (1523, 36, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/d4b2f0d4-9b5c-435c-8f2d-397c2f8a9c99.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ARsR1F0WwilZG%2Fvki5o57o%2BD%2F9w%3D', '2019-05-30 10:47:52', 1, '2019-05-30 10:47:59', 1, 0);
+INSERT INTO `pictures` VALUES (1524, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/f253bb53-f612-4ed8-b91f-3a963ebe320a.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=gU%2Fm2%2BQyNjyaAVdE3u8c27ITfYc%3D', '2019-05-30 11:06:35', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1525, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190530/fc45b1fe-33a7-40c8-bbe4-534d878e18a5.jpg?Expires=1560395753&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=xISU5pKl%2Bb29UTDfDqz5%2FotHCBM%3D', '2019-05-30 11:06:41', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1526, NULL, 5, 0, '/pic/20190530/bf409709-23ae-4c72-9117-3a9a6fbaac97.jpg', '2019-05-30 11:09:38', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1527, NULL, 5, 0, '/pic/20190530/a71de229-4449-422e-8a97-1d619f0eaffd.jpg', '2019-05-30 11:09:45', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1528, 2, 4, 0, '/pic/20190530/ae3f2a3c-5186-4f0e-9878-597349c2098b.jpg', '2019-05-30 11:29:43', 1, '2019-05-30 11:30:22', 1, 0);
@@ -8190,21 +8495,21 @@ INSERT INTO `pictures` VALUES (1548, 87, 4, 0, '/pic/20190530/b798688f-bdaf-49ef
 INSERT INTO `pictures` VALUES (1549, 87, 4, 0, '/pic/20190530/2b5de430-40dd-428a-a18c-5c4a5583f238.jpg', '2019-05-30 14:15:55', 1, '2019-05-30 14:15:57', 1, 0);
 INSERT INTO `pictures` VALUES (1550, 67, 3, 0, '/pic/20190530/fb2b6e0b-c485-4888-928a-0ae35d3a894f.jpg', '2019-05-30 18:56:32', 1, '2019-05-30 18:56:40', 1, 0);
 INSERT INTO `pictures` VALUES (1551, 67, 3, 0, '/pic/20190530/e7249367-e04f-4116-ba8d-4cfefa550fa0.jpg', '2019-05-30 18:56:37', 1, '2019-05-30 18:56:40', 1, 0);
-INSERT INTO `pictures` VALUES (1552, NULL, 5, 0, '/pic/20190531/f1cef1c7-5402-4ac6-8b73-337275fc40c2.jpg', '2019-05-31 11:26:56', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1553, NULL, 5, 0, '/pic/20190531/d44e692f-8962-4557-a445-2b992b302827.jpg', '2019-05-31 11:27:02', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1554, NULL, 5, 0, '/pic/20190531/9c877592-3c06-416f-a9fe-40e9d0489b72.jpg', '2019-05-31 11:28:37', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1555, NULL, 5, 0, '/pic/20190531/47231635-3975-439f-85c8-c06c2ca6c502.jpg', '2019-05-31 11:28:42', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1557, 38, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-05-31 11:36:20', 1, '2019-05-31 11:36:30', 1, 0);
-INSERT INTO `pictures` VALUES (1558, 38, 5, 0, '/pic/20190531/d4090db1-c17e-40af-9524-abf892c5fa44.jpg', '2019-05-31 11:41:10', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `pictures` VALUES (1559, NULL, 0, 2, '/pic/20190603/23b6bbd8-424d-442a-b805-60cb4fe90c0d.png', '2019-06-03 09:10:08', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1560, NULL, 0, 2, '/pic/20190603/1b8058e7-5efb-4284-9914-90ff621417b2.png', '2019-06-03 09:13:35', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1561, NULL, 0, 2, '/pic/20190603/141bf83a-87a4-48d1-b877-c6cadf5eb313.png', '2019-06-03 09:16:12', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1562, NULL, 0, 3, '/pic/20190603/6514bf3b-a18c-49a2-b96b-51297977de2b.jpg', '2019-06-03 09:17:30', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1563, NULL, 0, 2, '/pic/20190603/4f264fb8-0156-4177-8c60-f572665d004c.jpg', '2019-06-03 09:17:50', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1564, NULL, 9, 0, '/pic/20190603/13a6395e-958a-4c0e-ac74-b70d0d6f996d.jpg', '2019-06-03 15:33:50', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1565, NULL, 9, 0, '/pic/20190603/c3e0a662-dc9a-4ee5-9d3d-1870d6a208ef.jpg', '2019-06-03 15:40:06', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1566, NULL, 9, 0, '/pic/20190603/4af85e9f-6ce6-4418-94e3-0967638b30f4.jpg', '2019-06-03 18:48:20', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1567, NULL, 9, 0, '/pic/20190603/0a0df247-14b1-4ef2-8cf3-748c0802979f.jpg', '2019-06-03 19:07:13', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1552, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/0be7a42b-3289-4d0c-97b5-c18e4da45980.jpg?Expires=1560395769&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=7yfxUP0CKveAm8X1y7I%2FlcsoRzo%3D', '2019-05-31 11:26:56', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1553, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/18ef7c8d-040e-4ad2-b956-0ce1fd3ba0bd.jpg?Expires=1560395769&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=U3YCNrlw55VB1V4jd8%2BPurNn4hA%3D', '2019-05-31 11:27:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1554, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/1bbd0cdc-0877-46ff-861f-6dc3b124da98.jpg?Expires=1560395769&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MZowstPA6ttDmZG8cdkNkhan0qk%3D', '2019-05-31 11:28:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1555, NULL, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/1d03c419-5645-4aa9-b434-ca12a0f512e9.jpg?Expires=1560395770&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=c8W1bXR6Y%2FL00ujbApzRlYwlYLc%3D', '2019-05-31 11:28:42', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1557, 38, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/2ba9c5d5-cc78-48f0-b063-11950ad06db7.jpg?Expires=1560395770&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=NqL5FFu1ZOlGGV7YuqkzYghQE6I%3D', '2019-05-31 11:36:20', 1, '2019-05-31 11:36:30', 1, 0);
+INSERT INTO `pictures` VALUES (1558, 38, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190531/2e7bd6f6-0442-4784-be96-764c568275d9.jpg?Expires=1560395770&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=f6QMORIWdY0tNgtMKWrg5m1N6O8%3D', '2019-05-31 11:41:10', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `pictures` VALUES (1559, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/084f42a9-a9ed-465f-862d-be6c7da91abe.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=cEZ5dUrQ7EqgV%2BsjJCsP%2B55GZ3c%3D', '2019-06-03 09:10:08', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1560, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/0e9921b9-568b-4437-9dda-cefd0930563f.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ub2Cl4FGEKdoziNXRSCi9OmGd78%3D', '2019-06-03 09:13:35', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1561, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/19555f65-3ee5-4d45-b2ba-1ff3ee340223.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Evc6votwVzGGoV%2FJPgdMYJCqnIc%3D', '2019-06-03 09:16:12', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1562, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/274e910a-21e5-42c0-97db-08de9a5654ee.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=oHwPsMa6iQniSVSzXNzkrkVgfhs%3D', '2019-06-03 09:17:30', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1563, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/2a10adf8-bce7-4f66-bf61-2a243da78eef.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=F08aHRq0vpEuT8FMMTCsaILFllc%3D', '2019-06-03 09:17:50', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1564, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/424b0cc5-e226-4df8-a58b-08646f65fe9c.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=VETW0mdXH8rpTy1CtTMODgxv3IA%3D', '2019-06-03 15:33:50', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1565, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/4ea9dc82-ba5d-443a-840e-047ec50ea41d.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=wkGMsrIuIJrv0FvQM1xS75WJYUw%3D', '2019-06-03 15:40:06', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1566, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/608a8e14-328c-448e-a8e5-4ba4ca39f852.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=4Sjz8gMyCqIP5NFYUtzpYgW2k90%3D', '2019-06-03 18:48:20', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1567, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190603/6699f1f3-5767-438f-8b0f-6a59c2fc7869.jpg?Expires=1560395798&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=vHFAjoqQ2TT1lo8T%2FZT1nhjRtHM%3D', '2019-06-03 19:07:13', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1568, NULL, 9, 0, '/pic/20190604/d8dbf209-21e5-4ebc-a490-ebee4b0dd85c.jpg', '2019-06-04 16:48:48', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1569, NULL, 9, 0, '/pic/20190604/0a2ac5cc-1bab-450c-b507-38bf9ee901be.jpg', '2019-06-04 16:50:04', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1570, NULL, 9, 0, '/pic/20190604/1edfa76b-7754-42f2-989c-a5adb5d5dd88.jpg', '2019-06-04 16:56:16', 85, NULL, NULL, 0);
@@ -8219,28 +8524,28 @@ INSERT INTO `pictures` VALUES (1578, NULL, 9, 0, '/pic/20190604/c4b9a516-d8e3-4a
 INSERT INTO `pictures` VALUES (1579, NULL, 9, 0, '/pic/20190604/0211a248-52c8-451f-899a-a7477f5ca175.jpg', '2019-06-04 19:34:03', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1580, NULL, 9, 0, '/pic/20190604/82a6cac1-9616-4c7d-a55e-12c430441cda.jpg', '2019-06-04 19:35:10', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1581, NULL, 9, 0, '/pic/20190604/3d16a52d-f1ca-47d2-baf9-8e8f8392bf91.jpg', '2019-06-04 19:44:30', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1582, NULL, 9, 0, '/pic/20190605/b059e7d5-a22d-4e5b-98b6-852d189de2f3.jpg', '2019-06-05 09:18:23', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1583, NULL, 9, 0, '/pic/20190605/19669879-83e9-40d4-a3fa-b165aae87f8a.jpg', '2019-06-05 09:21:17', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1584, NULL, 9, 0, '/pic/20190605/cea86007-177d-48ed-a48b-f70f48ffbc10.jpg', '2019-06-05 09:26:27', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1585, NULL, 9, 0, '/pic/20190605/e17ca610-bd74-4de6-a40e-e2a2c786ab63.jpg', '2019-06-05 09:27:47', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1586, NULL, 9, 0, '/pic/20190605/555195fc-b7bc-4904-94a1-ffaa85ba4d61.jpg', '2019-06-05 10:03:18', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1587, NULL, 9, 0, '/pic/20190605/bbf8cc35-2117-4dc6-b788-d4b9a2f097b7.jpg', '2019-06-05 11:27:32', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1588, NULL, 9, 0, '/pic/20190605/6b7702fc-6dc2-4741-978b-bf2b7a51d4c9.jpg', '2019-06-05 11:32:53', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1589, NULL, 9, 0, '/pic/20190605/5c94bb98-41aa-4b6b-b5c2-ffacde1797df.jpg', '2019-06-05 11:36:35', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1590, NULL, 9, 0, '/pic/20190605/7c193a2a-2643-40c6-bf89-bffa9f320626.jpg', '2019-06-05 11:39:51', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1591, NULL, 9, 0, '/pic/20190605/d10284e7-4db0-420e-b132-11bc30b5ed06.jpg', '2019-06-05 13:24:43', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1592, NULL, 9, 0, '/pic/20190605/cea666fe-b0b5-4867-8b90-b431e8837f23.jpg', '2019-06-05 13:25:44', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1593, NULL, 9, 0, '/pic/20190605/565ee0fe-70f8-4d60-91ac-656dbb7afe7a.jpg', '2019-06-05 14:15:35', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1594, NULL, 9, 0, '/pic/20190605/32c17fdd-edb8-4e8b-9832-5581b3f02c88.jpg', '2019-06-05 14:16:04', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1595, NULL, 9, 0, '/pic/20190605/63950afe-15fe-4332-8a02-8ed12a48c0ba.jpg', '2019-06-05 14:18:14', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1596, NULL, 9, 0, '/pic/20190605/9e497d00-5b5d-42b3-a8fc-3435c6a516ed.jpg', '2019-06-05 14:41:24', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1597, NULL, 9, 0, '/pic/20190605/066e6f8d-79de-408e-b57d-4dcde717eeec.jpg', '2019-06-05 14:47:19', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1598, NULL, 9, 0, '/pic/20190605/8b2f514d-1b11-4600-87c9-c40b02b056cb.jpg', '2019-06-05 14:49:03', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1599, NULL, 9, 0, '/pic/20190605/8acf4399-0b4f-4510-8007-10565a992e0d.jpg', '2019-06-05 15:24:44', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1600, NULL, 9, 0, '/pic/20190605/c76fba29-94a2-406b-945f-e406661ebdb8.jpg', '2019-06-05 15:57:50', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1601, NULL, 9, 0, '/pic/20190605/da2e06cc-2b75-4895-9234-a29ff9d4540c.jpg', '2019-06-05 16:01:59', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1602, NULL, 9, 0, '/pic/20190605/e84f894b-8a9c-44d0-a4f7-99f506b005ae.jpg', '2019-06-05 16:02:12', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1603, NULL, 9, 0, '/pic/20190605/19d05c9a-2cdc-4b56-a3af-0d5c5161521c.jpg', '2019-06-05 16:08:43', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1582, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/21a54071-c1a7-4a40-b881-1f5f5de07f74.jpg?Expires=1560395808&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=xaxnFsymPKHaCRwRy%2BkXdApU1QI%3D', '2019-06-05 09:18:23', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1583, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/28fc74fe-b5ac-4225-bd3b-e400d7736ee6.jpg?Expires=1560395808&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0pB523AhGjd39fKZKx%2Fi2trk220%3D', '2019-06-05 09:21:17', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1584, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/4488b696-2602-45fc-9633-402760eb388e.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=jazojdgtT2gpra5yDh28QeEM3qc%3D', '2019-06-05 09:26:27', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1585, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/4b05b153-a9e7-40a5-a280-21661fdbc99a.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=bBGyPsgIPaYKTY30olEdANhznLU%3D', '2019-06-05 09:27:47', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1586, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/4f2bbcdc-1cd1-4778-a7a4-03848844530c.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=6WUGsQqFM7wvVbrNIChVxNojvAA%3D', '2019-06-05 10:03:18', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1587, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/518fd9f7-344a-4db8-8d80-9d7de1e8ee43.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=5r0iMCJRyitOZVrbiDIieSHH8bk%3D', '2019-06-05 11:27:32', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1588, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/54304211-b7cd-48f4-bfa5-bf7e7c36924f.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ZbTY20O%2B%2FLEILE5wvdPYYzPFvig%3D', '2019-06-05 11:32:53', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1589, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/5af66836-642f-4073-ae6a-0ad5a82e4757.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=m5YXqqNExE4lpW512EqZR4vBruE%3D', '2019-06-05 11:36:35', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1590, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/5c6d9dee-b770-4f5b-b25a-32be7da90e42.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=UULoNKkitKkDhOBzfnDTXHn6YgQ%3D', '2019-06-05 11:39:51', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1591, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/85edb668-d6f2-4f3e-9a91-2e200e7c54dd.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=hH9G1MzyCd5CCszl64jyAChNxSA%3D', '2019-06-05 13:24:43', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1592, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/92ad144e-583e-4ef1-9a6d-73b7faac1d82.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=3nRJPgCRVQO9sNVr%2FJIglEINXCM%3D', '2019-06-05 13:25:44', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1593, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/92fc5585-a226-4a2c-b3ee-fb2e722d0960.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0KfgW8jZrOuvb4ltVX24PqE%2FrLU%3D', '2019-06-05 14:15:35', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1594, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/98075bdc-707a-4169-9576-a56138ae842f.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=AO%2By3qoMhlT4C7BwriipsewHvN8%3D', '2019-06-05 14:16:04', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1595, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/9843d095-fa23-4512-82c2-381866b53520.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=FDeLD6Iu5DIz6CnCLTEO%2F7p%2BuQI%3D', '2019-06-05 14:18:14', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1596, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/afb6a88b-e277-4052-8fb9-14e7cf248969.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=aKqoPf9SyQ7Yd%2BTOnEHWRSBFBK4%3D', '2019-06-05 14:41:24', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1597, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/b900907b-c396-4dd7-925a-ae48d74b04d6.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=ROgwgAPpj9x9dOwbYv0sygyfuFM%3D', '2019-06-05 14:47:19', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1598, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/cbf07473-b77f-48df-879a-0676eb905b71.jpg?Expires=1560395809&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=H5G8GyAZU6rnPcz9msxv7rxGvzw%3D', '2019-06-05 14:49:03', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1599, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/dc020537-24de-4b26-aa1e-14fc556a6694.jpg?Expires=1560395810&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2B0i6A8%2BXTv0yv%2BIbT9w5cdQu3TQ%3D', '2019-06-05 15:24:44', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1600, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/e0b774fb-64cf-43af-a590-b23396510a8b.jpg?Expires=1560395810&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=HdkNOatL8pmsV8oYNZX%2FV7tKzig%3D', '2019-06-05 15:57:50', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1601, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/e52e7e27-df6b-45b8-9af2-42924e47cffc.jpg?Expires=1560395810&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=A5xdqDnrTheteA5CbEAT1%2FP3cC4%3D', '2019-06-05 16:01:59', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1602, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/e83793ac-b988-4168-9d8b-389711a7a9c2.jpg?Expires=1560395810&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MPpims%2BGHlzFhbXkAMULRKRbz2Q%3D', '2019-06-05 16:02:12', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1603, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190605/ffa62a76-3f29-4b6a-9588-cb4438ed26ec.jpg?Expires=1560395810&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=OsFFyVJgyUQVUUnukQuHmplZRwA%3D', '2019-06-05 16:08:43', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1604, NULL, 9, 0, '/pic/20190605/c4b25e07-5a92-4e89-9a8b-f83f3a7f5686.jpg', '2019-06-05 16:09:07', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1605, NULL, 9, 0, '/pic/20190605/959674d2-7ef6-4ef3-b533-ce1b7e60d1aa.jpg', '2019-06-05 16:24:28', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1606, NULL, 9, 0, '/pic/20190605/9c93bd6d-14ed-44f2-994f-1f5068d04960.jpg', '2019-06-05 16:25:09', 85, NULL, NULL, 0);
@@ -8279,13 +8584,13 @@ INSERT INTO `pictures` VALUES (1638, NULL, 9, 0, '/pic/20190605/d67c80f8-4149-41
 INSERT INTO `pictures` VALUES (1639, NULL, 9, 0, '/pic/20190605/55d38f56-5401-4e9b-ac4b-e4726f8f7fde.jpg', '2019-06-05 19:39:57', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1640, NULL, 9, 0, '/pic/20190605/01d0828a-a803-41ce-8373-4eb0c203a9de.jpg', '2019-06-05 19:43:33', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1641, NULL, 9, 0, '/pic/20190605/c8844ced-1db9-479b-8e38-b6667976dd42.jpg', '2019-06-05 19:46:40', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1642, 39, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-06-06 10:12:51', 1, '2019-05-31 11:36:30', 1, 0);
+INSERT INTO `pictures` VALUES (1642, 39, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190606/eaad7273-9185-49b8-92d8-7b9b500f9d20.JPEG?Expires=1560395817&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=R%2FyhaNQekQ9i7Dy6LxNJmI5K5g8%3D', '2019-06-06 10:12:51', 1, '2019-05-31 11:36:30', 1, 0);
 INSERT INTO `pictures` VALUES (1643, 39, 5, 0, '/pic/20190531/d4090db1-c17e-40af-9524-abf892c5fa44.jpg', '2019-06-06 10:12:51', 1, '2019-05-31 11:41:12', 1, 0);
 INSERT INTO `pictures` VALUES (1644, 40, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-06-06 10:15:22', 1, '2019-05-31 11:36:30', 1, 0);
 INSERT INTO `pictures` VALUES (1645, 40, 5, 0, '/pic/20190531/d4090db1-c17e-40af-9524-abf892c5fa44.jpg', '2019-06-06 10:15:22', 1, '2019-05-31 11:41:12', 1, 0);
 INSERT INTO `pictures` VALUES (1646, 41, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-06-06 10:45:48', 1, '2019-05-31 11:36:30', 1, 0);
 INSERT INTO `pictures` VALUES (1647, 41, 5, 0, '/pic/20190531/d4090db1-c17e-40af-9524-abf892c5fa44.jpg', '2019-06-06 10:45:48', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `pictures` VALUES (1648, 42, 5, 0, '/pic/20190412/c7f0cb90-048a-4660-b522-8ff9acd400ad.jpg', '2019-06-06 10:50:54', 85, '2019-04-12 15:37:58', 85, 0);
+INSERT INTO `pictures` VALUES (1648, 42, 5, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190412/bcc786ee-4b1e-4250-99de-9322696138bb.jpg?Expires=1560395166&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=%2Bk0cN3G0fw%2BRZgzXkWM9Q2v2itY%3D', '2019-06-06 10:50:54', 85, '2019-04-12 15:37:58', 85, 0);
 INSERT INTO `pictures` VALUES (1649, 43, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-06-06 12:06:53', 1, '2019-05-31 11:36:30', 1, 0);
 INSERT INTO `pictures` VALUES (1650, 43, 5, 0, '/pic/20190531/d4090db1-c17e-40af-9524-abf892c5fa44.jpg', '2019-06-06 12:06:53', 1, '2019-05-31 11:41:12', 1, 0);
 INSERT INTO `pictures` VALUES (1651, 44, 5, 0, '/pic/20190531/47044697-80fc-4311-90f7-f43d5c956636.jpg', '2019-06-06 15:39:55', 1, '2019-05-31 11:36:30', 1, 0);
@@ -8310,14 +8615,14 @@ INSERT INTO `pictures` VALUES (1669, NULL, 9, 0, '/pic/20190606/f65f6e8f-e412-4f
 INSERT INTO `pictures` VALUES (1670, NULL, 9, 0, '/pic/20190606/77220c11-f600-46f2-81b4-9029016218d7.jpg', '2019-06-06 17:29:31', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1671, NULL, 9, 0, '/pic/20190606/65071ac0-345d-49c7-95ad-9cf307133361.jpg', '2019-06-06 17:43:45', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1672, 54, 5, 0, '/pic/20190530/efea48f4-f2f6-4176-a649-3cbdc9b3de20.jpg', '2019-06-06 18:01:06', 1, '2019-05-30 10:47:59', 1, 0);
-INSERT INTO `pictures` VALUES (1673, NULL, 9, 0, '/pic/20190610/fee42d81-4f7f-4305-8d78-2927c0c11ee0.jpg', '2019-06-10 11:17:57', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1674, NULL, 9, 0, '/pic/20190610/5cf9f7f3-7a38-40fb-801b-5027f17019f1.jpg', '2019-06-10 11:18:45', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1675, NULL, 9, 0, '/pic/20190610/bc3c7112-4639-4c41-8081-73ff18304e3c.jpg', '2019-06-10 11:20:27', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1676, NULL, 9, 0, '/pic/20190610/ef9fa8ba-c379-4dc3-8b45-442afa3d743c.jpg', '2019-06-10 11:38:49', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1677, NULL, 9, 0, '/pic/20190610/eed600a1-357c-43ed-a8f5-17ba95ad4431.jpg', '2019-06-10 11:40:54', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1678, NULL, 9, 0, '/pic/20190610/08aca2cd-798d-45e2-a5f8-24505a356a7c.jpg', '2019-06-10 11:46:28', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1679, NULL, 9, 0, '/pic/20190610/35f7b283-5146-486e-abf3-f8457ac7fe43.jpg', '2019-06-10 14:34:06', 85, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1680, NULL, 9, 0, '/pic/20190610/cd46f385-4ecf-4643-881d-74cae6cbcffd.jpg', '2019-06-10 14:39:08', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1673, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/0b07a05a-1fdd-4b5f-b92e-e1b0bbee6006.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=YP7GEIEb2u%2BX9EZ4i4QfupMXNkc%3D', '2019-06-10 11:17:57', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1674, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/0d838640-5e8b-4041-8daf-256fa39ac474.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=6UDPW7ed8w3be0rNJLkKPucL%2B5M%3D', '2019-06-10 11:18:45', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1675, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/20b7842a-d77f-445a-807d-b8556dae855d.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=rI6ckpI25iXJDcIdn6bswHaeuOM%3D', '2019-06-10 11:20:27', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1676, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/386c71f1-3e23-4842-8699-76bd4920f66b.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=vz0BBk%2Fq2GYeoq1IPJs%2FP66QikE%3D', '2019-06-10 11:38:49', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1677, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/3a2eeaa3-221d-4a99-bea2-0d2f2a3cc76a.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=tHoSHFSd%2FsVucEutcxZOjW0I7L4%3D', '2019-06-10 11:40:54', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1678, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/3f2edc0c-3eb7-4cad-9d66-32e8ca0244ad.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=jpH5fL%2FR9Dj1yz9pgJoFkYFOspQ%3D', '2019-06-10 11:46:28', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1679, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/615b1add-b463-4b08-84a1-8a780c8e4a25.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=VVYlFDEHAvnsYtPGEbsCZQWeaIg%3D', '2019-06-10 14:34:06', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1680, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190610/64d54d56-7958-46f8-a203-40543d853370.jpg?Expires=1560395824&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=0kYrFy6UtcRqYNvWModPQmD38GI%3D', '2019-06-10 14:39:08', 85, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1681, 119, 0, 2, '/pic/20190611/b1bdecdb-4b7b-469e-9467-33b3633a11c8.jpg', '2019-06-11 09:21:36', 1, '2019-06-11 11:19:06', 216, 0);
 INSERT INTO `pictures` VALUES (1682, 119, 0, 3, '/pic/20190611/a220185f-091c-4baa-9764-15557a9cee85.jpg', '2019-06-11 09:21:40', 1, '2019-06-11 11:19:06', 216, 0);
 INSERT INTO `pictures` VALUES (1683, 119, 0, 1, '/pic/20190611/19d3b05e-33bf-4055-9826-6a8b8b7217ff.jpg', '2019-06-11 09:21:47', 1, '2019-06-11 11:19:06', 216, 0);
@@ -8366,6 +8671,229 @@ INSERT INTO `pictures` VALUES (1725, NULL, 9, 0, '/pic/20190612/33f75a82-a7aa-40
 INSERT INTO `pictures` VALUES (1726, NULL, 9, 0, '/pic/20190613/ec590faf-31d2-4e08-b137-196c49a54d30.jpg', '2019-06-13 09:10:01', 215, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1727, NULL, 9, 0, '/pic/20190613/5cc38d75-2ea4-4cac-ac67-2e9e3c359865.jpg', '2019-06-13 09:23:47', 215, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1728, NULL, 9, 0, '/pic/20190613/19d4e9a1-a0d8-490c-a65f-c14079f328b1.jpg', '2019-06-13 09:30:41', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1729, NULL, 9, 0, '/pic/20190613/12d06495-6e17-47d5-9079-fd661ac6dfda.jpg', '2019-06-13 09:37:59', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1730, NULL, 9, 0, '/pic/20190613/b80e8b21-60e2-4f39-b254-3949d4d90879.jpg', '2019-06-13 09:49:37', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1731, NULL, 10, 0, '/pic/20190613/db5ef9c2-da33-4d4e-88a6-8684ad86b343.png', '2019-06-13 09:56:49', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1732, NULL, 6, 0, '/pic/20190613/af891a09-b4fc-4488-aa64-5ec569173434.png', '2019-06-13 10:12:42', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1733, NULL, 6, 0, '/pic/20190613/07b3b33f-d480-4582-9e61-1d4bc40a3f35.png', '2019-06-13 10:12:49', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1734, NULL, 6, 0, '/pic/20190613/81746f36-b9f3-4e4d-8d8f-68271a2d8fbb.png', '2019-06-13 10:13:09', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1735, NULL, 6, 0, '/pic/20190613/353da3d8-95de-40fd-8737-228123169146.png', '2019-06-13 10:13:24', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1736, NULL, 6, 0, '/pic/20190613/a44343fe-a7f1-4731-8ec1-b7e23360fde7.png', '2019-06-13 10:13:32', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1737, NULL, 6, 0, '/pic/20190613/58eadabb-88c3-4afe-ae07-168ea52c59ee.png', '2019-06-13 10:13:37', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1738, NULL, 6, 0, '/pic/20190613/e603a5ce-9db2-428e-a1db-3efc85b5be0c.png', '2019-06-13 10:13:46', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1739, NULL, 6, 0, '/pic/20190613/0ce6f743-8bd1-4520-9f1f-11a581214448.png', '2019-06-13 10:14:11', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1740, NULL, 9, 0, '/pic/20190613/a9853b2e-46bd-480e-996e-4c62f8e19515.jpg', '2019-06-13 10:14:28', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1741, NULL, 6, 0, '/pic/20190613/7c5940e0-d34a-4cb0-8ceb-55b55bb6dd96.png', '2019-06-13 10:14:33', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1742, NULL, 6, 0, '/pic/20190613/8a9fc28c-07f1-44b8-a7a9-971b7748ec75.png', '2019-06-13 10:14:53', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1743, NULL, 6, 0, '/pic/20190613/8caa96da-9d24-410a-88df-b36d251dd957.png', '2019-06-13 10:15:01', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1744, NULL, 6, 0, '/pic/20190613/0ae71f0d-ee05-40ce-9fe9-b754cff0ec8d.png', '2019-06-13 10:15:13', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1745, NULL, 6, 0, '/pic/20190613/dc7e7978-c534-4622-a17f-22fe29f97e53.png', '2019-06-13 10:15:18', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1746, NULL, 6, 0, '/pic/20190613/f2a83083-5925-4c29-b666-a6d99d6e78a6.png', '2019-06-13 10:15:25', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1747, NULL, 6, 0, '/pic/20190613/666e90da-fb2f-4af0-8e93-4c60ef400bba.png', '2019-06-13 10:15:30', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1748, NULL, 6, 0, '/pic/20190613/a49d3b5f-96bf-4002-aca4-6038d63abb22.png', '2019-06-13 10:16:09', 213, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1749, 112, 6, 0, '/pic/20190613/7544e314-cbfc-4422-a925-d4e5c46ae51e.png', '2019-06-13 10:19:22', 213, '2019-06-13 10:19:22', 213, 0);
+INSERT INTO `pictures` VALUES (1750, NULL, 9, 0, '/pic/20190613/b4c59818-2d61-43b2-9eaa-237f3bf13bfc.jpg', '2019-06-13 10:31:37', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1751, NULL, 9, 0, '/pic/20190613/31dc69fa-1d09-4c8d-866c-ab20c50c4f0d.jpg', '2019-06-13 10:32:59', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1752, NULL, 9, 0, '/pic/20190613/d389092e-fe79-416c-9831-8d564c5ffef0.jpg', '2019-06-13 10:34:43', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1753, NULL, 4, 0, '/pic/20190613/1f27df84-1da4-47c1-b317-e3d4061d51f7.jpg', '2019-06-13 10:33:35', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1754, NULL, 4, 0, '/pic/20190613/7a809001-21fb-4391-9c76-9b86652d37da.jpg', '2019-06-13 10:33:54', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1755, NULL, 4, 0, '/pic/20190613/fa41117a-d5a3-444d-a10c-0f63e158804a.jpg', '2019-06-13 10:34:13', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1756, 97, 4, 0, '/pic/20190613/27a59efe-0f8a-4aa9-a769-3e3fe80c7340.jpg', '2019-06-13 10:35:40', 216, '2019-06-13 10:35:45', 216, 0);
+INSERT INTO `pictures` VALUES (1757, NULL, 10, 0, '/pic/20190613/1dc2321e-5bb9-42b6-8a91-4a1f47b3be73.jpg', '2019-06-13 10:41:14', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1758, NULL, 10, 0, '/pic/20190613/1b33aa51-a056-4610-a222-c1bd8b34e6b0.jpg', '2019-06-13 10:44:28', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1759, NULL, 10, 0, '/pic/20190613/fcce1aee-ef96-4c20-9b72-ffe5eb6090b3.jpg', '2019-06-13 10:49:37', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1760, NULL, 10, 0, '/pic/20190613/c076a42e-3166-41d6-9026-03edd97eb3da.jpg', '2019-06-13 10:56:22', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1761, NULL, 3, 0, '/pic/20190613/1de39dfa-eb19-4747-8dd0-f9ed6f564039.jpg', '2019-06-13 14:52:59', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1762, NULL, 3, 0, '/pic/20190613/18d95ec5-f6d3-4eab-a068-47c0fa3861a1.jpg', '2019-06-13 14:53:19', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1763, 76, 3, 0, '/pic/20190613/e758bc75-8ff3-4379-8802-1f0e187bf4bc.jpg', '2019-06-13 14:54:02', 216, '2019-06-13 14:54:38', 216, 0);
+INSERT INTO `pictures` VALUES (1764, NULL, 9, 0, '/pic/20190613/405bd5c3-f530-4815-ac28-31feb1fde2c6.jpg', '2019-06-13 15:01:41', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1765, NULL, 9, 0, '/pic/20190613/a03658c1-051d-453e-88b3-48aa2587c66b.jpg', '2019-06-13 16:38:22', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1766, NULL, 9, 0, '/pic/20190613/a5be00ae-45af-43ea-b68c-ab4f7a394872.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1767, NULL, 9, 0, '/pic/20190613/772c89d6-9f12-4029-827b-04d4e6edbf89.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1768, NULL, 9, 0, '/pic/20190613/00340ada-3a22-453d-b294-eba716bf5773.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1769, 1225, 1, 0, '/pic/20190613/1834e7d6-e86c-4b37-b307-bbce6b06ec2c.jpeg', '2019-06-13 17:26:44', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1770, 57, 5, 0, '/pic/20190613/e4af71b6-f3b4-443b-9faf-68ba12e32f4e.jpeg', '2019-06-13 17:33:24', 216, '2019-06-13 17:33:28', 216, 0);
+INSERT INTO `pictures` VALUES (1771, 58, 5, 0, '/pic/20190613/c5b043ca-dd22-46f2-9f46-26054c09d1f6.jpeg', '2019-06-13 17:37:33', 216, '2019-06-13 17:37:42', 216, 0);
+INSERT INTO `pictures` VALUES (1773, NULL, 10, 0, '/pic/20190614/48d8bdb9-b145-4219-b4d0-73ca0bf30303.jpg', '2019-06-14 11:47:06', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1774, NULL, 10, 0, '/pic/20190614/ab3b7856-6433-4cf0-b0e8-0acafda3c5e0.jpg', '2019-06-14 11:49:02', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1775, NULL, 10, 0, '/pic/20190614/72085443-97bf-4108-9bf4-2bc9eaf4454f.jpg', '2019-06-14 11:52:30', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1776, NULL, 10, 0, '/pic/20190614/9acbc5b9-39b9-4b72-a1ed-0577569daf1a.jpg', '2019-06-14 11:55:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1777, NULL, 10, 0, '/pic/20190614/4b0795b6-5735-4518-8b5d-3cbe967ccad6.jpg', '2019-06-14 11:58:51', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1778, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/Android/20190614/900fdc2b-0b42-4ba0-809e-d5fe4a811a02.jpg?Expires=3031730102&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ybzsVSjylY6tc8Wp2P%2BgrXZsVUQ%3D', '2019-06-14 16:32:36', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1779, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/Android/20190614/3077e534-3559-44bf-b777-9486e7591e8c.jpg?Expires=3031730128&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=LEAUMiLyaORvgk0%2B8uCpXwb0zYU%3D', '2019-06-14 16:32:52', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1780, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/Android/20190614/96d51b6b-3cf3-468f-b2fe-f06718eee110.jpg?Expires=3031730838&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=QM6un3a0JifI9nNfJ%2BAQdp0lkio%3D', '2019-06-14 16:44:42', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1781, NULL, 9, 0, '/storage/emulated/0/signature.jpg', '2019-06-14 17:24:00', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1782, NULL, 10, 0, '/storage/emulated/0/Android/data/com.hy.shsalon/cache/luban_disk_cache/1560506708896971.jpg', '2019-06-14 18:04:41', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1783, NULL, 9, 0, '/pic/20190614/686f56cb-de9f-4f61-8957-ebff41572294.jpg', '2019-06-14 18:32:58', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1784, NULL, 9, 0, '/pic/20190614/7e97d054-5ca9-4cbf-8a25-359773e90a0d.jpg', '2019-06-14 18:45:31', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1785, 55, 2, 0, '/storage/emulated/0/signature.jpg', '2019-06-14 18:47:39', 85, '2019-06-14 18:47:52', 85, 0);
+INSERT INTO `pictures` VALUES (1786, 55, 2, 0, '/storage/emulated/0/Download/下载.png', '2019-06-14 18:47:47', 85, '2019-06-14 18:47:52', 85, 0);
+INSERT INTO `pictures` VALUES (1787, NULL, 9, 0, '/pic/20190614/34813b75-6622-486e-86a9-022d8e5b9f59.jpg', '2019-06-14 18:48:34', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1788, NULL, 2, 0, '/storage/emulated/0/Android/data/com.hy.shsalon/cache/luban_disk_cache/1560509349422730.jpg', '2019-06-14 18:48:42', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1790, NULL, 9, 0, '/pic/20190614/4f0d4db6-1628-4055-ac3e-98786e84bcd7.jpg', '2019-06-14 19:01:08', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1791, NULL, 9, 0, '/pic/20190614/6d9ff29d-3cd5-4179-8aa4-0f673bbe39e4.jpg', '2019-06-14 19:01:22', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1792, 1113, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190614/be443698-ae09-439d-a579-e814c475117b.png?Expires=3031739247&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=jPJNVye62mGbpry3%2Bm8OYQWNt%2BY%3D', '2019-06-14 19:04:51', 86, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1793, NULL, 9, 0, '/pic/20190614/48c2f68e-ed40-4c2c-9d18-b5b3105ca93c.jpg', '2019-06-14 19:04:58', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1794, NULL, 9, 0, '/pic/20190614/d15031ec-2afc-4f78-8d16-259f578c7b2b.jpg', '2019-06-14 19:05:04', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1795, NULL, 9, 0, '/pic/20190614/d331a50b-d018-48b5-94b4-ca3a7ffaf341.jpg', '2019-06-14 19:06:21', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1796, NULL, 9, 0, '/pic/20190614/f5931685-873b-4a85-acb7-7edc6b32e547.jpg', '2019-06-14 19:08:04', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1797, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190614/6289f852-dd4b-4290-9b34-8ebbc2d79ad6.jpg?Expires=3031740921&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=%2BP%2BQXgrYUtiDXfmzF1rpquY/%2BUs%3D', '2019-06-14 19:32:45', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1799, NULL, 9, 0, '/pic/20190614/23e5ea3d-8130-4a54-b337-19cbbbf036f9.jpg', '2019-06-14 20:20:15', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1800, NULL, 9, 0, '/pic/20190614/0de7656e-30de-40cd-868c-59bf8f08fb7f.jpg', '2019-06-14 20:22:05', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1801, NULL, 9, 0, '/pic/20190614/3e0fec5b-fb7e-4068-973b-0208713b44d8.jpg', '2019-06-14 20:27:33', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1802, 1121, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190614/ac26fc0c-e887-4695-a5cc-360dbd239de0.png?Expires=3031745064&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=kYgDEEBTeIrh6sPMAfytU2Xq3f4%3D', '2019-06-14 20:41:48', 94, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1803, NULL, 9, 0, '/pic/20190615/d0e3be7c-53da-4896-baa8-58f227d768b0.jpg', '2019-06-15 08:42:55', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1804, NULL, 9, 0, '/pic/20190615/590fc0df-66bf-4bd3-b4f1-23f875615095.jpg', '2019-06-15 09:04:17', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1805, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/202eeeab-72f5-4263-87cf-d615386345b6.jpg?Expires=3031791603&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=PQnnr5A2DFedbc39YvaV/fDlEwg%3D', '2019-06-15 09:37:28', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1806, 75, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/5b28c312-ac7d-4722-931d-5b856d418184.jpeg?Expires=3031792389&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=P/SIos/gKciauRlihErixiIAW0Y%3D', '2019-06-15 09:50:27', 216, '2019-06-15 09:50:29', 216, 0);
+INSERT INTO `pictures` VALUES (1807, NULL, 9, 0, '/pic/20190615/4c8b40b3-6b02-4a84-8286-da966632176f.jpg', '2019-06-15 10:01:07', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1808, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/fab59b1f-1337-4187-82f6-6879be547707.jpg?Expires=3031793078&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=iK5R2h%2Bjfs94vsVNMjF2%2BLcEocQ%3D', '2019-06-15 10:02:03', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1809, NULL, 9, 0, '/pic/20190615/8fc6b532-1ad4-4bd8-9f5c-968407c240db.jpg', '2019-06-15 10:03:23', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1810, NULL, 9, 0, '/pic/20190615/20c31fb2-ae06-4a83-b62e-5e7067bd5a72.jpg', '2019-06-15 10:05:58', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1811, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/1112ff5a-5646-4c64-a2c5-d1cad34cc83e.jpg?Expires=3031793751&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=F4WjnzqBYRSWmaDDhUhN/Dh1BUg%3D', '2019-06-15 10:13:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1812, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/30f68904-1dd5-4400-8d88-cda078ad326a.jpg?Expires=3031793766&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BBvN44%2BTNXx2yEHphkh19K%2B3vL8%3D', '2019-06-15 10:13:23', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1813, NULL, 9, 0, '/pic/20190615/9eb6c990-d481-467d-a80b-19d5f1a4994a.jpg', '2019-06-15 10:14:30', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1814, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/be19028d-b2a6-4848-8129-c080076ea0dd.jpg?Expires=3031794007&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=UpODtEFevpCI65P/ISKVzOMCW0U%3D', '2019-06-15 10:17:32', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1815, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/d83ce6ed-23e5-4e0c-a2ee-58c5ff7db6bc.jpg?Expires=3031794199&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=pfXzSDiHqefVD2oaj1lIKphY2hQ%3D', '2019-06-15 10:20:43', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1816, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/4e38432c-25c2-4f45-8fef-9a31fe3d3151.jpg?Expires=3031794209&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=6YQd2MLCKg5DOkPbWlPzu4mnins%3D', '2019-06-15 10:20:53', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1817, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/6750cae5-b1de-449d-969c-5f4700e76de5.jpg?Expires=3031794622&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=bCaJNtS4MGVykyMVHo36umwNUAw%3D', '2019-06-15 10:27:39', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1818, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/7fea278d-459c-496e-beb3-b6ddebe93f6e.jpg?Expires=3031794849&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=DQwfQDWJA9LSJjrZqm3j2TbYVd4%3D', '2019-06-15 10:31:34', 230, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1819, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/be1a9b75-dbb5-4487-ba60-9b9515fd52fd.jpg?Expires=3031794895&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=gbOTATz7YPSW9oob4QxGzutJtZA%3D', '2019-06-15 10:32:19', 230, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1820, NULL, 9, 0, '/pic/20190615/fbc7a1eb-ace2-4720-ac68-c03774a1f6d8.jpg', '2019-06-15 10:34:09', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1821, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/fc7db175-ec3c-4595-9904-414647583218.jpg?Expires=3031795043&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=XgPsO8/VzyVlSmxensJJmQX7DDc%3D', '2019-06-15 10:34:40', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1822, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/8223c837-cdee-49c8-bc0b-37fc7dc0ff97.jpg?Expires=3031795050&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Ocjb2YwN5vYkqeMdXDAoI/QDu5o%3D', '2019-06-15 10:34:47', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1823, 56, 2, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/ee1e9bc3-2671-4c21-abfd-0d0964076a14.png?Expires=3031795134&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=9OX6UdOH09trGbVHX%2B4Dvx5sXhY%3D', '2019-06-15 10:36:12', 85, '2019-06-15 10:36:14', 85, 0);
+INSERT INTO `pictures` VALUES (1824, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/11ffa8c4-7bd6-45e5-af5b-a930675b2d21.jpg?Expires=3031795305&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=i5ff%2BKBjO%2BfRD719kSby1cYV%2BZI%3D', '2019-06-15 10:39:02', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1825, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/062c007b-8d46-4f89-b1e7-68bdbefbd7ba.jpg?Expires=3031795438&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=%2Bfx2kvXMXObwJ%2BP2a7LHpU4Zuqk%3D', '2019-06-15 10:41:15', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1826, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/ea0ce26d-21ea-465e-814c-9602404c42b5.jpg?Expires=3031795452&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=umJO8OnNjHKdTvMyqFncMKP7oqU%3D', '2019-06-15 10:45:19', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1827, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/54718991-e506-4e9b-bcb5-39f6ecce8e13.jpg?Expires=3031795737&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=/lMO%2BskEt3tP%2BtvX0cREenIyaJc%3D', '2019-06-15 10:46:15', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1828, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/3c19c8d2-e594-4c10-824e-cf06fc0ec91c.jpg?Expires=3031795737&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=vAIjiVhEQu5DjkW1eeD/CMOtmho%3D', '2019-06-15 10:46:15', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1829, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/4481680b-287f-43e2-be25-2dd4d592321b.jpg?Expires=3031795741&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=XF1VNPYwYnmPuAz/QFydiq/fzPE%3D', '2019-06-15 10:46:25', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1830, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/67802d3b-dc35-40a7-9c54-2c49d3b9d47c.jpg?Expires=3031795741&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=dvYslbqBqxo1HaOOAXgCLBrZxTQ%3D', '2019-06-15 10:46:25', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1831, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/0915f553-930d-4728-b21e-dd1942864778.jpg?Expires=3031795821&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=zZ%2BnRhnsXutxkpwSywO4Aq0p04g%3D', '2019-06-15 10:47:38', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1832, NULL, 9, 0, '/pic/20190615/8bda29a7-917f-4888-94d6-d0be531d68ec.jpg', '2019-06-15 10:48:17', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1833, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/5c9c581c-b790-494d-b13c-17ddc63031c1.jpg?Expires=3031796159&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=z8BfUp8DE%2BScNwAeTywX0gkFhxg%3D', '2019-06-15 10:53:17', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1834, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/56653d41-0efe-4fe1-a3b4-6da75bb3da67.jpg?Expires=3031796290&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=01DRy67dSiPQltUGw6cguXHgA00%3D', '2019-06-15 10:55:27', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1835, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/81b4f47b-8f0e-448c-8f70-22aab8bb659f.jpg?Expires=3031796408&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=YRUoRGO5ZrHNyjBdPH2jXak3xLc%3D', '2019-06-15 10:57:26', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1836, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/a848a262-53d0-4263-8309-11c3ba9894aa.jpg?Expires=3031796410&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ya16XGDyNMo3wDZCHlS8wWkUvck%3D', '2019-06-15 10:57:28', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1837, NULL, 9, 0, '/pic/20190615/54951e68-d481-4151-8580-ba50608974f0.jpg', '2019-06-15 11:01:38', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1838, NULL, 9, 0, '/pic/20190615/9108c081-2178-4dcd-af14-061547c8b1a8.jpg', '2019-06-15 11:07:47', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1839, NULL, 9, 0, '/pic/20190615/1aaaddd8-0d47-42be-8770-86e83284baff.jpg', '2019-06-15 11:11:31', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1840, NULL, 9, 0, '/pic/20190615/3d933719-62ea-4467-99a3-23e8e70a5bf6.jpg', '2019-06-15 11:12:13', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1841, NULL, 9, 0, '/pic/20190615/408adace-ff72-494f-8c07-0c78327e93d1.jpg', '2019-06-15 11:14:54', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1842, NULL, 9, 0, '/pic/20190615/9cf98b50-ac29-4a26-848c-bfbe1df1b6d9.jpg', '2019-06-15 11:16:10', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1843, NULL, 9, 0, '/pic/20190615/bdb8599f-9f2c-4af6-996d-822488bd8d60.jpg', '2019-06-15 11:18:01', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1844, NULL, 9, 0, '/pic/20190615/9408085a-8dfa-4e37-bfef-e674c58d98fa.jpg', '2019-06-15 11:19:26', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1845, NULL, 9, 0, '/pic/20190615/641efc79-c035-4e29-946a-6562cc3bf91a.jpg', '2019-06-15 11:21:04', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1846, NULL, 9, 0, '/pic/20190615/19c38136-1044-4dda-9cb9-99cf9cb5e1f1.jpg', '2019-06-15 11:22:58', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1847, NULL, 9, 0, '/pic/20190615/f7dfbad6-aa3f-4a74-8fc9-4ce129bdb656.jpg', '2019-06-15 11:24:15', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1848, NULL, 9, 0, '/pic/20190615/ece201e6-9eba-4fc6-87b4-a7b18a18d50b.jpg', '2019-06-15 11:25:33', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1849, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/0172fb08-f844-48b8-b924-c56ca6f8078a.jpg?Expires=3031798163&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=b2A7zqL%2BKyxnovBXvkknZs75Lto%3D', '2019-06-15 11:26:41', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1850, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/437dde9a-08c3-4969-8c36-335ff41f1711.jpg?Expires=3031798170&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=pQK2wMgwDhjkBkcb5183%2BMeZ4YY%3D', '2019-06-15 11:26:48', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1851, NULL, 9, 0, '/pic/20190615/e5acf26e-7358-49de-a215-33339dacab6d.jpg', '2019-06-15 11:29:02', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1852, NULL, 9, 0, '/pic/20190615/af2e2f31-2116-4f4f-ba10-589d1ea6793f.jpg', '2019-06-15 11:30:53', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1853, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/9baf2cf7-0514-411b-9725-ae5f0837c077.jpg?Expires=3031798466&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=TrLK/b1mV92gomgXfYuzKalrq3I%3D', '2019-06-15 11:31:44', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1854, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/d931e4b4-fde1-4dbc-8acf-5bb03148f6ee.jpg?Expires=3031798481&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=byNNwMOCLlJWKzCVDz7dofdjzLc%3D', '2019-06-15 11:32:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1855, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/12716c73-baab-441a-a146-7f92ae8f7357.jpg?Expires=3031800906&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=htV6guPPwnFH6vyLjsvQC7kR%2BYI%3D', '2019-06-15 12:12:31', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1856, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/b6a62991-d80f-4aef-aff7-afe2250a2adc.jpg?Expires=3031802353&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=F0qLpNHWrTj0ASW4WUgdFoYYssE%3D', '2019-06-15 12:37:53', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1857, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/ba92a82b-d3bc-4983-97cb-e9a38ec45168.jpg?Expires=3031802322&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=soUVSBqnLOaz4KdXnigb/EyNJLU%3D', '2019-06-15 12:37:53', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1858, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/e9ea105b-38bd-4e8b-8379-7ed08070e290.jpg?Expires=3031802391&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=3yjEOtHEQ8H7Y/SgUJ2hTBnw850%3D', '2019-06-15 12:37:53', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1859, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/4eb360b5-9ada-46cb-b796-ba30f160de30.jpg?Expires=3031802517&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=C6P4WrO1CcZfCOmRwGQQLxLGQDM%3D', '2019-06-15 12:40:04', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1860, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/43c52a9c-2f5d-4471-89cd-5cccec5053c8.jpg?Expires=3031802701&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=O3a6OigQkSQAn59txCMEfvE523M%3D', '2019-06-15 12:53:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1861, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/57f5edc6-ce52-450d-ae45-abc3ab2cbdae.jpg?Expires=3031802719&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=IeyBKhueiWM9dKAiyvqpeVPr/2g%3D', '2019-06-15 12:53:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1862, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/7f34976e-f3d7-4f77-ab47-5e4166280c30.jpg?Expires=3031803165&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=EYXAuyHjWZ%2BSZbpiNw3tUGTbwas%3D', '2019-06-15 12:53:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1863, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/6b9a4c83-7cf4-4361-a469-52a707d455cb.jpg?Expires=3031802926&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=FSOrTLtSBAYgfSFsmzwdLMAWUdg%3D', '2019-06-15 12:53:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1864, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/e33728ef-9efe-4530-89c1-cf9a512773ed.jpg?Expires=3031802775&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=k4zme6WBfGB6vCoxcSm5agmMuhA%3D', '2019-06-15 12:53:08', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1865, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/741b139f-024a-4f76-a35b-e1e3657bfa2d.jpg?Expires=3031804854&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=xLSD2tmko4kuWpgFl0JjDcHxikM%3D', '2019-06-15 13:18:12', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1866, NULL, 9, 0, '/pic/20190615/999d6e3e-b013-47bd-9a5f-10e2d281894b.jpg', '2019-06-15 13:19:15', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1867, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/44e0a129-d1f7-48dd-9f5f-d4b13596f9f8.jpg?Expires=3031805054&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=alJttaM3MVPKQy4v77Y3wSr5PVw%3D', '2019-06-15 13:21:31', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1868, NULL, 9, 0, '/pic/20190615/7039f554-f480-425e-8ae7-5f8723d46f42.jpg', '2019-06-15 13:22:04', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1869, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/3cc6f862-5615-4531-a25b-196d456cb21b.jpg?Expires=3031805120&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=vPjLwgWAcIQ/NPZ9yK3BizdgaU4%3D', '2019-06-15 13:22:38', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1870, NULL, 9, 0, '/pic/20190615/3c2e27c1-1b30-4fd9-bb49-98a70aef5a5a.jpg', '2019-06-15 13:23:47', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1871, NULL, 9, 0, '/pic/20190615/9c59069b-d5cb-4339-802c-96c48475a8e7.jpg', '2019-06-15 13:24:28', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1872, NULL, 9, 0, '/pic/20190615/b55dd631-ae4b-4129-a532-0c70c1fa134c.jpg', '2019-06-15 13:24:51', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1873, NULL, 9, 0, '/pic/20190615/cdf706b9-c46c-456d-be29-25c94f78c919.jpg', '2019-06-15 13:31:31', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1874, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/78956be4-03fe-4b73-8b72-b62e47f1163d.jpg?Expires=3031805774&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=YfVS3%2BrLkUsk7aL3EaBO//pRyqg%3D', '2019-06-15 13:33:32', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1875, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/652dc0d5-666f-40a6-ae09-d5ff1b989632.jpg?Expires=3031806004&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=cbJdp%2Bpffa3/SN6KmD2K37O34l8%3D', '2019-06-15 13:37:21', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1876, NULL, 10, 0, '/pic/20190615/7b9f3d6a-45d8-4139-bb41-b28e58cf54f5.jpg', '2019-06-15 13:37:31', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1877, NULL, 10, 0, '/pic/20190615/3e2fea9d-ec93-4810-a126-878c85d1ed86.jpg', '2019-06-15 13:47:54', 85, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1878, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/2edf8e8a-c264-416c-af08-0b82ab430f14.jpg?Expires=3031966392&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=bREHLk1xNAG3XpnmV3pBrcdR8fA%3D', '2019-06-17 10:10:30', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1879, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/b87698d2-cb70-45a8-82f7-1d249c568a1e.jpg?Expires=3031967259&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Zon4KM%2BkXT4I1QsHjUGVPc6/%2B9Y%3D', '2019-06-17 10:24:57', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1880, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/10e6f677-ad27-4f77-84ca-cb1a1fa1a74e.jpg?Expires=3031967931&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=5HZ4Bp6xdKn4EfXwrAp62aCAhjk%3D', '2019-06-17 10:36:09', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1881, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/48efc9ff-8ab4-4f85-9952-6bb78e7d5b7e.jpg?Expires=3031967996&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=yCE/DHybrLiPg9C66oAIIESWp8o%3D', '2019-06-17 10:37:14', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1882, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/f03df795-a96a-49b8-8968-73025d3f1518.jpg?Expires=3031968131&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=X66EgG9meQFzm/5f7rSSs0OOUhg%3D', '2019-06-17 10:39:29', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1883, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/15aba685-2f7a-4918-afae-41973a0f5d8e.jpg?Expires=3031968196&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=9%2BNKYxJYh4whpow8OBJGkSL//G4%3D', '2019-06-17 10:40:34', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1884, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/15a0b347-fceb-4d9d-80ea-84fb93fa7a17.jpg?Expires=3031968200&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=qZCyJesqapQLjFAgwJOSPaGDJTo%3D', '2019-06-17 10:40:38', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1885, NULL, 9, 0, '/pic/20190617/bf7f3846-4b97-47d8-8497-18fec53ac5cb.jpg', '2019-06-17 10:47:26', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1886, NULL, 9, 0, '/pic/20190617/0b97d01c-70a7-40b5-8454-66b1e60e4995.jpg', '2019-06-17 10:48:29', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1887, NULL, 9, 0, '/pic/20190617/5d7a573a-ab07-4c9a-9236-7b908fb872c1.jpg', '2019-06-17 10:49:03', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1888, NULL, 9, 0, '/pic/20190617/9e8c621c-eb95-4616-8bc2-9057d0143ae0.jpg', '2019-06-17 10:50:00', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1889, NULL, 9, 0, '/pic/20190617/b0e5f9b8-1a00-4210-9cc0-6f06bd704de6.jpg', '2019-06-17 10:50:35', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1890, NULL, 9, 0, '/pic/20190617/4f2affbc-768d-42c6-afb2-1dfa6314cb62.jpg', '2019-06-17 10:51:05', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1891, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/17ccd620-2c69-4c8b-bb54-575ea0161af1.jpg?Expires=3031968920&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Dxi9Vcfae1oBS8RDDrDzNqN8rx4%3D', '2019-06-17 10:52:38', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1892, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/34419945-f51f-488b-a859-7eccff174436.jpg?Expires=3031969476&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=3aN4J4aICTFwGKIF0wL3oXwFzVQ%3D', '2019-06-17 11:01:54', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1893, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/3eada218-c610-42fe-8627-f0d0a6d8d989.jpg?Expires=3031969602&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=nwHjjl0AXfH2ZHmD9AdnF/tFflU%3D', '2019-06-17 11:04:00', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1894, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/41d97d4f-a7a0-4887-949b-592c333be127.jpg?Expires=3031969683&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=6VPgnF8LguKOOv2/%2BHbLSa4sdxs%3D', '2019-06-17 11:05:21', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1895, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/34a11076-a23e-4299-98ae-07c3e34038ce.jpg?Expires=3031969704&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=33r7XGIUCy3zxaHusRwMD2OrYxw%3D', '2019-06-17 11:05:42', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1896, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/8f7a6066-8985-4f02-9d2f-8bb04becb5e3.jpg?Expires=3031969710&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=aQkqGhar1GRnszr/mPF6PPMF0eE%3D', '2019-06-17 11:05:48', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1897, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/7bec5685-c395-4eed-a769-b0bb75a1ef3f.jpg?Expires=3031969719&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=tDl7JWmpj7NcMHjU9FCoMsZd97w%3D', '2019-06-17 11:05:57', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1898, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/9393847b-cd00-40bf-aa72-2beecf1a5608.jpg?Expires=3031970131&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=yCuBcPHldEhBC7SOcPkbcDiyJ3w%3D', '2019-06-17 11:12:49', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1899, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/a2c42faf-b924-40db-b286-f3dc3307433e.jpg?Expires=3031970137&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=lBmzsImZ2q3Y2VjVdhNEE4txZoA%3D', '2019-06-17 11:12:55', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1900, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/04db8ae8-d435-4c90-8ed8-a27b68203c0f.jpg?Expires=3031970191&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=qCRbFusOgdFcZWKpGa7rvASouVQ%3D', '2019-06-17 11:13:49', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1901, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/11c639ab-af1a-44e9-bacd-6b7d02bd472b.jpg?Expires=3031970202&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=GSUlWLfm8In0g7X2jQ8QHzpkDvA%3D', '2019-06-17 11:14:00', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1902, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/5fe96f6d-7602-4ba6-9924-1410c44a58fe.jpg?Expires=3031970215&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=RM0sIk5OKHg22qvEAxaixLTEOLY%3D', '2019-06-17 11:14:13', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1903, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/d9230fd8-6e7d-4958-a59c-e6ee3028f3a5.jpg?Expires=3031970215&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=kcqMZvM3eDtrjL27tyFTacX190Y%3D', '2019-06-17 11:14:13', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1904, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/cda2dd96-cb56-4995-b782-a3b11861a2a1.jpg?Expires=3031970221&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=JcrB3PixGNzqxeUc3n6hFUm/aHE%3D', '2019-06-17 11:14:20', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1905, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/e89a0243-84b7-42fc-9bae-b1b4483559a2.jpg?Expires=3031970238&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=DGBZJwEwc3FSmsEM4tAfgxXryZU%3D', '2019-06-17 11:14:36', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1906, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/9de789ab-1df9-409b-a826-7928a5e544f4.jpg?Expires=3031970258&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=KEx3aVpRtE8jXXC/gR/tidsKpWU%3D', '2019-06-17 11:14:56', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1907, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/061a24b9-187e-4090-9991-df13472ce148.jpg?Expires=3031970411&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=/dGSPm7Zao8ezel7r/fAvZacFDk%3D', '2019-06-17 11:17:29', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1908, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/2b939cfd-c9ae-440e-9624-616654457bd2.jpg?Expires=3031970417&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=N/ghjTnfSbUpQg93o%2BWfh62qI3U%3D', '2019-06-17 11:17:35', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1909, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/7f5a40e6-a2a3-487c-ab42-7ed8f98b84e6.jpg?Expires=3031970418&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=NrB11G42SEVmiT/LC1xFVSe3s2c%3D', '2019-06-17 11:17:36', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1910, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/7fbc8a1d-b43b-424a-b1fb-6788c8709cfe.jpg?Expires=3031970424&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=VzJ3BKc0ZOFV%2BBUJ1d7giPK0M/0%3D', '2019-06-17 11:17:42', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1911, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/47b3ffc0-6c36-4b47-8b75-a1545eb35e6e.jpg?Expires=3031970441&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=VimAs4vRaXBQKq0MeCymofQkuAY%3D', '2019-06-17 11:17:58', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1912, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/f02699a0-0130-47d2-9aec-9927ba6995b8.jpg?Expires=3031970441&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=oeHYDAWZXP6S5mnzcUQQzQs2F1A%3D', '2019-06-17 11:17:59', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1913, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/cbcfeaa1-318a-45e7-8921-cdc9c865ce60.jpg?Expires=3031970856&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=bUDfX4Io7VbsKTahb2jyAMBWy/U%3D', '2019-06-17 11:24:54', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1914, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/e58b9f0e-39c3-4c0f-acf4-4bab384f5149.jpg?Expires=3031970886&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=7hXLfQmLX/zKUBWN0WJopPwSL50%3D', '2019-06-17 11:25:24', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1915, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/076df124-3ec8-478c-9e5c-74ab1949f454.jpg?Expires=3031971120&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=aWv0%2BuBK0wUAO0yAX0%2BJELcafjo%3D', '2019-06-17 11:29:18', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1916, 1224, 1, 0, '/pic/20190617/72c146f8-39a9-4c0d-b10f-7fe9738df4f5.jpg', '2019-06-17 11:33:57', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1917, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/ccf47a53-ffe5-432f-9dca-81e2f80880ad.jpg?Expires=3031971482&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=XzLEl%2BVnByZEdUNLLatb5J8bNwQ%3D', '2019-06-17 11:35:20', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1918, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/5f1ffb6a-a204-44c9-98b4-e0c947744814.jpg?Expires=3031971486&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=IYov7NKIBHMFf13xBNvYKJZyFPs%3D', '2019-06-17 11:35:24', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1919, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/70504aaa-ebb2-44cd-8370-911fa962a677.jpg?Expires=3031971490&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=44z6fLFVwEj%2BfG6BaO5c3u4ytAM%3D', '2019-06-17 11:35:28', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1920, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/1bb3ecd1-e19b-4663-b0a1-2c1fa33086a7.jpg?Expires=3031971491&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=YQ7/rEg3puGKRNxC1Fd%2Bmlx40o4%3D', '2019-06-17 11:35:30', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1921, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/40312f7d-d295-4b63-a417-5be4047e2d5f.jpg?Expires=3031971500&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=mPVMiwOyjacYYIsU63tzyDwQBF0%3D', '2019-06-17 11:35:38', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1922, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/ae4c75ca-a866-4cd2-908c-3e405bbf2daa.jpg?Expires=3031971506&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=kXFjnzslmepkOkdDTsX8tp7qQsM%3D', '2019-06-17 11:35:44', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1923, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/54ace2bb-f2d6-43f3-b137-987959635617.jpg?Expires=3031971510&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=NxOIgK9HCzJ6GYPtCKOiSZwJE%2BY%3D', '2019-06-17 11:35:49', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1924, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/3c3639e1-ef2d-4e03-8afd-03d0619e6754.jpg?Expires=3031971517&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=hLCkFCjDLNmVtKQX5vQLyQxsaUw%3D', '2019-06-17 11:35:55', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1925, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/e09305c6-5cc6-4449-b5a5-f9c604ff1ffc.jpg?Expires=3031971521&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=D%2BTzDwALR7LLKl6S%2BVNRDtdm07M%3D', '2019-06-17 11:35:59', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1926, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/b1d139ea-1808-4202-acc0-e3077ec241b4.jpg?Expires=3031971567&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=WBVgsvaquAvYGKkUVJye0jmS2FY%3D', '2019-06-17 11:36:45', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1927, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/1f1828a8-fce1-4007-b6c6-dae15a449fb3.jpg?Expires=3031971570&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ew4VKAWI3Rhf8q1Z9KwNRf04W/A%3D', '2019-06-17 11:36:49', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1928, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/7794b6d5-d8e7-4ef5-a3fa-124d9ecb2755.jpg?Expires=3031972077&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=vJodxhAUmn3YoFnpa9b1F45%2BZVU%3D', '2019-06-17 11:45:15', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1929, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/28a94cdb-31f1-49ee-99d0-e0ea530cecce.jpg?Expires=3031972354&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=WUbsWbgdBFdc3Y65maSwOKdzZ3U%3D', '2019-06-17 11:49:52', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1930, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/513b88dc-8a4a-4ab0-b1eb-ef6ee2fa55e9.jpg?Expires=3031972501&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=/pWcFD1gHQTqvg0sNILijyXgkCs%3D', '2019-06-17 11:52:19', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1931, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/9aa5c389-e649-4525-99ff-fe6c019feb25.jpg?Expires=3031972554&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=NnsLfih16X/KG30M7dSAksaehOw%3D', '2019-06-17 11:53:12', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1932, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/f71a1d7c-5da7-4154-8cbe-5d88c52dda7f.jpg?Expires=3031973221&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=FU3ivey%2BWeF8N1J6V327a8FOFg0%3D', '2019-06-17 12:04:20', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1933, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/6745fd63-021f-4210-ac61-caca9bb0c55b.jpg?Expires=3031981335&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=QtclCpqBoOO9aEXDxR4u79ryojE%3D', '2019-06-17 14:19:34', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1934, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/3fb422f8-5ed3-4829-908f-4f3aaccf9cb1.jpg?Expires=3031981751&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Vhq%2BwjmXe9Bd6g45KRP0guyeOEs%3D', '2019-06-17 14:26:29', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1935, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/badc65c6-d594-4ff8-8eeb-fc4b07ca3618.jpg?Expires=3031981984&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=xur7XeFQzYLZzoRidGFgcA61QLE%3D', '2019-06-17 14:30:22', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1936, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/02a3af37-71df-46ad-ade7-bc3cd74faa68.jpg?Expires=3031982216&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=yvtpSUwR3ojUy7Rj7i0Wq7n2GaU%3D', '2019-06-17 14:34:14', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1937, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/3a8b51a9-b2c2-4915-8898-c5fbdbe2d425.jpg?Expires=3031982397&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=zLGqHoHGq%2B6kA3JFOFgguVOCNyk%3D', '2019-06-17 14:37:15', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1938, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/886473d6-3754-4ca3-b3f1-db8d72d665a0.jpg?Expires=3031982409&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=GnLeyKdaoZDqWq7hZnkAG2PiJLQ%3D', '2019-06-17 14:37:27', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1939, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/2873427a-989a-4097-b802-25e5d8e4a551.jpg?Expires=3031982414&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=VjsCWe2bVx9Ik1VOEOV6fgC6cG0%3D', '2019-06-17 14:37:32', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1940, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/dd4b2c03-4f90-4c51-b4f9-6334e1d88619.jpg?Expires=3031982460&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=PD1cz4USAGPpo41SAhk3Li%2Bms%2Bo%3D', '2019-06-17 14:38:18', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1941, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/2a5e46b9-e031-42d3-8209-ebe31e97c53b.jpg?Expires=3031982587&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=/Ibin4FS4ik46xzOsVDrRdlej9I%3D', '2019-06-17 14:40:25', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1942, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/252ff465-7890-4058-b53d-484566fff1ac.jpg?Expires=3031982676&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Gv8Ph8hRzqYPpNtG3t%2BSY%2BjZTbY%3D', '2019-06-17 14:41:54', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1943, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/ba556184-9e18-4661-b070-c9ec3b96878f.jpg?Expires=3031982768&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=x/CjsjL07%2Bk/95bpDKUDEV8Siic%3D', '2019-06-17 14:43:26', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1944, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/cb4a31b9-4d35-44ef-aff8-7c985425ab97.jpg?Expires=3031982877&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=yqvBupgA9RrkgXKRs7hiN20o3io%3D', '2019-06-17 14:45:16', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1945, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/01c4824b-eed3-4cac-83bd-b67fdb248e3b.jpg?Expires=3031982950&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=4ST68pcTPfASCrcSo/UogmoI%2BNQ%3D', '2019-06-17 14:46:28', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1946, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/5f8c1f51-18c7-40f7-88e1-824aec97ae4f.jpg?Expires=3031983033&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Xi2e1CWeUV5U%2BevbmHmbcFuwXak%3D', '2019-06-17 14:47:51', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1947, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/f003b158-7076-474e-a44f-a82da4214961.jpg?Expires=3031983197&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=8uDmySHMXFOiNVSl2E4GS8qcNtc%3D', '2019-06-17 14:50:35', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1948, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/cb22d85d-7b94-4c3e-9ee7-b4434f9da6e2.jpg?Expires=3031983208&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=vQX3WltMDBXUwqn33LKCLbfkkIY%3D', '2019-06-17 14:50:46', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1949, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/03b3c047-9246-4ae9-a24b-fe160456ea2b.jpg?Expires=3031983210&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=FFGnAK3BN5BbUDYpofBxmU2iFLc%3D', '2019-06-17 14:50:48', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1950, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/a0cc842a-44d2-444f-ae80-332cbf93db83.jpg?Expires=3031983233&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=7WPa6Rkpfy3wM70XcrjEIHbVtUg%3D', '2019-06-17 14:51:11', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1951, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/3aa935c9-6a65-4a6a-9b7f-f8749c3014a8.jpg?Expires=3031984941&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=nRFY9Sn6usafTUe4AVU25gSxu0E%3D', '2019-06-17 15:19:39', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1952, 78, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/c8499afe-7a3d-4f14-8df7-b4931c0cee9b.jpg?Expires=3031989963&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=XfPdb2jSVj4H3HQF78hVGL7AX6s%3D', '2019-06-17 16:43:21', 216, '2019-06-17 16:43:25', 216, 0);
+INSERT INTO `pictures` VALUES (1953, 79, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/1e0b9ad3-93ba-46d7-986c-ffaf16dfbe86.jpg?Expires=3031990658&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=bp9GVwzbLYpyNSnLPooA2V6ahFI%3D', '2019-06-17 16:54:56', 216, '2019-06-17 16:54:59', 216, 0);
+INSERT INTO `pictures` VALUES (1954, 98, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/43836301-f948-46c7-be6b-143c2909347f.jpg?Expires=3031990735&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=JQaCPxX5PH/2almvjH9CTToCxns%3D', '2019-06-17 16:56:13', 216, '2019-06-17 16:56:30', 216, 0);
 
 -- ----------------------------
 -- Table structure for product
@@ -8401,7 +8929,7 @@ CREATE TABLE `product`  (
   INDEX `idx_product_05`(`shelf_life`) USING BTREE,
   INDEX `idx_product_06`(`day_of_pre_warning`) USING BTREE,
   INDEX `idx_product_07`(`stock_of_pre_warning`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
@@ -8444,6 +8972,8 @@ INSERT INTO `product` VALUES (53, 12, '品牌2系列11', 2, 14, 99.00, NULL, 88.
 INSERT INTO `product` VALUES (54, 5, '品牌2系列11', 2, 14, 99.00, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 18:01:06', 1, '2019-05-30 10:47:58', 1, 0);
 INSERT INTO `product` VALUES (55, 119, '宇阿', 0, 81, 500.00, NULL, 450.00, '20190611', '6937526503743', 24, 12, 50, 0, '300', '不知道', '2019-06-11 14:55:28', 216, '2019-06-11 14:56:36', 216, 0);
 INSERT INTO `product` VALUES (56, 36, '擦十二发', 0, 49, 1000.00, NULL, 900.00, '654654', '123456', 10, 10, 10, 0, '100kg', '上的发电风扇', '2019-06-12 15:40:43', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (57, 119, '软膜', 1, 96, 99.00, NULL, 88.00, '201906828', '6937526503743', 24, 12, 20, 0, '30', '没有', '2019-06-13 17:33:27', 216, NULL, NULL, 0);
+INSERT INTO `product` VALUES (58, 119, '面膜', 0, 92, 300.00, NULL, 280.00, '20785856', '28048958', 36, 24, 50, 0, '80', '没有', '2019-06-13 17:37:41', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_property
@@ -8494,7 +9024,7 @@ CREATE TABLE `product_property_map`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_product_property_map_01`(`product_id`) USING BTREE,
   INDEX `idx_product_property_map_02`(`product_property_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 266 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品属性关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 272 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品属性关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_property_map
@@ -8621,6 +9151,12 @@ INSERT INTO `product_property_map` VALUES (262, 55, 21, '2019-06-11 14:56:36', 2
 INSERT INTO `product_property_map` VALUES (263, 56, 18, '2019-06-12 15:40:43', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (264, 56, 19, '2019-06-12 15:40:43', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (265, 56, 22, '2019-06-12 15:40:43', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (266, 57, 24, '2019-06-13 17:33:27', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (267, 57, 20, '2019-06-13 17:33:27', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (268, 57, 22, '2019-06-13 17:33:27', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (269, 58, 23, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (270, 58, 19, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (271, 58, 22, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_series
@@ -8640,7 +9176,7 @@ CREATE TABLE `product_series`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_product_series_01`(`series_name`) USING BTREE,
   INDEX `idx_product_series_02`(`parent_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品品牌/系列' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品品牌/系列' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_series
@@ -8708,6 +9244,9 @@ INSERT INTO `product_series` VALUES (90, 119, '点击3', 87, 0, '2019-06-12 11:1
 INSERT INTO `product_series` VALUES (91, 119, '东升为', 0, 0, '2019-06-12 11:19:26', 216, NULL, NULL, 0);
 INSERT INTO `product_series` VALUES (92, 119, '王者荣耀阿', 91, 0, '2019-06-12 16:04:12', 216, NULL, NULL, 0);
 INSERT INTO `product_series` VALUES (93, 119, '刺激战场1', 91, 0, '2019-06-12 16:04:25', 216, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (94, 119, '珀莱雅', 0, 0, '2019-06-13 16:21:32', 216, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (95, 119, '珀莱雅1', 94, 0, '2019-06-13 16:21:49', 216, NULL, NULL, 0);
+INSERT INTO `product_series` VALUES (96, 119, '珀莱雅2', 94, 0, '2019-06-13 16:22:04', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_stock
@@ -8729,7 +9268,7 @@ CREATE TABLE `product_stock`  (
   INDEX `idx_product_stock_02`(`stock_qty`) USING BTREE,
   INDEX `idx_product_stock_03`(`cost`) USING BTREE,
   INDEX `idx_product_stock_04`(`warehouse_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品库存表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品库存表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_stock
@@ -8754,6 +9293,8 @@ INSERT INTO `product_stock` VALUES (17, 37, 36, 0, 0.00, '2019-05-30 17:07:47', 
 INSERT INTO `product_stock` VALUES (18, 38, 2, 99, 8712.00, '2019-05-31 11:36:30', 1, '2019-06-06 16:18:22', 1, 0);
 INSERT INTO `product_stock` VALUES (19, 55, 119, 0, 0.00, '2019-06-11 14:55:28', 216, NULL, NULL, 0);
 INSERT INTO `product_stock` VALUES (20, 56, 36, 0, 0.00, '2019-06-12 15:40:43', 85, NULL, NULL, 0);
+INSERT INTO `product_stock` VALUES (21, 57, 119, 0, 0.00, '2019-06-13 17:33:28', 216, NULL, NULL, 0);
+INSERT INTO `product_stock` VALUES (22, 58, 119, 0, 0.00, '2019-06-13 17:37:42', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_stock_movement
@@ -8989,7 +9530,7 @@ CREATE TABLE `repayment_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_repayment_record_01`(`arrearages_record`) USING BTREE,
   INDEX `idx_repayment_record_02`(`reimbursement_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '还款记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '还款记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of repayment_record
@@ -9004,6 +9545,26 @@ INSERT INTO `repayment_record` VALUES (11, 3, '2019-05-15 17:45:51', 100.00, 740
 INSERT INTO `repayment_record` VALUES (12, 3, '2019-05-15 17:46:53', 50.00, 690.00, 1, 0, '', 984, '2019-05-15 17:46:53', 1, NULL, NULL, 0);
 INSERT INTO `repayment_record` VALUES (13, 18, '2019-06-05 19:01:08', 20.00, 0.00, 0, 3, '', 1628, '2019-06-05 19:01:08', 85, NULL, NULL, 0);
 INSERT INTO `repayment_record` VALUES (14, 17, '2019-06-05 19:02:17', 20.00, 0.00, 0, 1, '', 1633, '2019-06-05 19:02:17', 85, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (15, 37, '2019-06-15 13:18:12', 3.00, 2.00, 1, 0, '备注备注备注', 1865, '2019-06-15 13:18:12', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (16, 37, '2019-06-17 11:17:42', 1.00, 1.00, 1, 0, '', 1910, '2019-06-17 11:17:42', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (17, 37, '2019-06-17 11:17:59', 1.00, 0.00, 0, 10, '', 1911, '2019-06-17 11:17:59', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (18, 37, '2019-06-17 11:17:59', 1.00, -1.00, 1, 10, '', 1912, '2019-06-17 11:17:59', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (19, 38, '2019-06-17 11:25:25', 5.00, 0.00, 0, 10, '备注1536', 1914, '2019-06-17 11:25:25', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (20, 41, '2019-06-17 11:29:19', 3.00, 0.00, 0, 10, '', 1915, '2019-06-17 11:29:19', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (21, 46, '2019-06-17 14:30:22', 185.00, 0.00, 0, 10, '', 1935, '2019-06-17 14:30:22', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (22, 47, '2019-06-17 14:34:15', 225.00, 0.00, 0, 10, '', 1936, '2019-06-17 14:34:15', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (23, 42, '2019-06-17 14:37:15', 2.00, 1.00, 1, 10, '', 1937, '2019-06-17 14:37:15', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (24, 42, '2019-06-17 14:37:32', 2.00, -1.00, 1, 10, '', 1939, '2019-06-17 14:37:32', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (25, 45, '2019-06-17 14:38:18', 100.00, 300.00, 1, 10, '', 1940, '2019-06-17 14:38:18', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (26, 45, '2019-06-17 14:40:26', 50.00, 250.00, 1, 10, '', 1941, '2019-06-17 14:40:26', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (27, 45, '2019-06-17 14:41:54', 50.00, 200.00, 1, 10, '', 1942, '2019-06-17 14:41:54', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (28, 45, '2019-06-17 14:43:26', 50.00, 150.00, 1, 10, '', 1943, '2019-06-17 14:43:27', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (29, 45, '2019-06-17 14:45:16', 48.00, 102.00, 1, 10, '', 1944, '2019-06-17 14:45:16', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (30, 45, '2019-06-17 14:46:28', 7.00, 95.00, 1, 10, '', 1945, '2019-06-17 14:46:42', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (31, 45, '2019-06-17 14:47:51', 1.00, 94.00, 1, 10, '', 1946, '2019-06-17 14:48:41', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (32, 45, '2019-06-17 14:50:48', 3.00, 91.00, 1, 10, '', 1949, '2019-06-17 14:51:02', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (33, 45, '2019-06-17 14:51:11', 3.00, 88.00, 1, 10, '', 1950, '2019-06-17 14:51:48', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (34, 45, '2019-06-17 15:19:39', 80.00, 8.00, 1, 10, '', 1951, '2019-06-17 15:19:39', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for reservation
@@ -9030,7 +9591,7 @@ CREATE TABLE `reservation`  (
   INDEX `idx_appointment_01`(`member_id`) USING BTREE,
   INDEX `idx_appointment_02`(`stuff_id`) USING BTREE,
   INDEX `idx_appointment_03`(`room_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of reservation
@@ -9059,11 +9620,15 @@ INSERT INTO `reservation` VALUES (21, -1, 0, 1131, 19, '2019-05-31 00:00:00', 2,
 INSERT INTO `reservation` VALUES (22, 26, 1, 1128, 29, '2019-06-03 00:00:00', 2, 1, '', '2019-06-03 14:00:00', '2019-06-03 16:00:00', '2019-06-03 10:17:11', 106, '2019-06-03 14:20:40', 85, 0);
 INSERT INTO `reservation` VALUES (23, 26, 1, 1128, 31, '2019-06-05 00:00:00', 3, 1, '', '2019-06-05 15:00:00', '2019-06-05 18:00:00', '2019-06-05 14:59:16', 106, '2019-06-05 15:12:25', 85, 0);
 INSERT INTO `reservation` VALUES (24, 26, 1, 1128, 31, '2019-06-06 00:00:00', 2, 1, '', '2019-06-06 10:00:00', '2019-06-06 12:00:00', '2019-06-05 15:00:48', 106, '2019-06-05 15:01:37', 85, 0);
-INSERT INTO `reservation` VALUES (25, 85, 1, 1224, 18, '2019-06-10 00:00:00', 1, 0, '新增预约', '2019-06-10 08:15:00', '2019-06-10 10:05:00', '2019-06-10 19:26:05', 215, NULL, NULL, 0);
-INSERT INTO `reservation` VALUES (26, 85, 1, 1224, 2, '2019-06-12 00:00:00', 2, 0, '', '2019-06-12 12:15:00', '2019-06-12 15:05:00', '2019-06-12 10:39:31', 215, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (25, 85, 1, 1224, 18, '2019-06-10 00:00:00', 1, 3, '新增预约', '2019-06-10 08:15:00', '2019-06-10 10:05:00', '2019-06-10 19:26:05', 215, '2019-06-14 14:46:59', 215, 0);
+INSERT INTO `reservation` VALUES (26, 85, 1, 1224, 2, '2019-06-12 00:00:00', 2, 1, '', '2019-06-12 12:15:00', '2019-06-12 15:05:00', '2019-06-12 10:39:31', 215, '2019-06-14 14:47:27', 215, 0);
 INSERT INTO `reservation` VALUES (27, -1, 0, 1226, 35, '2019-06-12 00:00:00', 0, 0, '', '2019-06-12 11:00:00', '2019-06-12 11:50:00', '2019-06-12 17:18:18', 219, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (28, -1, 0, 1226, 35, '2019-06-15 00:00:00', 1, 0, '没有', '2019-06-15 09:03:00', '2019-06-15 10:53:00', '2019-06-12 17:21:15', 219, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (29, -1, 0, 1226, 35, '2019-06-12 00:00:00', 0, 0, '没有', '2019-06-12 10:00:00', '2019-06-12 10:50:00', '2019-06-12 17:22:36', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (30, -1, 0, 1226, 35, '2019-06-13 00:00:00', 1, 0, '', '2019-06-13 10:02:00', '2019-06-13 11:02:00', '2019-06-13 09:47:28', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (31, 113, 1, 1232, 36, '2019-06-15 00:00:00', 0, 2, '备注备注备注', '2019-06-15 10:00:00', '2019-06-15 10:50:00', '2019-06-15 10:09:29', 219, '2019-06-15 10:53:52', 219, 0);
+INSERT INTO `reservation` VALUES (32, 96, 1, 1232, 35, '2019-06-17 00:00:00', 0, 0, '备注备注备注备注备注', '2019-06-17 09:00:00', '2019-06-17 09:50:00', '2019-06-17 08:56:22', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (33, 113, 1, 1226, 36, '2019-06-17 00:00:00', 0, 0, '备注备注备注备注', '2019-06-17 09:00:00', '2019-06-17 09:50:00', '2019-06-17 08:59:49', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for reservation_item
@@ -9081,7 +9646,7 @@ CREATE TABLE `reservation_item`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_reservation_item_01`(`reservation_id`) USING BTREE,
   INDEX `idx_reservation_item_02`(`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of reservation_item
@@ -9132,6 +9697,13 @@ INSERT INTO `reservation_item` VALUES (46, 26, 12, '2019-06-12 10:39:31', 215, N
 INSERT INTO `reservation_item` VALUES (47, 27, 71, '2019-06-12 17:18:18', 219, NULL, NULL, 0);
 INSERT INTO `reservation_item` VALUES (48, 28, 74, '2019-06-12 17:21:15', 219, NULL, NULL, 0);
 INSERT INTO `reservation_item` VALUES (49, 29, 73, '2019-06-12 17:22:36', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (50, 30, 71, '2019-06-13 09:47:29', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (51, 31, 74, '2019-06-15 10:09:29', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (52, 31, 75, '2019-06-15 10:09:29', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (53, 32, 74, '2019-06-17 08:56:22', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (54, 32, 75, '2019-06-17 08:56:22', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (55, 33, 74, '2019-06-17 08:59:49', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (56, 33, 75, '2019-06-17 08:59:49', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for retroactive
@@ -9175,14 +9747,26 @@ INSERT INTO `retroactive` VALUES (9, 1131, '2019-05-30 08:59:46', '搞活经济j
 -- ----------------------------
 DROP TABLE IF EXISTS `revenue`;
 CREATE TABLE `revenue`  (
-  `record_id` bigint(20) NOT NULL,
+  `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `activity_detail_info_id` bigint(20) NOT NULL,
-  `top_recommender` bigint(20) NOT NULL,
-  `top_recommender_cost` double(10, 2) NOT NULL,
-  `profit_type` tinyint(4) NOT NULL,
+  `activity_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `reference` bigint(20) NOT NULL,
+  `cost` double(10, 2) NOT NULL,
+  `revenue_type` tinyint(4) NOT NULL,
+  `level` tinyint(4) NOT NULL,
+  `create_date` datetime(0) NOT NULL,
+  `create_by` bigint(20) NOT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL,
+  `update_by` bigint(20) NULL DEFAULT NULL,
+  `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
-  INDEX `idx_revenue_01`(`activity_detail_info_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收益明细表' ROW_FORMAT = Dynamic;
+  INDEX `idx_revenue_01`(`activity_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收益明细表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of revenue
+-- ----------------------------
+INSERT INTO `revenue` VALUES (1, 1, '【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭！', 232, 398.00, 1, 2, '2019-06-17 15:49:54', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for role_action
@@ -9195,7 +9779,7 @@ CREATE TABLE `role_action`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_role_action_01`(`stuff_id`) USING BTREE,
   INDEX `idx_role_action_02`(`system_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 161 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色权限映射表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色权限映射表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_action
@@ -9348,6 +9932,10 @@ INSERT INTO `role_action` VALUES (157, 1227, 220);
 INSERT INTO `role_action` VALUES (158, 1228, 221);
 INSERT INTO `role_action` VALUES (159, 1229, 222);
 INSERT INTO `role_action` VALUES (160, 1230, 230);
+INSERT INTO `role_action` VALUES (161, 1231, 233);
+INSERT INTO `role_action` VALUES (162, 1232, 235);
+INSERT INTO `role_action` VALUES (163, 1233, 236);
+INSERT INTO `role_action` VALUES (164, 1234, 237);
 
 -- ----------------------------
 -- Table structure for role_privilege
@@ -9698,7 +10286,7 @@ CREATE TABLE `role_user`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `IDX_ROLE_USER_0`(`role_id`) USING BTREE,
   INDEX `IDX_ROLE_USER_1`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_user
@@ -9856,6 +10444,13 @@ INSERT INTO `role_user` VALUES (210, 3, 227);
 INSERT INTO `role_user` VALUES (211, 3, 228);
 INSERT INTO `role_user` VALUES (212, 3, 229);
 INSERT INTO `role_user` VALUES (213, 2, 230);
+INSERT INTO `role_user` VALUES (214, 3, 231);
+INSERT INTO `role_user` VALUES (215, 3, 232);
+INSERT INTO `role_user` VALUES (216, 2, 233);
+INSERT INTO `role_user` VALUES (217, 3, 234);
+INSERT INTO `role_user` VALUES (218, 2, 235);
+INSERT INTO `role_user` VALUES (219, 2, 236);
+INSERT INTO `role_user` VALUES (220, 2, 237);
 
 -- ----------------------------
 -- Table structure for salon
@@ -10106,7 +10701,7 @@ CREATE TABLE `schedule`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_schedule_01`(`stuff_id`) USING BTREE,
   INDEX `idx_schedule_02`(`day`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 506 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '排班信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 524 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '排班信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule
@@ -10434,7 +11029,22 @@ INSERT INTO `schedule` VALUES (501, 1226, 165, '2019-06-21', '2019-06-12 14:36:4
 INSERT INTO `schedule` VALUES (502, 1226, 162, '2019-06-12', '2019-06-12 17:14:18', 216, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (503, 1226, 163, '2019-06-13', '2019-06-12 17:14:18', 216, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (504, 1226, 164, '2019-06-14', '2019-06-12 17:14:19', 216, NULL, NULL, 0);
-INSERT INTO `schedule` VALUES (505, 1226, 165, '2019-06-15', '2019-06-12 17:14:19', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (507, 1226, 162, '2019-06-15', '2019-06-15 10:01:13', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (509, 1231, 162, '2019-06-15', '2019-06-15 10:01:26', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (510, 1231, 162, '2019-06-16', '2019-06-15 10:01:26', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (511, 1231, 162, '2019-06-17', '2019-06-15 10:01:26', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (512, 1231, 162, '2019-06-18', '2019-06-15 10:01:26', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (513, 1227, 162, '2019-06-15', '2019-06-15 10:01:42', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (514, 1227, 162, '2019-06-16', '2019-06-15 10:01:42', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (515, 1227, 162, '2019-06-17', '2019-06-15 10:01:42', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (516, 1232, 162, '2019-06-15', '2019-06-15 10:01:56', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (517, 1232, 162, '2019-06-16', '2019-06-15 10:01:56', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (518, 1232, 162, '2019-06-17', '2019-06-15 10:01:56', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (519, 1232, 163, '2019-06-18', '2019-06-15 10:01:56', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (520, 1232, 164, '2019-06-19', '2019-06-15 10:01:56', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (521, 1229, 162, '2019-06-15', '2019-06-15 10:02:09', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (522, 1229, 162, '2019-06-16', '2019-06-15 10:02:10', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (523, 1229, 164, '2019-06-18', '2019-06-15 10:02:10', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for service
@@ -10467,39 +11077,38 @@ CREATE TABLE `service`  (
   INDEX `idx_service_card_02`(`card_type`) USING BTREE,
   INDEX `idx_service_card_03`(`service_name`) USING BTREE,
   INDEX `idx_service_card_04`(`record_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '次卡/服务项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '次卡/服务项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service
 -- ----------------------------
-INSERT INTO `service` VALUES (1, 0, '二号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 01:52:42', 1, '2019-03-06 02:47:20', 1, 0);
-INSERT INTO `service` VALUES (2, 0, '8号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 07:24:56', 1, '2019-03-06 07:26:50', 1, 0);
-INSERT INTO `service` VALUES (3, 0, '四号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 07:25:05', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (4, 0, '9号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 08:53:36', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (5, 0, '10号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 08:57:03', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (6, 0, '7号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 08:59:00', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (7, 0, '6号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, NULL, NULL, '', '2019-03-06 09:09:12', 2, NULL, NULL, 0);
-INSERT INTO `service` VALUES (12, 2, '刮痧2', 7, 0, 1, 1.0, 5, 100.00, 0.00, 5.00, 5, 0, 0, '2019-07-12 10:53:45', '哈提', '2019-03-19 03:50:02', 1, '2019-06-12 10:53:15', 1, 0);
-INSERT INTO `service` VALUES (13, 2, '按摩', 5, 3, 0, NULL, 48, -1.00, 800.00, 360.00, 1, 1, NULL, NULL, '垃圾篓', '2019-03-19 03:54:37', 1, '2019-05-17 16:38:33', 1, 0);
-INSERT INTO `service` VALUES (14, 2, '墨迹健', 11, 0, 1, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, '空军建军节', '2019-03-19 07:25:02', 1, '2019-03-20 09:47:41', 1, 0);
-INSERT INTO `service` VALUES (15, 2, '泰国大保健', 11, 0, 1, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, '', '2019-03-19 07:25:02', 1, '2019-03-20 09:57:13', 1, 0);
-INSERT INTO `service` VALUES (19, 2, '优惠项目2', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (20, 2, '优惠项目3', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (21, 2, '优惠项目4', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (22, 2, '优惠项目5', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, NULL, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (23, 2, '推背', 6, 1, 0, NULL, 10, -1.00, 30000.00, 100.00, 1, 6, NULL, NULL, '流星雨', '2019-03-19 09:25:48', 1, '2019-04-17 10:43:31', 1, 0);
-INSERT INTO `service` VALUES (50, 1, '测试服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, NULL, NULL, '很好', '2019-04-10 11:30:23', 1, '2019-04-10 11:30:30', 1, 0);
-INSERT INTO `service` VALUES (51, 1, '店铺1的服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, NULL, NULL, '9', '2019-04-10 11:38:39', 9, '2019-04-10 11:38:42', 9, 0);
-INSERT INTO `service` VALUES (52, 36, '次卡1', 27, 0, 1, 0.0, 58, 40.00, 0.00, 6003.00, 4, 0, NULL, NULL, '舒服', '2019-04-11 15:42:05', 85, '2019-04-11 15:58:57', 85, 0);
-INSERT INTO `service` VALUES (53, 36, '次卡2', 27, 0, 0, 0.0, 58, 40.00, -1.00, 600.00, 4, -1, NULL, NULL, '舒服', '2019-04-11 15:42:57', 85, NULL, NULL, 0);
-INSERT INTO `service` VALUES (55, 36, '一类5', 28, 1, 1, 1.0, 5, 0.00, 100.00, 70.00, 49, 0, NULL, '2019-07-11 12:47:07', '明orz', '2019-04-11 15:57:58', 85, '2019-06-11 12:46:31', 85, 0);
-INSERT INTO `service` VALUES (56, 36, '肩颈按摩', 28, 0, 1, 1.0, 60, 250.00, 0.00, 180.00, 6, 0, 2, '2019-07-04 09:53:47', '咯哦哦', '2019-04-26 17:06:51', 85, '2019-06-04 09:53:21', 85, 0);
-INSERT INTO `service` VALUES (57, 33, 'anmo ', 24, 0, 0, 0.0, 30, 54.00, -1.00, 12.00, 3, -1, NULL, NULL, 'fsdfsdfdsf', '2019-05-13 17:22:05', 77, NULL, NULL, 0);
-INSERT INTO `service` VALUES (58, 33, '刚好呼呼呼', 64, 0, 0, NULL, 20, 55.00, -1.00, 55.00, 2, -1, NULL, NULL, '', '2019-05-14 19:03:51', 77, NULL, NULL, 0);
-INSERT INTO `service` VALUES (61, 2, '摇头晃脑', 7, 2, 0, NULL, 99, -1.00, 98.00, 36.00, 2, 58, NULL, NULL, '哈哈镜健康', '2019-05-23 17:32:36', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (62, 2, '按摩脚部', 47, 2, 0, NULL, 88, -1.00, 66.00, 55.00, 2, 1, NULL, NULL, '黄金季节季节', '2019-05-23 17:39:30', 1, NULL, NULL, 0);
-INSERT INTO `service` VALUES (63, 36, '测试', 28, 1, 0, 1.0, 2, -1.00, 100.00, 80.00, 100, 10, NULL, NULL, '', '2019-05-28 18:09:11', 85, NULL, NULL, 0);
-INSERT INTO `service` VALUES (64, 36, '擦反对', 28, 2, 1, 3.0, 2, 0.00, 100.00, 50.00, 0, -1, NULL, '2019-09-04 09:54:51', '', '2019-05-29 11:48:03', 85, '2019-06-04 09:54:25', 85, 0);
+INSERT INTO `service` VALUES (1, 0, '二号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 01:52:42', 1, '2019-03-06 02:47:20', 1, 0);
+INSERT INTO `service` VALUES (2, 0, '8号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 07:24:56', 1, '2019-03-06 07:26:50', 1, 0);
+INSERT INTO `service` VALUES (3, 0, '四号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 07:25:05', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (4, 0, '9号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 08:53:36', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (5, 0, '10号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 08:57:03', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (6, 0, '7号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 08:59:00', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (7, 0, '6号号项目', 4, 0, 0, 30.0, 1, 100.00, 200.00, 1000.00, 10, 20, 1, NULL, '', '2019-03-06 09:09:12', 2, NULL, NULL, 0);
+INSERT INTO `service` VALUES (12, 2, '刮痧2', 7, 0, 1, 1.0, 5, 100.00, 0.00, 5.00, 5, 0, 1, '2019-07-12 10:53:45', '哈提', '2019-03-19 03:50:02', 1, '2019-06-12 10:53:15', 1, 0);
+INSERT INTO `service` VALUES (13, 2, '按摩', 5, 3, 0, NULL, 48, -1.00, 800.00, 360.00, 1, 1, 1, NULL, '垃圾篓', '2019-03-19 03:54:37', 1, '2019-05-17 16:38:33', 1, 0);
+INSERT INTO `service` VALUES (14, 2, '墨迹健', 11, 0, 1, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, '空军建军节', '2019-03-19 07:25:02', 1, '2019-03-20 09:47:41', 1, 0);
+INSERT INTO `service` VALUES (15, 2, '泰国大保健', 11, 0, 1, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, '', '2019-03-19 07:25:02', 1, '2019-03-20 09:57:13', 1, 0);
+INSERT INTO `service` VALUES (19, 2, '优惠项目2', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (20, 2, '优惠项目3', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (21, 2, '优惠项目4', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (22, 2, '优惠项目5', 14, 0, 0, 0.0, 58, 10.00, 0.00, 100.00, 1, 0, 1, NULL, NULL, '2019-03-19 07:25:02', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (23, 2, '推背', 6, 1, 0, NULL, 10, -1.00, 30000.00, 100.00, 1, 6, 1, NULL, '流星雨', '2019-03-19 09:25:48', 1, '2019-04-17 10:43:31', 1, 0);
+INSERT INTO `service` VALUES (50, 1, '测试服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, 1, NULL, '很好', '2019-04-10 11:30:23', 1, '2019-04-10 11:30:30', 1, 0);
+INSERT INTO `service` VALUES (51, 1, '店铺1的服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, 1, NULL, '9', '2019-04-10 11:38:39', 9, '2019-04-10 11:38:42', 9, 0);
+INSERT INTO `service` VALUES (52, 36, '次卡1', 27, 0, 1, 0.0, 58, 40.00, 0.00, 6003.00, 4, 0, 1, NULL, '舒服', '2019-04-11 15:42:05', 85, '2019-04-11 15:58:57', 85, 0);
+INSERT INTO `service` VALUES (53, 36, '次卡2', 27, 0, 0, 0.0, 58, 40.00, -1.00, 600.00, 4, -1, 1, NULL, '舒服', '2019-04-11 15:42:57', 85, NULL, NULL, 0);
+INSERT INTO `service` VALUES (56, 36, '肩颈按摩', 28, 0, 1, 1.0, 60, 250.00, 0.00, 180.00, 6, 0, 2, '2019-07-15 10:36:47', '咯哦哦', '2019-04-26 17:06:51', 85, '2019-06-15 10:36:14', 85, 0);
+INSERT INTO `service` VALUES (57, 33, 'anmo ', 24, 0, 0, 0.0, 30, 54.00, -1.00, 12.00, 3, -1, 1, NULL, 'fsdfsdfdsf', '2019-05-13 17:22:05', 77, NULL, NULL, 0);
+INSERT INTO `service` VALUES (58, 33, '刚好呼呼呼', 64, 0, 0, NULL, 20, 55.00, -1.00, 55.00, 2, -1, 1, NULL, '', '2019-05-14 19:03:51', 77, NULL, NULL, 0);
+INSERT INTO `service` VALUES (61, 2, '摇头晃脑', 7, 2, 0, NULL, 99, -1.00, 98.00, 36.00, 2, 58, 1, NULL, '哈哈镜健康', '2019-05-23 17:32:36', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (62, 2, '按摩脚部', 47, 2, 0, NULL, 88, -1.00, 66.00, 55.00, 2, 1, 1, NULL, '黄金季节季节', '2019-05-23 17:39:30', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (63, 36, '测试', 28, 1, 1, 1.0, 2, 0.00, 100.00, 80.00, 100, 10, 1, '2019-07-14 19:34:18', '', '2019-05-28 18:09:11', 85, '2019-06-14 19:33:50', 85, 0);
+INSERT INTO `service` VALUES (64, 36, '擦反对', 28, 2, 1, 3.0, 2, 0.00, 100.00, 50.00, 0, -1, 1, '2019-09-04 09:54:51', '', '2019-05-29 11:48:03', 85, '2019-06-04 09:54:25', 85, 0);
 INSERT INTO `service` VALUES (65, 36, '恩', 51, 0, 1, 1.0, 200, 60.00, 0.00, 70.00, 3, 0, 5, '2019-07-11 13:15:02', '不知道', '2019-06-11 10:06:22', 85, '2019-06-11 13:14:28', 85, 0);
 INSERT INTO `service` VALUES (67, 119, '嗯', 68, 0, 1, 1.0, 200, 60.00, 0.00, 70.00, 3, 0, 56, '2019-07-11 15:30:55', '不知道', '2019-06-11 10:15:24', 216, '2019-06-11 15:30:19', 216, 0);
 INSERT INTO `service` VALUES (68, 119, '嗯', 68, 0, 0, 1.0, 200, 60.00, -1.00, 70.00, 3, -1, 5, '2019-07-11 10:24:25', '不知道', '2019-06-11 10:23:52', 216, NULL, NULL, 0);
@@ -10508,6 +11117,8 @@ INSERT INTO `service` VALUES (70, 36, '嗯', 51, 0, 1, 1.0, 200, 70.00, 0.00, 60
 INSERT INTO `service` VALUES (71, 119, '测试', 68, 0, 1, 1.0, 25, 50.00, 0.00, 30.00, 2, 0, 7, '2019-07-11 15:32:30', '不知道', '2019-06-11 15:27:57', 216, '2019-06-11 15:31:54', 216, 0);
 INSERT INTO `service` VALUES (73, 119, '时间段后视镜', 68, 0, 0, 1.0, 20, 25.00, -1.00, 20.00, 3, -1, 30, '2019-07-12 10:09:15', '不知道', '2019-06-12 10:08:40', 216, NULL, NULL, 0);
 INSERT INTO `service` VALUES (74, 119, '奥斯卡大家', 68, 0, 0, 1.0, 25, 30.00, -1.00, 20.00, 3, -1, 20, '2019-07-12 10:10:38', '不知道', '2019-06-12 10:10:03', 216, NULL, NULL, 0);
+INSERT INTO `service` VALUES (75, 119, '养生阿', 77, 0, 0, 1.0, 20, 30.00, -1.00, 5.00, 3, -1, 50, '2019-07-15 09:51:03', '无', '2019-06-15 09:50:29', 216, NULL, NULL, 0);
+INSERT INTO `service` VALUES (76, 119, 'CC', 82, 4, 1, 12.0, 25, -1.00, 50.00, 35.00, 0, -1, NULL, '2020-06-17 16:41:19', '', '2019-06-17 16:40:45', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for service_series
@@ -10528,7 +11139,7 @@ CREATE TABLE `service_series`  (
   INDEX `idx_service_series_01`(`series_name`) USING BTREE,
   INDEX `idx_service_series_02`(`parent_id`) USING BTREE,
   INDEX `idx_service_series_03`(`record_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目类别/系列' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目类别/系列' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service_series
@@ -10581,6 +11192,17 @@ INSERT INTO `service_series` VALUES (69, 119, '嗯', 0, 0, '2019-06-11 11:33:15'
 INSERT INTO `service_series` VALUES (70, 119, '嗯1', 69, 0, '2019-06-12 10:46:26', 216, NULL, NULL, 0);
 INSERT INTO `service_series` VALUES (73, 119, '是这样的', 0, 0, '2019-06-12 17:01:03', 216, NULL, NULL, 0);
 INSERT INTO `service_series` VALUES (74, 119, '王者农药', 67, 0, '2019-06-12 17:01:45', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (75, 119, '面部护理', 0, 0, '2019-06-13 16:28:19', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (76, 119, '养生类', 0, 0, '2019-06-15 09:47:27', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (77, 119, '艾条', 76, 0, '2019-06-15 09:47:43', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (78, 119, '艾条2', 76, 0, '2019-06-15 09:47:52', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (79, 119, '美容类', 0, 0, '2019-06-15 09:48:03', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (80, 119, '基础护理', 79, 0, '2019-06-15 09:48:15', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (81, 119, '肩颈养生', 79, 0, '2019-06-15 09:48:22', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (82, 119, '美白', 79, 0, '2019-06-15 09:48:27', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (83, 119, '排毒', 79, 0, '2019-06-15 09:48:30', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (84, 119, '补水', 75, 0, '2019-06-17 16:30:56', 216, NULL, NULL, 0);
+INSERT INTO `service_series` VALUES (85, 119, '祛痘', 75, 0, '2019-06-17 16:31:02', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for service_suite
@@ -10604,7 +11226,7 @@ CREATE TABLE `service_suite`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_service_suite_01`(`suite_name`) USING BTREE,
   INDEX `idx_service_suite_02`(`record_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '套卡/服务套餐' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '套卡/服务套餐' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service_suite
@@ -10635,6 +11257,10 @@ INSERT INTO `service_suite` VALUES (70, 36, '高级卡', 940.00, 900.00, '2019-0
 INSERT INTO `service_suite` VALUES (71, 36, '胡卡', 300.00, 290.00, '2019-05-22 08:00:00', '2019-06-28 23:59:59', 0, '', '2019-05-31 20:29:24', 85, '2019-06-01 09:07:38', 85, 0);
 INSERT INTO `service_suite` VALUES (72, 36, '嘎嘎', 250.00, 200.00, '2019-06-10 08:00:00', '2019-06-30 23:59:59', 0, '', '2019-06-10 11:36:30', 85, '2019-06-11 11:29:21', 85, 0);
 INSERT INTO `service_suite` VALUES (73, 119, '金卡', 500.00, 350.00, '2019-06-11 08:00:00', '2019-06-12 23:59:59', 0, '不知道', '2019-06-11 11:43:43', 216, '2019-06-12 11:09:27', 216, 0);
+INSERT INTO `service_suite` VALUES (76, 119, '养生卡', 890.00, 350.00, '2019-06-13 14:54:38', '2019-06-21 23:59:59', 0, '', '2019-06-13 14:54:38', 216, NULL, NULL, 0);
+INSERT INTO `service_suite` VALUES (77, 119, '美容卡', 500.00, 320.00, '2019-06-13 15:09:31', '2019-06-15 23:59:59', 0, '', '2019-06-13 15:09:31', 216, NULL, NULL, 0);
+INSERT INTO `service_suite` VALUES (78, 119, '套卡2', 3600.00, 888.00, '2019-06-17 16:43:25', '2019-12-31 23:59:59', 0, '套卡套卡套卡套卡套卡', '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite` VALUES (79, 119, '护理卡', 1800.00, 520.00, '2019-06-17 16:54:59', '2020-01-31 23:59:59', 0, '说明说明说明说明', '2019-06-17 16:54:59', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for service_suite_item
@@ -10652,7 +11278,7 @@ CREATE TABLE `service_suite_item`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_service_suite_item_01`(`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 398 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '套卡明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 418 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '套卡明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service_suite_item
@@ -10695,6 +11321,26 @@ INSERT INTO `service_suite_item` VALUES (385, 67, 2, 10, '2019-06-05 19:01:08', 
 INSERT INTO `service_suite_item` VALUES (388, 72, 55, 2, '2019-06-11 11:29:22', 85, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (389, 72, 56, 2, '2019-06-11 11:29:22', 85, NULL, NULL, 0);
 INSERT INTO `service_suite_item` VALUES (395, 73, 67, 5, '2019-06-12 11:09:27', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (398, 76, 69, 6, '2019-06-13 14:54:38', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (399, 76, 71, 9, '2019-06-13 14:54:38', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (400, 76, 73, 3, '2019-06-13 14:54:38', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (401, 76, 74, 7, '2019-06-13 14:54:38', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (402, 77, 69, 0, '2019-06-13 15:09:31', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (403, 77, 71, 0, '2019-06-13 15:09:31', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (404, 77, 73, 0, '2019-06-13 15:09:31', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (405, 77, 74, 0, '2019-06-13 15:09:31', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (406, 78, 69, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (407, 78, 71, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (408, 78, 73, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (409, 78, 74, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (410, 78, 75, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (411, 78, 76, 20, '2019-06-17 16:43:25', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (412, 79, 69, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (413, 79, 71, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (414, 79, 73, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (415, 79, 74, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (416, 79, 75, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
+INSERT INTO `service_suite_item` VALUES (417, 79, 76, 10, '2019-06-17 16:54:59', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for shift
@@ -10809,10 +11455,10 @@ INSERT INTO `shift` VALUES (158, 118, 3, '9:00', '19:00', '2019-05-29 11:40:38',
 INSERT INTO `shift` VALUES (159, 6, 0, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (160, 6, 3, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (161, 6, 2, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
-INSERT INTO `shift` VALUES (162, 119, 0, '9:00', '19:00', '2019-06-11 09:21:55', 1, '2019-06-12 15:09:21', 216, 0);
-INSERT INTO `shift` VALUES (163, 119, 1, '06:00', '12:00', '2019-06-11 09:21:56', 1, '2019-06-12 15:09:21', 216, 0);
-INSERT INTO `shift` VALUES (164, 119, 2, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-12 15:09:22', 216, 0);
-INSERT INTO `shift` VALUES (165, 119, 3, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-12 15:09:22', 216, 0);
+INSERT INTO `shift` VALUES (162, 119, 0, '9:00', '23:00', '2019-06-11 09:21:55', 1, '2019-06-17 16:59:54', 216, 0);
+INSERT INTO `shift` VALUES (163, 119, 1, '06:00', '12:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
+INSERT INTO `shift` VALUES (164, 119, 2, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
+INSERT INTO `shift` VALUES (165, 119, 3, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
 
 -- ----------------------------
 -- Table structure for sm_integral_alteration
@@ -10831,7 +11477,25 @@ CREATE TABLE `sm_integral_alteration`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_sm_integral_alteration_01`(`way`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城积分异动表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城积分异动表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sm_integral_alteration
+-- ----------------------------
+INSERT INTO `sm_integral_alteration` VALUES (1, 10, 0, 0, 1, '2019-06-14 10:47:38', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (2, 10, 0, 0, 1, '2019-06-14 10:48:54', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (3, 10, 0, 0, 1, '2019-06-14 10:52:56', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (4, 10, 0, 0, 1, '2019-06-14 10:53:24', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (5, 10, 0, 0, 1, '2019-06-14 10:57:35', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (6, 10, 0, 0, 1, '2019-06-14 11:04:41', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (7, 10, 0, 0, 0, '2019-06-14 11:10:04', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (8, 10, 0, 0, 0, '2019-06-14 11:27:11', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (9, 10, 0, 0, 0, '2019-06-14 11:28:17', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (10, 10, 0, 0, 0, '2019-06-14 11:32:19', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (11, 10, 0, 0, 0, '2019-06-14 11:38:10', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (12, 10, 0, 0, 0, '2019-06-14 11:38:26', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (13, 10, 0, 0, 0, '2019-06-14 11:53:03', 1, NULL, NULL, 0);
+INSERT INTO `sm_integral_alteration` VALUES (14, 10, 0, 1, 0, '2019-06-14 11:56:38', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for stamp_program
@@ -10851,7 +11515,7 @@ CREATE TABLE `stamp_program`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stamp_program_01`(`expired_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目券汇总表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目券汇总表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stamp_program
@@ -10884,6 +11548,9 @@ INSERT INTO `stamp_program` VALUES (25, 26, 60.00, '2019-06-09 23:59:59', 1, 0, 
 INSERT INTO `stamp_program` VALUES (26, 26, 2000.00, '2019-07-10 23:59:59', 1, 0, '2019-06-10 11:20:27', 85, NULL, NULL, 0);
 INSERT INTO `stamp_program` VALUES (27, 26, 2000.00, '2019-10-10 23:59:59', 1, 0, '2019-06-10 14:34:06', 85, NULL, NULL, 0);
 INSERT INTO `stamp_program` VALUES (28, 26, 60.00, '2019-06-09 23:59:59', 1, 0, '2019-06-10 14:39:08', 85, NULL, NULL, 0);
+INSERT INTO `stamp_program` VALUES (31, 26, 1000.00, '2019-06-20 23:59:59', 1, 0, '2019-06-13 10:31:37', 85, NULL, NULL, 0);
+INSERT INTO `stamp_program` VALUES (32, 26, 500.00, '2030-12-31 23:59:59', 1, 0, '2019-06-13 10:32:59', 85, NULL, NULL, 0);
+INSERT INTO `stamp_program` VALUES (33, 85, 1000.00, '2019-12-13 23:59:59', 1, 1, '2019-06-13 10:34:43', 215, '2019-06-14 20:22:34', 215, 0);
 
 -- ----------------------------
 -- Table structure for stock_transfer_application
@@ -10986,7 +11653,7 @@ CREATE TABLE `store_room`  (
   INDEX `idx_store_room_01`(`store_id`) USING BTREE,
   INDEX `idx_store_room_02`(`room_name`) USING BTREE,
   INDEX `idx_store_room_03`(`record_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '门店房间' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '门店房间' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of store_room
@@ -11018,6 +11685,10 @@ INSERT INTO `store_room` VALUES (32, 33, '1111', 0, '2019-05-14 09:30:42', 77, N
 INSERT INTO `store_room` VALUES (33, 33, '2222', 0, '2019-05-14 09:30:46', 77, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (34, 33, '3e3', 0, '2019-05-14 19:02:53', 77, NULL, NULL, 0);
 INSERT INTO `store_room` VALUES (35, 119, '102', 0, '2019-06-11 11:21:40', 216, '2019-06-12 16:56:13', 216, 0);
+INSERT INTO `store_room` VALUES (36, 119, '海党阁', 0, '2019-06-13 15:11:57', 216, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (37, 119, '雅阁', 0, '2019-06-17 16:29:15', 216, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (38, 119, '静阁', 0, '2019-06-17 16:29:33', 216, NULL, NULL, 0);
+INSERT INTO `store_room` VALUES (39, 119, '202', 0, '2019-06-17 16:29:59', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for stuff
@@ -11049,7 +11720,7 @@ CREATE TABLE `stuff`  (
   INDEX `idx_stuff_02`(`stuff_name`) USING BTREE,
   INDEX `idx_stuff_03`(`tel`) USING BTREE,
   INDEX `idx_stuff_04`(`gender`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1231 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '院长/店长/员工' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1235 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '院长/店长/员工' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff
@@ -11109,18 +11780,18 @@ INSERT INTO `stuff` VALUES (63, 33, '咯安安', '13713713713', 2, NULL, NULL, N
 INSERT INTO `stuff` VALUES (64, 2, 'yaya', '13694511474', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-04 11:46:53', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (66, 35, '18664151888', '18664151888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-08 15:02:30', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1111, 6, 'sf', '1', 1, '2019-04-11 11:59:20', 2.0, '2019-04-11 11:59:23', '1', '1', '1', '1', '11', '2019-04-11 11:59:35', 1, '2019-04-11 11:59:38', 1, 1, 0, 0);
-INSERT INTO `stuff` VALUES (1112, 36, '小小店长', '13929433192', 0, NULL, 0.0, '1996-03-06 00:00:00', 'jbnj', NULL, '344394154', NULL, '', '2019-04-11 14:48:38', 1, '2019-05-24 12:57:46', 85, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1113, 36, '煎饼', '17688686390', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 15:17:59', 85, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1112, 36, '小小店长', '13929433192', 0, NULL, 0.0, '1996-02-27 00:00:00', 'jbnj', NULL, '344394154', NULL, '', '2019-04-11 14:48:38', 1, '2019-06-15 10:35:01', 85, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1113, 36, '煎饼', '17688686390', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-04-11 15:17:59', 85, '2019-06-14 19:04:51', 86, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1115, 37, '刘大姐', '19874236542', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:10:31', 87, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1116, 37, '柳絮', '123698574555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:42:20', 87, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1117, 37, '李某某', '18681172013', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 18:27:33', 87, NULL, NULL, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1121, 36, '五条蛇', '13929433194', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-12 17:40:20', 85, '2019-04-16 20:02:14', 85, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1121, 36, '五条蛇', '13929433194', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-04-12 17:40:20', 85, '2019-06-14 20:41:48', 94, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1123, 42, '13532307827', '13532307827', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-13 10:25:01', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1124, 2, '客服', '169853241485', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-03 18:31:20', 1, '2019-05-03 18:31:37', 1, 0, 1, 0);
 INSERT INTO `stuff` VALUES (1125, 2, '李子核', '1366985555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-03 18:32:22', 1, '2019-05-30 17:49:27', 1, 0, 0, 1);
 INSERT INTO `stuff` VALUES (1126, 36, 'linyuhao', '13686278563', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-06 14:21:02', 85, '2019-05-30 12:49:20', 85, 0, 0, 1);
 INSERT INTO `stuff` VALUES (1127, 36, 'linyuhao', '13686278563', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-06 14:21:03', 85, '2019-05-30 10:39:04', 85, 0, 0, 1);
-INSERT INTO `stuff` VALUES (1128, 36, 'linhao', '13686278563', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-05-06 14:21:06', 85, '2019-06-03 12:07:38', 85, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1128, 36, 'linhao', '13686278563', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-05-06 14:21:06', 85, '2019-06-14 18:58:11', 106, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1129, 2, '天天有y', '15999876806', 0, NULL, NULL, '2005-05-16 00:00:00', '', '', '', '', '', '2019-05-09 17:10:42', 1, '2019-05-30 17:46:56', 215, 0, 1, 1);
 INSERT INTO `stuff` VALUES (1130, 33, '花果园', '13456789102', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-14 19:48:54', 77, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1131, 2, '刘国', '13712992626', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-16 13:24:42', 1, NULL, NULL, 0, 0, 0);
@@ -11202,7 +11873,7 @@ INSERT INTO `stuff` VALUES (1206, 115, '17328480392', '17328480392', 2, NULL, NU
 INSERT INTO `stuff` VALUES (1207, 36, 'lyh', '17328480393', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-23 10:21:17', 85, '2019-05-31 09:14:47', 85, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1208, 36, '超级', '17328482938', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-23 15:13:06', 85, '2019-05-23 15:14:18', 85, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1209, 36, '工程师', '17328480396', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-05-23 18:40:18', 85, '2019-05-29 15:13:24', 85, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1210, 2, '李飞', '1599969866', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-23 18:47:52', 1, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1210, 2, '李飞飞', '1599969866', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-23 18:47:52', 1, '2019-06-17 11:37:44', 1, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1211, 36, '牛人', '17328480329', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-23 18:51:02', 85, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1212, 2, '陆家嘴', '159668452333', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-25 08:57:12', 1, '2019-05-30 17:49:38', 1, 0, 0, 1);
 INSERT INTO `stuff` VALUES (1213, 2, '刘同哥', '1896523158', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-25 09:07:23', 1, '2019-05-30 19:21:43', 203, 0, 0, 0);
@@ -11214,13 +11885,17 @@ INSERT INTO `stuff` VALUES (1219, 36, '黑人', '17328480399', 2, NULL, NULL, NU
 INSERT INTO `stuff` VALUES (1221, 117, '15999876807', '15999876807', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-28 16:06:42', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1222, 118, '17328480392', '17328480392', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-05-29 11:40:38', 1, '2019-05-30 14:13:48', 213, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1223, 36, '高顾问', '17328485999', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-30 17:41:43', 85, '2019-05-31 17:11:44', 85, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1224, 2, '刘顾问', '13413413415', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-30 17:44:38', 1, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1224, 2, '刘铁顾问', '13413413415', 1, NULL, NULL, NULL, '', '', '', '', '', '2019-05-30 17:44:38', 1, '2019-06-17 11:33:57', 215, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1225, 119, '15273639627', '15273639627', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 09:21:55', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1226, 119, '阿欣', '17674677693', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 10:58:31', 216, '2019-06-12 11:36:04', 216, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1227, 119, '乐乐', '15273639657', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:05:49', 216, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1228, 119, '豆奶', '15273639656', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:06:23', 216, '2019-06-12 11:36:26', 216, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1229, 119, '可可', '15273639626', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:08:19', 216, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1230, 119, '啧啧', '52369545888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-12 16:52:03', 216, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1231, 119, '西西', '55565125464', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-13 17:11:06', 216, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1232, 119, '安安', '52467573464', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-15 09:59:25', 216, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1233, 2, '杨梅', '15999761553', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 15:44:56', 1, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1234, 2, '小张', '13827279181', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:31:38', 1, NULL, NULL, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for stuff_job
@@ -11238,7 +11913,7 @@ CREATE TABLE `stuff_job`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_job_01`(`stuff_id`) USING BTREE,
   INDEX `idx_stuff_job_02`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 306 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工职务' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 317 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工职务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_job
@@ -11407,10 +12082,6 @@ INSERT INTO `stuff_job` VALUES (207, 1204, 2, '2019-05-22 10:51:40', 1, NULL, NU
 INSERT INTO `stuff_job` VALUES (208, 1205, 2, '2019-05-22 11:28:06', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (209, 1206, 2, '2019-05-22 12:46:32', 108, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (211, 1208, 10, '2019-05-23 15:13:06', 85, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (215, 1210, 5, '2019-05-23 18:47:52', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (216, 1210, 7, '2019-05-23 18:47:52', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (217, 1210, 6, '2019-05-23 18:47:52', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (218, 1210, 10, '2019-05-23 18:47:52', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (219, 1211, 6, '2019-05-23 18:51:02', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (220, 1211, 5, '2019-05-23 18:51:02', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (221, 1212, 10, '2019-05-25 08:57:12', 1, NULL, NULL, 0);
@@ -11444,7 +12115,17 @@ INSERT INTO `stuff_job` VALUES (301, 1229, 10, '2019-06-11 11:08:19', 216, NULL,
 INSERT INTO `stuff_job` VALUES (302, 1226, 7, '2019-06-12 11:36:05', 216, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (303, 1228, 6, '2019-06-12 11:36:26', 216, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (304, 1230, 7, '2019-06-12 16:52:03', 216, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (305, 1226, 9, '2019-06-13 09:11:25', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (306, 1225, 9, '2019-06-13 09:43:36', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (307, 1231, 6, '2019-06-13 17:11:06', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (308, 1231, 5, '2019-06-13 17:11:06', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (309, 1231, 7, '2019-06-13 17:11:06', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (310, 1232, 7, '2019-06-15 09:59:25', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (311, 1232, 5, '2019-06-15 09:59:25', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (312, 1210, 5, '2019-06-17 11:37:44', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (313, 1210, 7, '2019-06-17 11:37:44', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (314, 1210, 6, '2019-06-17 11:37:44', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (315, 1233, 7, '2019-06-17 15:44:56', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (316, 1234, 7, '2019-06-17 17:31:38', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for stuff_score
@@ -11458,7 +12139,7 @@ CREATE TABLE `stuff_score`  (
   `status` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_score_01`(`stuff_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_score
@@ -11471,10 +12152,13 @@ INSERT INTO `stuff_score` VALUES (5, 31, 99, 0, 0);
 INSERT INTO `stuff_score` VALUES (6, 46, 100, 0, 0);
 INSERT INTO `stuff_score` VALUES (7, 22, 88, 0, 0);
 INSERT INTO `stuff_score` VALUES (8, 1129, 188, 0, 0);
-INSERT INTO `stuff_score` VALUES (9, 1128, 100, 10, 0);
+INSERT INTO `stuff_score` VALUES (9, 1128, 100, 20, 0);
 INSERT INTO `stuff_score` VALUES (10, 1121, 10, 0, 0);
 INSERT INTO `stuff_score` VALUES (11, 1113, 12, 0, 0);
 INSERT INTO `stuff_score` VALUES (12, 26, 105, 0, 1);
+INSERT INTO `stuff_score` VALUES (13, 113, 468, -10, 1);
+INSERT INTO `stuff_score` VALUES (14, 0, 10, 0, 0);
+INSERT INTO `stuff_score` VALUES (18, 1231, 27, 0, 0);
 
 -- ----------------------------
 -- Table structure for stuff_score_record
@@ -11496,7 +12180,7 @@ CREATE TABLE `stuff_score_record`  (
   `stuff_status` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_score_record_01`(`stuff_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分产生记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分产生记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_score_record
@@ -11516,6 +12200,7 @@ INSERT INTO `stuff_score_record` VALUES (12, 1121, '上的发的撒发', 10, 10,
 INSERT INTO `stuff_score_record` VALUES (13, 1113, '上的发的撒发', 12, 12, 1112, 0, '2019-05-30 18:33:20', 85, NULL, NULL, 0, 0);
 INSERT INTO `stuff_score_record` VALUES (14, 1128, '的撒发上的', 10, 20, 1112, 1, '2019-06-06 17:44:39', 85, NULL, NULL, 0, 0);
 INSERT INTO `stuff_score_record` VALUES (15, 26, '上的发放的', 105, 105, 1112, 0, '2019-06-10 10:36:11', 85, NULL, NULL, 0, 0);
+INSERT INTO `stuff_score_record` VALUES (16, 1128, '测试是测试彩色 ', 10, 30, 1112, 1, '2019-06-15 09:53:05', 85, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for submit_approval
@@ -11536,7 +12221,7 @@ CREATE TABLE `submit_approval`  (
   `audit_photos` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_submit_approval_01`(`approval_number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '送审表(提交审批)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '送审表(提交审批)' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of submit_approval
@@ -11546,6 +12231,17 @@ INSERT INTO `submit_approval` VALUES (2, 'VZvdfxs4', '2019-06-12 11:06:57', 1128
 INSERT INTO `submit_approval` VALUES (3, 'fnDFq9G9', '2019-06-12 11:32:01', 1128, '的撒发电风扇', '2019-06-12 11:32:01', 106, NULL, NULL, 0, 4, 1709);
 INSERT INTO `submit_approval` VALUES (4, 'wuDaEMRL', '2019-06-12 11:32:10', 1128, '的撒发电风扇', '2019-06-12 11:32:10', 106, NULL, NULL, 0, 4, 1709);
 INSERT INTO `submit_approval` VALUES (5, 'vsXkQpa2', '2019-06-12 11:33:46', 1128, '是答复但是发', '2019-06-12 11:33:46', 106, NULL, NULL, 0, 4, 1710);
+INSERT INTO `submit_approval` VALUES (6, 'Pj6avDEF', '2019-06-13 09:57:49', 1128, '是答复是答复', '2019-06-13 09:57:49', 106, NULL, NULL, 0, 4, 1731);
+INSERT INTO `submit_approval` VALUES (7, 'zRRPZeo2', '2019-06-13 10:41:18', 1128, '是答复上的发', '2019-06-13 10:41:18', 106, NULL, NULL, 0, 4, 1757);
+INSERT INTO `submit_approval` VALUES (8, 'lR9zn5v7', '2019-06-13 10:44:32', 1128, '的撒范德萨发的撒发', '2019-06-13 10:44:32', 106, NULL, NULL, 0, 4, 1758);
+INSERT INTO `submit_approval` VALUES (9, 'TtcK9p1w', '2019-06-13 10:49:41', 1128, '但是发上的发的撒发上的发是答复撒旦发范德萨撒发撒反对', '2019-06-13 10:49:41', 106, NULL, NULL, 0, 4, 1759);
+INSERT INTO `submit_approval` VALUES (10, 'GEhYG1Lq', '2019-06-13 10:56:27', 1128, '上的发范德萨但是发的撒发是答复的撒发上的发是大法师答复啊上的发', '2019-06-13 10:56:27', 106, NULL, NULL, 0, 4, 1760);
+INSERT INTO `submit_approval` VALUES (11, '1Lg6Xi5R', '2019-06-14 11:56:43', 1, 'YOu ', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 1776);
+INSERT INTO `submit_approval` VALUES (12, 'euHLnVYe', '2019-06-14 11:58:51', 1, 'To ', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 3, 1777);
+INSERT INTO `submit_approval` VALUES (13, 'zzR4SbvF', '2019-06-14 15:42:29', 1128, 'dsfadsf ', '2019-06-14 15:42:29', 106, NULL, NULL, 0, 4, 1777);
+INSERT INTO `submit_approval` VALUES (14, 'kPAQ6yZs', '2019-06-14 16:33:39', 1128, '高级的高级的', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 4, 1779);
+INSERT INTO `submit_approval` VALUES (15, 'eSmTDZXu', '2019-06-15 13:37:31', 1, 'Tes', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 1876);
+INSERT INTO `submit_approval` VALUES (16, '6f8YhJtz', '2019-06-15 13:47:54', 1112, 'Test', '2019-06-15 13:47:54', 85, NULL, NULL, 0, 4, 1877);
 
 -- ----------------------------
 -- Table structure for system_program
@@ -11688,17 +12384,17 @@ CREATE TABLE `system_user`  (
   INDEX `IDX_SYSTEM_USER_1`(`user_name`) USING BTREE,
   INDEX `IDX_SYSTEM_USER_2`(`user_status`) USING BTREE,
   INDEX `IDX_SYSTEM_USER_3`(`online`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 231 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 238 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-06-13 09:11:08', 'BfpHgNuv');
+INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'0', '2019-06-17 18:36:01', '4EL82Gj4');
 INSERT INTO `system_user` VALUES (2, 'C00002', '吴鸿建', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-05-14 11:25:21', NULL);
 INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-06-06 14:13:35', 'yVDm6x5l');
 INSERT INTO `system_user` VALUES (33, 'c00004', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (34, 'c00005', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'1', '2019-06-13 09:12:05', 'QbG06shY');
+INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-06-17 17:14:57', 'xfHEV6jS');
 INSERT INTO `system_user` VALUES (64, 'C00011', '店长测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-03 16:08:58', NULL);
 INSERT INTO `system_user` VALUES (65, '123680676131', '湛丰源333', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (67, '12345678', 'app测试', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-03 12:16:30', NULL);
@@ -11711,11 +12407,11 @@ INSERT INTO `system_user` VALUES (81, '13713713713', '咯安安', 'e10adc3949ba5
 INSERT INTO `system_user` VALUES (82, '13694511474', 'yaya', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (83, '', '', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (84, '18664151888', '18664151888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-13 09:25:01', 'kJM3nGLT');
-INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-13 09:31:01', 'Jj3wQMe5');
+INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 17:46:49', 'ZPlCHrXy');
+INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-15 14:55:02', 'pr1IZYCC');
 INSERT INTO `system_user` VALUES (88, '19874236542', '刘大姐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (89, '123698574555', '柳絮', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (94, '13929433194', '五条蛇', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-21 09:54:34', NULL);
+INSERT INTO `system_user` VALUES (94, '13929433194', '五条蛇', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 20:41:58', 'RWm28E4p');
 INSERT INTO `system_user` VALUES (96, '13532307827', '13532307827', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-10 13:57:52', NULL);
 INSERT INTO `system_user` VALUES (97, '19856231556', '刘花', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (98, '17963254112', '李某某', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
@@ -11726,9 +12422,9 @@ INSERT INTO `system_user` VALUES (102, '1559666', '和解决', 'e10adc3949ba59ab
 INSERT INTO `system_user` VALUES (103, '13929433196', '测试顾客头像', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (104, '169853241485', '客服', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (105, '1366985555', '李子核', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (106, '13686278563', 'linyuhao', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-12 19:35:44', '1VorqhJh');
+INSERT INTO `system_user` VALUES (106, '13686278563', 'linyuhao', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-15 10:15:38', 'pFbJlFvp');
 INSERT INTO `system_user` VALUES (107, '15999876806', '腾格', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-10 19:23:18', 'gICpvd4n');
-INSERT INTO `system_user` VALUES (108, '17328482930', 'test', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-05-23 09:41:30', NULL);
+INSERT INTO `system_user` VALUES (108, '17328482930', 'test', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 19:37:12', 'ijZXOW2R');
 INSERT INTO `system_user` VALUES (109, '12345678910', '123', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-15 17:59:44', NULL);
 INSERT INTO `system_user` VALUES (110, '13456789102', '花果园', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (111, '18681172013', '赵光', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-23 16:24:24', NULL);
@@ -11821,15 +12517,15 @@ INSERT INTO `system_user` VALUES (204, '17328482999', '', 'e10adc3949ba59abbe56e
 INSERT INTO `system_user` VALUES (205, '17328489999', '', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (206, '17328482990', 'tedsatsea', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (209, '17328480399', 'ceshi ', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-28 15:02:39', 'YxJBomYO');
-INSERT INTO `system_user` VALUES (210, '15999876807', '15999876807', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (210, '15999876807', '15999876807', '96e79218965eb72c92a549dd5a330112', 0, NULL, b'0', '2019-06-17 18:26:01', 'GnkkHE04');
 INSERT INTO `system_user` VALUES (211, '17328483999', '说法的撒发', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (213, '17328480392', '17328480392', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-30 14:16:51', 'O9tIWLQP');
+INSERT INTO `system_user` VALUES (213, '17328480392', '17328480392', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 18:06:45', 'gWRzSr3h');
 INSERT INTO `system_user` VALUES (214, '17328485999', '高顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-31 17:29:28', 'iFI9tJV3');
-INSERT INTO `system_user` VALUES (215, '13413413415', '刘顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-13 09:29:54', '5f9NZlpu');
-INSERT INTO `system_user` VALUES (216, '15273639627', '15273639627', 'ba3c5db18f92137288b20fb5448db97b', 0, NULL, b'1', '2019-06-13 09:23:43', '2IrkAYyd');
+INSERT INTO `system_user` VALUES (215, '13413413415', '刘顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 16:28:49', 'wccBCKgD');
+INSERT INTO `system_user` VALUES (216, '15273639627', '15273639627', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-17 18:28:10', 'UXxe66e3');
 INSERT INTO `system_user` VALUES (217, '15273639427', '佳欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (218, '1527363957', '吴', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (219, '17674677693', '阿欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-12 17:17:15', 'QcecxWJ8');
+INSERT INTO `system_user` VALUES (219, '17674677693', '阿欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 18:19:29', 'AxYSSaLU');
 INSERT INTO `system_user` VALUES (220, '15273639657', '乐乐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (221, '15273639656', '豆奶', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (222, '15273639626', '可可', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
@@ -11840,7 +12536,14 @@ INSERT INTO `system_user` VALUES (226, '52555', '是手机号', 'e10adc3949ba59a
 INSERT INTO `system_user` VALUES (227, '15963365454', '门口', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (228, '123456789', '无阿', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (229, '13686527856', '发放', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (230, '52369545888', '啧啧', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (230, '52369545888', '啧啧', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-15 10:29:28', '5L364y5q');
+INSERT INTO `system_user` VALUES (231, '17328480492', '测试上的发', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-13 10:22:28', 'd798FTaY');
+INSERT INTO `system_user` VALUES (232, '23456789', '东东', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (233, '55565125464', '西西', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (234, '13790538888', '13790538888', 'aa97eba124ab0c029fb7d5c37a6141b0', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (235, '52467573464', '安安', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (236, '15999761553', '杨梅', '96e79218965eb72c92a549dd5a330112', 0, NULL, b'0', '2019-06-17 18:21:48', 'tpBc8yLH');
+INSERT INTO `system_user` VALUES (237, '13827279181', '小张', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-17 18:04:17', 'kuGvBa9W');
 
 -- ----------------------------
 -- Table structure for tag
@@ -11858,7 +12561,7 @@ CREATE TABLE `tag`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_tag_01`(`record_type`) USING BTREE,
   INDEX `idx_tag_02`(`tag_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '标签' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '标签' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tag
@@ -11897,6 +12600,9 @@ INSERT INTO `tag` VALUES (34, 1, '标签1腰疼', '2019-05-16 20:27:16', 32, NUL
 INSERT INTO `tag` VALUES (35, 1, '讲师', '2019-05-22 17:02:38', 1, NULL, NULL, 0);
 INSERT INTO `tag` VALUES (36, 1, '咦', '2019-06-11 09:34:05', 216, NULL, NULL, 0);
 INSERT INTO `tag` VALUES (37, 1, '嗯啦啦', '2019-06-12 09:13:40', 216, NULL, NULL, 0);
+INSERT INTO `tag` VALUES (38, 1, '测试', '2019-06-13 10:13:05', 213, NULL, NULL, 0);
+INSERT INTO `tag` VALUES (39, 1, '酷狗', '2019-06-17 17:17:04', 216, NULL, NULL, 0);
+INSERT INTO `tag` VALUES (40, 1, '网易云阿', '2019-06-17 17:17:15', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for time_sheet
@@ -11957,7 +12663,7 @@ CREATE TABLE `verification_code_temporary`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_verification_code_temporary_01`(`phone_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信验证码临时表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信验证码临时表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of verification_code_temporary
@@ -12027,6 +12733,19 @@ INSERT INTO `verification_code_temporary` VALUES (62, '13686278563', '2132', 3, 
 INSERT INTO `verification_code_temporary` VALUES (63, '13686278563', '3760', 3, 0, '2019-05-31 16:22:09', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (64, '15273639627', '4386', 3, 0, '2019-06-11 09:11:02', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (65, '15273639627', '6030', 3, 0, '2019-06-11 16:00:46', 216, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (66, '15273639657', '7259', 3, 0, '2019-06-13 11:16:08', 216, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (67, '15273639657', '5589', 3, 0, '2019-06-13 11:19:54', 219, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (68, '15273639657', '6371', 3, 0, '2019-06-13 11:32:00', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (69, '17328482955', '9482', 3, 0, '2019-06-13 11:38:12', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (70, '15273639627', '2557', 3, 0, '2019-06-13 16:36:50', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (71, '13790538888', '2557', 3, 0, '2019-06-13 16:36:50', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (72, '15999761553', '6847', 3, 0, '2019-06-17 15:45:40', 236, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (73, '15999761553', '4357', 3, 0, '2019-06-17 15:57:41', 236, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (74, '15999876807', '6225', 3, 0, '2019-06-17 16:51:49', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (75, '15999876807', '7819', 3, 0, '2019-06-17 16:54:43', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (76, '15999876807', '5519', 3, 0, '2019-06-17 17:22:34', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (77, '15999876807', '7973', 3, 0, '2019-06-17 17:24:35', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (78, '15273639627', '7388', 3, 0, '2019-06-17 18:25:34', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for vip_suite
@@ -12046,7 +12765,7 @@ CREATE TABLE `vip_suite`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_vip_suite_01`(`suite_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vip_suite
@@ -12102,7 +12821,7 @@ INSERT INTO `vip_suite` VALUES (66, 2, '按摩5', 200.00, 1, '', '2019-05-20 14:
 INSERT INTO `vip_suite` VALUES (68, 36, '测试', 10.00, 1, '测试', '2019-05-21 16:25:26', 85, '2019-05-29 11:01:47', 85, 0);
 INSERT INTO `vip_suite` VALUES (69, 2, '腰部曲线', 999.00, 0, '焊接机kkkkkk', '2019-05-21 19:36:16', 1, '2019-05-21 20:34:59', 1, 0);
 INSERT INTO `vip_suite` VALUES (70, 2, '头部按摩1', 989.00, 0, '规划局', '2019-05-21 20:22:40', 1, '2019-05-22 09:06:52', 1, 0);
-INSERT INTO `vip_suite` VALUES (72, 36, '测试', 10.00, 0, '', '2019-05-28 16:06:26', 85, '2019-06-11 11:54:02', 85, 0);
+INSERT INTO `vip_suite` VALUES (72, 36, '测试', 10.00, 0, '', '2019-05-28 16:06:26', 85, '2019-06-15 09:44:57', 85, 0);
 INSERT INTO `vip_suite` VALUES (73, 2, '充值卡美容1号', 9999.00, 0, '刚好回家', '2019-05-28 16:58:04', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite` VALUES (75, 2, '美容养颜护肤', 9666.00, 0, '给黄金季节', '2019-05-28 17:32:37', 1, NULL, NULL, 0);
 INSERT INTO `vip_suite` VALUES (78, 2, '国际经济k', 9889.00, 0, '刚好回家家', '2019-05-28 17:47:01', 1, NULL, NULL, 0);
@@ -12113,8 +12832,10 @@ INSERT INTO `vip_suite` VALUES (82, 2, '搞活经济222', 6669.00, 0, '过不久
 INSERT INTO `vip_suite` VALUES (86, 2, '给哈哈哈j', 8899.00, 0, '给黄金快', '2019-05-29 09:40:10', 1, '2019-05-29 10:54:45', 1, 0);
 INSERT INTO `vip_suite` VALUES (87, 2, '充值卡美容34', 99999.00, 0, '放黄金季节', '2019-05-29 10:26:51', 1, '2019-05-30 14:15:57', 1, 0);
 INSERT INTO `vip_suite` VALUES (88, 2, '新增充值卡1', 99.00, 0, '哥还斤斤计较', '2019-05-30 09:54:38', 1, '2019-05-30 10:17:34', 1, 0);
-INSERT INTO `vip_suite` VALUES (89, 119, '钻石卡', 10.00, 1, '空', '2019-06-11 09:43:29', 216, '2019-06-13 09:03:14', 216, 0);
+INSERT INTO `vip_suite` VALUES (89, 119, '钻石卡', 10.00, 1, '空', '2019-06-11 09:43:29', 216, '2019-06-13 10:30:14', 216, 0);
 INSERT INTO `vip_suite` VALUES (96, 119, '会员卡', 99.00, 0, '不知道', '2019-06-12 09:31:12', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite` VALUES (97, 119, '普通卡', 200.00, 0, '为空', '2019-06-13 10:35:45', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite` VALUES (98, 119, '消费卡', 10000.00, 0, '充值卡充值卡充值卡充值卡', '2019-06-17 16:56:30', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for vip_suite_item
@@ -12132,7 +12853,7 @@ CREATE TABLE `vip_suite_item`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_vip_suite_item_01`(`record_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 445 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡折扣项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 457 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡折扣项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vip_suite_item
@@ -12262,15 +12983,20 @@ INSERT INTO `vip_suite_item` VALUES (387, 23, 0, 9, '2019-06-05 13:03:22', 85, N
 INSERT INTO `vip_suite_item` VALUES (388, 23, 1, 8, '2019-06-05 13:03:22', 85, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (389, 23, 2, 6, '2019-06-05 13:03:22', 85, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (390, 23, 3, 7, '2019-06-05 13:03:22', 85, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (410, 72, 0, 6.9, '2019-06-11 11:54:02', 85, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (411, 72, 1, 0, '2019-06-11 11:54:02', 85, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (412, 72, 3, 2.9, '2019-06-11 11:54:02', 85, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (439, 96, 0, 5, '2019-06-12 09:31:12', 216, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (440, 96, 2, 5, '2019-06-12 09:31:12', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (441, 89, 0, 0.1, '2019-06-13 09:03:15', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (442, 89, 1, 0.1, '2019-06-13 09:03:15', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (443, 89, 2, 0.1, '2019-06-13 09:03:15', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (444, 89, 3, 0.1, '2019-06-13 09:03:15', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (445, 89, 2, 9.8, '2019-06-13 10:30:15', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (446, 89, 3, 9.88, '2019-06-13 10:30:15', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (447, 97, 1, 9.6, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (448, 97, 2, 9.8, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (449, 97, 3, 99, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (450, 72, 0, 6.9, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (451, 72, 1, 0, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (452, 72, 3, 2.9, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (453, 98, 0, 5, '2019-06-17 16:56:30', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (454, 98, 1, 5, '2019-06-17 16:56:30', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (455, 98, 2, 5, '2019-06-17 16:56:30', 216, NULL, NULL, 0);
+INSERT INTO `vip_suite_item` VALUES (456, 98, 3, 5, '2019-06-17 16:56:30', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for vip_suite_item_discount_range
@@ -12484,7 +13210,7 @@ CREATE TABLE `visual_range`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_visual_range_01`(`stuff_id`) USING BTREE,
   INDEX `idx_visual_range_02`(`statu`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 370 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 433 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of visual_range
@@ -12857,6 +13583,69 @@ INSERT INTO `visual_range` VALUES (366, 1229, 0, '2019-06-11 16:57:42', 216, 0, 
 INSERT INTO `visual_range` VALUES (367, 1227, 0, '2019-06-11 16:57:42', 216, 0, NULL, NULL);
 INSERT INTO `visual_range` VALUES (368, 1226, 0, '2019-06-11 17:00:33', 216, 0, NULL, NULL);
 INSERT INTO `visual_range` VALUES (369, 1226, 0, '2019-06-11 17:00:35', 216, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (370, 1223, 0, '2019-06-13 19:00:27', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (371, 1223, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (372, 1219, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (373, 1113, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (374, 1128, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (375, 1207, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (376, 1211, 0, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (377, 1202, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (378, 1203, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (379, 1208, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (380, 1209, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (381, 1223, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (382, 1219, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (383, 1113, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (384, 1128, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (385, 1207, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (386, 1211, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (387, 1121, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (388, 1112, 0, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (389, 1112, 0, '2019-06-13 19:42:42', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (390, 7, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (391, 49, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (392, 8, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (393, 9, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (394, 10, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (395, 11, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (396, 36, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (397, 28, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (398, 29, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (399, 30, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (400, 31, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (401, 32, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (402, 33, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (403, 34, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (404, 35, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (405, 1124, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (406, 23, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (407, 37, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (408, 38, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (409, 42, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (410, 43, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (411, 44, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (412, 45, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (413, 1131, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (414, 1210, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (415, 1213, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (416, 1224, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (417, 61, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (418, 62, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (419, 39, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (420, 40, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (421, 41, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (422, 1, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (423, 5, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (424, 15, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (425, 16, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (426, 17, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (427, 1234, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (428, 64, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (429, 1233, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (430, 6, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (431, 47, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (432, 1234, 0, '2019-06-17 18:01:52', 1, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for visual_range_mapping
@@ -12874,7 +13663,7 @@ CREATE TABLE `visual_range_mapping`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_visual_range_mapping_01`(`notice_id`) USING BTREE,
   INDEX `idx_visual_range_mapping_02`(`visual_range_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 370 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围映射表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 433 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围映射表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of visual_range_mapping
@@ -13247,6 +14036,69 @@ INSERT INTO `visual_range_mapping` VALUES (366, 78, 366, '2019-06-11 16:57:42', 
 INSERT INTO `visual_range_mapping` VALUES (367, 78, 367, '2019-06-11 16:57:42', 216, 0, NULL, NULL);
 INSERT INTO `visual_range_mapping` VALUES (368, 79, 368, '2019-06-11 17:00:33', 216, 0, NULL, NULL);
 INSERT INTO `visual_range_mapping` VALUES (369, 80, 369, '2019-06-11 17:00:35', 216, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (370, 81, 370, '2019-06-13 19:00:27', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (371, 82, 371, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (372, 82, 372, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (373, 82, 373, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (374, 82, 374, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (375, 82, 375, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (376, 82, 376, '2019-06-13 19:41:48', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (377, 83, 377, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (378, 83, 378, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (379, 83, 379, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (380, 83, 380, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (381, 83, 381, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (382, 83, 382, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (383, 83, 383, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (384, 83, 384, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (385, 83, 385, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (386, 83, 386, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (387, 83, 387, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (388, 83, 388, '2019-06-13 19:42:13', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (389, 84, 389, '2019-06-13 19:42:42', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (390, 85, 390, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (391, 85, 391, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (392, 85, 392, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (393, 85, 393, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (394, 85, 394, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (395, 85, 395, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (396, 85, 396, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (397, 85, 397, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (398, 85, 398, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (399, 85, 399, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (400, 85, 400, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (401, 85, 401, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (402, 85, 402, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (403, 85, 403, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (404, 85, 404, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (405, 85, 405, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (406, 85, 406, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (407, 85, 407, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (408, 85, 408, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (409, 85, 409, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (410, 85, 410, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (411, 85, 411, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (412, 85, 412, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (413, 85, 413, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (414, 85, 414, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (415, 85, 415, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (416, 85, 416, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (417, 85, 417, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (418, 85, 418, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (419, 85, 419, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (420, 85, 420, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (421, 85, 421, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (422, 85, 422, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (423, 85, 423, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (424, 85, 424, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (425, 85, 425, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (426, 85, 426, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (427, 85, 427, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (428, 85, 428, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (429, 85, 429, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (430, 85, 430, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (431, 85, 431, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (432, 86, 432, '2019-06-17 18:01:53', 1, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for work_summary
