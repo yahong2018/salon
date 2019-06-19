@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 17/06/2019 18:43:39
+ Date: 19/06/2019 14:18:37
 */
 
 SET NAMES utf8mb4;
@@ -53,7 +53,8 @@ CREATE TABLE `activity_info`  (
   `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `frist_originator` bigint(20) NOT NULL,
-  `activity_date` datetime(0) NOT NULL,
+  `activity_start_date` datetime(0) NOT NULL,
+  `activity_end_date` datetime(0) NOT NULL,
   `activity_state` bigint(20) NOT NULL,
   `create_date` datetime(0) NOT NULL,
   `create_by` bigint(20) NOT NULL,
@@ -62,14 +63,13 @@ CREATE TABLE `activity_info`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_activity_info_01`(`activity_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_info
 -- ----------------------------
-INSERT INTO `activity_info` VALUES (1, '【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭！', '价值6844元套餐项目地址一折抢！更怂698元康佳电器豪礼！！！', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-06-11 00:00:00', 0, '2019-06-12 10:30:06', 1, '2019-06-12 10:32:56', 1, 0);
-INSERT INTO `activity_info` VALUES (2, '阴影', '222', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-10-11 00:00:00', 1, '2019-06-13 10:35:05', 1, NULL, NULL, 0);
-INSERT INTO `activity_info` VALUES (3, '哈哈', '222', 'http://localhost:8080/activity/showActivity?edition=one&activityId=1', 444, '2019-10-11 00:00:00', 1, '2019-06-13 10:36:09', 1, NULL, NULL, 0);
+INSERT INTO `activity_info` VALUES (1, '【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭！', '价值6844元套餐项目地址一折抢！更怂698元康佳电器豪礼！！！', '/activity/showActivity?activityId=1', 444, '2019-06-11 12:00:00', '2019-07-11 12:05:00', 0, '2019-06-11 11:00:00', 1, NULL, NULL, NULL);
+INSERT INTO `activity_info` VALUES (2, '【亿美客活动】一年一度庆典，从来没有过的优惠！震撼来袭！', '价值6844元套餐项目地址一折抢！更怂698元康佳电器豪礼！！！', '/activity/showActivity?activityId=2', 168, '2019-06-11 12:00:00', '2019-07-11 12:00:00', 0, '2019-06-11 11:00:00', 1, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for activity_order
@@ -83,7 +83,8 @@ CREATE TABLE `activity_order`  (
   `payment_price` double(10, 2) NULL DEFAULT NULL,
   `payment_state` tinyint(4) NOT NULL,
   `activity_info_id` bigint(20) NOT NULL,
-  `participants_id` bigint(20) NOT NULL,
+  `participants_id` bigint(20) NULL DEFAULT NULL,
+  `user_open_wx` bigint(20) NULL DEFAULT NULL,
   `invitation_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `create_date` datetime(0) NOT NULL,
   `create_by` bigint(20) NOT NULL,
@@ -97,7 +98,7 @@ CREATE TABLE `activity_order`  (
 -- ----------------------------
 -- Records of activity_order
 -- ----------------------------
-INSERT INTO `activity_order` VALUES (1, 'ACTP13213241346', 1, 399.00, 398.00, 1, 1, 232, 'yui9RKgL', '2019-06-17 15:34:59', 0, '2019-06-17 15:47:34', 1, 0);
+INSERT INTO `activity_order` VALUES (1, 'ACTP13213241346', 1, 399.00, 398.00, 1, 1, 232, NULL, 'yui9RKgL', '2019-06-17 15:34:59', 0, '2019-06-17 15:47:34', 1, 0);
 
 -- ----------------------------
 -- Table structure for activity_relation_info
@@ -107,6 +108,7 @@ CREATE TABLE `activity_relation_info`  (
   `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `activity_info_id` bigint(20) NOT NULL,
   `service_id` bigint(20) NOT NULL,
+  `activity_template_info_id` bigint(20) NOT NULL,
   `act_price` double(10, 2) NOT NULL,
   `create_date` datetime(0) NOT NULL,
   `create_by` bigint(20) NOT NULL,
@@ -120,11 +122,33 @@ CREATE TABLE `activity_relation_info`  (
 -- ----------------------------
 -- Records of activity_relation_info
 -- ----------------------------
-INSERT INTO `activity_relation_info` VALUES (3, 5, 333, 999.00, '2019-06-11 14:42:19', 1, '2019-06-11 15:12:21', 1, 0);
-INSERT INTO `activity_relation_info` VALUES (4, 6, 333, 657.00, '2019-06-11 16:11:19', 1, NULL, NULL, 0);
-INSERT INTO `activity_relation_info` VALUES (5, 1, 1, 499.00, '2019-06-12 10:30:06', 1, '2019-06-12 10:32:56', 1, 0);
-INSERT INTO `activity_relation_info` VALUES (6, 2, 1, 599.00, '2019-06-13 10:35:05', 1, NULL, NULL, 0);
-INSERT INTO `activity_relation_info` VALUES (7, 3, 1, 599.00, '2019-06-13 10:36:09', 1, NULL, NULL, 0);
+INSERT INTO `activity_relation_info` VALUES (3, 5, 333, 1, 999.00, '2019-06-11 14:42:19', 1, '2019-06-11 15:12:21', 1, 0);
+INSERT INTO `activity_relation_info` VALUES (4, 6, 333, 1, 657.00, '2019-06-11 16:11:19', 1, NULL, NULL, 0);
+INSERT INTO `activity_relation_info` VALUES (5, 1, 1, 1, 499.00, '2019-06-12 10:30:06', 1, '2019-06-12 10:32:56', 1, 0);
+INSERT INTO `activity_relation_info` VALUES (6, 2, 1, 1, 599.00, '2019-06-13 10:35:05', 1, NULL, NULL, 0);
+INSERT INTO `activity_relation_info` VALUES (7, 3, 1, 1, 599.00, '2019-06-13 10:36:09', 1, NULL, NULL, 0);
+
+-- ----------------------------
+-- Table structure for activity_template_info
+-- ----------------------------
+DROP TABLE IF EXISTS `activity_template_info`;
+CREATE TABLE `activity_template_info`  (
+  `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `template_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `template_icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `template_apply_num` int(11) NOT NULL,
+  `template_url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `template_state` tinyint(4) NOT NULL,
+  PRIMARY KEY (`record_id`) USING BTREE,
+  INDEX `idx_activity_template_info_01`(`template_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '活动模板信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of activity_template_info
+-- ----------------------------
+INSERT INTO `activity_template_info` VALUES (1, '一路向钱', '13132123.png', 0, '/activity.html', 0);
+INSERT INTO `activity_template_info` VALUES (2, '全民总动员', '13132123.png', 0, '/activity.html', 0);
+INSERT INTO `activity_template_info` VALUES (3, '全民理财', '13132123.png', 0, '/activity.html', 0);
 
 -- ----------------------------
 -- Table structure for approval_process
@@ -171,7 +195,7 @@ CREATE TABLE `approval_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_approval_record_01`(`approval_date`) USING BTREE,
   INDEX `idx_approval_record_02`(`approval_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '审批记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '审批记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of approval_record
@@ -198,13 +222,13 @@ INSERT INTO `approval_record` VALUES (19, NULL, 3, '2019-06-14 11:56:43', '2019-
 INSERT INTO `approval_record` VALUES (20, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 2, 5, 1, 11);
 INSERT INTO `approval_record` VALUES (21, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 3, 1, 1, 11);
 INSERT INTO `approval_record` VALUES (22, NULL, 2, '2019-06-14 11:56:43', '2019-06-14 11:56:43', 1, NULL, NULL, 0, 1, 4, 2, 0, 11);
-INSERT INTO `approval_record` VALUES (23, NULL, 3, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 1, 1, 1, 12);
-INSERT INTO `approval_record` VALUES (24, NULL, 3, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, '2019-06-15 13:37:07', 1, 0, 1, 2, 5, 1, 12);
+INSERT INTO `approval_record` VALUES (23, 'test', 0, '2019-06-18 19:31:02', '2019-06-14 11:58:51', 1, '2019-06-18 19:31:02', 1, 0, 1, 1, 1, 1, 12);
+INSERT INTO `approval_record` VALUES (24, NULL, 3, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, '2019-06-18 19:31:02', 1, 0, 1, 2, 5, 1, 12);
 INSERT INTO `approval_record` VALUES (25, NULL, 2, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 3, 6, 1, 12);
 INSERT INTO `approval_record` VALUES (26, NULL, 2, '2019-06-14 11:58:51', '2019-06-14 11:58:51', 1, NULL, NULL, 0, 1, 4, 15, 0, 12);
 INSERT INTO `approval_record` VALUES (27, '范德萨发上的发', 0, '2019-06-14 19:08:43', '2019-06-14 15:42:30', 106, '2019-06-14 19:08:43', 86, 0, 1, 1, 1113, 1, 13);
-INSERT INTO `approval_record` VALUES (28, NULL, 3, '2019-06-14 15:42:30', '2019-06-14 15:42:30', 106, '2019-06-14 19:08:43', 86, 0, 1, 2, 1121, 1, 13);
-INSERT INTO `approval_record` VALUES (29, NULL, 2, '2019-06-14 15:42:30', '2019-06-14 15:42:30', 106, NULL, NULL, 0, 1, 3, 1112, 0, 13);
+INSERT INTO `approval_record` VALUES (28, 'fdsafadf ', 0, '2019-06-19 10:46:24', '2019-06-14 15:42:30', 106, '2019-06-19 10:46:24', 94, 0, 1, 2, 1121, 1, 13);
+INSERT INTO `approval_record` VALUES (29, NULL, 3, '2019-06-14 15:42:30', '2019-06-14 15:42:30', 106, '2019-06-19 10:46:24', 94, 0, 1, 3, 1112, 0, 13);
 INSERT INTO `approval_record` VALUES (30, NULL, 3, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 1, 1, 1113, 1, 14);
 INSERT INTO `approval_record` VALUES (31, NULL, 3, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, '2019-06-15 14:05:41', 86, 0, 1, 2, 1121, 1, 14);
 INSERT INTO `approval_record` VALUES (32, NULL, 2, '2019-06-14 16:33:39', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 1, 3, 1112, 0, 14);
@@ -215,6 +239,17 @@ INSERT INTO `approval_record` VALUES (36, NULL, 2, '2019-06-15 13:37:31', '2019-
 INSERT INTO `approval_record` VALUES (37, 'test', 0, '2019-06-15 14:07:38', '2019-06-15 13:47:54', 85, '2019-06-15 14:07:38', 86, 0, 1, 1, 1113, 1, 16);
 INSERT INTO `approval_record` VALUES (38, NULL, 3, '2019-06-15 13:47:54', '2019-06-15 13:47:54', 85, '2019-06-15 14:07:38', 86, 0, 1, 2, 1121, 1, 16);
 INSERT INTO `approval_record` VALUES (39, NULL, 2, '2019-06-15 13:47:54', '2019-06-15 13:47:54', 85, NULL, NULL, 0, 1, 3, 1112, 0, 16);
+INSERT INTO `approval_record` VALUES (40, NULL, 3, '2019-06-18 17:31:56', '2019-06-18 17:31:56', 237, NULL, NULL, 0, 1, 1, 1, 1, 17);
+INSERT INTO `approval_record` VALUES (41, NULL, 2, '2019-06-18 17:31:56', '2019-06-18 17:31:56', 237, NULL, NULL, 0, 1, 2, 5, 1, 17);
+INSERT INTO `approval_record` VALUES (42, NULL, 2, '2019-06-18 17:31:56', '2019-06-18 17:31:56', 237, NULL, NULL, 0, 1, 3, 6, 1, 17);
+INSERT INTO `approval_record` VALUES (43, NULL, 2, '2019-06-18 17:31:56', '2019-06-18 17:31:56', 237, NULL, NULL, 0, 1, 4, 15, 0, 17);
+INSERT INTO `approval_record` VALUES (44, NULL, 3, '2019-06-18 18:21:43', '2019-06-18 18:21:43', 237, NULL, NULL, 0, 1, 1, 6, 1, 18);
+INSERT INTO `approval_record` VALUES (45, NULL, 2, '2019-06-18 18:21:43', '2019-06-18 18:21:43', 237, NULL, NULL, 0, 1, 2, 5, 1, 18);
+INSERT INTO `approval_record` VALUES (46, NULL, 2, '2019-06-18 18:21:43', '2019-06-18 18:21:43', 237, NULL, NULL, 0, 1, 3, 1, 1, 18);
+INSERT INTO `approval_record` VALUES (47, NULL, 2, '2019-06-18 18:21:43', '2019-06-18 18:21:43', 237, NULL, NULL, 0, 1, 4, 2, 0, 18);
+INSERT INTO `approval_record` VALUES (48, NULL, 3, '2019-06-19 10:50:21', '2019-06-19 10:50:21', 106, NULL, NULL, 0, 1, 1, 1113, 1, 19);
+INSERT INTO `approval_record` VALUES (49, NULL, 2, '2019-06-19 10:50:21', '2019-06-19 10:50:21', 106, NULL, NULL, 0, 1, 2, 1121, 1, 19);
+INSERT INTO `approval_record` VALUES (50, NULL, 2, '2019-06-19 10:50:21', '2019-06-19 10:50:21', 106, NULL, NULL, 0, 1, 3, 1112, 0, 19);
 
 -- ----------------------------
 -- Table structure for arrearages_record
@@ -239,7 +274,7 @@ CREATE TABLE `arrearages_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_arrearages_record_01`(`ref_trans_id`) USING BTREE,
   INDEX `idx_arrearages_record_02`(`arrearages_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '欠款记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '欠款记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of arrearages_record
@@ -268,7 +303,7 @@ INSERT INTO `arrearages_record` VALUES (21, 316, 26, '2019-06-15 10:14:41', 0, 3
 INSERT INTO `arrearages_record` VALUES (22, 317, 26, '2019-06-15 10:15:19', 0, 360.00, 0.00, 360, 0, 1, '2019-06-15 10:15:19', 85, NULL, NULL, 0);
 INSERT INTO `arrearages_record` VALUES (23, 318, 26, '2019-06-15 10:18:59', 0, 360.00, 10.00, 350, 0, 1, '2019-06-15 10:18:59', 1, NULL, NULL, 0);
 INSERT INTO `arrearages_record` VALUES (24, 320, 26, '2019-06-15 10:34:15', 0, 180.00, 0.00, 180, 0, 1, '2019-06-15 10:34:15', 85, NULL, NULL, 0);
-INSERT INTO `arrearages_record` VALUES (25, 329, 85, '2019-06-15 11:02:24', 0, 72.00, 10.00, 62, 0, 1, '2019-06-15 11:02:24', 215, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (25, 329, 85, '2019-06-15 11:02:24', 0, 72.00, 10.00, 62, 2, 1, '2019-06-15 11:02:24', 215, '2019-06-18 11:57:52', 215, 0);
 INSERT INTO `arrearages_record` VALUES (26, 330, 85, '2019-06-15 11:08:28', 0, 72.00, 5.00, 67, 0, 1, '2019-06-15 11:08:28', 215, NULL, NULL, 0);
 INSERT INTO `arrearages_record` VALUES (27, 331, 85, '2019-06-15 11:11:40', 0, 55.00, 0.10, 55, 0, 1, '2019-06-15 11:11:40', 215, NULL, NULL, 0);
 INSERT INTO `arrearages_record` VALUES (28, 332, 85, '2019-06-15 11:12:20', 0, 550.00, 1.00, 549, 0, 1, '2019-06-15 11:12:20', 215, NULL, NULL, 0);
@@ -291,6 +326,14 @@ INSERT INTO `arrearages_record` VALUES (44, 352, 85, '2019-06-15 13:31:33', 0, 5
 INSERT INTO `arrearages_record` VALUES (45, 367, 113, '2019-06-17 11:04:00', 0, 450.00, 50.00, 400, 392, 1, '2019-06-17 11:04:00', 219, '2019-06-17 15:19:39', 219, 0);
 INSERT INTO `arrearages_record` VALUES (46, 370, 113, '2019-06-17 11:52:19', 0, 225.00, 40.00, 185, 185, 0, '2019-06-17 11:52:19', 219, '2019-06-17 14:30:22', 219, 0);
 INSERT INTO `arrearages_record` VALUES (47, 374, 113, '2019-06-17 14:26:29', 0, 225.00, 0.00, 225, 225, 0, '2019-06-17 14:26:29', 219, '2019-06-17 14:34:15', 219, 0);
+INSERT INTO `arrearages_record` VALUES (48, 375, 113, '2019-06-18 10:55:14', 0, 840.00, 400.00, 440, 0, 1, '2019-06-18 10:55:14', 216, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (49, 376, 113, '2019-06-18 17:05:19', 0, 20.00, 0.00, 20, 0, 1, '2019-06-18 17:05:19', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (50, 382, 95, '2019-06-19 10:21:24', 0, 30.00, 10.00, 20, 0, 1, '2019-06-19 10:21:24', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (51, 383, 95, '2019-06-19 10:25:12', 0, 30.00, 10.00, 20, 0, 1, '2019-06-19 10:25:12', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (52, 384, 95, '2019-06-19 10:29:33', 0, 700.00, 200.00, 500, 0, 1, '2019-06-19 10:29:33', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (53, 385, 95, '2019-06-19 10:33:26', 0, 35.00, 15.00, 20, 0, 1, '2019-06-19 10:33:26', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (54, 386, 95, '2019-06-19 11:50:25', 0, 20.00, 10.00, 10, 0, 1, '2019-06-19 11:50:25', 219, NULL, NULL, 0);
+INSERT INTO `arrearages_record` VALUES (55, 387, 95, '2019-06-19 11:53:53', 0, 20.00, 0.00, 20, 0, 1, '2019-06-19 11:53:53', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for attendance_sheet
@@ -405,7 +448,7 @@ CREATE TABLE `business_stuff`  (
   INDEX `idx_business_stuff_01`(`stuff_id`) USING BTREE,
   INDEX `idx_business_stuff_02`(`ref_trans_id`) USING BTREE,
   INDEX `idx_business_stuff_03`(`trans_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 325 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关联员工' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 355 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关联员工' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of business_stuff
@@ -731,6 +774,36 @@ INSERT INTO `business_stuff` VALUES (321, 1, 1, 1226, '2019-06-17 12:00:38', 219
 INSERT INTO `business_stuff` VALUES (322, 372, 0, 1226, '2019-06-17 12:04:21', 219, NULL, NULL, 0);
 INSERT INTO `business_stuff` VALUES (323, 373, 0, 1225, '2019-06-17 14:19:34', 219, NULL, NULL, 0);
 INSERT INTO `business_stuff` VALUES (324, 374, 0, 1226, '2019-06-17 14:26:30', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (325, 21, 0, 1225, '2019-06-18 10:31:32', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (326, 21, 0, 1225, '2019-06-18 10:32:45', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (327, 22, 0, 1225, '2019-06-18 10:35:03', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (328, 22, 0, 1226, '2019-06-18 10:37:25', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (329, 1, 1, 5, '2019-06-18 10:38:17', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (330, 23, 0, 1226, '2019-06-18 10:39:04', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (331, 1, 1, 1226, '2019-06-18 10:46:31', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (332, 1, 1, 1226, '2019-06-18 10:49:29', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (333, 375, 0, 1226, '2019-06-18 10:55:14', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (334, 23, 0, 1225, '2019-06-18 11:00:14', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (335, 1, 1, 1128, '2019-06-18 14:55:47', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (336, 1, 1, 1225, '2019-06-18 15:06:32', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (337, 1, 1, 1225, '2019-06-18 15:06:35', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (338, 1, 1, 1225, '2019-06-18 15:06:35', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (339, 1, 1, 1225, '2019-06-18 15:06:35', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (340, 1, 1, 1225, '2019-06-18 15:07:05', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (341, 376, 0, 1226, '2019-06-18 17:05:19', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (342, 377, 0, 1233, '2019-06-18 19:20:41', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (343, 378, 0, 6, '2019-06-18 19:21:29', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (344, 379, 0, 9, '2019-06-18 19:24:45', 1, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (345, 380, 0, 1226, '2019-06-19 09:11:15', 216, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (346, 1, 1, 1128, '2019-06-19 09:21:36', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (347, 1, 1, 1128, '2019-06-19 09:21:59', 85, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (348, 381, 0, 1226, '2019-06-19 10:13:11', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (349, 382, 0, 1226, '2019-06-19 10:21:24', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (350, 383, 0, 1225, '2019-06-19 10:25:12', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (351, 384, 0, 1225, '2019-06-19 10:29:33', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (352, 385, 0, 1226, '2019-06-19 10:33:26', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (353, 386, 0, 1225, '2019-06-19 11:50:25', 219, NULL, NULL, 0);
+INSERT INTO `business_stuff` VALUES (354, 387, 0, 1225, '2019-06-19 11:53:53', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for card_balance
@@ -755,7 +828,7 @@ CREATE TABLE `card_balance`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_card_balance_01`(`member_id`) USING BTREE,
   INDEX `idx_card_balance_02`(`card_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '卡户余额' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '卡户余额' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of card_balance
@@ -813,8 +886,8 @@ INSERT INTO `card_balance` VALUES (67, 80, 9, 0, 10.00, 10, 0, NULL, 0, '', '201
 INSERT INTO `card_balance` VALUES (68, 26, 52, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (69, 26, 53, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (70, 26, 55, 1, 14.00, 25, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-10 11:46:33', 85, 0);
-INSERT INTO `card_balance` VALUES (71, 26, 56, 1, 22.00, 23, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-15 12:12:31', 85, 0);
-INSERT INTO `card_balance` VALUES (72, 26, 63, 1, 4.00, 8, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-15 10:02:03', 85, 0);
+INSERT INTO `card_balance` VALUES (71, 26, 56, 1, 16.00, 23, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-19 09:21:59', 85, 0);
+INSERT INTO `card_balance` VALUES (72, 26, 63, 1, -2.00, 8, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-19 09:11:15', 85, 0);
 INSERT INTO `card_balance` VALUES (73, 26, 64, 1, 10.00, 11, 0, NULL, 0, NULL, '2019-06-03 15:33:50', 85, '2019-06-14 17:24:05', 106, 0);
 INSERT INTO `card_balance` VALUES (74, 26, 71, 3, 7.00, 7, 0, NULL, 0, NULL, '2019-06-04 16:48:49', 85, '2019-06-05 10:03:18', 85, 0);
 INSERT INTO `card_balance` VALUES (75, 26, 68, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-04 17:26:35', 85, NULL, NULL, 0);
@@ -826,29 +899,34 @@ INSERT INTO `card_balance` VALUES (80, 26, 46, 3, 5.00, 5, 0, NULL, 0, NULL, '20
 INSERT INTO `card_balance` VALUES (81, 26, 70, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-05 19:46:40', 85, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (82, 26, 72, 3, 6.00, 6, 0, NULL, 0, NULL, '2019-06-10 11:39:44', 85, '2019-06-10 11:46:33', 85, 0);
 INSERT INTO `card_balance` VALUES (83, 91, 89, 0, 10.00, 10, 0, NULL, 0, '', '2019-06-11 09:44:30', 216, '2019-06-12 09:42:28', 216, 0);
-INSERT INTO `card_balance` VALUES (84, 95, 89, 0, 10.00, 10, 0, NULL, 0, '不知道', '2019-06-12 09:06:18', 216, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (84, 95, 89, 0, 0.00, 10, 0, NULL, 0, '不知道', '2019-06-12 09:06:18', 216, '2019-06-19 11:53:53', 219, 0);
 INSERT INTO `card_balance` VALUES (85, 95, 69, 1, 2.00, 2, 0, NULL, 0, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
-INSERT INTO `card_balance` VALUES (86, 95, 71, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-12 09:06:18', 216, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (86, 95, 71, 1, 15.00, 15, 0, NULL, 0, NULL, '2019-06-12 09:06:18', 216, '2019-06-19 10:25:12', 219, 0);
 INSERT INTO `card_balance` VALUES (87, 91, 96, 0, 10.00, 10, 0, NULL, 0, '', '2019-06-12 16:36:03', 216, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (90, 85, 13, 0, -342.00, 10, 0, NULL, 0, '', '2019-06-12 18:56:21', 215, '2019-06-15 13:22:42', 215, 0);
 INSERT INTO `card_balance` VALUES (91, 85, 12, 1, 3.00, 14, 0, NULL, 0, NULL, '2019-06-12 18:56:21', 215, '2019-06-15 14:07:31', 215, 0);
 INSERT INTO `card_balance` VALUES (98, 85, 4, 0, 64.00, 108, 0, NULL, 0, '', '2019-06-14 18:33:01', 215, '2019-06-15 13:31:33', 215, 0);
 INSERT INTO `card_balance` VALUES (99, 85, 61, 1, 4.00, 4, 0, NULL, 0, NULL, '2019-06-15 11:02:24', 215, '2019-06-15 11:08:28', 215, 0);
-INSERT INTO `card_balance` VALUES (100, 85, 62, 1, 17.00, 23, 0, NULL, 0, NULL, '2019-06-15 11:11:40', 215, '2019-06-15 13:53:03', 215, 0);
-INSERT INTO `card_balance` VALUES (101, 113, 75, 1, 397.00, 400, 0, NULL, 0, NULL, '2019-06-15 11:26:48', 219, '2019-06-17 12:00:38', 219, 0);
+INSERT INTO `card_balance` VALUES (100, 85, 62, 1, 14.00, 23, 0, NULL, 0, NULL, '2019-06-15 11:11:40', 215, '2019-06-18 10:38:17', 1, 0);
+INSERT INTO `card_balance` VALUES (101, 113, 75, 1, 395.00, 400, 0, NULL, 0, NULL, '2019-06-15 11:26:48', 219, '2019-06-18 15:07:05', 216, 0);
 INSERT INTO `card_balance` VALUES (102, 113, 77, 3, 2.00, 2, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-15 13:22:38', 219, 0);
 INSERT INTO `card_balance` VALUES (103, 113, 69, 1, 10.00, 10, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
 INSERT INTO `card_balance` VALUES (104, 113, 71, 1, 21.00, 21, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
-INSERT INTO `card_balance` VALUES (105, 113, 73, 1, 60.00, 60, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
-INSERT INTO `card_balance` VALUES (106, 113, 74, 1, 60.00, 60, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-17 11:53:13', 219, 0);
+INSERT INTO `card_balance` VALUES (105, 113, 73, 1, 120.00, 120, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-18 17:05:18', 219, 0);
+INSERT INTO `card_balance` VALUES (106, 113, 74, 1, -2.00, 60, 0, NULL, 0, NULL, '2019-06-15 13:21:31', 219, '2019-06-18 15:06:35', 216, 0);
 INSERT INTO `card_balance` VALUES (107, 97, 89, 0, 5.00, 5, 0, NULL, 0, '', '2019-06-17 10:39:29', 219, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (108, 97, 96, 0, 50.00, 50, 0, NULL, 0, '备注备注备足', '2019-06-17 10:40:38', 219, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (109, 97, 73, 1, 1.00, 1, 0, NULL, 0, NULL, '2019-06-17 10:40:38', 219, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (110, 68, 88, 0, 1.00, 1, 0, NULL, 0, '', '2019-06-17 10:48:31', 215, NULL, NULL, 0);
 INSERT INTO `card_balance` VALUES (111, 68, 12, 1, 2.00, 2, 0, NULL, 0, NULL, '2019-06-17 10:48:31', 215, '2019-06-17 10:49:04', 215, 0);
 INSERT INTO `card_balance` VALUES (112, 68, 12, 0, 80.00, 80, 0, NULL, 0, '', '2019-06-17 10:49:04', 215, NULL, NULL, 0);
-INSERT INTO `card_balance` VALUES (113, 113, 96, 0, 0.00, 50, 0, NULL, 0, '备注备注备注', '2019-06-17 11:45:16', 219, '2019-06-17 14:26:29', 219, 0);
+INSERT INTO `card_balance` VALUES (113, 113, 96, 0, 0.00, 50, 0, NULL, 0, '备注备注备注', '2019-06-17 11:45:16', 219, '2019-06-18 17:05:18', 219, 0);
 INSERT INTO `card_balance` VALUES (114, 113, 76, 3, 1.00, 1, 0, NULL, 0, NULL, '2019-06-17 11:53:13', 219, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (115, 24, 0, 0, 8.00, 8, 0, NULL, 0, '', '2019-06-18 19:24:45', 1, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (116, 95, 75, 1, 39.00, 50, 0, NULL, 0, NULL, '2019-06-19 10:13:11', 219, '2019-06-19 10:43:40', 1, 0);
+INSERT INTO `card_balance` VALUES (117, 95, 76, 1, 21.00, 21, 0, NULL, 0, NULL, '2019-06-19 10:29:33', 219, '2019-06-19 10:33:26', 219, 0);
+INSERT INTO `card_balance` VALUES (118, 95, 74, 1, 20.00, 20, 0, NULL, 0, NULL, '2019-06-19 11:50:25', 219, NULL, NULL, 0);
+INSERT INTO `card_balance` VALUES (119, 95, 73, 1, 30.00, 30, 0, NULL, 0, NULL, '2019-06-19 11:53:53', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for card_purchase
@@ -876,7 +954,7 @@ CREATE TABLE `card_purchase`  (
   INDEX `idx_card_purchase_01`(`member_id`) USING BTREE,
   INDEX `idx_card_purchase_02`(`card_id`) USING BTREE,
   INDEX `idx_card_purchase_03`(`card_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 375 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购卡记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 388 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购卡记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of card_purchase
@@ -1211,6 +1289,19 @@ INSERT INTO `card_purchase` VALUES (371, 113, 76, 3, NULL, 350.00, 0.00, 350.00,
 INSERT INTO `card_purchase` VALUES (372, 96, 0, 0, NULL, 30.00, NULL, 30.00, 0, '', '1932', 3, '2019-06-17 12:04:21', 219, NULL, NULL, 0);
 INSERT INTO `card_purchase` VALUES (373, 113, 0, 0, NULL, 2.00, NULL, 2.00, 0, '', '1933', 3, '2019-06-17 14:19:34', 219, NULL, NULL, 0);
 INSERT INTO `card_purchase` VALUES (374, 113, 55, 5, NULL, 225.00, 225.00, 0.00, 11, NULL, '1934', 1, '2019-06-17 14:26:29', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (375, 113, 58, 5, NULL, 840.00, 440.00, 400.00, 10, NULL, '1985', 1, '2019-06-18 10:55:14', 216, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (376, 113, 73, 1, NULL, 20.00, 20.00, 0.00, 11, NULL, '2007', 0, '2019-06-18 17:05:18', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (377, 119, 0, 0, NULL, 80.00, NULL, 80.00, 0, '', '2010', 3, '2019-06-18 19:20:41', 1, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (378, 72, 0, 0, NULL, 80.00, NULL, 80.00, 0, '', '2011', 3, '2019-06-18 19:21:29', 1, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (379, 24, 0, 0, NULL, 8.00, NULL, 8.00, 0, '', '2012', 1, '2019-06-18 19:24:45', 1, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (380, 95, 0, 0, NULL, 10.00, NULL, 10.00, 0, '', '2014', 3, '2019-06-19 09:11:15', 216, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (381, 95, 75, 1, NULL, 5.00, 0.00, 5.00, 3, NULL, '2017', 1, '2019-06-19 10:13:11', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (382, 95, 71, 1, NULL, 30.00, 20.00, 10.00, 3, NULL, '2018', 0, '2019-06-19 10:21:23', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (383, 95, 71, 1, NULL, 30.00, 20.00, 10.00, 3, NULL, '2019', 0, '2019-06-19 10:25:12', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (384, 95, 76, 1, NULL, 700.00, 500.00, 200.00, 3, NULL, '2020', 1, '2019-06-19 10:29:33', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (385, 95, 76, 1, NULL, 35.00, 20.00, 15.00, 3, NULL, '2021', 0, '2019-06-19 10:33:26', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (386, 95, 74, 1, NULL, 20.00, 10.00, 10.00, 11, NULL, '2027', 1, '2019-06-19 11:50:25', 219, NULL, NULL, 0);
+INSERT INTO `card_purchase` VALUES (387, 95, 73, 1, NULL, 20.00, 20.00, 0.00, 11, NULL, '2028', 1, '2019-06-19 11:53:53', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for city
@@ -4940,7 +5031,7 @@ CREATE TABLE `member`  (
   INDEX `idx_member_04`(`tel`) USING BTREE,
   INDEX `idx_member_05`(`primary_beautician`) USING BTREE,
   INDEX `idx_member_06`(`introducer`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 119 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 121 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member
@@ -5012,6 +5103,8 @@ INSERT INTO `member` VALUES (115, 119, '莱莱', '13513513357', 1, '12346526', '
 INSERT INTO `member` VALUES (116, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:25:22', 216, NULL, NULL, 0);
 INSERT INTO `member` VALUES (117, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:29:11', 216, NULL, NULL, 0);
 INSERT INTO `member` VALUES (118, 119, '莱莱', '13513513357', 1, '12346526', '2019-06-17 00:00:00', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '这里是备注备注备注备注', NULL, NULL, NULL, NULL, NULL, NULL, 1225, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:30:06', 216, NULL, NULL, 0);
+INSERT INTO `member` VALUES (119, 2, '测试一下', '13827279182', 1, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 81, '2019-06-18 16:37:52', 1, NULL, NULL, 0);
+INSERT INTO `member` VALUES (120, 36, '测试一下', '13827279183', 1, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-18 16:42:17', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_gift
@@ -5259,7 +5352,7 @@ CREATE TABLE `member_product_get_record`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_get_record`(`create_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存领取表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存领取表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_get_record
@@ -5284,6 +5377,9 @@ INSERT INTO `member_product_get_record` VALUES (17, 27, 1.00, '规划局', 981, 
 INSERT INTO `member_product_get_record` VALUES (18, 28, 1.00, '', 991, '2019-05-15 17:53:34', 1, NULL, NULL, 0);
 INSERT INTO `member_product_get_record` VALUES (19, 29, 1.00, '', 1008, '2019-05-17 12:30:35', 1, NULL, NULL, 0);
 INSERT INTO `member_product_get_record` VALUES (20, 35, 1.00, '备注备注备注', 1874, '2019-06-15 13:33:32', 219, NULL, NULL, 0);
+INSERT INTO `member_product_get_record` VALUES (21, 36, 1.00, '备注备注备注备注', 1974, '2019-06-18 10:31:32', 216, NULL, NULL, 0);
+INSERT INTO `member_product_get_record` VALUES (22, 37, 1.00, '这里是备注是备注是备注', 1980, '2019-06-18 10:37:24', 216, NULL, NULL, 0);
+INSERT INTO `member_product_get_record` VALUES (23, 39, 1.00, '这里是备注备注备注', 1986, '2019-06-18 11:00:14', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_product_keep
@@ -5301,7 +5397,7 @@ CREATE TABLE `member_product_keep`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_keep`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_keep
@@ -5326,10 +5422,8 @@ INSERT INTO `member_product_keep` VALUES (32, 26, NULL, 1575, '2019-06-04 17:34:
 INSERT INTO `member_product_keep` VALUES (33, 26, NULL, 1578, '2019-06-04 19:31:23', 85, NULL, NULL, 0);
 INSERT INTO `member_product_keep` VALUES (34, 26, NULL, 1582, '2019-06-05 09:18:23', 85, NULL, NULL, 0);
 INSERT INTO `member_product_keep` VALUES (35, 26, NULL, 1640, '2019-06-05 19:43:34', 85, NULL, NULL, 0);
-INSERT INTO `member_product_keep` VALUES (36, 113, NULL, 1833, '2019-06-15 10:53:17', 219, NULL, NULL, 0);
-INSERT INTO `member_product_keep` VALUES (37, 113, NULL, 1893, '2019-06-17 11:04:00', 219, NULL, NULL, 0);
-INSERT INTO `member_product_keep` VALUES (38, 113, NULL, 1930, '2019-06-17 11:52:19', 219, NULL, NULL, 0);
 INSERT INTO `member_product_keep` VALUES (39, 113, NULL, 1934, '2019-06-17 14:26:29', 219, NULL, NULL, 0);
+INSERT INTO `member_product_keep` VALUES (40, 113, NULL, 1985, '2019-06-18 10:55:14', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_product_keep_item
@@ -5352,7 +5446,7 @@ CREATE TABLE `member_product_keep_item`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_keep_item_01`(`member_product_keep_id`) USING BTREE,
   INDEX `idx_member_product_keep_item_02`(`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品寄存明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_keep_item
@@ -5377,10 +5471,8 @@ INSERT INTO `member_product_keep_item` VALUES (31, 32, 31, 25.00, 1.00, 25.00, 0
 INSERT INTO `member_product_keep_item` VALUES (32, 33, 31, 25.00, 1.00, 25.00, 0.00, '2019-06-04 19:31:23', 85, NULL, NULL, 0, 0);
 INSERT INTO `member_product_keep_item` VALUES (33, 34, 17, 520.00, 1.00, 520.00, 0.00, '2019-06-05 09:18:23', 85, NULL, NULL, 0, 0);
 INSERT INTO `member_product_keep_item` VALUES (34, 35, 17, 520.00, 1.00, 520.00, 0.00, '2019-06-05 19:43:34', 85, NULL, NULL, 0, 0);
-INSERT INTO `member_product_keep_item` VALUES (35, 36, 58, 280.00, 1.00, 280.00, 1.00, '2019-06-15 10:53:17', 219, '2019-06-15 13:33:32', 219, 0, 0);
-INSERT INTO `member_product_keep_item` VALUES (36, 37, 55, 50.00, 1.00, 50.00, 0.00, '2019-06-17 11:04:00', 219, NULL, NULL, 0, 0);
-INSERT INTO `member_product_keep_item` VALUES (37, 38, 55, 40.00, 1.00, 40.00, 0.00, '2019-06-17 11:52:19', 219, NULL, NULL, 0, 0);
 INSERT INTO `member_product_keep_item` VALUES (38, 39, 55, 0.00, 1.00, 0.00, 0.00, '2019-06-17 14:26:29', 219, NULL, NULL, 0, 0);
+INSERT INTO `member_product_keep_item` VALUES (39, 40, 58, 400.00, 3.00, 133.33, 1.00, '2019-06-18 10:55:14', 216, '2019-06-18 11:00:14', 216, 0, 0);
 
 -- ----------------------------
 -- Table structure for member_product_reject
@@ -5398,7 +5490,7 @@ CREATE TABLE `member_product_reject`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_reject`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品退款' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品退款' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_reject
@@ -5423,6 +5515,9 @@ INSERT INTO `member_product_reject` VALUES (17, 74, '', '976', '2019-05-15 16:21
 INSERT INTO `member_product_reject` VALUES (18, 80, '规划好', '975', '2019-05-15 16:21:13', 1, NULL, NULL, 0);
 INSERT INTO `member_product_reject` VALUES (19, 80, '规划局', '979', '2019-05-15 16:26:34', 1, NULL, NULL, 0);
 INSERT INTO `member_product_reject` VALUES (20, 80, '高呼', '982', '2019-05-15 16:30:32', 1, NULL, NULL, 0);
+INSERT INTO `member_product_reject` VALUES (21, 113, '这里是备注备注备注备注', '1975', '2019-06-18 10:32:45', 216, NULL, NULL, 0);
+INSERT INTO `member_product_reject` VALUES (22, 113, '备注备注备注备注', '1978', '2019-06-18 10:35:03', 216, NULL, NULL, 0);
+INSERT INTO `member_product_reject` VALUES (23, 113, '备注备注备注', '1983', '2019-06-18 10:39:04', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_product_reject_item
@@ -5444,7 +5539,7 @@ CREATE TABLE `member_product_reject_item`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_product_reject_item_01`(`member_product_reject_id`) USING BTREE,
   INDEX `idx_member_product_reject_item_02`(`product_keep_item_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品退款明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品退款明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_product_reject_item
@@ -5465,6 +5560,9 @@ INSERT INTO `member_product_reject_item` VALUES (13, 17, 22, 0, 1.00, 25.00, 1, 
 INSERT INTO `member_product_reject_item` VALUES (14, 18, 25, 0, 1.00, 18.00, 1, '2019-05-15 16:21:13', 1, NULL, NULL, 0);
 INSERT INTO `member_product_reject_item` VALUES (15, 19, 26, 1, 1.00, 39.00, 1, '2019-05-15 16:26:34', 1, NULL, NULL, 0);
 INSERT INTO `member_product_reject_item` VALUES (16, 20, 27, 0, 1.00, 20.00, 1, '2019-05-15 16:30:32', 1, NULL, NULL, 0);
+INSERT INTO `member_product_reject_item` VALUES (17, 21, 35, 0, 1.00, 300.00, 1, '2019-06-18 10:32:45', 216, NULL, NULL, 0);
+INSERT INTO `member_product_reject_item` VALUES (18, 22, 36, 1, 1.00, 500.00, 1, '2019-06-18 10:35:03', 216, NULL, NULL, 0);
+INSERT INTO `member_product_reject_item` VALUES (19, 23, 37, 0, 1.00, 800.00, 0, '2019-06-18 10:39:04', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for member_salon_tag
@@ -5651,7 +5749,7 @@ CREATE TABLE `member_wallet`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_member_wallet_01`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员钱包表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员钱包表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_wallet
@@ -5677,9 +5775,9 @@ INSERT INTO `member_wallet` VALUES (18, 20, 0.00, 0.00, 108.00, 0.00, 0.00, 0.00
 INSERT INTO `member_wallet` VALUES (19, 21, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (20, 22, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (21, 23, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (22, 24, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (22, 24, 0.00, 0.00, 8.00, 0.00, 0.00, 0.00, 8.00, '2019-05-10 18:22:18', 1, '2019-06-18 19:24:45', 1, 0);
 INSERT INTO `member_wallet` VALUES (23, 25, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (24, 26, 790.00, 0.00, 5586.00, 0.00, 1260.00, 4066.00, 2880.00, '2019-05-10 18:22:18', 1, '2019-06-15 12:12:32', 85, 0);
+INSERT INTO `member_wallet` VALUES (24, 26, 790.00, 0.00, 4386.00, 0.00, 1260.00, 4066.00, 2880.00, '2019-05-10 18:22:18', 1, '2019-06-19 09:21:59', 85, 0);
 INSERT INTO `member_wallet` VALUES (25, 27, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (26, 28, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (27, 29, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
@@ -5693,7 +5791,7 @@ INSERT INTO `member_wallet` VALUES (34, 68, 8.00, 0.00, 1155.00, 0.00, 0.00, 0.0
 INSERT INTO `member_wallet` VALUES (35, 69, 0.00, 1000.00, 468.00, 0.00, 0.00, 0.00, 98.00, '2019-05-10 18:22:18', 1, '2019-05-13 09:07:10', 1, 0);
 INSERT INTO `member_wallet` VALUES (36, 70, 0.00, 30.00, 263.00, 110.00, 0.00, 0.00, 263.00, '2019-05-10 18:22:18', 1, '2019-05-16 13:29:14', 115, 0);
 INSERT INTO `member_wallet` VALUES (37, 71, 200.00, 10.00, 1516.00, 10.00, -480.00, 0.00, 419.00, '2019-05-10 18:22:18', 1, '2019-05-17 16:31:47', 1, 0);
-INSERT INTO `member_wallet` VALUES (38, 72, 0.00, 0.00, 250.00, 66.00, 0.00, 0.00, 240.00, '2019-05-10 18:22:18', 1, '2019-05-13 11:27:19', 1, 0);
+INSERT INTO `member_wallet` VALUES (38, 72, 80.00, 0.00, 250.00, 66.00, 0.00, 0.00, 320.00, '2019-05-10 18:22:18', 1, '2019-06-18 19:21:29', 1, 0);
 INSERT INTO `member_wallet` VALUES (39, 73, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-10 18:22:18', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (40, 78, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-11 09:09:46', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (41, 75, 0.00, 0.00, 991.00, 0.00, 0.00, 0.00, 862.00, '2019-05-13 16:14:43', 1, '2019-05-14 18:43:53', 77, 0);
@@ -5701,7 +5799,7 @@ INSERT INTO `member_wallet` VALUES (42, 79, 0.00, 0.00, 556.00, 0.00, 0.00, 0.00
 INSERT INTO `member_wallet` VALUES (43, 80, 87.00, 0.00, 178.00, 0.00, 0.00, 0.00, 60.00, '2019-05-15 12:03:19', 1, '2019-06-17 10:47:28', 215, 0);
 INSERT INTO `member_wallet` VALUES (44, 81, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-15 13:07:00', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (47, 84, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-16 14:56:02', 1, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (48, 85, -18.00, 0.00, 1212.30, 0.00, 1448.70, 469.30, 1118.00, '2019-05-18 09:33:42', 1, '2019-06-15 14:07:31', 215, 0);
+INSERT INTO `member_wallet` VALUES (48, 85, -18.00, 0.00, 1047.30, 0.00, 1446.70, 469.30, 1118.00, '2019-05-18 09:33:42', 1, '2019-06-18 11:57:52', 215, 0);
 INSERT INTO `member_wallet` VALUES (49, 86, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-22 19:37:26', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (51, 88, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-24 19:09:09', 1, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (52, 89, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-05-25 08:51:09', 85, NULL, NULL, 0);
@@ -5711,14 +5809,16 @@ INSERT INTO `member_wallet` VALUES (55, 91, 0.00, 0.00, 23.00, 0.00, 0.00, 0.00,
 INSERT INTO `member_wallet` VALUES (56, 92, 20.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20.00, '2019-06-11 09:36:00', 216, '2019-06-17 10:52:38', 216, 0);
 INSERT INTO `member_wallet` VALUES (57, 93, 0.00, 0.00, 30.00, 0.00, 0.00, 0.00, 30.00, '2019-06-11 17:03:24', 216, '2019-06-12 17:32:20', 216, 0);
 INSERT INTO `member_wallet` VALUES (58, 94, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-11 17:11:14', 216, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (59, 95, 0.00, 0.00, 180.00, 0.00, 0.00, 0.00, 10.00, '2019-06-11 17:18:03', 216, '2019-06-12 09:06:18', 216, 0);
+INSERT INTO `member_wallet` VALUES (59, 95, 10.00, 0.00, 431.00, 0.00, 590.00, 250.00, 20.00, '2019-06-11 17:18:03', 216, '2019-06-19 11:53:53', 219, 0);
 INSERT INTO `member_wallet` VALUES (60, 96, 32.00, 1.00, 0.00, 0.00, 0.00, 0.00, 32.00, '2019-06-11 17:59:57', 216, '2019-06-17 12:04:21', 219, 0);
 INSERT INTO `member_wallet` VALUES (61, 97, 110.00, 0.00, 75.00, 0.00, 0.00, 0.00, 165.00, '2019-06-12 09:09:19', 216, '2019-06-17 10:40:38', 219, 0);
 INSERT INTO `member_wallet` VALUES (62, 98, 0.00, 0.00, 40.00, 0.00, 0.00, 0.00, 40.00, '2019-06-12 14:16:27', 216, '2019-06-12 17:36:19', 216, 0);
 INSERT INTO `member_wallet` VALUES (63, 99, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-12 14:18:44', 85, NULL, NULL, 0);
 INSERT INTO `member_wallet` VALUES (64, 112, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-13 10:19:22', 213, NULL, NULL, 0);
-INSERT INTO `member_wallet` VALUES (65, 113, -70.00, 408.00, 1987.00, 0.00, 6.00, 1424.00, 962.00, '2019-06-13 14:32:47', 216, '2019-06-17 15:49:48', 1, 0);
+INSERT INTO `member_wallet` VALUES (65, 113, 330.00, 408.00, 2450.00, 0.00, 466.00, 1824.00, 962.00, '2019-06-13 14:32:47', 216, '2019-06-18 17:05:19', 219, 0);
 INSERT INTO `member_wallet` VALUES (66, 114, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-14 14:25:43', 1, NULL, NULL, 0);
+INSERT INTO `member_wallet` VALUES (67, 119, 80.00, 0.00, 0.00, 0.00, 0.00, 0.00, 80.00, '2019-06-18 16:37:52', 1, '2019-06-18 19:20:41', 1, 0);
+INSERT INTO `member_wallet` VALUES (68, 120, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2019-06-18 16:42:17', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for notice
@@ -5737,7 +5837,7 @@ CREATE TABLE `notice`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_notice_01`(`salon_id`) USING BTREE,
   INDEX `idx_notice_02`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -5827,6 +5927,7 @@ INSERT INTO `notice` VALUES (83, 36, '测试', '测试哦', '2019-06-13 19:42:13
 INSERT INTO `notice` VALUES (84, 36, '测试', '测试哦', '2019-06-13 19:42:42', 85, 0, NULL, NULL);
 INSERT INTO `notice` VALUES (85, 2, '123', 'Rrr', '2019-06-17 17:59:44', 1, 0, NULL, NULL);
 INSERT INTO `notice` VALUES (86, 2, '123', 'Rrra', '2019-06-17 18:01:43', 1, 0, NULL, NULL);
+INSERT INTO `notice` VALUES (87, 36, '但是发上的发', '撒旦发生打发打发电风扇', '2019-06-18 10:25:55', 85, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for nurse
@@ -7031,7 +7132,7 @@ CREATE TABLE `payment`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_payment_01`(`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of payment
@@ -7079,6 +7180,31 @@ INSERT INTO `payment` VALUES (40, 85, 0, '', NULL, '2019-06-15 13:55:05', 215, N
 INSERT INTO `payment` VALUES (41, 85, 0, '', NULL, '2019-06-15 13:56:55', 215, NULL, NULL, 0);
 INSERT INTO `payment` VALUES (42, 85, 0, '', NULL, '2019-06-15 14:07:31', 215, NULL, NULL, 0);
 INSERT INTO `payment` VALUES (43, 113, 0, '备注备注', NULL, '2019-06-17 12:00:38', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (44, 85, 0, '', NULL, '2019-06-18 10:38:17', 1, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (45, 113, 0, '这里是备注备注备注备注', NULL, '2019-06-18 10:46:31', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (46, 113, 0, '', NULL, '2019-06-18 10:49:29', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (47, 26, 0, '上的发生打发范德萨', NULL, '2019-06-18 14:53:56', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (48, 113, 0, '', NULL, '2019-06-18 15:04:34', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (49, 113, 0, '', NULL, '2019-06-18 15:06:32', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (50, 113, 0, '', NULL, '2019-06-18 15:06:32', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (51, 113, 0, '', NULL, '2019-06-18 15:06:32', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (52, 113, 0, '这里是备注是备注是备注', NULL, '2019-06-18 15:07:03', 216, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (53, 26, 0, '', NULL, '2019-06-19 09:07:02', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (54, 26, 0, '', NULL, '2019-06-19 09:09:11', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (55, 26, 0, '', NULL, '2019-06-19 09:11:14', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (56, 26, 0, 'dsfadfs ', NULL, '2019-06-19 09:21:36', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (57, 26, 0, '', NULL, '2019-06-19 09:21:59', 85, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (58, 95, 0, '备注备注备注', NULL, '2019-06-19 10:34:45', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (59, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:37:59', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (60, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:38:01', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (61, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:38:02', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (62, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:38:03', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (63, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:40:20', 219, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (64, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:41:08', 1, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (65, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:43:00', 1, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (66, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:43:12', 1, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (67, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:43:34', 1, NULL, NULL, 0);
+INSERT INTO `payment` VALUES (68, 95, 0, '备注备注备注备注', NULL, '2019-06-19 10:43:40', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for payment_item
@@ -7104,12 +7230,14 @@ CREATE TABLE `payment_item`  (
   INDEX `idx_payment_item_02`(`card_balance_id`) USING BTREE,
   INDEX `idx_payment_item_03`(`merchandise_id`) USING BTREE,
   INDEX `idx_payment_item_04`(`merchandise_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付明细' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '划卡支付明细' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of payment_item
 -- ----------------------------
 INSERT INTO `payment_item` VALUES (1, 1, 1, 1, 0, 0, 2.00, 30.00, 60.00, '2019-04-26 16:31:37', 1, '2019-04-26 16:31:40', 1, 1);
+INSERT INTO `payment_item` VALUES (2, 56, 71, 56, 0, 0, 2.00, 180.00, 360.00, '2019-06-19 09:21:36', 85, NULL, NULL, 0);
+INSERT INTO `payment_item` VALUES (3, 57, 71, 56, 0, 0, 2.00, 180.00, 360.00, '2019-06-19 09:21:59', 85, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for pictures
@@ -7130,7 +7258,7 @@ CREATE TABLE `pictures`  (
   INDEX `idx_pictures_01`(`master_data_id`) USING BTREE,
   INDEX `idx_pictures_02`(`record_type`) USING BTREE,
   INDEX `idx_pictures_03`(`pic_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1955 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统照片' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2029 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统照片' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pictures
@@ -7583,7 +7711,7 @@ INSERT INTO `pictures` VALUES (560, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenz
 INSERT INTO `pictures` VALUES (561, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/cd8e5ae2-c0f2-47d0-ac04-380232152b15.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=o1yEkaFFZBDvD4LZmqI6%2BmTWCJo%3D', '2019-04-11 14:21:44', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (562, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/d0b8ec3e-ab05-45b4-b0fa-012cdf0c90b3.jpg?Expires=1560395122&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=IDQ%2FbND427luPqI%2Fv6YmEybeulQ%3D', '2019-04-11 14:21:49', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (563, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/e603de19-bb63-431f-8b91-2ebe8ad5128a.jpg?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=MjU3wb%2BscYZHhR4sy5Ez709Yuik%3D', '2019-04-11 14:39:13', 1, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (568, 1112, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190615/458d92f2-e84e-4517-abac-b629c62ac30c.png?Expires=3031795063&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BYq7wu0Dhj%2B%2BJM4O5Q4afx0NCpE%3D', '2019-04-11 14:56:40', 85, '2019-06-15 10:35:01', 85, 0);
+INSERT INTO `pictures` VALUES (568, 1112, 1, 0, 'https://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/352b757e-5607-472f-a852-a769196c3b31.jpg?Expires=3032139940&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=3XgE7oXf7R1Nl05r2cwBAt6O/3o%3D', '2019-04-11 14:56:40', 85, '2019-06-19 10:23:00', 85, 0);
 INSERT INTO `pictures` VALUES (569, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/e9d4690c-a024-4a21-b7c4-53ae7e4c0a5b.jpg?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=91L%2FvxzH0V7Uw3eSeg7CnHM8%2FEw%3D', '2019-04-11 14:57:17', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (570, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190411/fc752719-b50d-46a1-a8c7-32832db8e737.png?Expires=1560395123&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=k1bzojgn8nP2Pwta%2FZLDsy4vEfY%3D', '2019-04-11 14:57:23', 1, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (571, NULL, 0, 1, '/pic/20190411/857d76e8-984b-43de-b214-890986aa4acc.jpg', '2019-04-11 14:57:32', 1, NULL, NULL, 0);
@@ -8196,8 +8324,6 @@ INSERT INTO `pictures` VALUES (1220, NULL, 0, 0, '/pic/20190520/51b434b2-dbd4-42
 INSERT INTO `pictures` VALUES (1224, 96, 0, 0, '/pic/20190520/6ecc7863-a17d-47e5-817e-2677684c5587.jpg', '2019-05-20 18:40:55', 63, '2019-05-20 18:40:56', 63, 0);
 INSERT INTO `pictures` VALUES (1225, 96, 0, 0, '/pic/20190520/6ecc7863-a17d-47e5-817e-2677684c5587.jpg', '2019-05-20 18:40:55', 63, '2019-05-20 18:40:55', 63, 0);
 INSERT INTO `pictures` VALUES (1226, 96, 0, 0, '/pic/20190520/6ecc7863-a17d-47e5-817e-2677684c5587.jpg', '2019-05-20 18:40:55', 63, '2019-05-20 18:40:56', 63, 0);
-INSERT INTO `pictures` VALUES (1227, 97, 0, 0, '/pic/20190520/b7b4e808-ebb1-4484-85f9-56578cd43187.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
-INSERT INTO `pictures` VALUES (1228, 97, 0, 0, '/pic/20190520/b7b4e808-ebb1-4484-85f9-56578cd43187.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
 INSERT INTO `pictures` VALUES (1229, 1, 0, 0, '/pic/20190513/230509f4-aea7-476f-90c0-ee1c4d1fa766.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
 INSERT INTO `pictures` VALUES (1230, 1, 0, 0, '/pic/20190515/d1f91155-75a7-400a-9379-ae8891e380e0.jpg', '2019-05-20 18:48:11', 63, '2019-05-20 18:48:11', 63, 0);
 INSERT INTO `pictures` VALUES (1231, NULL, 0, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190521/d9c95286-5e0c-4214-8d8b-bedc95e82212.jpg?Expires=1560395643&OSSAccessKeyId=TMP.AgHiqhu4x_tvG1OovvmsJAI2XdRN5Qxe00jCrSRC7cOJNHtHdYeJrxGTs6isADAtAhQ5gA_i9V-B5kvG5rN1OX-M77WC2wIVAN7H9G-DupzrEu7VIfPXwc5fVNLD&Signature=Sy9Cwe3hbg3Oq2TZn9VeA9FEqlI%3D', '2019-05-21 14:03:04', 63, NULL, NULL, 0);
@@ -8698,7 +8824,6 @@ INSERT INTO `pictures` VALUES (1752, NULL, 9, 0, '/pic/20190613/d389092e-fe79-41
 INSERT INTO `pictures` VALUES (1753, NULL, 4, 0, '/pic/20190613/1f27df84-1da4-47c1-b317-e3d4061d51f7.jpg', '2019-06-13 10:33:35', 216, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1754, NULL, 4, 0, '/pic/20190613/7a809001-21fb-4391-9c76-9b86652d37da.jpg', '2019-06-13 10:33:54', 216, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1755, NULL, 4, 0, '/pic/20190613/fa41117a-d5a3-444d-a10c-0f63e158804a.jpg', '2019-06-13 10:34:13', 216, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1756, 97, 4, 0, '/pic/20190613/27a59efe-0f8a-4aa9-a769-3e3fe80c7340.jpg', '2019-06-13 10:35:40', 216, '2019-06-13 10:35:45', 216, 0);
 INSERT INTO `pictures` VALUES (1757, NULL, 10, 0, '/pic/20190613/1dc2321e-5bb9-42b6-8a91-4a1f47b3be73.jpg', '2019-06-13 10:41:14', 106, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1758, NULL, 10, 0, '/pic/20190613/1b33aa51-a056-4610-a222-c1bd8b34e6b0.jpg', '2019-06-13 10:44:28', 106, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1759, NULL, 10, 0, '/pic/20190613/fcce1aee-ef96-4c20-9b72-ffe5eb6090b3.jpg', '2019-06-13 10:49:37', 106, NULL, NULL, 0);
@@ -8711,7 +8836,7 @@ INSERT INTO `pictures` VALUES (1765, NULL, 9, 0, '/pic/20190613/a03658c1-051d-45
 INSERT INTO `pictures` VALUES (1766, NULL, 9, 0, '/pic/20190613/a5be00ae-45af-43ea-b68c-ab4f7a394872.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1767, NULL, 9, 0, '/pic/20190613/772c89d6-9f12-4029-827b-04d4e6edbf89.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
 INSERT INTO `pictures` VALUES (1768, NULL, 9, 0, '/pic/20190613/00340ada-3a22-453d-b294-eba716bf5773.jpg', '2019-06-13 16:40:33', 106, NULL, NULL, 0);
-INSERT INTO `pictures` VALUES (1769, 1225, 1, 0, '/pic/20190613/1834e7d6-e86c-4b37-b307-bbce6b06ec2c.jpeg', '2019-06-13 17:26:44', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1769, 1225, 1, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/c084b3c3-5057-4b5f-a425-1778297361f7.jpg?Expires=3032069008&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=dI98s5rmzTqBJQy/EPc7ojugxlo%3D', '2019-06-13 17:26:44', 216, '2019-06-18 14:40:47', 216, 0);
 INSERT INTO `pictures` VALUES (1770, 57, 5, 0, '/pic/20190613/e4af71b6-f3b4-443b-9faf-68ba12e32f4e.jpeg', '2019-06-13 17:33:24', 216, '2019-06-13 17:33:28', 216, 0);
 INSERT INTO `pictures` VALUES (1771, 58, 5, 0, '/pic/20190613/c5b043ca-dd22-46f2-9f46-26054c09d1f6.jpeg', '2019-06-13 17:37:33', 216, '2019-06-13 17:37:42', 216, 0);
 INSERT INTO `pictures` VALUES (1773, NULL, 10, 0, '/pic/20190614/48d8bdb9-b145-4219-b4d0-73ca0bf30303.jpg', '2019-06-14 11:47:06', 1, NULL, NULL, 0);
@@ -8894,6 +9019,80 @@ INSERT INTO `pictures` VALUES (1951, NULL, 9, 0, 'http://hollypictmp.oss-cn-shen
 INSERT INTO `pictures` VALUES (1952, 78, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/c8499afe-7a3d-4f14-8df7-b4931c0cee9b.jpg?Expires=3031989963&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=XfPdb2jSVj4H3HQF78hVGL7AX6s%3D', '2019-06-17 16:43:21', 216, '2019-06-17 16:43:25', 216, 0);
 INSERT INTO `pictures` VALUES (1953, 79, 3, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/1e0b9ad3-93ba-46d7-986c-ffaf16dfbe86.jpg?Expires=3031990658&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=bp9GVwzbLYpyNSnLPooA2V6ahFI%3D', '2019-06-17 16:54:56', 216, '2019-06-17 16:54:59', 216, 0);
 INSERT INTO `pictures` VALUES (1954, 98, 4, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190617/43836301-f948-46c7-be6b-143c2909347f.jpg?Expires=3031990735&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=JQaCPxX5PH/2almvjH9CTToCxns%3D', '2019-06-17 16:56:13', 216, '2019-06-17 16:56:30', 216, 0);
+INSERT INTO `pictures` VALUES (1955, 120, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/a7cd0b58-6096-47bd-bf1d-6f3c4d448431.jpg?Expires=3032048923&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Q1FkQ50GX%2BbTxN/3T9rduvM5cIg%3D', '2019-06-18 09:06:01', 216, '2019-06-18 09:06:52', 216, 0);
+INSERT INTO `pictures` VALUES (1956, 120, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/27111333-f3ef-40d0-9708-16160646dc95.jpg?Expires=3032048928&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=QuSxTJ9yhcZgAo19CiE1a48DlII%3D', '2019-06-18 09:06:07', 216, '2019-06-18 09:06:52', 216, 0);
+INSERT INTO `pictures` VALUES (1957, 120, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/31865a9b-70b2-476e-948e-4d69c804ff5c.jpg?Expires=3032048935&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=55/mspy1sivmZxiuuh4dWGYtE1w%3D', '2019-06-18 09:06:13', 216, '2019-06-18 09:06:52', 216, 0);
+INSERT INTO `pictures` VALUES (1958, 120, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/70ca1981-36c0-4db7-a567-9c80776a9863.jpg?Expires=3032048944&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=kqc98PGk8QnPlvbajpnRnRLc5AQ%3D', '2019-06-18 09:06:22', 216, '2019-06-18 09:06:52', 216, 0);
+INSERT INTO `pictures` VALUES (1959, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/08a7ecb1-795b-4946-bd6a-3030d26156d6.jpg?Expires=3032049127&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=DnUDYy93Y3qEE1OovjlY6v7eheM%3D', '2019-06-18 09:09:25', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1960, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/e9221678-d8f4-48ab-b73c-6c02c53915c1.jpg?Expires=3032049136&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=SEw4BYyxHjXpqm7pJkhUj5U1NFg%3D', '2019-06-18 09:09:35', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1961, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/638d096e-cc72-425b-9807-7c94039d1d11.jpg?Expires=3032049150&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=n9b5yg7wRRL7PphgVUSF6J%2BSzt0%3D', '2019-06-18 09:09:49', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1962, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/29aec926-640d-4675-a12f-c1f301d2ee82.jpg?Expires=3032049190&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=oicG//6PzrXCXinOT4G6FuSvYIE%3D', '2019-06-18 09:10:28', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1963, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/e1d8f75d-514b-4c24-8d36-999555338bc8.jpg?Expires=3032049201&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BcnxEaGQamEALMTJMDhVZqY65S8%3D', '2019-06-18 09:10:39', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1964, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/0ab01dd0-20ef-4a40-8fd8-043539cc1ce5.jpg?Expires=3032049207&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=nXQ0q74hU2L/loOmcppgsRRwB7w%3D', '2019-06-18 09:10:45', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1965, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/eb6e2025-df57-4c2b-8689-94af2a77f7eb.jpg?Expires=3032049217&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=uQoIV2ND3pQ9DnZe5bJCHwaqIzo%3D', '2019-06-18 09:10:55', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1966, 121, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/ce4d3a2c-5cb4-4d82-a592-b63993579411.jpg?Expires=3032049386&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=J3c5XPckarG2CHDzwTM9RE1mjyY%3D', '2019-06-18 09:13:44', 216, '2019-06-18 09:14:59', 216, 0);
+INSERT INTO `pictures` VALUES (1967, 121, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/f6c2458a-f8ea-45f1-a2f9-aca550c4a6de.jpg?Expires=3032049395&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=SNVhJldiJUL3o1dKobQMvtOvK0s%3D', '2019-06-18 09:13:53', 216, '2019-06-18 09:14:59', 216, 0);
+INSERT INTO `pictures` VALUES (1968, 121, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/7a4b7d1e-48fe-402e-9d20-45240f587f95.jpg?Expires=3032049400&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=DJU7WoTz8vJjlpAoEpq2MFf73u8%3D', '2019-06-18 09:13:58', 216, '2019-06-18 09:14:59', 216, 0);
+INSERT INTO `pictures` VALUES (1969, 121, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/aa20a732-53cd-4dcf-9933-41a3c9c40260.jpg?Expires=3032049405&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=hNTo5j1RIcLuPEq9V7BwjboczTY%3D', '2019-06-18 09:14:03', 216, '2019-06-18 09:14:59', 216, 0);
+INSERT INTO `pictures` VALUES (1970, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/eccd0ae0-907b-4686-ad06-0c849fda3459.jpg?Expires=3032049705&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=%2BdmUIIOErj4/qghS7ZqtbyO/BCU%3D', '2019-06-18 09:19:04', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1971, NULL, 0, 3, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/d7b302fd-d106-4497-bfbc-3c80fcc83ed2.jpg?Expires=3032049716&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ip5/lTh%2BfC7mglJIReDBZ69/C%2BM%3D', '2019-06-18 09:19:14', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1972, NULL, 0, 1, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/0792ccde-abf2-4b24-af83-f57267aa01f2.jpg?Expires=3032049725&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=q294iEWC%2BEhf8hzZs6KldofpSx4%3D', '2019-06-18 09:19:23', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1973, NULL, 0, 4, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/1f29d844-263a-43a8-9050-233908486ced.jpg?Expires=3032049731&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ODwE6lize08S73tkMv8/u2f2BvI%3D', '2019-06-18 09:19:30', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1974, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/26aed66e-15d8-40ec-8334-411fe39f7170.jpg?Expires=3032054053&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=pXhLxl4TFZB8zzJUg0vUd/CGbZw%3D', '2019-06-18 10:31:31', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1975, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/7c256464-a5ff-42e2-86eb-6ab5f46a8a5c.jpg?Expires=3032054126&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=BPASgKZOYnXDT7W3J4WBnaJEjHg%3D', '2019-06-18 10:32:45', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1976, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/f144b85e-35ae-4946-98f8-dacb4439a985.jpg?Expires=3032054234&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=zFmOyXGt1TbPJls4wmnLwIdhuXo%3D', '2019-06-18 10:34:32', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1977, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/7248fc5c-30f5-474e-a097-974ac0551730.jpg?Expires=3032054242&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=uj0godd/q8AgXfMxLm2b%2BnKnKe0%3D', '2019-06-18 10:34:40', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1978, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/f74656e0-9136-48c2-b30e-c24f934a62a2.jpg?Expires=3032054265&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=mpOvZbAhiasMXvCgw%2BN/YVu4Ihk%3D', '2019-06-18 10:35:03', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1979, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/7b99dec8-bd3b-42a9-807a-125d47628ffa.jpg?Expires=3032054399&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=zNutuNDKH/QRegr4fdbigAvB3Xk%3D', '2019-06-18 10:37:17', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1980, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/51490b0f-f2bc-495d-ba47-d7b5e9ed9177.jpg?Expires=3032054406&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=LfjYNYII5vC67Vd9jMZWUe3h76o%3D', '2019-06-18 10:37:24', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1981, NULL, 9, 0, '/pic/20190618/88f543a0-0b2a-4ae1-bc94-e45bf9fdc6c4.jpg', '2019-06-18 10:37:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1982, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/54b60389-7df3-4867-91d2-6c0585e8e4b8.jpg?Expires=3032054493&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=CYfWyROsq7R5hhcNfxtMrvf1Ywc%3D', '2019-06-18 10:38:51', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1983, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/7a818772-4e4a-4bbf-8aa9-26c1cc1ff289.jpg?Expires=3032054505&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=J7FnuevLfupgXDYibyOAiG2%2BBWQ%3D', '2019-06-18 10:39:04', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1984, NULL, 9, 0, '/pic/20190618/b0af4dfc-0a41-4fcd-ad7e-af3ca743b114.jpg', '2019-06-18 10:53:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1985, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/c99abc4c-c765-44f4-bf66-5ceccca7a409.jpg?Expires=3032055476&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=NahtNhbi2zKUFI7RQd8a%2BtZP/qM%3D', '2019-06-18 10:55:14', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1986, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/fef64f46-d3f7-4eb5-b83c-529eb062637a.jpg?Expires=3032055776&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=xUB3cqQD%2BgCw27Z//%2BVCB9%2BTfss%3D', '2019-06-18 11:00:14', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1987, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/25a00616-865f-4d23-bbe5-1c1d5dd0579d.jpg?Expires=3032057768&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=wjBBU9cHR8whKgV0bfuNRyhxTok%3D', '2019-06-18 11:33:27', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1988, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/16e92259-98b1-43f6-b40a-365f7ce007e4.jpg?Expires=3032057864&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=EVTs9ZMFaa7/Yp4G2LaoO3O96GY%3D', '2019-06-18 11:35:02', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1989, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/104bbb45-c7a8-4284-afbf-bf5348601831.jpg?Expires=3032057921&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=tsZYG%2BK44KRcuXX37lQqyEbcHCs%3D', '2019-06-18 11:35:59', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1990, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/55da429c-c71e-4258-934f-8a5f0760b283.jpg?Expires=3032058029&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=zX0R3e7GhTQrGSnkpx%2B3U2dNqy8%3D', '2019-06-18 11:37:47', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1991, NULL, 9, 0, '/pic/20190618/2b8e7dd2-7bd9-4d0c-9166-9c08c69247bb.jpg', '2019-06-18 11:57:50', 215, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1992, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/dc052df3-9732-419c-b4b5-c0a20cc85022.jpg?Expires=3032068469&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=eHQI4Sqtyari//WUG1LzupltuLI%3D', '2019-06-18 14:31:48', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1993, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/c62a2fe7-5203-483d-bdb8-b009e5a09087.jpg?Expires=3032068476&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=3EaQ4RdTfJPGqjmFpNz%2B02zqp%2BQ%3D', '2019-06-18 14:31:54', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1994, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/fa298b21-043b-4536-a883-197837c61fa3.jpg?Expires=3032068485&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=7ae/m1TgLe6mdp1Ji6sDSdRkVJA%3D', '2019-06-18 14:32:03', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1995, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/3a0253ec-e9fb-4716-80e0-5238dcd76dc7.jpg?Expires=3032068494&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=Lk0Tr2UQk%2BKuZZ5G7Zsy/9ZZAZA%3D', '2019-06-18 14:32:12', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1996, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/fcc44e55-7530-46e3-b3a8-3842d46551f6.jpg?Expires=3032068499&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=pa6lsoDEPawgKeboW3AwoHNgSDA%3D', '2019-06-18 14:32:17', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1997, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/62e789ea-5b58-4c1b-9785-13fd9f9fb5b3.jpg?Expires=3032068505&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ECifm/a4z%2BlU0hKYKR%2B07B7GoTk%3D', '2019-06-18 14:32:24', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1998, NULL, 0, 2, '/pic/20190618/80216298-3eb9-4db2-8c2b-2844f7fc7ae4.jpg', '2019-06-18 15:14:37', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (1999, NULL, 0, 3, '/pic/20190618/39e7a329-2b1e-4d97-b69e-2bb2a1b12274.jpg', '2019-06-18 15:14:40', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2000, NULL, 0, 1, '/pic/20190618/511fcd33-9cb6-4fdc-ad7e-6f724c113200.jpg', '2019-06-18 15:14:50', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2001, NULL, 0, 2, '/pic/20190618/aa8cca92-f263-4752-b21b-365b620fe1e6.jpg', '2019-06-18 15:23:58', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2002, NULL, 0, 3, '/pic/20190618/72fcb8cd-9696-4139-94ff-66dbb8426dfc.jpg', '2019-06-18 15:24:00', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2003, NULL, 0, 1, '/pic/20190618/e108ac6a-241f-4558-b3c7-7e42afc99375.jpg', '2019-06-18 15:24:07', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2004, 122, 0, 2, '/pic/20190618/5227405d-dbc5-4c2c-aaa7-e803c402b9ee.jpg', '2019-06-18 15:28:29', 1, '2019-06-18 15:28:47', 1, 0);
+INSERT INTO `pictures` VALUES (2005, 122, 0, 3, '/pic/20190618/0eb1e6e1-6f91-45e2-baba-285c88565e87.jpg', '2019-06-18 15:28:32', 1, '2019-06-18 15:28:47', 1, 0);
+INSERT INTO `pictures` VALUES (2006, 122, 0, 1, '/pic/20190618/bc440f72-3f0b-4b6c-8697-4293d55bcbff.jpg', '2019-06-18 15:28:36', 1, '2019-06-18 15:28:47', 1, 0);
+INSERT INTO `pictures` VALUES (2007, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190618/8ee8562d-c7bb-4bbf-9d7e-31eb5911fbcd.jpg?Expires=3032077680&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=ugciP2lULcBXAlivpIzZnlJ25KA%3D', '2019-06-18 17:05:18', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2008, NULL, 10, 0, '/pic/20190618/ef3a5303-3351-4d25-8423-a5b5a65d3d94.jpg', '2019-06-18 17:31:56', 237, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2009, NULL, 10, 0, '/pic/20190618/a10c6599-4a65-4b26-baff-ef93194f584d.jpg', '2019-06-18 18:21:43', 237, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2010, NULL, 9, 0, '/pic/20190618/3815336c-d5c3-4a48-8f23-538fe6c57989.jpg', '2019-06-18 19:20:40', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2011, NULL, 9, 0, '/pic/20190618/156235cc-23b2-4ac8-8184-3759e6abf417.jpg', '2019-06-18 19:21:28', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2012, NULL, 9, 0, '/pic/20190618/a8784b06-9a6b-4c7e-94ed-a22c8891e108.jpg', '2019-06-18 19:24:45', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2013, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/e686247e-7234-46a2-978e-7ff10e7754bd.jpg?Expires=3032135556&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=LDie6PcQIkXEjGn%2Bhcs7S1xAXtg%3D', '2019-06-19 09:11:15', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2014, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/4f86d6ff-294a-4e4c-a99f-c03ed792a6f2.jpg?Expires=3032135571&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=hZOwfX1LrqQvjdfB2Qn9GBuAVYI%3D', '2019-06-19 09:11:15', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2015, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/adae14b1-055d-4259-8ca1-657ae671996c.jpg?Expires=3032138870&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=CwUzvbA/UUdBtZTXO/pQYqOZ49o%3D', '2019-06-19 10:05:10', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2016, NULL, 0, 2, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/198d3db7-34c2-4fd8-823a-3e6905f36f8e.jpg?Expires=3032139037&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=HP7HpaW6N/7VBhpnSnYjDZj0VAI%3D', '2019-06-19 10:07:57', 1, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2017, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/c59d34c3-ddb3-4896-8085-0a9c0e0d7dce.jpg?Expires=3032139352&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=A/dMQQMUdDiAZbJcCsb63WWGJJA%3D', '2019-06-19 10:13:10', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2018, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/7f95efbd-b0cd-472a-ac2a-434985d3fa6f.jpg?Expires=3032139844&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=uO/SJBcx1D5b4ETOe2e6WLArc64%3D', '2019-06-19 10:21:23', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2019, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/8b96af56-053b-4ff7-b59f-8e92edbbc176.jpg?Expires=3032140073&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=F21rtchrYv9%2Bk951hx6%2BmzbjPmI%3D', '2019-06-19 10:25:12', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2020, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/9b0686f7-750d-4942-8f1f-1f17692e39c7.jpg?Expires=3032140334&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=NePBu2sdALKPpSLTvTfG/MaEdyg%3D', '2019-06-19 10:29:33', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2021, NULL, 9, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/dc1156d2-203c-4dfd-a669-7222b96833a5.jpg?Expires=3032140567&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=oGfIHIl8I8TXqoDoeMc6Rbai80Q%3D', '2019-06-19 10:33:26', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2022, NULL, 10, 0, 'https://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/72ba1972-1b88-43e3-8810-a820d3c7f67a.jpg?Expires=3032141384&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=4xH9W2gyNLyzMjiw4ZKBLeIGtKU%3D', '2019-06-19 10:47:04', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2023, NULL, 10, 0, 'https://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/c840a17f-e84a-4b0b-be39-c1648fceff22.jpg?Expires=3032141572&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=qk3JJf1HEfTHySW8dBiyZZxw%2Bts%3D', '2019-06-19 10:50:12', 106, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2024, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/928e89af-4df3-4ff5-9e84-4d55405fb82e.jpg?Expires=3032142143&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=816sDUT1peSmsCyW%2BglJX3%2BUcyk%3D', '2019-06-19 10:59:41', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2025, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/d8268eb4-48e4-48dc-9af5-09ce0cecbd8e.jpg?Expires=3032142184&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=EVcddsSbkNWXevy6lVHioFLngBg%3D', '2019-06-19 11:00:22', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2026, NULL, 10, 0, 'http://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/17e5a996-b1e1-470b-bcaf-2769f2b56e49.jpg?Expires=3032142268&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=v9um/d%2BfUrIZq2komfSBwJlPVys%3D', '2019-06-19 11:01:47', 216, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2027, NULL, 9, 0, 'https://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/a4bc6e1f-be61-48f5-94ae-93021db02743.jpg?Expires=3032145186&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=tLwp4v/ige6OSTHCZfJrhiVxDms%3D', '2019-06-19 11:50:25', 219, NULL, NULL, 0);
+INSERT INTO `pictures` VALUES (2028, NULL, 9, 0, 'https://hollypictmp.oss-cn-shenzhen.aliyuncs.com/20190619/a11f8386-d60f-4f6a-8233-9b4cb69763d7.jpg?Expires=3032145394&OSSAccessKeyId=LTAIima3T8BO8sC9&Signature=HvqD17sNCeS/0TmRDhEBQEpWEDs%3D', '2019-06-19 11:53:52', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product
@@ -8907,6 +9106,7 @@ CREATE TABLE `product`  (
   `product_series_id` bigint(20) NOT NULL,
   `price_market` double(8, 2) NOT NULL,
   `cost_of` double(8, 2) NULL DEFAULT NULL,
+  `yh_of` double(8, 2) NULL DEFAULT NULL,
   `price` double(8, 2) NOT NULL,
   `product_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `bar_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -8934,46 +9134,46 @@ CREATE TABLE `product`  (
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (13, 2, '路路', 1, 23, 56.00, 30.00, 39.00, '7855', '53566', 6, 1, -41, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, '2019-05-15 16:29:40', 1, 0);
-INSERT INTO `product` VALUES (15, 2, '路路3', 1, 22, 56.00, 30.00, 39.00, '7855', '53566', 6, 1, 8, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (16, 3, '路路2', 1, 27, 56.00, 30.00, 39.00, '7855', '53566', 6, 1, 8, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (17, 36, '产品狗', 0, 35, 560.00, 400.00, 520.00, '1809', '555555', 5, 70, -4, 0, '100g', '楼同', '2019-04-12 15:37:58', 85, '2019-05-31 15:16:39', 85, 0);
-INSERT INTO `product` VALUES (18, 2, '很好', 1, 22, 99.00, 50.00, 88.00, '677', '135', 2, 1, 1, 0, NULL, NULL, '2019-04-20 11:31:24', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (19, 2, '天空一号', 2, 26, 99.00, 1.00, 6.00, '16', '235', 1, 1, -18, 0, NULL, '很不错的一款全新产品', '2019-04-20 11:33:10', 1, '2019-05-17 12:30:16', 1, 0);
-INSERT INTO `product` VALUES (20, 2, '下大雨', 1, 26, 999888.00, 1.00, 6.00, '16', '235', 1, 1, 2, 1, NULL, '给黄金季节姐姐快坎坎坷坷vbnnnn', '2019-04-20 11:38:10', 1, '2019-05-30 11:11:25', 1, 0);
-INSERT INTO `product` VALUES (21, 36, '抵制加班', 0, 49, 7000.00, 1.00, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-22 10:12:28', 85, NULL, NULL, 0);
-INSERT INTO `product` VALUES (24, 37, '抵制加班', 0, 49, 7000.00, 1.00, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-24 15:29:36', 85, NULL, NULL, 0);
-INSERT INTO `product` VALUES (25, 34, '抵制加班', 0, 49, 7000.00, 1.00, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-24 15:36:38', 85, NULL, NULL, 0);
-INSERT INTO `product` VALUES (27, 36, '蚕丝面膜', 1, 49, 50.00, 30.00, 48.00, '996', '369', 6, 10, 2, 0, NULL, '噢噢噢哦哦', '2019-04-24 16:50:09', 85, '2019-05-13 16:38:58', 85, 0);
-INSERT INTO `product` VALUES (29, 36, '保湿面膜', 2, 35, 60.00, 30.00, 46.00, '9456', '64521515', 12, 4, -26, 0, NULL, '迷宫', '2019-04-24 17:13:39', 85, '2019-05-13 16:56:54', 85, 0);
-INSERT INTO `product` VALUES (31, 36, '逗逼砖石卡', 0, 35, 50.00, 10.00, 25.00, '75369', '789654123', 12, 25, 4, 0, NULL, '测试', '2019-04-24 17:23:35', 85, '2019-05-14 14:56:50', 85, 0);
-INSERT INTO `product` VALUES (32, 33, '逗逼砖石卡', 0, 35, 50.00, 10.00, 25.00, '75369', '789654123', 12, 25, 9, 0, NULL, '测试', '2019-04-24 17:25:17', 85, '2019-05-13 16:21:27', 77, 0);
-INSERT INTO `product` VALUES (33, 32, '产品狗', 0, 35, 560.00, 400.00, 520.00, '1809', '555555', 5, 70, 5, 0, NULL, '楼同', '2019-05-04 14:52:03', 85, NULL, NULL, 0);
-INSERT INTO `product` VALUES (34, 33, 'hxgujhg', 0, 53, 556.00, 20.00, 56.00, 'hdfhkk', '', 2, 3, 8, 1, NULL, 'xfhhh', '2019-05-14 15:10:35', 77, '2019-05-14 19:57:47', 77, 0);
-INSERT INTO `product` VALUES (35, 2, '产品1号', 1, 22, 99.00, 40.00, 88.00, '578', '6788', 1, 2, 3, 0, NULL, '风刚好回家', '2019-05-30 10:19:31', 1, NULL, NULL, 0);
-INSERT INTO `product` VALUES (36, 2, '品牌2系列11', 2, 14, 99.00, 40.00, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-05-30 10:21:42', 1, '2019-05-30 10:47:58', 1, 0);
-INSERT INTO `product` VALUES (37, 36, '打火机', 2, 35, 100.00, 20.00, 90.00, '123456', '123456', 100, 0, 0, 1, '90g', '金砖打火机', '2019-05-30 17:07:47', 85, '2019-05-31 10:14:42', 85, 0);
-INSERT INTO `product` VALUES (38, 2, '易耗品1号', 2, 22, 99.00, 10.00, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-05-31 11:36:30', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (39, 3, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:12:51', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (40, 14, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:15:22', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (41, 8, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:45:48', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (42, 37, '产品狗', 0, 35, 560.00, NULL, 520.00, '1809', '555555', 5, 70, -4, 0, '100g', '楼同', '2019-06-06 10:50:54', 85, '2019-05-31 15:16:39', 85, 0);
-INSERT INTO `product` VALUES (43, 12, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 12:06:52', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (44, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (45, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (46, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (47, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (48, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (49, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (50, 15, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (51, 19, '易耗品1号', 2, 22, 99.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:44:19', 1, '2019-05-31 11:41:12', 1, 0);
-INSERT INTO `product` VALUES (52, 3, '品牌2系列11', 2, 14, 99.00, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 15:45:20', 1, '2019-05-30 10:47:58', 1, 0);
-INSERT INTO `product` VALUES (53, 12, '品牌2系列11', 2, 14, 99.00, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 16:11:25', 1, '2019-05-30 10:47:58', 1, 0);
-INSERT INTO `product` VALUES (54, 5, '品牌2系列11', 2, 14, 99.00, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 18:01:06', 1, '2019-05-30 10:47:58', 1, 0);
-INSERT INTO `product` VALUES (55, 119, '宇阿', 0, 81, 500.00, NULL, 450.00, '20190611', '6937526503743', 24, 12, 50, 0, '300', '不知道', '2019-06-11 14:55:28', 216, '2019-06-11 14:56:36', 216, 0);
-INSERT INTO `product` VALUES (56, 36, '擦十二发', 0, 49, 1000.00, NULL, 900.00, '654654', '123456', 10, 10, 10, 0, '100kg', '上的发电风扇', '2019-06-12 15:40:43', 85, NULL, NULL, 0);
-INSERT INTO `product` VALUES (57, 119, '软膜', 1, 96, 99.00, NULL, 88.00, '201906828', '6937526503743', 24, 12, 20, 0, '30', '没有', '2019-06-13 17:33:27', 216, NULL, NULL, 0);
-INSERT INTO `product` VALUES (58, 119, '面膜', 0, 92, 300.00, NULL, 280.00, '20785856', '28048958', 36, 24, 50, 0, '80', '没有', '2019-06-13 17:37:41', 216, NULL, NULL, 0);
+INSERT INTO `product` VALUES (13, 2, '路路', 1, 23, 56.00, 30.00, NULL, 39.00, '7855', '53566', 6, 1, -41, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, '2019-05-15 16:29:40', 1, 0);
+INSERT INTO `product` VALUES (15, 2, '路路3', 1, 22, 56.00, 30.00, NULL, 39.00, '7855', '53566', 6, 1, 8, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (16, 3, '路路2', 1, 27, 56.00, 30.00, NULL, 39.00, '7855', '53566', 6, 1, 8, 0, NULL, '头哦咯', '2019-04-11 11:40:22', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (17, 36, '产品狗', 0, 35, 750.00, 600.00, 9.00, 530.00, '1809', '555555', 5, 70, -4, 0, '100g', '楼同', '2019-04-12 15:37:58', 85, '2019-06-18 16:07:17', 85, 0);
+INSERT INTO `product` VALUES (18, 2, '很好', 1, 22, 99.00, 50.00, NULL, 88.00, '677', '135', 2, 1, 1, 0, NULL, NULL, '2019-04-20 11:31:24', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (19, 2, '天空一号', 2, 26, 99.00, 1.00, NULL, 6.00, '16', '235', 1, 1, -18, 0, NULL, '很不错的一款全新产品', '2019-04-20 11:33:10', 1, '2019-05-17 12:30:16', 1, 0);
+INSERT INTO `product` VALUES (20, 2, '下大雨', 1, 26, 999888.00, 1.00, NULL, 6.00, '16', '235', 1, 1, 2, 1, NULL, '给黄金季节姐姐快坎坎坷坷vbnnnn', '2019-04-20 11:38:10', 1, '2019-05-30 11:11:25', 1, 0);
+INSERT INTO `product` VALUES (21, 36, '抵制加班', 0, 49, 7000.00, 1.00, NULL, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-22 10:12:28', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (24, 37, '抵制加班', 0, 49, 7000.00, 1.00, NULL, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-24 15:29:36', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (25, 34, '抵制加班', 0, 49, 7000.00, 1.00, NULL, 1.00, '996', '996', 12, 12, 5, 0, NULL, 'toll', '2019-04-24 15:36:38', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (27, 36, '蚕丝面膜', 1, 49, 50.00, 30.00, NULL, 48.00, '996', '369', 6, 10, 2, 0, NULL, '噢噢噢哦哦', '2019-04-24 16:50:09', 85, '2019-05-13 16:38:58', 85, 0);
+INSERT INTO `product` VALUES (29, 36, '保湿面膜', 2, 35, 60.00, 30.00, NULL, 46.00, '9456', '64521515', 12, 4, -26, 0, NULL, '迷宫', '2019-04-24 17:13:39', 85, '2019-05-13 16:56:54', 85, 0);
+INSERT INTO `product` VALUES (31, 36, '逗逼砖石卡', 0, 35, 50.00, 10.00, NULL, 25.00, '75369', '789654123', 12, 25, 4, 0, NULL, '测试', '2019-04-24 17:23:35', 85, '2019-05-14 14:56:50', 85, 0);
+INSERT INTO `product` VALUES (32, 33, '逗逼砖石卡', 0, 35, 50.00, 10.00, NULL, 25.00, '75369', '789654123', 12, 25, 9, 0, NULL, '测试', '2019-04-24 17:25:17', 85, '2019-05-13 16:21:27', 77, 0);
+INSERT INTO `product` VALUES (33, 32, '产品狗', 0, 35, 560.00, 400.00, NULL, 520.00, '1809', '555555', 5, 70, 5, 0, NULL, '楼同', '2019-05-04 14:52:03', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (34, 33, 'hxgujhg', 0, 53, 556.00, 20.00, NULL, 56.00, 'hdfhkk', '', 2, 3, 8, 1, NULL, 'xfhhh', '2019-05-14 15:10:35', 77, '2019-05-14 19:57:47', 77, 0);
+INSERT INTO `product` VALUES (35, 2, '产品1号', 1, 22, 99.00, 40.00, NULL, 88.00, '578', '6788', 1, 2, 3, 0, NULL, '风刚好回家', '2019-05-30 10:19:31', 1, NULL, NULL, 0);
+INSERT INTO `product` VALUES (36, 2, '品牌2系列11', 2, 14, 99.00, 40.00, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-05-30 10:21:42', 1, '2019-05-30 10:47:58', 1, 0);
+INSERT INTO `product` VALUES (37, 36, '打火机', 2, 35, 100.00, 20.00, NULL, 90.00, '123456', '123456', 100, 0, 0, 1, '90g', '金砖打火机', '2019-05-30 17:07:47', 85, '2019-05-31 10:14:42', 85, 0);
+INSERT INTO `product` VALUES (38, 2, '易耗品1号', 2, 22, 99.00, 10.00, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-05-31 11:36:30', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (39, 3, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:12:51', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (40, 14, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:15:22', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (41, 8, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 10:45:48', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (42, 37, '产品狗', 0, 35, 560.00, NULL, NULL, 520.00, '1809', '555555', 5, 70, -4, 0, '100g', '楼同', '2019-06-06 10:50:54', 85, '2019-05-31 15:16:39', 85, 0);
+INSERT INTO `product` VALUES (43, 12, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 12:06:52', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (44, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (45, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (46, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (47, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (48, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (49, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (50, 15, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:39:55', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (51, 19, '易耗品1号', 2, 22, 99.00, NULL, NULL, 88.00, '5788', '567888', 1, 2, 3, 1, '100g', '风和姐姐快', '2019-06-06 15:44:19', 1, '2019-05-31 11:41:12', 1, 0);
+INSERT INTO `product` VALUES (52, 3, '品牌2系列11', 2, 14, 99.00, NULL, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 15:45:20', 1, '2019-05-30 10:47:58', 1, 0);
+INSERT INTO `product` VALUES (53, 12, '品牌2系列11', 2, 14, 99.00, NULL, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 16:11:25', 1, '2019-05-30 10:47:58', 1, 0);
+INSERT INTO `product` VALUES (54, 5, '品牌2系列11', 2, 14, 99.00, NULL, NULL, 88.00, '57888', '4677', 1, 2, 2, 1, NULL, '和姐姐快', '2019-06-06 18:01:06', 1, '2019-05-30 10:47:58', 1, 0);
+INSERT INTO `product` VALUES (55, 119, '宇阿', 0, 81, 500.00, NULL, NULL, 450.00, '20190611', '6937526503743', 24, 12, 50, 0, '300', '不知道', '2019-06-11 14:55:28', 216, '2019-06-11 14:56:36', 216, 0);
+INSERT INTO `product` VALUES (56, 36, '擦十二发', 0, 49, 1000.00, NULL, NULL, 900.00, '654654', '123456', 10, 10, 10, 0, '100kg', '上的发电风扇', '2019-06-12 15:40:43', 85, NULL, NULL, 0);
+INSERT INTO `product` VALUES (57, 119, '软膜', 1, 96, 99.00, NULL, NULL, 88.00, '201906828', '6937526503743', 24, 12, 20, 0, '30', '没有', '2019-06-13 17:33:27', 216, NULL, NULL, 0);
+INSERT INTO `product` VALUES (58, 119, '面膜', 0, 92, 300.00, NULL, NULL, 280.00, '20785856', '28048958', 36, 24, 50, 0, '80', '没有', '2019-06-13 17:37:41', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_property
@@ -9024,7 +9224,7 @@ CREATE TABLE `product_property_map`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_product_property_map_01`(`product_id`) USING BTREE,
   INDEX `idx_product_property_map_02`(`product_property_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 272 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品属性关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 296 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品属性关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_property_map
@@ -9091,9 +9291,6 @@ INSERT INTO `product_property_map` VALUES (196, 37, 21, '2019-05-31 10:14:42', 8
 INSERT INTO `product_property_map` VALUES (200, 38, 18, '2019-05-31 11:41:12', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (201, 38, 19, '2019-05-31 11:41:12', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (202, 38, 21, '2019-05-31 11:41:12', 1, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (203, 17, 18, '2019-05-31 15:16:39', 85, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (204, 17, 19, '2019-05-31 15:16:39', 85, NULL, NULL, 0);
-INSERT INTO `product_property_map` VALUES (205, 17, 22, '2019-05-31 15:16:39', 85, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (206, 39, 18, '2019-06-06 10:12:51', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (207, 39, 19, '2019-06-06 10:12:51', 1, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (208, 39, 21, '2019-06-06 10:12:51', 1, NULL, NULL, 0);
@@ -9157,6 +9354,9 @@ INSERT INTO `product_property_map` VALUES (268, 57, 22, '2019-06-13 17:33:27', 2
 INSERT INTO `product_property_map` VALUES (269, 58, 23, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (270, 58, 19, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
 INSERT INTO `product_property_map` VALUES (271, 58, 22, '2019-06-13 17:37:41', 216, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (293, 17, 18, '2019-06-18 16:07:17', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (294, 17, 19, '2019-06-18 16:07:17', 85, NULL, NULL, 0);
+INSERT INTO `product_property_map` VALUES (295, 17, 22, '2019-06-18 16:07:17', 85, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for product_series
@@ -9530,7 +9730,7 @@ CREATE TABLE `repayment_record`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_repayment_record_01`(`arrearages_record`) USING BTREE,
   INDEX `idx_repayment_record_02`(`reimbursement_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '还款记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '还款记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of repayment_record
@@ -9565,6 +9765,7 @@ INSERT INTO `repayment_record` VALUES (31, 45, '2019-06-17 14:47:51', 1.00, 94.0
 INSERT INTO `repayment_record` VALUES (32, 45, '2019-06-17 14:50:48', 3.00, 91.00, 1, 10, '', 1949, '2019-06-17 14:51:02', 219, NULL, NULL, 0);
 INSERT INTO `repayment_record` VALUES (33, 45, '2019-06-17 14:51:11', 3.00, 88.00, 1, 10, '', 1950, '2019-06-17 14:51:48', 219, NULL, NULL, 0);
 INSERT INTO `repayment_record` VALUES (34, 45, '2019-06-17 15:19:39', 80.00, 8.00, 1, 10, '', 1951, '2019-06-17 15:19:39', 219, NULL, NULL, 0);
+INSERT INTO `repayment_record` VALUES (35, 25, '2019-06-18 11:57:52', 2.00, 60.00, 1, 0, '', 1991, '2019-06-18 11:57:52', 215, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for reservation
@@ -9591,7 +9792,7 @@ CREATE TABLE `reservation`  (
   INDEX `idx_appointment_01`(`member_id`) USING BTREE,
   INDEX `idx_appointment_02`(`stuff_id`) USING BTREE,
   INDEX `idx_appointment_03`(`room_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of reservation
@@ -9599,7 +9800,7 @@ CREATE TABLE `reservation`  (
 INSERT INTO `reservation` VALUES (1, 1, 1, 2, 5, '2019-04-10 11:31:56', 11, 1, 'sdfsaf ', '2019-04-10 11:32:05', '2019-04-10 17:32:09', '2019-04-10 11:32:14', 1, '2019-04-10 11:32:18', 1, 1);
 INSERT INTO `reservation` VALUES (2, 2, 1, 3, 10, '2019-04-10 11:43:22', 1, 1, '121313', '2019-04-10 11:43:32', '2019-04-10 14:43:34', '2019-04-10 11:43:43', 1, '2019-04-10 11:43:50', 1, 1);
 INSERT INTO `reservation` VALUES (3, 3, 1, 1113, 29, '2019-04-16 15:17:12', 1, 1, '123123', '2019-04-16 15:17:20', '2019-04-17 15:17:22', '2019-04-16 15:17:25', 1, '2019-04-16 15:17:31', 1, 1);
-INSERT INTO `reservation` VALUES (4, 31, 1, 1121, 31, '2019-04-18 00:00:00', 2, 0, '测试', '2019-04-18 10:00:00', '2019-04-18 12:00:00', '2019-04-18 14:40:14', 86, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (4, 31, 1, 1121, 31, '2019-04-18 00:00:00', 2, 1, '测试', '2019-04-18 10:00:00', '2019-04-18 12:00:00', '2019-04-18 14:40:14', 86, '2019-06-19 09:06:24', 85, 0);
 INSERT INTO `reservation` VALUES (5, -1, 0, 1113, 29, '2019-04-18 00:00:00', 2, 0, '测试', '2019-04-18 11:00:00', '2019-04-18 13:00:00', '2019-04-18 16:05:30', 86, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (6, -1, 0, 1113, 31, '2019-04-18 00:00:00', 3, 0, '', '2019-04-18 14:00:00', '2019-04-18 17:00:00', '2019-04-18 16:10:28', 86, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (7, 26, 1, 1113, 31, '2019-04-18 00:00:00', 0, 3, '测试', '2019-04-18 19:00:00', '2019-04-18 19:50:00', '2019-04-18 16:11:19', 86, '2019-06-03 14:21:31', 85, 0);
@@ -9621,7 +9822,7 @@ INSERT INTO `reservation` VALUES (22, 26, 1, 1128, 29, '2019-06-03 00:00:00', 2,
 INSERT INTO `reservation` VALUES (23, 26, 1, 1128, 31, '2019-06-05 00:00:00', 3, 1, '', '2019-06-05 15:00:00', '2019-06-05 18:00:00', '2019-06-05 14:59:16', 106, '2019-06-05 15:12:25', 85, 0);
 INSERT INTO `reservation` VALUES (24, 26, 1, 1128, 31, '2019-06-06 00:00:00', 2, 1, '', '2019-06-06 10:00:00', '2019-06-06 12:00:00', '2019-06-05 15:00:48', 106, '2019-06-05 15:01:37', 85, 0);
 INSERT INTO `reservation` VALUES (25, 85, 1, 1224, 18, '2019-06-10 00:00:00', 1, 3, '新增预约', '2019-06-10 08:15:00', '2019-06-10 10:05:00', '2019-06-10 19:26:05', 215, '2019-06-14 14:46:59', 215, 0);
-INSERT INTO `reservation` VALUES (26, 85, 1, 1224, 2, '2019-06-12 00:00:00', 2, 1, '', '2019-06-12 12:15:00', '2019-06-12 15:05:00', '2019-06-12 10:39:31', 215, '2019-06-14 14:47:27', 215, 0);
+INSERT INTO `reservation` VALUES (26, 85, 1, 1224, 2, '2019-06-12 00:00:00', 2, 2, '', '2019-06-12 12:15:00', '2019-06-12 15:05:00', '2019-06-12 10:39:31', 215, '2019-06-18 10:31:54', 1, 0);
 INSERT INTO `reservation` VALUES (27, -1, 0, 1226, 35, '2019-06-12 00:00:00', 0, 0, '', '2019-06-12 11:00:00', '2019-06-12 11:50:00', '2019-06-12 17:18:18', 219, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (28, -1, 0, 1226, 35, '2019-06-15 00:00:00', 1, 0, '没有', '2019-06-15 09:03:00', '2019-06-15 10:53:00', '2019-06-12 17:21:15', 219, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (29, -1, 0, 1226, 35, '2019-06-12 00:00:00', 0, 0, '没有', '2019-06-12 10:00:00', '2019-06-12 10:50:00', '2019-06-12 17:22:36', 219, NULL, NULL, 0);
@@ -9629,6 +9830,9 @@ INSERT INTO `reservation` VALUES (30, -1, 0, 1226, 35, '2019-06-13 00:00:00', 1,
 INSERT INTO `reservation` VALUES (31, 113, 1, 1232, 36, '2019-06-15 00:00:00', 0, 2, '备注备注备注', '2019-06-15 10:00:00', '2019-06-15 10:50:00', '2019-06-15 10:09:29', 219, '2019-06-15 10:53:52', 219, 0);
 INSERT INTO `reservation` VALUES (32, 96, 1, 1232, 35, '2019-06-17 00:00:00', 0, 0, '备注备注备注备注备注', '2019-06-17 09:00:00', '2019-06-17 09:50:00', '2019-06-17 08:56:22', 219, NULL, NULL, 0);
 INSERT INTO `reservation` VALUES (33, 113, 1, 1226, 36, '2019-06-17 00:00:00', 0, 0, '备注备注备注备注', '2019-06-17 09:00:00', '2019-06-17 09:50:00', '2019-06-17 08:59:49', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (34, 95, 1, 1226, 37, '2019-06-19 00:00:00', 1, 0, '备注备注备注备注', '2019-06-19 10:00:00', '2019-06-19 11:00:00', '2019-06-19 09:43:04', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (35, -1, 0, 1232, 35, '2019-06-19 00:00:00', 3, 0, '这里是备注备注备注备注', '2019-06-19 10:02:00', '2019-06-19 13:02:00', '2019-06-19 09:48:25', 219, NULL, NULL, 0);
+INSERT INTO `reservation` VALUES (36, 95, 1, 1231, 38, '2019-06-19 00:00:00', 1, 0, '这里是备注备注备注备注', '2019-06-19 11:00:00', '2019-06-19 12:00:00', '2019-06-19 09:51:13', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for reservation_item
@@ -9646,7 +9850,7 @@ CREATE TABLE `reservation_item`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_reservation_item_01`(`reservation_id`) USING BTREE,
   INDEX `idx_reservation_item_02`(`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预约项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of reservation_item
@@ -9704,6 +9908,11 @@ INSERT INTO `reservation_item` VALUES (53, 32, 74, '2019-06-17 08:56:22', 219, N
 INSERT INTO `reservation_item` VALUES (54, 32, 75, '2019-06-17 08:56:22', 219, NULL, NULL, 0);
 INSERT INTO `reservation_item` VALUES (55, 33, 74, '2019-06-17 08:59:49', 219, NULL, NULL, 0);
 INSERT INTO `reservation_item` VALUES (56, 33, 75, '2019-06-17 08:59:49', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (57, 34, 75, '2019-06-19 09:43:04', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (58, 34, 76, '2019-06-19 09:43:04', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (59, 35, 68, '2019-06-19 09:48:25', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (60, 36, 73, '2019-06-19 09:51:13', 219, NULL, NULL, 0);
+INSERT INTO `reservation_item` VALUES (61, 36, 74, '2019-06-19 09:51:13', 219, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for retroactive
@@ -9779,7 +9988,7 @@ CREATE TABLE `role_action`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_role_action_01`(`stuff_id`) USING BTREE,
   INDEX `idx_role_action_02`(`system_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色权限映射表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色权限映射表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_action
@@ -9936,6 +10145,9 @@ INSERT INTO `role_action` VALUES (161, 1231, 233);
 INSERT INTO `role_action` VALUES (162, 1232, 235);
 INSERT INTO `role_action` VALUES (163, 1233, 236);
 INSERT INTO `role_action` VALUES (164, 1234, 237);
+INSERT INTO `role_action` VALUES (165, 1235, 238);
+INSERT INTO `role_action` VALUES (166, 1236, 239);
+INSERT INTO `role_action` VALUES (167, 1237, 240);
 
 -- ----------------------------
 -- Table structure for role_privilege
@@ -10286,7 +10498,7 @@ CREATE TABLE `role_user`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `IDX_ROLE_USER_0`(`role_id`) USING BTREE,
   INDEX `IDX_ROLE_USER_1`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 226 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_user
@@ -10451,6 +10663,11 @@ INSERT INTO `role_user` VALUES (217, 3, 234);
 INSERT INTO `role_user` VALUES (218, 2, 235);
 INSERT INTO `role_user` VALUES (219, 2, 236);
 INSERT INTO `role_user` VALUES (220, 2, 237);
+INSERT INTO `role_user` VALUES (221, 10, 238);
+INSERT INTO `role_user` VALUES (222, 10, 239);
+INSERT INTO `role_user` VALUES (223, 10, 240);
+INSERT INTO `role_user` VALUES (224, 3, 241);
+INSERT INTO `role_user` VALUES (225, 3, 242);
 
 -- ----------------------------
 -- Table structure for salon
@@ -10481,7 +10698,7 @@ CREATE TABLE `salon`  (
   INDEX `idx_beauty_salon_01`(`salon_name`) USING BTREE,
   INDEX `idx_beauty_salon_02`(`tel`) USING BTREE,
   INDEX `idx_beauty_salon_03`(`city_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '美容院/门店' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 123 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '美容院/门店' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of salon
@@ -10592,6 +10809,9 @@ INSERT INTO `salon` VALUES (115, '测试门店', 1, '17328480392', 441901, '广�
 INSERT INTO `salon` VALUES (117, '松山湖美容医院', 1, '15999876807', 441901401, '广东省 东莞市 松山湖管委会和堂总部一号', b'0', 0, 0.00, NULL, NULL, 113.8888690, 22.9336240, NULL, '2019-05-28 16:06:42', 1, NULL, NULL, 0, 0);
 INSERT INTO `salon` VALUES (118, '测试门店', 1, '17328480392', 441901, '广东省东莞市莞城区A202', b'0', 0, 0.00, NULL, NULL, 113.7517650, 23.0205360, NULL, '2019-05-29 11:40:38', 1, NULL, NULL, 0, 1);
 INSERT INTO `salon` VALUES (119, '东城一店', 1, '15273639627', 441903, '广东省东莞市东城区202', b'0', 0, 0.00, '09:00', '12:00', 113.7778410, 23.0506490, '你你你你', '2019-06-11 09:21:55', 1, '2019-06-11 11:19:05', 216, 0, 1);
+INSERT INTO `salon` VALUES (120, '南城分店', 1, '1527363962', 441903, '广东省东莞市东城区202', b'0', 0, 0.00, NULL, NULL, 113.7778410, 23.0506490, NULL, '2019-06-18 09:06:51', 216, NULL, NULL, 0, 0);
+INSERT INTO `salon` VALUES (121, '东城二店', 1, '1234567892', 441901, '广东省东莞市莞城区202', b'0', 0, 0.00, NULL, NULL, 113.7517650, 23.0205360, NULL, '2019-06-18 09:14:59', 216, NULL, NULL, 0, 0);
+INSERT INTO `salon` VALUES (122, '东城一号', 112, '13827279180', 110101, '北京市 北京市 东城区1101', b'0', 0, 0.00, NULL, NULL, 116.4163570, 39.9283530, NULL, '2019-06-18 15:28:47', 1, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for salon_invite_code
@@ -10701,7 +10921,7 @@ CREATE TABLE `schedule`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_schedule_01`(`stuff_id`) USING BTREE,
   INDEX `idx_schedule_02`(`day`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 524 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '排班信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 547 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '排班信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule
@@ -11045,6 +11265,27 @@ INSERT INTO `schedule` VALUES (520, 1232, 164, '2019-06-19', '2019-06-15 10:01:5
 INSERT INTO `schedule` VALUES (521, 1229, 162, '2019-06-15', '2019-06-15 10:02:09', 216, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (522, 1229, 162, '2019-06-16', '2019-06-15 10:02:10', 216, NULL, NULL, 0);
 INSERT INTO `schedule` VALUES (523, 1229, 164, '2019-06-18', '2019-06-15 10:02:10', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (524, 7, 64, '2019-06-23', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (525, 7, 64, '2019-06-24', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (526, 7, 64, '2019-06-25', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (527, 7, 64, '2019-06-26', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (528, 7, 64, '2019-06-27', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (529, 7, 64, '2019-06-28', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (530, 7, 64, '2019-06-29', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (531, 7, 64, '2019-06-30', '2019-06-18 10:54:43', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (532, 1234, 65, '2019-06-23', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (533, 1234, 65, '2019-06-24', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (534, 1234, 65, '2019-06-25', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (535, 1234, 65, '2019-06-26', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (536, 1234, 65, '2019-06-27', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (537, 1234, 65, '2019-06-28', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (538, 1234, 65, '2019-06-29', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (539, 1234, 65, '2019-06-30', '2019-06-18 10:55:07', 1, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (541, 1231, 163, '2019-06-20', '2019-06-18 15:43:02', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (543, 1231, 162, '2019-06-19', '2019-06-18 15:43:02', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (544, 1231, 164, '2019-06-21', '2019-06-18 15:43:03', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (545, 1231, 165, '2019-06-22', '2019-06-18 15:43:03', 216, NULL, NULL, 0);
+INSERT INTO `schedule` VALUES (546, 1226, 162, '2019-06-22', '2019-06-19 10:56:31', 216, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for service
@@ -11077,7 +11318,7 @@ CREATE TABLE `service`  (
   INDEX `idx_service_card_02`(`card_type`) USING BTREE,
   INDEX `idx_service_card_03`(`service_name`) USING BTREE,
   INDEX `idx_service_card_04`(`record_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '次卡/服务项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '次卡/服务项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service
@@ -11102,7 +11343,7 @@ INSERT INTO `service` VALUES (50, 1, '测试服务项目', 4, 0, 0, 30.0, 9, 9.0
 INSERT INTO `service` VALUES (51, 1, '店铺1的服务项目', 4, 0, 0, 30.0, 9, 9.00, 9.00, 9.00, 9, 9, 1, NULL, '9', '2019-04-10 11:38:39', 9, '2019-04-10 11:38:42', 9, 0);
 INSERT INTO `service` VALUES (52, 36, '次卡1', 27, 0, 1, 0.0, 58, 40.00, 0.00, 6003.00, 4, 0, 1, NULL, '舒服', '2019-04-11 15:42:05', 85, '2019-04-11 15:58:57', 85, 0);
 INSERT INTO `service` VALUES (53, 36, '次卡2', 27, 0, 0, 0.0, 58, 40.00, -1.00, 600.00, 4, -1, 1, NULL, '舒服', '2019-04-11 15:42:57', 85, NULL, NULL, 0);
-INSERT INTO `service` VALUES (56, 36, '肩颈按摩', 28, 0, 1, 1.0, 60, 250.00, 0.00, 180.00, 6, 0, 2, '2019-07-15 10:36:47', '咯哦哦', '2019-04-26 17:06:51', 85, '2019-06-15 10:36:14', 85, 0);
+INSERT INTO `service` VALUES (56, 36, '肩颈按摩', 28, 0, 1, 1.0, 60, 250.00, 0.00, 180.00, 6, 0, 2, '2019-07-18 17:02:15', '咯哦哦', '2019-04-26 17:06:51', 85, '2019-06-18 17:01:53', 85, 0);
 INSERT INTO `service` VALUES (57, 33, 'anmo ', 24, 0, 0, 0.0, 30, 54.00, -1.00, 12.00, 3, -1, 1, NULL, 'fsdfsdfdsf', '2019-05-13 17:22:05', 77, NULL, NULL, 0);
 INSERT INTO `service` VALUES (58, 33, '刚好呼呼呼', 64, 0, 0, NULL, 20, 55.00, -1.00, 55.00, 2, -1, 1, NULL, '', '2019-05-14 19:03:51', 77, NULL, NULL, 0);
 INSERT INTO `service` VALUES (61, 2, '摇头晃脑', 7, 2, 0, NULL, 99, -1.00, 98.00, 36.00, 2, 58, 1, NULL, '哈哈镜健康', '2019-05-23 17:32:36', 1, NULL, NULL, 0);
@@ -11119,6 +11360,10 @@ INSERT INTO `service` VALUES (73, 119, '时间段后视镜', 68, 0, 0, 1.0, 20, 
 INSERT INTO `service` VALUES (74, 119, '奥斯卡大家', 68, 0, 0, 1.0, 25, 30.00, -1.00, 20.00, 3, -1, 20, '2019-07-12 10:10:38', '不知道', '2019-06-12 10:10:03', 216, NULL, NULL, 0);
 INSERT INTO `service` VALUES (75, 119, '养生阿', 77, 0, 0, 1.0, 20, 30.00, -1.00, 5.00, 3, -1, 50, '2019-07-15 09:51:03', '无', '2019-06-15 09:50:29', 216, NULL, NULL, 0);
 INSERT INTO `service` VALUES (76, 119, 'CC', 82, 4, 1, 12.0, 25, -1.00, 50.00, 35.00, 0, -1, NULL, '2020-06-17 16:41:19', '', '2019-06-17 16:40:45', 216, NULL, NULL, 0);
+INSERT INTO `service` VALUES (77, 2, 'xinde', 47, 0, 0, NULL, 40, 80.00, -1.00, 65.00, 32, -1, 2, '2019-07-18 17:14:31', 'Shags should', '2019-06-18 17:14:20', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (78, 2, 'xin', 8, 0, 0, NULL, 50, 45.00, -1.00, 35.00, 8, -1, 2, '2019-07-18 17:18:09', '', '2019-06-18 17:17:35', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (79, 2, '新增', 7, 0, 0, NULL, 50, 45.00, -1.00, 35.00, 2, -1, 2, '2019-07-18 17:19:42', '规划好', '2019-06-18 17:19:09', 1, NULL, NULL, 0);
+INSERT INTO `service` VALUES (80, 2, '新增项目8888', 6, 0, 0, NULL, 80, 99.00, -1.00, 88.00, 2, -1, 0, '2019-07-18 18:35:57', '规划局', '2019-06-18 18:23:45', 1, '2019-06-18 18:35:34', 1, 0);
 
 -- ----------------------------
 -- Table structure for service_series
@@ -11359,7 +11604,7 @@ CREATE TABLE `shift`  (
   `opt_lock` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_schedule_times_02`(`store_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 166 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班次' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 178 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班次' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shift
@@ -11388,7 +11633,7 @@ INSERT INTO `shift` VALUES (59, 23, 0, '9:00', '19:00', '2019-03-27 08:38:19', 1
 INSERT INTO `shift` VALUES (60, 23, 1, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (61, 23, 2, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (62, 23, 3, '9:00', '19:00', '2019-03-27 08:38:19', 1, NULL, NULL, 0);
-INSERT INTO `shift` VALUES (63, 2, 0, '06:15', '24:00', '2019-03-28 03:10:08', 1, '2019-06-04 16:17:50', 1, 0);
+INSERT INTO `shift` VALUES (63, 2, 0, '10:30', '24:00', '2019-03-28 03:10:08', 1, '2019-06-18 11:08:38', 1, 0);
 INSERT INTO `shift` VALUES (64, 2, 3, '08:15', '18:15', '2019-03-28 03:10:08', 1, '2019-05-29 20:12:15', 1, 0);
 INSERT INTO `shift` VALUES (65, 2, 2, '08:15', '18:15', '2019-03-28 03:10:08', 1, '2019-05-29 20:12:15', 1, 0);
 INSERT INTO `shift` VALUES (66, 2, 1, '03:15', '11:15', '2019-03-28 03:10:08', 1, '2019-05-29 20:11:38', 1, 0);
@@ -11455,10 +11700,22 @@ INSERT INTO `shift` VALUES (158, 118, 3, '9:00', '19:00', '2019-05-29 11:40:38',
 INSERT INTO `shift` VALUES (159, 6, 0, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (160, 6, 3, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
 INSERT INTO `shift` VALUES (161, 6, 2, '', NULL, '2019-05-29 19:27:43', 63, NULL, NULL, 0);
-INSERT INTO `shift` VALUES (162, 119, 0, '9:00', '23:00', '2019-06-11 09:21:55', 1, '2019-06-17 16:59:54', 216, 0);
-INSERT INTO `shift` VALUES (163, 119, 1, '06:00', '12:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
-INSERT INTO `shift` VALUES (164, 119, 2, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
-INSERT INTO `shift` VALUES (165, 119, 3, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-17 16:59:54', 216, 0);
+INSERT INTO `shift` VALUES (162, 119, 0, '9:00', '23:00', '2019-06-11 09:21:55', 1, '2019-06-19 09:29:13', 216, 0);
+INSERT INTO `shift` VALUES (163, 119, 1, '06:00', '17:00', '2019-06-11 09:21:56', 1, '2019-06-19 09:29:13', 216, 0);
+INSERT INTO `shift` VALUES (164, 119, 2, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-19 09:29:13', 216, 0);
+INSERT INTO `shift` VALUES (165, 119, 3, '9:00', '19:00', '2019-06-11 09:21:56', 1, '2019-06-19 09:29:13', 216, 0);
+INSERT INTO `shift` VALUES (166, 120, 0, '9:00', '19:00', '2019-06-18 09:06:52', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (167, 120, 1, '9:00', '19:00', '2019-06-18 09:06:52', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (168, 120, 2, '9:00', '19:00', '2019-06-18 09:06:52', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (169, 120, 3, '9:00', '19:00', '2019-06-18 09:06:52', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (170, 121, 0, '9:00', '19:00', '2019-06-18 09:14:59', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (171, 121, 1, '9:00', '19:00', '2019-06-18 09:14:59', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (172, 121, 2, '9:00', '19:00', '2019-06-18 09:14:59', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (173, 121, 3, '9:00', '19:00', '2019-06-18 09:14:59', 216, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (174, 122, 0, '9:00', '19:00', '2019-06-18 15:28:47', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (175, 122, 1, '9:00', '19:00', '2019-06-18 15:28:47', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (176, 122, 2, '9:00', '19:00', '2019-06-18 15:28:47', 1, NULL, NULL, 0);
+INSERT INTO `shift` VALUES (177, 122, 3, '9:00', '19:00', '2019-06-18 15:28:47', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sm_integral_alteration
@@ -11720,7 +11977,7 @@ CREATE TABLE `stuff`  (
   INDEX `idx_stuff_02`(`stuff_name`) USING BTREE,
   INDEX `idx_stuff_03`(`tel`) USING BTREE,
   INDEX `idx_stuff_04`(`gender`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1235 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '院长/店长/员工' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1238 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '院长/店长/员工' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff
@@ -11780,7 +12037,7 @@ INSERT INTO `stuff` VALUES (63, 33, '咯安安', '13713713713', 2, NULL, NULL, N
 INSERT INTO `stuff` VALUES (64, 2, 'yaya', '13694511474', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-04 11:46:53', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (66, 35, '18664151888', '18664151888', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-08 15:02:30', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1111, 6, 'sf', '1', 1, '2019-04-11 11:59:20', 2.0, '2019-04-11 11:59:23', '1', '1', '1', '1', '11', '2019-04-11 11:59:35', 1, '2019-04-11 11:59:38', 1, 1, 0, 0);
-INSERT INTO `stuff` VALUES (1112, 36, '小小店长', '13929433192', 0, NULL, 0.0, '1996-02-27 00:00:00', 'jbnj', NULL, '344394154', NULL, '', '2019-04-11 14:48:38', 1, '2019-06-15 10:35:01', 85, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1112, 36, '小小店长', '13929433192', 0, NULL, 0.0, '1996-02-25 00:00:00', 'jbnj', NULL, '344394154', NULL, '', '2019-04-11 14:48:38', 1, '2019-06-19 10:23:00', 85, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1113, 36, '煎饼', '17688686390', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-04-11 15:17:59', 85, '2019-06-14 19:04:51', 86, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1115, 37, '刘大姐', '19874236542', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:10:31', 87, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1116, 37, '柳絮', '123698574555', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-04-11 16:42:20', 87, NULL, NULL, 0, 0, 0);
@@ -11886,8 +12143,8 @@ INSERT INTO `stuff` VALUES (1221, 117, '15999876807', '15999876807', 2, NULL, NU
 INSERT INTO `stuff` VALUES (1222, 118, '17328480392', '17328480392', 2, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-05-29 11:40:38', 1, '2019-05-30 14:13:48', 213, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1223, 36, '高顾问', '17328485999', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-05-30 17:41:43', 85, '2019-05-31 17:11:44', 85, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1224, 2, '刘铁顾问', '13413413415', 1, NULL, NULL, NULL, '', '', '', '', '', '2019-05-30 17:44:38', 1, '2019-06-17 11:33:57', 215, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1225, 119, '15273639627', '15273639627', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 09:21:55', 1, NULL, NULL, 0, 0, 0);
-INSERT INTO `stuff` VALUES (1226, 119, '阿欣', '17674677693', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 10:58:31', 216, '2019-06-12 11:36:04', 216, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1225, 119, '成全', '15273639627', 1, NULL, NULL, NULL, '', NULL, '', NULL, '', '2019-06-11 09:21:55', 1, '2019-06-18 17:08:58', 216, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1226, 119, '阿欣', '17674677693', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 10:58:31', 216, '2019-06-18 18:03:18', 216, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1227, 119, '乐乐', '15273639657', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:05:49', 216, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1228, 119, '豆奶', '15273639656', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:06:23', 216, '2019-06-12 11:36:26', 216, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1229, 119, '可可', '15273639626', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-11 11:08:19', 216, NULL, NULL, 0, 0, 0);
@@ -11896,6 +12153,9 @@ INSERT INTO `stuff` VALUES (1231, 119, '西西', '55565125464', 2, NULL, NULL, N
 INSERT INTO `stuff` VALUES (1232, 119, '安安', '52467573464', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-15 09:59:25', 216, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1233, 2, '杨梅', '15999761553', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 15:44:56', 1, NULL, NULL, 0, 0, 0);
 INSERT INTO `stuff` VALUES (1234, 2, '小张', '13827279181', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-17 17:31:38', 1, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1235, 120, '1527363962', '1527363962', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-18 09:06:51', 216, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1236, 121, '1234567892', '1234567892', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-18 09:14:59', 216, NULL, NULL, 0, 0, 0);
+INSERT INTO `stuff` VALUES (1237, 122, '13827279180', '13827279180', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-06-18 15:28:47', 1, NULL, NULL, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for stuff_job
@@ -11913,7 +12173,7 @@ CREATE TABLE `stuff_job`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_job_01`(`stuff_id`) USING BTREE,
   INDEX `idx_stuff_job_02`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 317 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工职务' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 321 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工职务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_job
@@ -12100,7 +12360,6 @@ INSERT INTO `stuff_job` VALUES (278, 1224, 6, '2019-05-30 17:44:38', 1, NULL, NU
 INSERT INTO `stuff_job` VALUES (279, 1213, 7, '2019-05-30 19:21:43', 203, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (281, 1207, 6, '2019-05-31 09:14:47', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (282, 16, 7, '2019-05-31 10:35:40', 1, NULL, NULL, 0);
-INSERT INTO `stuff_job` VALUES (283, 1112, 9, '2019-05-31 11:20:00', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (284, 1219, 6, '2019-05-31 17:10:05', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (285, 1219, 7, '2019-05-31 17:10:05', 85, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (286, 1223, 6, '2019-05-31 17:11:44', 85, NULL, NULL, 0);
@@ -12126,6 +12385,10 @@ INSERT INTO `stuff_job` VALUES (313, 1210, 7, '2019-06-17 11:37:44', 1, NULL, NU
 INSERT INTO `stuff_job` VALUES (314, 1210, 6, '2019-06-17 11:37:44', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (315, 1233, 7, '2019-06-17 15:44:56', 1, NULL, NULL, 0);
 INSERT INTO `stuff_job` VALUES (316, 1234, 7, '2019-06-17 17:31:38', 1, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (317, 1235, 2, '2019-06-18 09:06:51', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (318, 1236, 2, '2019-06-18 09:14:59', 216, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (319, 1128, 9, '2019-06-18 14:03:28', 85, NULL, NULL, 0);
+INSERT INTO `stuff_job` VALUES (320, 1237, 2, '2019-06-18 15:28:47', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for stuff_score
@@ -12139,7 +12402,7 @@ CREATE TABLE `stuff_score`  (
   `status` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_score_01`(`stuff_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_score
@@ -12159,6 +12422,7 @@ INSERT INTO `stuff_score` VALUES (12, 26, 105, 0, 1);
 INSERT INTO `stuff_score` VALUES (13, 113, 468, -10, 1);
 INSERT INTO `stuff_score` VALUES (14, 0, 10, 0, 0);
 INSERT INTO `stuff_score` VALUES (18, 1231, 27, 0, 0);
+INSERT INTO `stuff_score` VALUES (19, 1226, 100, 0, 0);
 
 -- ----------------------------
 -- Table structure for stuff_score_record
@@ -12180,7 +12444,7 @@ CREATE TABLE `stuff_score_record`  (
   `stuff_status` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_stuff_score_record_01`(`stuff_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分产生记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工的积分产生记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of stuff_score_record
@@ -12201,6 +12465,7 @@ INSERT INTO `stuff_score_record` VALUES (13, 1113, '上的发的撒发', 12, 12,
 INSERT INTO `stuff_score_record` VALUES (14, 1128, '的撒发上的', 10, 20, 1112, 1, '2019-06-06 17:44:39', 85, NULL, NULL, 0, 0);
 INSERT INTO `stuff_score_record` VALUES (15, 26, '上的发放的', 105, 105, 1112, 0, '2019-06-10 10:36:11', 85, NULL, NULL, 0, 0);
 INSERT INTO `stuff_score_record` VALUES (16, 1128, '测试是测试彩色 ', 10, 30, 1112, 1, '2019-06-15 09:53:05', 85, NULL, NULL, 0, 0);
+INSERT INTO `stuff_score_record` VALUES (17, 1226, '就是要奖励', 100, 100, 1225, 0, '2019-06-19 11:21:43', 216, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for submit_approval
@@ -12221,7 +12486,7 @@ CREATE TABLE `submit_approval`  (
   `audit_photos` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_submit_approval_01`(`approval_number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '送审表(提交审批)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '送审表(提交审批)' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of submit_approval
@@ -12242,6 +12507,9 @@ INSERT INTO `submit_approval` VALUES (13, 'zzR4SbvF', '2019-06-14 15:42:29', 112
 INSERT INTO `submit_approval` VALUES (14, 'kPAQ6yZs', '2019-06-14 16:33:39', 1128, '高级的高级的', '2019-06-14 16:33:39', 106, NULL, NULL, 0, 4, 1779);
 INSERT INTO `submit_approval` VALUES (15, 'eSmTDZXu', '2019-06-15 13:37:31', 1, 'Tes', '2019-06-15 13:37:31', 1, NULL, NULL, 0, 1, 1876);
 INSERT INTO `submit_approval` VALUES (16, '6f8YhJtz', '2019-06-15 13:47:54', 1112, 'Test', '2019-06-15 13:47:54', 85, NULL, NULL, 0, 4, 1877);
+INSERT INTO `submit_approval` VALUES (17, 'OHiHzBND', '2019-06-18 17:31:56', 1234, '有事', '2019-06-18 17:31:56', 237, NULL, NULL, 0, 3, 2008);
+INSERT INTO `submit_approval` VALUES (18, '3fW0VgK1', '2019-06-18 18:21:43', 1234, '回家', '2019-06-18 18:21:43', 237, NULL, NULL, 0, 1, 2009);
+INSERT INTO `submit_approval` VALUES (19, '8lGrbx8Q', '2019-06-19 10:50:21', 1128, 'sdfasfdadfsafsda', '2019-06-19 10:50:21', 106, NULL, NULL, 0, 4, 2023);
 
 -- ----------------------------
 -- Table structure for system_program
@@ -12384,17 +12652,17 @@ CREATE TABLE `system_user`  (
   INDEX `IDX_SYSTEM_USER_1`(`user_name`) USING BTREE,
   INDEX `IDX_SYSTEM_USER_2`(`user_status`) USING BTREE,
   INDEX `IDX_SYSTEM_USER_3`(`online`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 238 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 243 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'0', '2019-06-17 18:36:01', '4EL82Gj4');
+INSERT INTO `system_user` VALUES (1, 'C00001', '刘永红', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-06-19 14:13:40', 'VK5IpNNF');
 INSERT INTO `system_user` VALUES (2, 'C00002', '吴鸿建', 'e10adc3949ba59abbe56e057f20f883e', 0, '823259113@qq.com', b'1', '2019-05-14 11:25:21', NULL);
-INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-06-06 14:13:35', 'yVDm6x5l');
+INSERT INTO `system_user` VALUES (32, 'c00003', '湛丰源', 'e10adc3949ba59abbe56e057f20f883e', 0, '2548485782@qq.com', b'1', '2019-06-19 10:14:21', '1tQKUpH8');
 INSERT INTO `system_user` VALUES (33, 'c00004', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (34, 'c00005', '湛丰源', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2548485782@qq.com', b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-06-17 17:14:57', 'xfHEV6jS');
+INSERT INTO `system_user` VALUES (63, 'C00010', '平台测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'1', '2019-06-19 14:04:47', 'y8Ek6F2w');
 INSERT INTO `system_user` VALUES (64, 'C00011', '店长测试帐号', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', '2019-04-03 16:08:58', NULL);
 INSERT INTO `system_user` VALUES (65, '123680676131', '湛丰源333', 'e10adc3949ba59abbe56e057f20f883e', 0, '', b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (67, '12345678', 'app测试', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-04-03 12:16:30', NULL);
@@ -12407,11 +12675,11 @@ INSERT INTO `system_user` VALUES (81, '13713713713', '咯安安', 'e10adc3949ba5
 INSERT INTO `system_user` VALUES (82, '13694511474', 'yaya', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (83, '', '', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (84, '18664151888', '18664151888', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 17:46:49', 'ZPlCHrXy');
+INSERT INTO `system_user` VALUES (85, '13929433192', '13929433192', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-19 14:10:35', 'spOuRiM5');
 INSERT INTO `system_user` VALUES (86, '17688686390', '煎饼', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-15 14:55:02', 'pr1IZYCC');
 INSERT INTO `system_user` VALUES (88, '19874236542', '刘大姐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (89, '123698574555', '柳絮', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (94, '13929433194', '五条蛇', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 20:41:58', 'RWm28E4p');
+INSERT INTO `system_user` VALUES (94, '13929433194', '五条蛇', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-19 10:46:42', 'Nr6DyO2a');
 INSERT INTO `system_user` VALUES (96, '13532307827', '13532307827', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-10 13:57:52', NULL);
 INSERT INTO `system_user` VALUES (97, '19856231556', '刘花', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (98, '17963254112', '李某某', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
@@ -12422,12 +12690,12 @@ INSERT INTO `system_user` VALUES (102, '1559666', '和解决', 'e10adc3949ba59ab
 INSERT INTO `system_user` VALUES (103, '13929433196', '测试顾客头像', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (104, '169853241485', '客服', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (105, '1366985555', '李子核', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (106, '13686278563', 'linyuhao', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-15 10:15:38', 'pFbJlFvp');
+INSERT INTO `system_user` VALUES (106, '13686278563', 'linyuhao', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-19 14:08:09', 'zdoRk2BC');
 INSERT INTO `system_user` VALUES (107, '15999876806', '腾格', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-10 19:23:18', 'gICpvd4n');
 INSERT INTO `system_user` VALUES (108, '17328482930', 'test', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 19:37:12', 'ijZXOW2R');
 INSERT INTO `system_user` VALUES (109, '12345678910', '123', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-15 17:59:44', NULL);
 INSERT INTO `system_user` VALUES (110, '13456789102', '花果园', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (111, '18681172013', '赵光', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-23 16:24:24', NULL);
+INSERT INTO `system_user` VALUES (111, '18681172013', '赵光', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-19 11:55:02', 'kI7iehEY');
 INSERT INTO `system_user` VALUES (112, '1456799000', 'Lou', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (115, '13712992626', '刘国', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-31 18:44:01', 'q9SeXxhL');
 INSERT INTO `system_user` VALUES (116, '156987423158', '榴弹', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
@@ -12506,7 +12774,7 @@ INSERT INTO `system_user` VALUES (188, '17328482932', '测试', 'e10adc3949ba59a
 INSERT INTO `system_user` VALUES (189, '17328482935', '传达', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (193, '17328482936', 'test', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-24 08:56:24', NULL);
 INSERT INTO `system_user` VALUES (194, '17328480393', 'lyh', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-05-23 10:21:44', NULL);
-INSERT INTO `system_user` VALUES (195, '17328482938', '超级', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-29 12:32:10', '2QXjeFNP');
+INSERT INTO `system_user` VALUES (195, '17328482938', '超级', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-18 13:05:04', 'GpuyDaDf');
 INSERT INTO `system_user` VALUES (196, '17328480396', '高级工程师', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-27 09:11:15', NULL);
 INSERT INTO `system_user` VALUES (197, '1599969866', '李飞', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (198, '17328480329', '牛人', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
@@ -12521,11 +12789,11 @@ INSERT INTO `system_user` VALUES (210, '15999876807', '15999876807', '96e7921896
 INSERT INTO `system_user` VALUES (211, '17328483999', '说法的撒发', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (213, '17328480392', '17328480392', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-14 18:06:45', 'gWRzSr3h');
 INSERT INTO `system_user` VALUES (214, '17328485999', '高顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-05-31 17:29:28', 'iFI9tJV3');
-INSERT INTO `system_user` VALUES (215, '13413413415', '刘顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 16:28:49', 'wccBCKgD');
-INSERT INTO `system_user` VALUES (216, '15273639627', '15273639627', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-17 18:28:10', 'UXxe66e3');
+INSERT INTO `system_user` VALUES (215, '13413413415', '刘顾问', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-18 15:53:33', 'qjX3xs43');
+INSERT INTO `system_user` VALUES (216, '15273639627', '15273639627', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-19 11:43:09', 'V8hPSd3V');
 INSERT INTO `system_user` VALUES (217, '15273639427', '佳欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (218, '1527363957', '吴', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (219, '17674677693', '阿欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-17 18:19:29', 'AxYSSaLU');
+INSERT INTO `system_user` VALUES (219, '17674677693', '阿欣', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-19 13:57:15', '0BVx8ZSi');
 INSERT INTO `system_user` VALUES (220, '15273639657', '乐乐', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (221, '15273639656', '豆奶', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (222, '15273639626', '可可', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
@@ -12542,8 +12810,13 @@ INSERT INTO `system_user` VALUES (232, '23456789', '东东', 'e10adc3949ba59abbe
 INSERT INTO `system_user` VALUES (233, '55565125464', '西西', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (234, '13790538888', '13790538888', 'aa97eba124ab0c029fb7d5c37a6141b0', 0, NULL, b'0', NULL, NULL);
 INSERT INTO `system_user` VALUES (235, '52467573464', '安安', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
-INSERT INTO `system_user` VALUES (236, '15999761553', '杨梅', '96e79218965eb72c92a549dd5a330112', 0, NULL, b'0', '2019-06-17 18:21:48', 'tpBc8yLH');
-INSERT INTO `system_user` VALUES (237, '13827279181', '小张', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'1', '2019-06-17 18:04:17', 'kuGvBa9W');
+INSERT INTO `system_user` VALUES (236, '15999761553', '杨梅', '96e79218965eb72c92a549dd5a330112', 0, NULL, b'0', '2019-06-18 16:09:34', 'I4dFMcXl');
+INSERT INTO `system_user` VALUES (237, '13827279181', '小张', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-18 18:31:05', 'OswMSjf3');
+INSERT INTO `system_user` VALUES (238, '1527363962', '1527363962', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (239, '1234567892', '1234567892', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (240, '13827279180', '13827279180', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', NULL, NULL);
+INSERT INTO `system_user` VALUES (241, '13827279182', '测试一下', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, b'0', '2019-06-19 11:45:02', 'UWA8vZ0D');
+INSERT INTO `system_user` VALUES (242, '13827279183', '测试一下', '81dc9bdb52d04dc20036dbd8313ed055', 0, NULL, b'0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tag
@@ -12647,6 +12920,37 @@ INSERT INTO `time_sheet` VALUES (28, 1113, '2019-05-22', '2019-05-22 09:36:17', 
 INSERT INTO `time_sheet` VALUES (29, 1112, '2019-05-29', '2019-05-29 09:21:06', '2019-05-29 09:21:13', 4, '2019-05-29 09:21:06', 85, '2019-05-29 09:21:13', 85, 0);
 
 -- ----------------------------
+-- Table structure for user_open_wx
+-- ----------------------------
+DROP TABLE IF EXISTS `user_open_wx`;
+CREATE TABLE `user_open_wx`  (
+  `record_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `reference` bigint(20) NULL DEFAULT NULL,
+  `ninck_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `real_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sex` tinyint(4) NULL DEFAULT NULL,
+  `language` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `country` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `head_img_url` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `phone_no` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `open_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `create_date` datetime(0) NOT NULL,
+  `create_by` bigint(20) NOT NULL,
+  `update_date` datetime(0) NULL DEFAULT NULL,
+  `update_by` bigint(20) NULL DEFAULT NULL,
+  `opt_lock` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`record_id`) USING BTREE,
+  INDEX `idx_user_open_wx_01`(`reference`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户微信信息与平台用户关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_open_wx
+-- ----------------------------
+INSERT INTO `user_open_wx` VALUES (1, NULL, '源', NULL, 1, NULL, '广州', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/PibyBianwiaXvJdKeYjy9JAuUkTMjTqXliaz8ib1CPS6NzEMQw5N01UnmuJ5EZCIUQ3icficvsGIctpoOeP10AtQ9bDKp4yu9ysaoy0/132', NULL, 'oqFyA1W-dt2152wYpCJfks1CCmNw', '2019-06-18 14:57:19', 1, NULL, NULL, 0);
+
+-- ----------------------------
 -- Table structure for verification_code_temporary
 -- ----------------------------
 DROP TABLE IF EXISTS `verification_code_temporary`;
@@ -12663,7 +12967,7 @@ CREATE TABLE `verification_code_temporary`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_verification_code_temporary_01`(`phone_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信验证码临时表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信验证码临时表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of verification_code_temporary
@@ -12746,6 +13050,16 @@ INSERT INTO `verification_code_temporary` VALUES (75, '15999876807', '7819', 3, 
 INSERT INTO `verification_code_temporary` VALUES (76, '15999876807', '5519', 3, 0, '2019-06-17 17:22:34', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (77, '15999876807', '7973', 3, 0, '2019-06-17 17:24:35', 1, NULL, NULL, 0);
 INSERT INTO `verification_code_temporary` VALUES (78, '15273639627', '7388', 3, 0, '2019-06-17 18:25:34', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (79, '15273639627', '5294', 3, 0, '2019-06-18 09:04:18', 216, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (80, '13827279181', '2198', 3, 0, '2019-06-18 10:32:18', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (81, '13827279181', '2114', 3, 0, '2019-06-18 15:13:56', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (82, '13827279181', '3082', 3, 0, '2019-06-18 15:22:16', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (83, '13827279180', '5093', 3, 0, '2019-06-18 15:26:55', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (84, '13827279182', '4776', 3, 0, '2019-06-18 16:21:32', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (85, '13827279182', '7047', 3, 0, '2019-06-18 16:25:49', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (86, '13827279182', '1740', 3, 0, '2019-06-18 16:32:01', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (87, '13827279182', '6784', 3, 0, '2019-06-18 16:37:15', 1, NULL, NULL, 0);
+INSERT INTO `verification_code_temporary` VALUES (88, '13827279183', '1839', 3, 0, '2019-06-18 16:39:23', 1, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for vip_suite
@@ -12834,7 +13148,6 @@ INSERT INTO `vip_suite` VALUES (87, 2, '充值卡美容34', 99999.00, 0, '放黄
 INSERT INTO `vip_suite` VALUES (88, 2, '新增充值卡1', 99.00, 0, '哥还斤斤计较', '2019-05-30 09:54:38', 1, '2019-05-30 10:17:34', 1, 0);
 INSERT INTO `vip_suite` VALUES (89, 119, '钻石卡', 10.00, 1, '空', '2019-06-11 09:43:29', 216, '2019-06-13 10:30:14', 216, 0);
 INSERT INTO `vip_suite` VALUES (96, 119, '会员卡', 99.00, 0, '不知道', '2019-06-12 09:31:12', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite` VALUES (97, 119, '普通卡', 200.00, 0, '为空', '2019-06-13 10:35:45', 216, NULL, NULL, 0);
 INSERT INTO `vip_suite` VALUES (98, 119, '消费卡', 10000.00, 0, '充值卡充值卡充值卡充值卡', '2019-06-17 16:56:30', 216, NULL, NULL, 0);
 
 -- ----------------------------
@@ -12853,7 +13166,7 @@ CREATE TABLE `vip_suite_item`  (
   `opt_lock` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_vip_suite_item_01`(`record_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 457 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡折扣项目' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 460 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值卡折扣项目' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vip_suite_item
@@ -12987,9 +13300,6 @@ INSERT INTO `vip_suite_item` VALUES (439, 96, 0, 5, '2019-06-12 09:31:12', 216, 
 INSERT INTO `vip_suite_item` VALUES (440, 96, 2, 5, '2019-06-12 09:31:12', 216, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (445, 89, 2, 9.8, '2019-06-13 10:30:15', 216, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (446, 89, 3, 9.88, '2019-06-13 10:30:15', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (447, 97, 1, 9.6, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (448, 97, 2, 9.8, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
-INSERT INTO `vip_suite_item` VALUES (449, 97, 3, 99, '2019-06-13 10:35:45', 216, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (450, 72, 0, 6.9, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (451, 72, 1, 0, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
 INSERT INTO `vip_suite_item` VALUES (452, 72, 3, 2.9, '2019-06-15 09:44:57', 85, NULL, NULL, 0);
@@ -13210,7 +13520,7 @@ CREATE TABLE `visual_range`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_visual_range_01`(`stuff_id`) USING BTREE,
   INDEX `idx_visual_range_02`(`statu`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 433 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 445 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of visual_range
@@ -13646,6 +13956,18 @@ INSERT INTO `visual_range` VALUES (429, 1233, 0, '2019-06-17 17:59:44', 1, 0, NU
 INSERT INTO `visual_range` VALUES (430, 6, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
 INSERT INTO `visual_range` VALUES (431, 47, 0, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
 INSERT INTO `visual_range` VALUES (432, 1234, 0, '2019-06-17 18:01:52', 1, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (433, 1202, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (434, 1203, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (435, 1208, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (436, 1209, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (437, 1223, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (438, 1219, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (439, 1113, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (440, 1128, 0, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (441, 1207, 0, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (442, 1211, 0, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (443, 1121, 0, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range` VALUES (444, 1112, 0, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for visual_range_mapping
@@ -13663,7 +13985,7 @@ CREATE TABLE `visual_range_mapping`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_visual_range_mapping_01`(`notice_id`) USING BTREE,
   INDEX `idx_visual_range_mapping_02`(`visual_range_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 433 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围映射表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 445 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '可视范围映射表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of visual_range_mapping
@@ -14099,6 +14421,18 @@ INSERT INTO `visual_range_mapping` VALUES (429, 85, 429, '2019-06-17 17:59:44', 
 INSERT INTO `visual_range_mapping` VALUES (430, 85, 430, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
 INSERT INTO `visual_range_mapping` VALUES (431, 85, 431, '2019-06-17 17:59:44', 1, 0, NULL, NULL);
 INSERT INTO `visual_range_mapping` VALUES (432, 86, 432, '2019-06-17 18:01:53', 1, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (433, 87, 433, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (434, 87, 434, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (435, 87, 435, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (436, 87, 436, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (437, 87, 437, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (438, 87, 438, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (439, 87, 439, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (440, 87, 440, '2019-06-18 10:25:55', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (441, 87, 441, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (442, 87, 442, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (443, 87, 443, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
+INSERT INTO `visual_range_mapping` VALUES (444, 87, 444, '2019-06-18 10:25:56', 85, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for work_summary
@@ -14119,7 +14453,7 @@ CREATE TABLE `work_summary`  (
   PRIMARY KEY (`record_id`) USING BTREE,
   INDEX `idx_work_summary_01`(`stuff_id`) USING BTREE,
   INDEX `idx_work_summary_02`(`cur_month`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作总结表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '工作总结表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of work_summary
@@ -14158,5 +14492,7 @@ INSERT INTO `work_summary` VALUES (31, 1112, 'hdhhdbdb', 'hsbndndn', '2019-05-29
 INSERT INTO `work_summary` VALUES (32, 1, '下大雨出门不方便o', '打扫卫生', '2019-05-29', 1, '2019-05-29 12:18:44', 1, NULL, NULL, 0);
 INSERT INTO `work_summary` VALUES (33, 1225, '（系统设置子功能模块）\n1、验证是否能够成功修改密码										修改成功\n2、验证清理本地缓存是否正常										清理成功\n3、验证客服投诉热线是否跳转到拨号界面							拨号正常', '（系统设置子功能模块）\n1、验证是否能够成功修改密码										修改成功\n2、验证清理本地缓存是否正常										清理成功\n3、验证客服投诉热线是否跳转到拨号界面							拨号正常', '2019-06-12', 0, '2019-06-12 15:22:25', 216, NULL, NULL, 0);
 INSERT INTO `work_summary` VALUES (34, 1225, '（系统设置子功能模块）\n1、验证是否能够成功修改密码										修改成功\n2、验证清理本地缓存是否正常										清理成功\n3、验证客服投诉热线是否跳转到拨号界面							拨号正常', '（系统设置子功能模块）\n1、验证是否能够成功修改密码										修改成功\n2、验证清理本地缓存是否正常										清理成功\n3、验证客服投诉热线是否跳转到拨号界面							拨号正常', '2019-06-12', 1, '2019-06-12 15:23:29', 216, NULL, NULL, 0);
+INSERT INTO `work_summary` VALUES (35, 1226, '那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧那就这样吧', '下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划下月计划', '2019-06-18', 0, '2019-06-18 16:51:06', 219, NULL, NULL, 0);
+INSERT INTO `work_summary` VALUES (36, 1226, '本日总结总体来讲本日总结总体来讲本日总结总体来讲本日总结总体来讲本日总结总体来讲本日总结总体来讲本日总结总体来讲本日总结总体来讲', '明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划明日计划', '2019-06-18', 1, '2019-06-18 16:52:28', 219, NULL, NULL, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
